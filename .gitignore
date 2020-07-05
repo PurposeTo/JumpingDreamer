@@ -32,7 +32,7 @@
 # Images
 *.jpg
 *.jpeg
-*.png
+#*.png
 *.gif
 *.psd
 *.ai
