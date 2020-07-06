@@ -34,7 +34,7 @@ public class AdMobScript : MonoBehaviour
         // Called when the ad click caused the user to leave the application.
         rewardBasedVideoAd.OnAdLeavingApplication += HandleRewardBasedVideoLeftApplication;
 
-        this.RequestRewardBasedVideo();
+        RequestRewardBasedVideo();
     }
 
 
@@ -43,7 +43,7 @@ public class AdMobScript : MonoBehaviour
         // Create an empty ad request.
         AdRequest request = new AdRequest.Builder().Build();
         // Load the rewarded video ad with the request.
-        this.rewardBasedVideoAd.LoadAd(request, rewardedVideoAd_ID);
+        rewardBasedVideoAd.LoadAd(request, rewardedVideoAd_ID);
     }
 
 
@@ -58,33 +58,31 @@ public class AdMobScript : MonoBehaviour
 
     public void HandleRewardBasedVideoLoaded(object sender, EventArgs args)
     {
-        MonoBehaviour.print("HandleRewardBasedVideoLoaded event received");
+        print("HandleRewardBasedVideoLoaded event received");
     }
 
 
     public void HandleRewardBasedVideoFailedToLoad(object sender, AdFailedToLoadEventArgs args)
     {
-        MonoBehaviour.print(
-            "HandleRewardBasedVideoFailedToLoad event received with message: "
-                             + args.Message);
+        print($"HandleRewardBasedVideoFailedToLoad event received with message: {args.Message}");
     }
 
 
     public void HandleRewardBasedVideoOpened(object sender, EventArgs args)
     {
-        MonoBehaviour.print("HandleRewardBasedVideoOpened event received");
+        print("HandleRewardBasedVideoOpened event received");
     }
 
 
     public void HandleRewardBasedVideoStarted(object sender, EventArgs args)
     {
-        MonoBehaviour.print("HandleRewardBasedVideoStarted event received");
+        print("HandleRewardBasedVideoStarted event received");
     }
 
 
     public void HandleRewardBasedVideoClosed(object sender, EventArgs args)
     {
-        MonoBehaviour.print("HandleRewardBasedVideoClosed event received");
+        print("HandleRewardBasedVideoClosed event received");
     }
 
 
@@ -92,15 +90,13 @@ public class AdMobScript : MonoBehaviour
     {
         string type = args.Type;
         double amount = args.Amount;
-        MonoBehaviour.print(
-            "HandleRewardBasedVideoRewarded event received for "
-                        + amount.ToString() + " " + type);
+        print($"HandleRewardBasedVideoRewarded event received for {amount} {type}");
     }
 
 
     public void HandleRewardBasedVideoLeftApplication(object sender, EventArgs args)
     {
-        MonoBehaviour.print("HandleRewardBasedVideoLeftApplication event received");
+        print("HandleRewardBasedVideoLeftApplication event received");
     }
 }
 
