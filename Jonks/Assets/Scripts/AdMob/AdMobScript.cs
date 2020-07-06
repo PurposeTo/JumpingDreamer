@@ -19,7 +19,7 @@ public class AdMobScript : MonoBehaviour
         MobileAds.Initialize(initStatus => { });
 
         // Get singleton reward based video ad reference.
-        this.rewardBasedVideoAd = RewardBasedVideoAd.Instance;
+        rewardBasedVideoAd = RewardBasedVideoAd.Instance;
 
         // Called when an ad request has successfully loaded.
         rewardBasedVideoAd.OnAdLoaded += HandleRewardBasedVideoLoaded;
@@ -37,6 +37,18 @@ public class AdMobScript : MonoBehaviour
         rewardBasedVideoAd.OnAdLeavingApplication += HandleRewardBasedVideoLeftApplication;
 
         RequestRewardBasedVideo();
+    }
+
+
+    private void OnDestroy()
+    {
+        rewardBasedVideoAd.OnAdLoaded -= HandleRewardBasedVideoLoaded;
+        rewardBasedVideoAd.OnAdFailedToLoad -= HandleRewardBasedVideoFailedToLoad;
+        rewardBasedVideoAd.OnAdOpening -= HandleRewardBasedVideoOpened;
+        rewardBasedVideoAd.OnAdStarted -= HandleRewardBasedVideoStarted;
+        rewardBasedVideoAd.OnAdRewarded -= HandleRewardBasedVideoRewarded;
+        rewardBasedVideoAd.OnAdClosed -= HandleRewardBasedVideoClosed;
+        rewardBasedVideoAd.OnAdLeavingApplication -= HandleRewardBasedVideoLeftApplication;
     }
 
 
@@ -85,6 +97,8 @@ public class AdMobScript : MonoBehaviour
     public void HandleRewardBasedVideoClosed(object sender, EventArgs args)
     {
         print("HandleRewardBasedVideoClosed event received");
+        // Перезагрузить рекламу
+        RequestRewardBasedVideo();
     }
 
 
