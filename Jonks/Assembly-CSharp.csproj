@@ -63,6 +63,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\AdMob\AdMobScript.cs" />
     <Compile Include="Assets\Scripts\CameraFollow.cs" />
     <Compile Include="Assets\Scripts\Centre\Centre.cs" />
     <Compile Include="Assets\Scripts\Centre\KillingZone.cs" />
