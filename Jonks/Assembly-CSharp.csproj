@@ -70,13 +70,13 @@
     <Compile Include="Assets\Scripts\ExtraSizer.cs" />
     <Compile Include="Assets\Scripts\GameLogic.cs" />
     <Compile Include="Assets\Scripts\Gravity.cs" />
-    <Compile Include="Assets\Scripts\Move\Base\IMovable.cs" />
-    <Compile Include="Assets\Scripts\Move\Base\Move.cs" />
-    <Compile Include="Assets\Scripts\Move\CircularMotion.cs" />
-    <Compile Include="Assets\Scripts\Move\MovementFromTheCenter.cs" />
     <Compile Include="Assets\Scripts\OrthoRotationToTheCentre.cs" />
     <Compile Include="Assets\Scripts\Platforms\Base\BasePlatform.cs" />
     <Compile Include="Assets\Scripts\Platforms\Base\MovingPlatform.cs" />
+    <Compile Include="Assets\Scripts\Platforms\Move\Base\IMovable.cs" />
+    <Compile Include="Assets\Scripts\Platforms\Move\Base\Move.cs" />
+    <Compile Include="Assets\Scripts\Platforms\Move\CircularMotion.cs" />
+    <Compile Include="Assets\Scripts\Platforms\Move\MovementFromTheCenter.cs" />
     <Compile Include="Assets\Scripts\Player\Collectors\CoinCollector.cs" />
     <Compile Include="Assets\Scripts\Player\Collectors\ScoreCollector.cs" />
     <Compile Include="Assets\Scripts\Player\Controllers\Abstract\Controller.cs" />
@@ -761,7 +761,16 @@
       <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup></ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="GoogleMobileAds.csproj">
+      <Project>{4C81061F-E5CB-0E02-2BCB-7DA1B97CB2BB}</Project>
+      <Name>GoogleMobileAds</Name>
+    </ProjectReference>
+    <ProjectReference Include="GoogleMobileAds.Editor.csproj">
+      <Project>{73E4B34A-F220-E641-EA65-F99D6A224143}</Project>
+      <Name>GoogleMobileAds.Editor</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
