@@ -8,6 +8,8 @@ public class AdMobScript : MonoBehaviour
 
     private const string rewardedVideoAd_ID = "ca-app-pub-8365272256827287/5171106131";
 
+    string rewardedVideoAdForTest_ID = "ca-app-pub-3940256099942544/5224354917";
+
     private RewardBasedVideoAd rewardBasedVideoAd;
 
 
@@ -43,7 +45,7 @@ public class AdMobScript : MonoBehaviour
         // Create an empty ad request.
         AdRequest request = new AdRequest.Builder().Build();
         // Load the rewarded video ad with the request.
-        rewardBasedVideoAd.LoadAd(request, rewardedVideoAd_ID);
+        rewardBasedVideoAd.LoadAd(request, rewardedVideoAdForTest_ID);
     }
 
 
