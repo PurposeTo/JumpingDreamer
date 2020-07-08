@@ -5,10 +5,8 @@ using GoogleMobileAds.Api;
 public class AdMobScript : MonoBehaviour
 {
     private const string ADS_ID = "ca-app-pub-8365272256827287~9135876659";
-
     private const string rewardedVideoAd_ID = "ca-app-pub-8365272256827287/5171106131";
-
-    string rewardedVideoAdForTest_ID = "ca-app-pub-3940256099942544/5224354917";
+    private const string rewardedVideoAdForTest_ID = "ca-app-pub-3940256099942544/5224354917";
 
     private RewardBasedVideoAd rewardBasedVideoAd;
 
