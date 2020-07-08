@@ -85,7 +85,7 @@
     <Compile Include="Assets\Scripts\Player\Controllers\ControllerInitializer.cs" />
     <Compile Include="Assets\Scripts\Player\Controllers\MobileController.cs" />
     <Compile Include="Assets\Scripts\Player\Controllers\WindowsEditorController.cs" />
-    <Compile Include="Assets\Scripts\Player\DataModel\PlayerStatsDataModel.cs" />
+    <Compile Include="Assets\Scripts\Player\Player Data\PlayerStatsDataModel.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerHealth.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Player\SpeedTrail.cs" />
