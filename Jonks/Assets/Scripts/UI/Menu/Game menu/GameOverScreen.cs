@@ -10,6 +10,7 @@ public class GameOverScreen : MonoBehaviour
 
     private void OnEnable()
     {
+        GameMenu.Instance.PlayerUI.gameObject.SetActive(false);
         GameMenu.Instance.PauseMenu.PauseButton.SetActive(false);
         ShowScore();
     }
@@ -17,6 +18,7 @@ public class GameOverScreen : MonoBehaviour
 
     private void OnDisable()
     {
+        GameMenu.Instance.PlayerUI.gameObject.SetActive(true);
         GameMenu.Instance.PauseMenu.PauseButton.SetActive(true);
     }
 

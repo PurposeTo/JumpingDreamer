@@ -26,22 +26,22 @@ public class GameOverStatusScreen : MonoBehaviour
     private void OnEnable()
     {
         // Если реклама загружена и игрок еще не использовал ее
-        if (rewardBasedVideoAd.IsLoaded() && !isPlayerMustSeeAd)
+        if (rewardBasedVideoAd.IsLoaded())
         {
-            // Показать экран с предложением возродиться
-            ShowRebornScreen();
+            // Если игрок еще не использовал возрождение
+            if (!isPlayerMustSeeAd)
+            {
+                // Показать экран с предложением возродиться
+                ShowRebornScreen();
+            }
+            else
+            {
+                // Показать рекламу при сборе наград
+                ShowCollectRewardsScreen();
+            }
+
         }
-        else if (!rewardBasedVideoAd.IsLoaded()) // Если реклама не загрузилась
-        {
-            // Показать окончательный game over screen
-            ShowGameOverMenu();
-        }
-        else if (isPlayerMustSeeAd)  // Если игрок уже использовал возможность возродиться и теперь ему надо показать рекламу
-        {
-            // Показать рекламу при сборе наград
-            ShowCollectRewardsScreen();
-        }
-        else
+        else // Если реклама не загрузилась
         {
             // Показать окончательный game over screen
             ShowGameOverMenu();

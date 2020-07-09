@@ -97,6 +97,7 @@
     <Compile Include="Assets\Scripts\Singletons\Object Pooler\ObjectPooler.cs" />
     <Compile Include="Assets\Scripts\Singletons\VFX\VFXManager.cs" />
     <Compile Include="Assets\Scripts\UI\FPSCounter.cs" />
+    <Compile Include="Assets\Scripts\UI\Menu\AdRewardMessage.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\CollectRewardsScreen.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\GameOverMenu.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\RebornScreen.cs" />
