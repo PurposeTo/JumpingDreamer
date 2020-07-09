@@ -97,8 +97,12 @@
     <Compile Include="Assets\Scripts\Singletons\Object Pooler\ObjectPooler.cs" />
     <Compile Include="Assets\Scripts\Singletons\VFX\VFXManager.cs" />
     <Compile Include="Assets\Scripts\UI\FPSCounter.cs" />
-    <Compile Include="Assets\Scripts\UI\Menu\GameMenu.cs" />
-    <Compile Include="Assets\Scripts\UI\Menu\GameOverScreen.cs" />
+    <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\CollectRewardsScreen.cs" />
+    <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\GameOverMenu.cs" />
+    <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\RebornScreen.cs" />
+    <Compile Include="Assets\Scripts\UI\Menu\Game menu\GameMenu.cs" />
+    <Compile Include="Assets\Scripts\UI\Menu\Game menu\GameOverScreen.cs" />
+    <Compile Include="Assets\Scripts\UI\Menu\Game menu\GameOverStatusScreen.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\MainMenu.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\PauseMenu.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\SettingsMenu.cs" />

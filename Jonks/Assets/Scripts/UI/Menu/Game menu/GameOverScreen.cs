@@ -15,6 +15,12 @@ public class GameOverScreen : MonoBehaviour
     }
 
 
+    private void OnDisable()
+    {
+        GameMenu.Instance.PauseMenu.PauseButton.SetActive(true);
+    }
+
+
     private void ShowScore()
     {
         int score = GameManager.Instance.Player.GetComponent<ScoreCollector>().Score;
@@ -23,22 +29,4 @@ public class GameOverScreen : MonoBehaviour
         int coins = GameManager.Instance.Player.GetComponent<CoinCollector>().Coins;
         EarnedCoins.text = $"{coins}";
     }
-
-
-    public void ReloadLvl()
-    {
-        SceneLoader.LoadScene(SceneLoader.GameSceneName);
-    }
-
-
-    public void OpenMainMenu()
-    {
-        SceneLoader.LoadScene(SceneLoader.MainMenuName);
-    }
-
-
-    public void OpenShop() { }
-
-
-    public void OpenLeaderboard() { }
 }

@@ -22,15 +22,8 @@ namespace GoogleMobileAds.Api
     public class RewardBasedVideoAd
     {
         private IRewardBasedVideoAdClient client;
-        private static readonly RewardBasedVideoAd instance = new RewardBasedVideoAd();
 
-        public static RewardBasedVideoAd Instance
-        {
-            get
-            {
-                return instance;
-            }
-        }
+        public static RewardBasedVideoAd Instance { get; } = new RewardBasedVideoAd();
 
         // Creates a Singleton RewardBasedVideoAd.
         private RewardBasedVideoAd()
@@ -40,66 +33,42 @@ namespace GoogleMobileAds.Api
 
             this.client.OnAdLoaded += (sender, args) =>
             {
-                if (this.OnAdLoaded != null)
-                {
-                    this.OnAdLoaded(this, args);
-                }
+                this.OnAdLoaded?.Invoke(this, args);
             };
 
             this.client.OnAdFailedToLoad += (sender, args) =>
             {
-                if (this.OnAdFailedToLoad != null)
-                {
-                    this.OnAdFailedToLoad(this, args);
-                }
+                this.OnAdFailedToLoad?.Invoke(this, args);
             };
 
             this.client.OnAdOpening += (sender, args) =>
             {
-                if (this.OnAdOpening != null)
-                {
-                    this.OnAdOpening(this, args);
-                }
+                this.OnAdOpening?.Invoke(this, args);
             };
 
             this.client.OnAdStarted += (sender, args) =>
             {
-                if (this.OnAdStarted != null)
-                {
-                    this.OnAdStarted(this, args);
-                }
+                this.OnAdStarted?.Invoke(this, args);
             };
 
             this.client.OnAdClosed += (sender, args) =>
             {
-                if (this.OnAdClosed != null)
-                {
-                    this.OnAdClosed(this, args);
-                }
+                this.OnAdClosed?.Invoke(this, args);
             };
 
             this.client.OnAdLeavingApplication += (sender, args) =>
             {
-                if (this.OnAdLeavingApplication != null)
-                {
-                    this.OnAdLeavingApplication(this, args);
-                }
+                this.OnAdLeavingApplication?.Invoke(this, args);
             };
 
             this.client.OnAdRewarded += (sender, args) =>
             {
-                if (this.OnAdRewarded != null)
-                {
-                    this.OnAdRewarded(this, args);
-                }
+                this.OnAdRewarded?.Invoke(this, args);
             };
 
             this.client.OnAdCompleted += (sender, args) =>
             {
-                if (this.OnAdCompleted != null)
-                {
-                    this.OnAdCompleted(this, args);
-                }
+                this.OnAdCompleted?.Invoke(this, args);
             };
         }
 
