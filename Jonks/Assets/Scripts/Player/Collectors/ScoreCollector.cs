@@ -40,7 +40,7 @@ public class ScoreCollector : MonoBehaviour
             }
             else
             {
-                // Алгебраическая прогрессия получения очков
+                // Арифметическая прогрессия получения очков
                 earnedPointsPerFlight++;
                 Score += earnedPointsPerFlight;
 
