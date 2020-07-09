@@ -17,6 +17,7 @@ public class RebornScreen : MonoBehaviour
 
         GameMenu.Instance.GameOverScreen.gameObject.SetActive(false);
         Time.timeScale = 1f;
+        GameMenu.Instance.AdRewardMessage.gameObject.SetActive(true);
     }
 
 
