@@ -330,7 +330,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.275}
   m_AnchorMax: {x: 0.5, y: 0.275}
   m_AnchoredPosition: {x: 0, y: -60}
-  m_SizeDelta: {x: 125, y: 125}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &151375270
 MonoBehaviour:
@@ -508,7 +508,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 46.1
+  m_fontSize: 55.35
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1094,7 +1094,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.275}
   m_AnchorMax: {x: 0.5, y: 0.275}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 125, y: 125}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &471961357
 MonoBehaviour:
@@ -1477,6 +1477,7 @@ GameObject:
   - component: {fileID: 540768927}
   - component: {fileID: 540768926}
   - component: {fileID: 540768925}
+  - component: {fileID: 540768928}
   m_Layer: 5
   m_Name: Reborn button
   m_TagString: Untagged
@@ -1595,6 +1596,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 540768923}
   m_CullTransparentMesh: 0
+--- !u!114 &540768928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540768923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f0e838665dd9294abe9617f8766f3da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unscaledTime: 1
+  period: 1
+  extraSize: 0.1
 --- !u!1 &552445373
 GameObject:
   m_ObjectHideFlags: 0
@@ -2469,10 +2485,10 @@ RectTransform:
   m_Father: {fileID: 785714269}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.25, y: 0.4}
-  m_AnchorMax: {x: 0.25, y: 0.4}
+  m_AnchorMin: {x: 0.225, y: 0.375}
+  m_AnchorMax: {x: 0.225, y: 0.375}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 125, y: 126}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &801536242
 MonoBehaviour:
@@ -2650,7 +2666,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 32.45
+  m_fontSize: 38.95
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -4557,7 +4573,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 46.1
+  m_fontSize: 55.35
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -4641,6 +4657,7 @@ GameObject:
   - component: {fileID: 1200447541}
   - component: {fileID: 1200447540}
   - component: {fileID: 1200447539}
+  - component: {fileID: 1200447542}
   m_Layer: 5
   m_Name: Collect button
   m_TagString: Untagged
@@ -4665,7 +4682,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.55}
   m_AnchorMax: {x: 0.5, y: 0.55}
-  m_AnchoredPosition: {x: 0, y: 50}
+  m_AnchoredPosition: {x: 0, y: 75}
   m_SizeDelta: {x: 500, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1200447539
@@ -4759,6 +4776,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1200447537}
   m_CullTransparentMesh: 0
+--- !u!114 &1200447542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1200447537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f0e838665dd9294abe9617f8766f3da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unscaledTime: 1
+  period: 1
+  extraSize: 0.1
 --- !u!1 &1229619788
 GameObject:
   m_ObjectHideFlags: 0
@@ -6203,6 +6235,7 @@ GameObject:
   - component: {fileID: 1615658171}
   - component: {fileID: 1615658170}
   - component: {fileID: 1615658169}
+  - component: {fileID: 1615658172}
   m_Layer: 5
   m_Name: Reload level button
   m_TagString: Untagged
@@ -6225,10 +6258,10 @@ RectTransform:
   m_Father: {fileID: 785714269}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.58}
-  m_AnchorMax: {x: 0.5, y: 0.58}
+  m_AnchorMin: {x: 0.5, y: 0.65}
+  m_AnchorMax: {x: 0.5, y: 0.65}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 300}
+  m_SizeDelta: {x: 325, y: 325}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1615658169
 MonoBehaviour:
@@ -6321,6 +6354,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1615658167}
   m_CullTransparentMesh: 0
+--- !u!114 &1615658172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1615658167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f0e838665dd9294abe9617f8766f3da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unscaledTime: 1
+  period: 1
+  extraSize: 0.15
 --- !u!1 &1627132694
 GameObject:
   m_ObjectHideFlags: 0
@@ -6683,7 +6731,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 91.05
+  m_fontSize: 98.65
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -7056,7 +7104,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 31
+  m_fontSize: 37.25
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -7394,10 +7442,10 @@ RectTransform:
   m_Father: {fileID: 785714269}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.75, y: 0.4}
-  m_AnchorMax: {x: 0.75, y: 0.4}
+  m_AnchorMin: {x: 0.775, y: 0.375}
+  m_AnchorMax: {x: 0.775, y: 0.375}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 125, y: 125}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1913367116
 MonoBehaviour:
