@@ -10,7 +10,9 @@ public class PlatformGenerator : Singleton<PlatformGenerator>
 
     private void Start()
     {
-        GenerateRingFromPlatforms(DefaultPlatform, 15f, 5f);
+        //GenerateRingFromPlatforms(DefaultPlatform, 15f, 5f);
+        GenerateRingFromPlatforms(DefaultPlatform, 25f, 5f);
+
     }
 
 

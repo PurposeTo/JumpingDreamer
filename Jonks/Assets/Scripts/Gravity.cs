@@ -6,7 +6,7 @@ public class Gravity : MonoBehaviour
     private HashSet<Rigidbody2D> affectedBodies = new HashSet<Rigidbody2D>();
     private const float gravityAcceleration = 9.81f;
 
-    private readonly float gravityScale = 2.5f;
+    private readonly float gravityScale = 3f;
 
 
     private void OnTriggerEnter2D(Collider2D collision)
