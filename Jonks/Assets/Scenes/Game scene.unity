@@ -3815,6 +3815,7 @@ MonoBehaviour:
   EarnedScore: {fileID: 1360510320}
   EarnedCoins: {fileID: 1929339525}
   LastRecord: {fileID: 840807584}
+  GameOverStatusScreen: {fileID: 2095183917}
 --- !u!95 &1058354256
 Animator:
   serializedVersion: 3

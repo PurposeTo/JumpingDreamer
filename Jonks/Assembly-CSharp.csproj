@@ -97,12 +97,12 @@
     <Compile Include="Assets\Scripts\Singletons\VFX\VFXManager.cs" />
     <Compile Include="Assets\Scripts\UI\FPSCounter.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\AdRewardMessage.cs" />
-    <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\CollectRewardsScreen.cs" />
-    <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\GameOverMenu.cs" />
-    <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\RebornScreen.cs" />
+    <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\GameOverScreen.cs" />
+    <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\GameOverStatus\CollectRewardsScreen.cs" />
+    <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\GameOverStatus\GameOverMenu.cs" />
+    <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\GameOverStatus\RebornScreen.cs" />
+    <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\GameOverStatusScreen.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Game menu\GameMenu.cs" />
-    <Compile Include="Assets\Scripts\UI\Menu\Game menu\GameOverScreen.cs" />
-    <Compile Include="Assets\Scripts\UI\Menu\Game menu\GameOverStatusScreen.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\MainMenu.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\PauseMenu.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\SettingsMenu.cs" />
