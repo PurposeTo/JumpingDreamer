@@ -6,8 +6,8 @@
 public class MovementFromTheCenter : MovingPlatform, IMovable
 {
     private float lifeDictance; // Максимальное расстояние от центра до точки, где платформы еще могут существовать
-    private readonly float minlifeDictance = 40f;
-    private readonly float maxlifeDictance = 70f;
+    private readonly float minlifeDictance = 50f;
+    private readonly float maxlifeDictance = 80f;
 
     private bool isDisabling = false;
 
