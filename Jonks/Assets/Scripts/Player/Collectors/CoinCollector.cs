@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Player.Data;
+using Assets.Scripts.Player.DataModel;
+using UnityEngine;
 
 public class CoinCollector : MonoBehaviour
 {
@@ -18,6 +20,13 @@ public class CoinCollector : MonoBehaviour
     private void Start()
     {
         GameMenu.Instance.PlayerUI.UpdateCoinsText(coins);
+        GameMenu.Instance.GameOverScreen.gameObject.GetComponentInChildren<GameOverStatusScreen>().OnSavePlayerStats += SaveCoinsStats;
+    }
+
+
+    private void OnDestroy()
+    {
+        GameMenu.Instance.GameOverScreen.gameObject.GetComponentInChildren<GameOverStatusScreen>().OnSavePlayerStats -= SaveCoinsStats;
     }
 
 
@@ -28,5 +37,11 @@ public class CoinCollector : MonoBehaviour
             Coins++;
             coin.gameObject.SetActive(false);
         }
+    }
+
+
+    private void SaveCoinsStats()
+    {
+        PlayerStatsDataStorageSafe.Instance.SaveCoinsData(Coins);
     }
 }

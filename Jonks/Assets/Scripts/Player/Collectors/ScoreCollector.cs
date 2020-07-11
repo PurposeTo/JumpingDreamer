@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Player.Data;
+using UnityEngine;
 
 public class ScoreCollector : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class ScoreCollector : MonoBehaviour
     }
     private int earnedPointsPerFlight = 0; // Очки, полученные за полет (За то время, пока скорость была достаточной для получения очков)
 
+    private int currrentMaxScoreMultiplierValue { get; set; } = 1; // Для сбора статистики
+
     private float counterScoreEarnedDelay;
     private readonly float scoreEarnedDelay = 0.25f;
 
@@ -27,6 +30,13 @@ public class ScoreCollector : MonoBehaviour
     {
         rb2D = GetComponent<Rigidbody2D>();
         GameMenu.Instance.PlayerUI.UpdateScoreText(score);
+        GameMenu.Instance.GameOverScreen.gameObject.GetComponentInChildren<GameOverStatusScreen>().OnSavePlayerStats += SaveScoreStats;
+    }
+
+
+    private void OnDestroy()
+    {
+        GameMenu.Instance.GameOverScreen.gameObject.GetComponentInChildren<GameOverStatusScreen>().OnSavePlayerStats -= SaveScoreStats;
     }
 
 
@@ -44,6 +54,11 @@ public class ScoreCollector : MonoBehaviour
                 earnedPointsPerFlight++;
                 Score += earnedPointsPerFlight;
 
+                if (earnedPointsPerFlight > currrentMaxScoreMultiplierValue)
+                {
+                    currrentMaxScoreMultiplierValue = earnedPointsPerFlight;
+                }
+
                 Quaternion rotation = GameLogic.GetOrthoRotation(transform.position, GameManager.Instance.Centre.transform.position);
                 VFXManager.Instance.DisplayPopupText(transform.position, rotation, $"+{earnedPointsPerFlight}", Color.white, scoreFontSize);
 
@@ -55,5 +70,12 @@ public class ScoreCollector : MonoBehaviour
             earnedPointsPerFlight = 0;
             counterScoreEarnedDelay = -1f; // Счет всегда должен включаться сразу же, как только скорость будет нужной
         }
+    }
+
+
+    private void SaveScoreStats()
+    {
+        PlayerStatsDataStorageSafe.Instance.SaveScoreData(Score);
+        PlayerStatsDataStorageSafe.Instance.SaveScoreMultiplierData(currrentMaxScoreMultiplierValue);
     }
 }

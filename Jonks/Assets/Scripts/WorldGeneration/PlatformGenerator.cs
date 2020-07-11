@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlatformGenerator : Singleton<PlatformGenerator>
+public class PlatformGenerator : SingletonMonoBehaviour<PlatformGenerator>
 {
     public GameObject DefaultPlatform;
 
