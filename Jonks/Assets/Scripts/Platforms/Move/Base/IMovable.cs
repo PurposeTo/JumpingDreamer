@@ -5,5 +5,5 @@ public interface IMovable
 {
     Vector2 Velocity { get; }
 
-    VelocityChanged OnVelocityChanged { get; set; }
+    event VelocityChanged OnVelocityChanged;
 }

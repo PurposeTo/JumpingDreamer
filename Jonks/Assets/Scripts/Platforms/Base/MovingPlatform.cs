@@ -7,7 +7,7 @@ public class MovingPlatform : BasePlatform, IMovable
 
     private Vector2 velocity = Vector2.zero;
     public Vector2 Velocity => velocity;
-    public VelocityChanged OnVelocityChanged { get; set; }
+    public event VelocityChanged OnVelocityChanged;
 
     private protected void SetVelocity(Vector2 newVelocity)
     {

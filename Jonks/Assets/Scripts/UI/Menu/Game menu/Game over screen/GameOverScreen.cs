@@ -6,6 +6,7 @@ public class GameOverScreen : MonoBehaviour
     public TextMeshProUGUI EarnedScore;
     public TextMeshProUGUI EarnedCoins;
     public TextMeshProUGUI LastRecord;
+    public GameOverStatusScreen GameOverStatusScreen;
 
 
     private void OnEnable()

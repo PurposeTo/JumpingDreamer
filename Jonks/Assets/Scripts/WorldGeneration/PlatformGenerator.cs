@@ -10,7 +10,9 @@ public class PlatformGenerator : SingletonMonoBehaviour<PlatformGenerator>
 
     private void Start()
     {
-        GenerateRingFromPlatforms(DefaultPlatform, 15f, 5f);
+        //GenerateRingFromPlatforms(DefaultPlatform, 15f, 5f);
+        GenerateRingFromPlatforms(DefaultPlatform, 20f, 5f);
+
     }
 
 
