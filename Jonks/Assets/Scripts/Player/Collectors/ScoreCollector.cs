@@ -30,13 +30,13 @@ public class ScoreCollector : MonoBehaviour
     {
         rb2D = GetComponent<Rigidbody2D>();
         GameMenu.Instance.PlayerUI.UpdateScoreText(score);
-        GameMenu.Instance.GameOverScreen.gameObject.GetComponentInChildren<GameOverStatusScreen>().OnSavePlayerStats += SaveScoreStats;
+        GameMenu.Instance.GameOverScreen.GameOverStatusScreen.OnSavePlayerStats += SaveScoreStats;
     }
 
 
     private void OnDestroy()
     {
-        GameMenu.Instance.GameOverScreen.gameObject.GetComponentInChildren<GameOverStatusScreen>().OnSavePlayerStats -= SaveScoreStats;
+        GameMenu.Instance.GameOverScreen.GameOverStatusScreen.OnSavePlayerStats -= SaveScoreStats;
     }
 
 

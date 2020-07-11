@@ -20,13 +20,13 @@ public class CoinCollector : MonoBehaviour
     private void Start()
     {
         GameMenu.Instance.PlayerUI.UpdateCoinsText(coins);
-        GameMenu.Instance.GameOverScreen.gameObject.GetComponentInChildren<GameOverStatusScreen>().OnSavePlayerStats += SaveCoinsStats;
+        GameMenu.Instance.GameOverScreen.GameOverStatusScreen.OnSavePlayerStats += SaveCoinsStats;
     }
 
 
     private void OnDestroy()
     {
-        GameMenu.Instance.GameOverScreen.gameObject.GetComponentInChildren<GameOverStatusScreen>().OnSavePlayerStats -= SaveCoinsStats;
+        GameMenu.Instance.GameOverScreen.GameOverStatusScreen.OnSavePlayerStats -= SaveCoinsStats;
     }
 
 

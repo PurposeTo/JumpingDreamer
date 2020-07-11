@@ -16,13 +16,13 @@ namespace Assets.Scripts.Player.Statistics
             playerRb2D = gameObject.GetComponent<Rigidbody2D>();
             centre = GameManager.Instance.Centre;
 
-            GameMenu.Instance.GameOverScreen.gameObject.GetComponentInChildren<GameOverStatusScreen>().OnSavePlayerStats += SaveJumpHeightStats;
+            GameMenu.Instance.GameOverScreen.GameOverStatusScreen.OnSavePlayerStats += SaveJumpHeightStats;
         }
 
 
         private void OnDestroy()
         {
-            GameMenu.Instance.GameOverScreen.gameObject.GetComponentInChildren<GameOverStatusScreen>().OnSavePlayerStats -= SaveJumpHeightStats;
+            GameMenu.Instance.GameOverScreen.GameOverStatusScreen.OnSavePlayerStats -= SaveJumpHeightStats;
         }
 
 
