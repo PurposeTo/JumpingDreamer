@@ -36,6 +36,7 @@ public class Shutter : Singleton<Shutter>
     {
         SceneManager.LoadScene(sceneToLoadName);
         animator.SetBool("isOpen", true);
+        Debug.Log($"{sceneToLoadName} was loaded.");
     }
 
 
