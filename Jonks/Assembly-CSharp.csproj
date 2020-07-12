@@ -87,11 +87,12 @@
     <Compile Include="Assets\Scripts\Player\PlayerHealth.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Player\SpeedTrail.cs" />
-    <Compile Include="Assets\Scripts\Player\Statistics\GameTimer.cs" />
     <Compile Include="Assets\Scripts\Player\Statistics\JumpHeightStats.cs" />
+    <Compile Include="Assets\Scripts\Player\Statistics\LifeTimer.cs" />
     <Compile Include="Assets\Scripts\Pulse.cs" />
     <Compile Include="Assets\Scripts\Scene loading helpers\SceneLoader.cs" />
     <Compile Include="Assets\Scripts\Scene loading helpers\Shutter.cs" />
+    <Compile Include="Assets\Scripts\Singletons\Base\Singleton.cs" />
     <Compile Include="Assets\Scripts\Singletons\Base\SingletonMonoBehaviour.cs" />
     <Compile Include="Assets\Scripts\Singletons\GameManager.cs" />
     <Compile Include="Assets\Scripts\Singletons\Object Pooler\IPooledObject.cs" />

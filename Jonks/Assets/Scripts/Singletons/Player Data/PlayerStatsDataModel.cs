@@ -3,7 +3,7 @@
 namespace Assets.Scripts.Player.DataModel
 {
     [Serializable]
-    public class PlayerStatsDataModel : SingletonMonoBehaviour<PlayerStatsDataModel>
+    public class PlayerStatsDataModel
     {
         // Лучшие результаты за все время игры
         public int maxCollectedCoinsAmount;
@@ -14,6 +14,6 @@ namespace Assets.Scripts.Player.DataModel
 
         // Общие результаты за все время игры
         public int totalCollectedCoinsAmount;
-        public TimeSpan totalLifeTime;
+        public float totalLifeTime;
     }
 }

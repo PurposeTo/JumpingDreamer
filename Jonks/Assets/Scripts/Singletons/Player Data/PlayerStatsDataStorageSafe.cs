@@ -19,26 +19,35 @@ namespace Assets.Scripts.Player.Data
         }
 
 
-        // Определение пути файла с данными
-        private void Start()
+        private void GetFilePath()
         {
-#if UNITY_ANDROID
-            filePath = Path.Combine(Application.persistentDataPath, fileName);
-#else
-            filePath = Path.Combine(Application.dataPath, fileName);
-#endif
+            //#if UNITY_ANDROID
+            //            filePath = Path.Combine(Application.persistentDataPath, fileName);
+            //#else
+            //#endif
+
+            filePath = Path.Combine(Application.streamingAssetsPath, "PlayerStatsData/" + fileName);
+            print(filePath);
         }
 
 
         public PlayerStatsDataModel GetPlayerStatsData()
         {
+            GetFilePath();
+
             if (!File.Exists(filePath))
             {
                 // Вернуть значения по дефолту
+                Debug.Log($"File {fileName} didn't found. Created empty one.");
                 return new PlayerStatsDataModel();
             }
+            else
+            {
+                Debug.Log($"File {fileName} was loaded.");
+            }
 
-            return JsonUtility.FromJson<PlayerStatsDataModel>(filePath);
+            string dataAsJSON = File.ReadAllText(filePath);
+            return JsonUtility.FromJson<PlayerStatsDataModel>(dataAsJSON);
         }
 
 
@@ -77,17 +86,14 @@ namespace Assets.Scripts.Player.Data
         }
 
 
-        public void SaveTotalLifeTimeData(float gameTime)
+        public void SaveLifeTimeData(float lifeTime)
         {
-            playerStatsDataModel.totalLifeTime += TimeSpan.FromSeconds(gameTime);
-        }
+            //playerStatsDataModel.totalLifeTime += TimeSpan.FromSeconds(lifeTime);
+            playerStatsDataModel.totalLifeTime += lifeTime;
 
-
-        public void SaveMaxLifeTimeData(float gameTime)
-        {
-            if (gameTime > playerStatsDataModel.maxLifeTime)
+            if (lifeTime > playerStatsDataModel.maxLifeTime)
             {
-                playerStatsDataModel.maxLifeTime = gameTime;
+                playerStatsDataModel.maxLifeTime = lifeTime;
             }
 
             File.WriteAllText(filePath, JsonUtility.ToJson(playerStatsDataModel));
