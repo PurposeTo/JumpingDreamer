@@ -49,7 +49,7 @@ public class Coin : MonoBehaviour
     private IEnumerator LifeEnumerator()
     {
         yield return new WaitForSeconds(lifeTime);
-        animator.SetTrigger("StartBlinding");
+        animator.SetBool("isBlinding", true);
 
         lifeCoroutine = null;
     }

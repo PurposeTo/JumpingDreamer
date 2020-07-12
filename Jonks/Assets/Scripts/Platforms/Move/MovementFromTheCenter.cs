@@ -63,7 +63,7 @@ public class MovementFromTheCenter : MovingPlatform, IMovable
         if ((centre.transform.position - transform.position).magnitude >= lifeDictance && !isDisabling)
         {
             // Множество раз включает триггер...
-            animator.SetTrigger("StartBlinding");
+            animator.SetBool("isBlinding", true);
             isDisabling = true;
         }
     }
