@@ -6,7 +6,7 @@
 public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : SingletonMonoBehaviour<T>
 {
 
-    [SerializeField] private bool dontDestroyOnLoad;
+    [SerializeField] private bool dontDestroyOnLoad = false;
 
     public static T Instance { get; private set; }
 

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class VFXManager : SingletonMonoBehaviour<VFXManager>
 {
-    [SerializeField] private GameObject PopupTextPrefab;
+    [SerializeField] private GameObject PopupTextPrefab = null;
 
     public void DisplayPopupText(Vector3 position, string text, float fontSize = 4f)
     {

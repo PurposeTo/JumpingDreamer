@@ -79,7 +79,7 @@ namespace Assets.Scripts.Player.Data
 
         public void SaveTotalLifeTimeData(float gameTime)
         {
-            playerStatsDataModel.totalLifeTime += TimeSpan.FromSeconds(gameTime);
+            playerStatsDataModel.totalLifeTime += gameTime;
         }
 
 

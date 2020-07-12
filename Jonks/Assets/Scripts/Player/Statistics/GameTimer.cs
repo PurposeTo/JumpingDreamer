@@ -10,13 +10,13 @@ namespace Assets.Scripts
 
         private void Start()
         {
-            GameMenu.Instance.GameOverScreen.gameObject.GetComponentInChildren<GameOverStatusScreen>().OnSavePlayerStats += SaveGameTimeStats;
+            GameMenu.Instance.GameOverScreen.GameOverStatusScreen.OnSavePlayerStats += SaveGameTimeStats;
         }
 
 
         private void OnDestroy()
         {
-            GameMenu.Instance.GameOverScreen.gameObject.GetComponentInChildren<GameOverStatusScreen>().OnSavePlayerStats -= SaveGameTimeStats;
+            GameMenu.Instance.GameOverScreen.GameOverStatusScreen.OnSavePlayerStats -= SaveGameTimeStats;
         }
 
 
