@@ -8,7 +8,7 @@ namespace Assets.Scripts.Player.Statistics
         private Rigidbody2D playerRb2D;
         private GameObject centre;
 
-        private float jumpHeight;
+        private float jumpHeight = 0f;
 
 
         private void Start()
