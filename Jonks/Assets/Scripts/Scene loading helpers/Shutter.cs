@@ -27,7 +27,7 @@ public class Shutter : Singleton<Shutter>
         sceneToLoadName = sceneName;
 
         Time.timeScale = 0f;
-        animator.SetTrigger("Close");
+        animator.SetBool("isOpen", false);
     }
 
 
@@ -35,7 +35,7 @@ public class Shutter : Singleton<Shutter>
     public void LoadSceneAfterClosingShutter()
     {
         SceneManager.LoadScene(sceneToLoadName);
-        animator.SetTrigger("Open");
+        animator.SetBool("isOpen", true);
     }
 
 
