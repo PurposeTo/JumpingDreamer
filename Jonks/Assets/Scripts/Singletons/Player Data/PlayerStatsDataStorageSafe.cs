@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using UnityEngine;
 using System.IO;
 using Assets.Scripts.Player.DataModel;
-using System;
 
 namespace Assets.Scripts.Player.Data
 {
@@ -15,17 +16,20 @@ namespace Assets.Scripts.Player.Data
 
         protected override void AwakeSingleton()
         {
-            playerStatsDataModel = GetPlayerStatsData();
+
+            if (Application.platform == RuntimePlatform.WindowsEditor)
+            {
+                playerStatsDataModel = GetPlayerStatsData();
+            }
+            else if (Application.platform == RuntimePlatform.Android)
+            {
+                StartCoroutine(GetPlayerStatsDataOnAndroid());
+            }
         }
 
 
         private void GetFilePath()
         {
-            //#if UNITY_ANDROID
-            //            filePath = Path.Combine(Application.persistentDataPath, fileName);
-            //#else
-            //#endif
-
             filePath = Path.Combine(Application.streamingAssetsPath, "PlayerStatsData/" + fileName);
             print(filePath);
         }
@@ -48,6 +52,25 @@ namespace Assets.Scripts.Player.Data
 
             string dataAsJSON = File.ReadAllText(filePath);
             return JsonUtility.FromJson<PlayerStatsDataModel>(dataAsJSON);
+        }
+
+
+        private IEnumerator GetPlayerStatsDataOnAndroid()
+        {
+            WWW reader = new WWW(filePath);
+            yield return reader;
+            Debug.LogWarning(filePath);
+            if (reader.error != null)
+            {
+                Debug.LogWarning(reader.error);
+                yield break;
+            }
+
+            string dataAsJson = reader.text;
+
+            playerStatsDataModel = JsonUtility.FromJson<PlayerStatsDataModel>(dataAsJson);
+
+            Debug.Log("Load Player Stats Data is done on Android");
         }
 
 
