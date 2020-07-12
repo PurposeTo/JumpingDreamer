@@ -15,12 +15,12 @@ public class SettingsMenu : MonoBehaviour
 
     public void OpenSettingsMenu()
     {
-        animator.SetTrigger("Open");
+        animator.SetBool("isOpen", true);
     }
 
 
     public void CloseSettingsMenu()
     {
-        animator.SetTrigger("Close");
+        animator.SetBool("isOpen", false);
     }
 }

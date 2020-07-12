@@ -223,7 +223,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 2.4166667
-    functionName: DisablePlatform
+    functionName: DisableObject
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

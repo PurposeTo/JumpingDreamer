@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        rb2D = GetComponent<Rigidbody2D>();
+        rb2D = gameObject.GetComponent<Rigidbody2D>();
         centre = GameManager.Instance.Centre;
 
         controller = ControllerInitializer.InitializeController(Application.platform);

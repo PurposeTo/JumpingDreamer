@@ -14,6 +14,7 @@ public class MovementFromTheCenter : MovingPlatform, IMovable
     [SerializeField]
     private bool UpdateMoveDirectionEveryFrame = false;
 
+
     private protected override void Start()
     {
         base.Start();

@@ -16,7 +16,7 @@ public class BasePlatform : MonoBehaviour
     }
 
 
-    public void DisablePlatform()
+    public void DisableObject()
     {
         gameObject.SetActive(false);
     }

@@ -4,8 +4,6 @@ using TMPro;
 public class GameOverScreen : MonoBehaviour
 {
     public TextMeshProUGUI EarnedScore;
-    public TextMeshProUGUI EarnedCoins;
-    public TextMeshProUGUI LastRecord;
     public GameOverStatusScreen GameOverStatusScreen;
 
 
@@ -26,10 +24,16 @@ public class GameOverScreen : MonoBehaviour
 
     private void ShowScore()
     {
-        int score = GameManager.Instance.Player.GetComponent<ScoreCollector>().Score;
-        EarnedScore.text = $"{score}";
 
-        int coins = GameManager.Instance.Player.GetComponent<CoinCollector>().Coins;
-        EarnedCoins.text = $"{coins}";
+        int score = GameManager.Instance.Player.GetComponent<ScoreCollector>().Score;
+        string scoreText = $"Score\n{score}";
+
+        int stars = GameManager.Instance.Player.GetComponent<CoinCollector>().Coins;
+        string starsText = $"Stars\n{stars}";
+
+        int record = 0;
+        string recordScoreText = $"Last record\n{record}"; //Показывать прошлый или текущий рекорд?
+
+        EarnedScore.text = $"{scoreText}\n{starsText}\n\n{recordScoreText}";
     }
 }
