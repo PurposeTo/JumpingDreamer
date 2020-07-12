@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using GoogleMobileAds.Api;
+using Assets.Scripts.Player.Data;
+using System;
 
+public delegate void SavePlayerStats();
 public class GameOverStatusScreen : MonoBehaviour
 {
     public GameOverMenu GameOverMenu;
@@ -10,6 +13,8 @@ public class GameOverStatusScreen : MonoBehaviour
     [HideInInspector] public bool isPlayerMustSeeAd = false;
 
     private RewardBasedVideoAd rewardBasedVideoAd;
+
+    public event SavePlayerStats OnSavePlayerStats;
 
 
     private void Awake()
@@ -59,11 +64,11 @@ public class GameOverStatusScreen : MonoBehaviour
 
     public void ShowGameOverMenu()
     {
+        OnSavePlayerStats?.Invoke();
+
         GameOverMenu.gameObject.SetActive(true);
         RebornScreen.gameObject.SetActive(false);
         CollectRewardsScreen.gameObject.SetActive(false);
-
-        // Сохранить значения
     }
 
 

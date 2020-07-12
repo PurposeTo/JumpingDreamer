@@ -3,7 +3,7 @@
 /// <summary> 
 /// To access the heir by a static field "Instance".
 /// </summary>
-public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
+public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : SingletonMonoBehaviour<T>
 {
 
     [SerializeField] private bool dontDestroyOnLoad;

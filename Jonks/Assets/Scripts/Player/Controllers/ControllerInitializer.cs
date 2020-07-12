@@ -8,14 +8,14 @@ public static class ControllerInitializer
         {
             case RuntimePlatform.Android:
                 return new MobileController();
-                break;
+                //break;
             case RuntimePlatform.WindowsEditor:
                 return new WindowsEditorController();
-                break;
+                //break;
             default:
                 Debug.LogError("Unknown platform!");
                 return new WindowsEditorController();
-                break;
+                //break;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class CoinGenerator : Singleton<CoinGenerator>
+public class CoinGenerator : SingletonMonoBehaviour<CoinGenerator>
 {
     public GameObject Coin;
     private float centreRadius;
