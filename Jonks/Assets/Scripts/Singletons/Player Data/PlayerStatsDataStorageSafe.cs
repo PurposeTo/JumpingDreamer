@@ -38,7 +38,7 @@ namespace Assets.Scripts.Player.Data
             if (!File.Exists(filePath))
             {
                 // Вернуть значения по дефолту
-                Debug.Log($"File {fileName} didn't found. Created empty one.");
+                Debug.Log($"File {fileName} didn't found. Creating empty object...");
                 return new PlayerStatsDataModel();
             }
             else
@@ -102,12 +102,12 @@ namespace Assets.Scripts.Player.Data
 
         public void SaveJumpHeightData(float jumpHeight)
         {
-            if (jumpHeight > playerStatsDataModel.maxJumpHeight)
-            {
-                playerStatsDataModel.maxJumpHeight = jumpHeight;
-            }
+            //if (jumpHeight > playerStatsDataModel.maxJumpHeight)
+            //{
+            //    playerStatsDataModel.maxJumpHeight = jumpHeight;
+            //}
 
-            File.WriteAllText(filePath, JsonUtility.ToJson(playerStatsDataModel));
+            //File.WriteAllText(filePath, JsonUtility.ToJson(playerStatsDataModel));
         }
     }
 }

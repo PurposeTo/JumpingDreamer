@@ -1,8 +1,10 @@
 ﻿using Assets.Scripts.Player.Data;
 using UnityEngine;
+using System;
 
 namespace Assets.Scripts.Player.Statistics
 {
+    [Obsolete]
     class JumpHeightStats : MonoBehaviour
     {
         private Rigidbody2D playerRb2D;
@@ -30,10 +32,13 @@ namespace Assets.Scripts.Player.Statistics
         {
             Vector2 toCentreVector = (Vector2)centre.transform.position - playerRb2D.position;
 
-            // Если вектор скорости игрока относительно центра направлен вверх
-            if (Vector3.Project(playerRb2D.velocity, toCentreVector).magnitude <= 0f)
+            // Если вектор скорости игрока относительно центра направлен вверх И если игрок не касается платформы
+            float velocityOnAxisCentreProject = Vector3.Project(playerRb2D.velocity, toCentreVector).magnitude;
+            print(velocityOnAxisCentreProject);
+
+            if (velocityOnAxisCentreProject >= 0f)
             {
-                float currentJumpHeight = -1 * (toCentreVector.magnitude - GameManager.Instance.CentreRadius);
+                float currentJumpHeight = toCentreVector.magnitude - GameManager.Instance.CentreRadius;
 
                 if (currentJumpHeight > jumpHeight)
                 {
@@ -44,7 +49,7 @@ namespace Assets.Scripts.Player.Statistics
 
         private void SaveJumpHeightStats()
         {
-            PlayerStatsDataStorageSafe.Instance.SaveJumpHeightData(jumpHeight);
+            PlayerStatsDataStorageSafe.Instance.SaveJumpHeightData((float)Math.Round(jumpHeight, 1));
         }
     }
 }

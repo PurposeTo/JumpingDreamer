@@ -6,7 +6,7 @@ namespace Assets.Scripts
 {
     public class LifeTimer : MonoBehaviour
     {
-        public float lifeTime => Time.time;
+        private float lifeTime = 0f;
 
 
         private void Start()
@@ -21,9 +21,16 @@ namespace Assets.Scripts
         }
 
 
+        private void Update()
+        {
+            lifeTime += 1f * Time.deltaTime;
+        }
+
+
         private void SaveLifeTimeStats()
         {
             PlayerStatsDataStorageSafe.Instance.SaveLifeTimeData((float)Math.Round(lifeTime, 1));
+            lifeTime = 0f;
         }
     }
 }
