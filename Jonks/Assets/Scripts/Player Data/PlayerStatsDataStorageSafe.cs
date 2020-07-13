@@ -16,10 +16,17 @@ namespace Assets.Scripts.Player.Data
 
         protected override void AwakeSingleton()
         {
+            LoadPlayerStatsData();
+        }
+
+
+        private void LoadPlayerStatsData()
+        {
+            GetFilePath();
 
             if (Application.platform == RuntimePlatform.WindowsEditor)
             {
-                playerStatsDataModel = GetPlayerStatsData();
+                playerStatsDataModel = GetPlayerStatsDataOnEditor();
             }
             else if (Application.platform == RuntimePlatform.Android)
             {
@@ -31,14 +38,12 @@ namespace Assets.Scripts.Player.Data
         private void GetFilePath()
         {
             filePath = Path.Combine(Application.streamingAssetsPath, "PlayerStatsData/" + fileName);
-            print(filePath);
+            Debug.Log(filePath);
         }
 
 
-        public PlayerStatsDataModel GetPlayerStatsData()
+        public PlayerStatsDataModel GetPlayerStatsDataOnEditor()
         {
-            GetFilePath();
-
             if (!File.Exists(filePath))
             {
                 // Вернуть значения по дефолту
@@ -59,15 +64,14 @@ namespace Assets.Scripts.Player.Data
         {
             WWW reader = new WWW(filePath);
             yield return reader;
-            Debug.LogWarning(filePath);
+
             if (reader.error != null)
             {
-                Debug.LogWarning(reader.error);
+                Debug.LogError(reader.error);
                 yield break;
             }
 
             string dataAsJson = reader.text;
-
             playerStatsDataModel = JsonUtility.FromJson<PlayerStatsDataModel>(dataAsJson);
 
             Debug.Log("Load Player Stats Data is done on Android");

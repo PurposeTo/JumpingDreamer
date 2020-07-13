@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
+[Obsolete]
 public class ExtraSizer : MonoBehaviour
 {
     private GameObject player;
@@ -7,7 +9,7 @@ public class ExtraSizer : MonoBehaviour
 
     private float defaulSize;
     private float extraSize;
-    private float sextraSizeMultilpy = 0.1f;
+    private float extraSizeMultilpy = 0.1f;
     private float speed = 0.5f;
 
 
@@ -22,7 +24,7 @@ public class ExtraSizer : MonoBehaviour
     {
         toPlayerDistance = (player.transform.position - transform.position).magnitude;
 
-        extraSize = toPlayerDistance * sextraSizeMultilpy;
+        extraSize = toPlayerDistance * extraSizeMultilpy;
 
         float Size = defaulSize + extraSize;
         Size = Mathf.Lerp(transform.localScale.x, Size, speed);

@@ -8,7 +8,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{C1C5C071-B83F-B023-CA69-3669697175E0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -97,8 +98,8 @@
     <Compile Include="Assets\Scripts\Singletons\GameManager.cs" />
     <Compile Include="Assets\Scripts\Singletons\Object Pooler\IPooledObject.cs" />
     <Compile Include="Assets\Scripts\Singletons\Object Pooler\ObjectPooler.cs" />
-    <Compile Include="Assets\Scripts\Singletons\Player Data\PlayerStatsDataModel.cs" />
-    <Compile Include="Assets\Scripts\Singletons\Player Data\PlayerStatsDataStorageSafe.cs" />
+    <Compile Include="Assets\Scripts\Player Data\PlayerStatsDataModel.cs" />
+    <Compile Include="Assets\Scripts\Player Data\PlayerStatsDataStorageSafe.cs" />
     <Compile Include="Assets\Scripts\Singletons\VFX\VFXManager.cs" />
     <Compile Include="Assets\Scripts\UI\FPSCounter.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\AdRewardMessage.cs" />
