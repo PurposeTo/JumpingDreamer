@@ -3,16 +3,16 @@ using UnityEngine;
 
 public class PlayerUI : MonoBehaviour
 {
-    public TextMeshProUGUI CoinsText;
-    private string coinsDefaultText = "Coins: ";
+    public TextMeshProUGUI StarsText;
+    private string starsDefaultText = "Stars: ";
 
     public TextMeshProUGUI ScoreText;
     private string scoreDefaultText = "Score: ";
 
 
-    public void UpdateCoinsText(int value)
+    public void UpdateStarsText(int value)
     {
-        CoinsText.text = coinsDefaultText + value;
+        StarsText.text = starsDefaultText + value;
     }
 
 

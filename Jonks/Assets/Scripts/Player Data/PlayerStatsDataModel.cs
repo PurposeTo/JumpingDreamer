@@ -6,14 +6,14 @@ namespace Assets.Scripts.Player.DataModel
     public class PlayerStatsDataModel
     {
         // Лучшие результаты за все время игры
-        public int maxCollectedCoinsAmount;
+        public int maxCollectedStarsAmount;
         public int maxEarnedPointsAmount;
         public int maxPointsMultiplierValue;
         public int maxLifeTime;
         //public float maxJumpHeight; // json хранит double
 
         // Общие результаты за все время игры
-        public int totalCollectedCoinsAmount;
+        public int totalCollectedStarsAmount;
         public int totalLifeTime;
     }
 }
