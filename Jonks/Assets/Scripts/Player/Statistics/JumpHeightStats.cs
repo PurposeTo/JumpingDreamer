@@ -34,7 +34,6 @@ namespace Assets.Scripts.Player.Statistics
 
             // Если вектор скорости игрока относительно центра направлен вверх И если игрок не касается платформы
             float velocityOnAxisCentreProject = Vector3.Project(playerRb2D.velocity, toCentreVector).magnitude;
-            print(velocityOnAxisCentreProject);
 
             if (velocityOnAxisCentreProject >= 0f)
             {

@@ -21,6 +21,11 @@ public class MovementFromTheCenter : MovingPlatform, IMovable
         InitializePlatform();
     }
 
+    private void OnDisable()
+    {
+        isDisabling = false;
+    }
+
 
     private void FixedUpdate()
     {
@@ -38,8 +43,6 @@ public class MovementFromTheCenter : MovingPlatform, IMovable
     /// </summary>
     private void InitializePlatform()
     {
-        isDisabling = false;
-
         // Если платформа не в центре
         if (transform.position != centre.transform.position)
         {
