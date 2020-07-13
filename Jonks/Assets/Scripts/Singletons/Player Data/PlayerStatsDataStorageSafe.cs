@@ -86,7 +86,7 @@ namespace Assets.Scripts.Player.Data
         }
 
 
-        public void SaveLifeTimeData(float lifeTime)
+        public void SaveLifeTimeData(int lifeTime)
         {
             //playerStatsDataModel.totalLifeTime += TimeSpan.FromSeconds(lifeTime);
             playerStatsDataModel.totalLifeTime += lifeTime;
@@ -100,6 +100,7 @@ namespace Assets.Scripts.Player.Data
         }
 
 
+        [Obsolete]
         public void SaveJumpHeightData(float jumpHeight)
         {
             //if (jumpHeight > playerStatsDataModel.maxJumpHeight)

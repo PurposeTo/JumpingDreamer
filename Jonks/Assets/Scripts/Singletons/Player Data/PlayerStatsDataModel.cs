@@ -9,11 +9,11 @@ namespace Assets.Scripts.Player.DataModel
         public int maxCollectedCoinsAmount;
         public int maxEarnedPointsAmount;
         public int maxPointsMultiplierValue;
-        public float maxLifeTime;
-        //public float maxJumpHeight;
+        public int maxLifeTime;
+        //public float maxJumpHeight; // json хранит double
 
         // Общие результаты за все время игры
         public int totalCollectedCoinsAmount;
-        public float totalLifeTime;
+        public int totalLifeTime;
     }
 }

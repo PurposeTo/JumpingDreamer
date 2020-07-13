@@ -29,7 +29,7 @@ namespace Assets.Scripts
 
         private void SaveLifeTimeStats()
         {
-            PlayerStatsDataStorageSafe.Instance.SaveLifeTimeData((float)Math.Round(lifeTime, 1));
+            PlayerStatsDataStorageSafe.Instance.SaveLifeTimeData((int)lifeTime);
             lifeTime = 0f;
         }
     }
