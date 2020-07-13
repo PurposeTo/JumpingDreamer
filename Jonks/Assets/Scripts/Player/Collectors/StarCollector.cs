@@ -1,8 +1,11 @@
 ﻿using Assets.Scripts.Player.Data;
 using UnityEngine;
 
+public delegate void StarAmountChange();
 public class StarCollector : MonoBehaviour
 {
+    public event StarAmountChange OnStarAmountChange;
+
     private int stars = 0;
     public int Stars
     {
@@ -11,14 +14,13 @@ public class StarCollector : MonoBehaviour
         private set
         {
             stars = value;
-            GameMenu.Instance.PlayerUI.UpdateStarsText(stars);
+            OnStarAmountChange?.Invoke();
         }
     }
 
 
     private void Start()
     {
-        GameMenu.Instance.PlayerUI.UpdateStarsText(stars);
         GameMenu.Instance.GameOverScreen.GameOverStatusScreen.OnSavePlayerStats += SaveStarsStats;
     }
 
