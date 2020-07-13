@@ -28,7 +28,7 @@ public class GameOverScreen : MonoBehaviour
         int score = GameManager.Instance.Player.GetComponent<ScoreCollector>().Score;
         string scoreText = $"Score\n{score}";
 
-        int stars = GameManager.Instance.Player.GetComponent<CoinCollector>().Coins;
+        int stars = GameManager.Instance.Player.GetComponent<StarCollector>().Stars;
         string starsText = $"Stars\n{stars}";
 
         int record = 0;

@@ -1,8 +1,11 @@
 ﻿using Assets.Scripts.Player.Data;
 using UnityEngine;
 
+public delegate void ScoreChange();
 public class ScoreCollector : MonoBehaviour
 {
+    public event ScoreChange OnScoreChange;
+
     private int score = 0;
     public int Score
     {
@@ -12,6 +15,7 @@ public class ScoreCollector : MonoBehaviour
         {
             score = value;
             GameMenu.Instance.PlayerUI.UpdateScoreText(score);
+            OnScoreChange?.Invoke();
         }
     }
     private int earnedPointsPerFlight = 0; // Очки, полученные за полет (За то время, пока скорость была достаточной для получения очков)

@@ -592,7 +592,7 @@ GameObject:
   - component: {fileID: 262196478}
   - component: {fileID: 262196477}
   m_Layer: 5
-  m_Name: Coins Text (TMP)
+  m_Name: Stars Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -636,7 +636,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Coins:'
+  m_text: 'Stars:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -949,7 +949,7 @@ GameObject:
   - component: {fileID: 437978445}
   - component: {fileID: 437978444}
   m_Layer: 0
-  m_Name: Coin Generator
+  m_Name: Stars Generator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -968,7 +968,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 0
-  Coin: {fileID: 8849593809778058553, guid: 5fe7911bd03d4914e8daf2a69f5c5164, type: 3}
+  Star: {fileID: 8849593809778058553, guid: 5fe7911bd03d4914e8daf2a69f5c5164, type: 3}
 --- !u!4 &437978445
 Transform:
   m_ObjectHideFlags: 0
@@ -1389,7 +1389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb208591235391942be08f010c41c50b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CoinsText: {fileID: 262196477}
+  StarsText: {fileID: 262196477}
   ScoreText: {fileID: 1513885971}
 --- !u!1 &540768923
 GameObject:

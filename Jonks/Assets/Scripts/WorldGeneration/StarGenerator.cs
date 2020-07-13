@@ -1,15 +1,15 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class CoinGenerator : SingletonMonoBehaviour<CoinGenerator>
+public class StarGenerator : SingletonMonoBehaviour<StarGenerator>
 {
-    public GameObject Coin;
+    public GameObject Star;
     private float centreRadius;
 
     private float delay = 10f;
     private float counter;
 
-    public int NumberOfActiveCoins { get; set; }
+    public int NumberOfActiveStars { get; set; }
 
 
     private void Start()
@@ -26,18 +26,18 @@ public class CoinGenerator : SingletonMonoBehaviour<CoinGenerator>
         }
         else
         {
-            GenerateCoin();
+            GenerateStar();
             counter = delay;
         }
     }
 
 
-    private void GenerateCoin()
+    private void GenerateStar()
     {
         Vector2 randomDirection = Random.insideUnitCircle.normalized;
         float range = Random.Range(centreRadius * 1.5f, 60f);
         Vector3 randomPosition = randomDirection * range;
 
-        ObjectPooler.Instance.SpawnFromPool(Coin, randomPosition, Quaternion.identity);
+        ObjectPooler.Instance.SpawnFromPool(Star, randomPosition, Quaternion.identity);
     }
 }

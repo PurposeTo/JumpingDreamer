@@ -78,13 +78,13 @@ namespace Assets.Scripts.Player.Data
         }
 
 
-        public void SaveCoinsData(int coinsAmount)
+        public void SaveStarsData(int starsAmount)
         {
-            playerStatsDataModel.totalCollectedCoinsAmount += coinsAmount;
+            playerStatsDataModel.totalCollectedStarsAmount += starsAmount;
 
-            if (coinsAmount > playerStatsDataModel.maxCollectedCoinsAmount)
+            if (starsAmount > playerStatsDataModel.maxCollectedStarsAmount)
             {
-                playerStatsDataModel.maxCollectedCoinsAmount = coinsAmount;
+                playerStatsDataModel.maxCollectedStarsAmount = starsAmount;
             }
 
             File.WriteAllText(filePath, JsonUtility.ToJson(playerStatsDataModel));

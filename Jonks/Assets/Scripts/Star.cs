@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(Animator))]
-public class Coin : MonoBehaviour
+public class Star : MonoBehaviour
 {
     private protected Animator animator;
 
@@ -23,7 +23,7 @@ public class Coin : MonoBehaviour
 
     private void OnEnable()
     {
-        CoinGenerator.Instance.NumberOfActiveCoins++;
+        StarGenerator.Instance.NumberOfActiveStars++;
 
         lifeTime = Random.Range(minLifeTime, maxLifeTime);
 
@@ -36,7 +36,7 @@ public class Coin : MonoBehaviour
 
     private void OnDisable()
     {
-        CoinGenerator.Instance.NumberOfActiveCoins--;
+        StarGenerator.Instance.NumberOfActiveStars--;
 
         if (lifeCoroutine != null)
         {
@@ -58,6 +58,5 @@ public class Coin : MonoBehaviour
     public void DisableObject()
     {
         gameObject.SetActive(false);
-        print("Coin disabling!");
     }
 }
