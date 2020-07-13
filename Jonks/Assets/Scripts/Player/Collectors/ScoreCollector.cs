@@ -1,10 +1,10 @@
 ﻿using Assets.Scripts.Player.Data;
 using UnityEngine;
 
-public delegate void ScoreChange();
+public delegate void ScoreAmountChange();
 public class ScoreCollector : MonoBehaviour
 {
-    public event ScoreChange OnScoreChange;
+    public event ScoreAmountChange OnScoreAmountChange;
 
     private int score = 0;
     public int Score
@@ -14,8 +14,7 @@ public class ScoreCollector : MonoBehaviour
         private set
         {
             score = value;
-            GameMenu.Instance.PlayerUI.UpdateScoreText(score);
-            OnScoreChange?.Invoke();
+            OnScoreAmountChange?.Invoke();
         }
     }
     private int earnedPointsPerFlight = 0; // Очки, полученные за полет (За то время, пока скорость была достаточной для получения очков)
@@ -33,7 +32,6 @@ public class ScoreCollector : MonoBehaviour
     private void Start()
     {
         rb2D = GetComponent<Rigidbody2D>();
-        GameMenu.Instance.PlayerUI.UpdateScoreText(score);
         GameMenu.Instance.GameOverScreen.GameOverStatusScreen.OnSavePlayerStats += SaveScoreStats;
     }
 

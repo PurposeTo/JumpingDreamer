@@ -19,15 +19,7 @@ public class RebornScreen : MonoBehaviour
         GameMenu.Instance.AdRewardMessage.gameObject.SetActive(true);
 
         // Возродить
-        if (GameManager.Instance.Player.TryGetComponent(out PlayerHealth playerHealth))
-        {
-            Debug.Log("Raise the player!");
-            playerHealth.RaiseTheDead();
-        }
-        else
-        {
-            Debug.LogError("Can't GetComponent \"PlayerHealth\" on Player!");
-        }
+        GameManager.Instance.PlayerPresenter.PlayerHealth.RaiseTheDead();
     }
 
 

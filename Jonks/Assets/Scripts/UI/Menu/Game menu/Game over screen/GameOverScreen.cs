@@ -8,6 +8,20 @@ public class GameOverScreen : MonoBehaviour
     public GameOverStatusScreen GameOverStatusScreen;
 
 
+    private void Start()
+    {
+        GameManager.Instance.PlayerPresenter.ScoreCollector.OnScoreAmountChange += ShowScore;
+        GameManager.Instance.PlayerPresenter.StarCollector.OnStarAmountChange += ShowScore;
+    }
+
+
+    private void OnDestroy()
+    {
+        GameManager.Instance.PlayerPresenter.ScoreCollector.OnScoreAmountChange -= ShowScore;
+        GameManager.Instance.PlayerPresenter.StarCollector.OnStarAmountChange -= ShowScore;
+    }
+
+
     private void OnEnable()
     {
         GameMenu.Instance.PlayerUI.gameObject.SetActive(false);
@@ -25,11 +39,10 @@ public class GameOverScreen : MonoBehaviour
 
     private void ShowScore()
     {
-
-        int score = GameManager.Instance.Player.GetComponent<ScoreCollector>().Score;
+        int score = GameManager.Instance.PlayerPresenter.ScoreCollector.Score;
         string scoreText = $"Score\n{score}";
 
-        int stars = GameManager.Instance.Player.GetComponent<StarCollector>().Stars;
+        int stars = GameManager.Instance.PlayerPresenter.StarCollector.Stars;
         string starsText = $"Stars\n{stars}";
 
         int record = PlayerStatsDataStorageSafe.Instance.PlayerStatsDataModel.maxEarnedPointsAmount;
