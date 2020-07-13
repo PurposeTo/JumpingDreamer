@@ -8,7 +8,7 @@ namespace Assets.Scripts.Player.Data
 {
     public class PlayerStatsDataStorageSafe : SingletonMonoBehaviour<PlayerStatsDataStorageSafe>
     {
-        private PlayerStatsDataModel playerStatsDataModel;
+        public PlayerStatsDataModel PlayerStatsDataModel { get; private set; }
 
         private string filePath;
         private readonly string fileName = "Stats.json"; // Имя файла с данными (как часть всего пути)
@@ -26,7 +26,7 @@ namespace Assets.Scripts.Player.Data
 
             if (Application.platform == RuntimePlatform.WindowsEditor)
             {
-                playerStatsDataModel = GetPlayerStatsDataOnEditor();
+                PlayerStatsDataModel = GetPlayerStatsDataOnEditor();
             }
             else if (Application.platform == RuntimePlatform.Android)
             {
@@ -72,7 +72,7 @@ namespace Assets.Scripts.Player.Data
             }
 
             string dataAsJson = reader.text;
-            playerStatsDataModel = JsonUtility.FromJson<PlayerStatsDataModel>(dataAsJson);
+            PlayerStatsDataModel = JsonUtility.FromJson<PlayerStatsDataModel>(dataAsJson);
 
             Debug.Log("Load Player Stats Data is done on Android");
         }
@@ -80,50 +80,50 @@ namespace Assets.Scripts.Player.Data
 
         public void SaveStarsData(int starsAmount)
         {
-            playerStatsDataModel.totalCollectedStarsAmount += starsAmount;
+            PlayerStatsDataModel.totalCollectedStarsAmount += starsAmount;
 
-            if (starsAmount > playerStatsDataModel.maxCollectedStarsAmount)
+            if (starsAmount > PlayerStatsDataModel.maxCollectedStarsAmount)
             {
-                playerStatsDataModel.maxCollectedStarsAmount = starsAmount;
+                PlayerStatsDataModel.maxCollectedStarsAmount = starsAmount;
             }
 
-            File.WriteAllText(filePath, JsonUtility.ToJson(playerStatsDataModel));
+            File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsDataModel));
         }
 
 
         public void SaveScoreData(int scoreAmount)
         {
-            if (scoreAmount > playerStatsDataModel.maxEarnedPointsAmount)
+            if (scoreAmount > PlayerStatsDataModel.maxEarnedPointsAmount)
             {
-                playerStatsDataModel.maxEarnedPointsAmount = scoreAmount;
+                PlayerStatsDataModel.maxEarnedPointsAmount = scoreAmount;
             }
 
-            File.WriteAllText(filePath, JsonUtility.ToJson(playerStatsDataModel));
+            File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsDataModel));
         }
 
 
         public void SaveScoreMultiplierData(int multiplierValue)
         {
-            if (multiplierValue > playerStatsDataModel.maxPointsMultiplierValue)
+            if (multiplierValue > PlayerStatsDataModel.maxPointsMultiplierValue)
             {
-                playerStatsDataModel.maxPointsMultiplierValue = multiplierValue;
+                PlayerStatsDataModel.maxPointsMultiplierValue = multiplierValue;
             }
 
-            File.WriteAllText(filePath, JsonUtility.ToJson(playerStatsDataModel));
+            File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsDataModel));
         }
 
 
         public void SaveLifeTimeData(int lifeTime)
         {
             //playerStatsDataModel.totalLifeTime += TimeSpan.FromSeconds(lifeTime);
-            playerStatsDataModel.totalLifeTime += lifeTime;
+            PlayerStatsDataModel.totalLifeTime += lifeTime;
 
-            if (lifeTime > playerStatsDataModel.maxLifeTime)
+            if (lifeTime > PlayerStatsDataModel.maxLifeTime)
             {
-                playerStatsDataModel.maxLifeTime = lifeTime;
+                PlayerStatsDataModel.maxLifeTime = lifeTime;
             }
 
-            File.WriteAllText(filePath, JsonUtility.ToJson(playerStatsDataModel));
+            File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsDataModel));
         }
 
 
