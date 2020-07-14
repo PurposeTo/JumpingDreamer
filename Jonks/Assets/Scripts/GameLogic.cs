@@ -25,4 +25,25 @@ public static class GameLogic
         return quaternionRotation;
     }
 
+    /// <summary>
+    /// Перемешивает массив элементов 
+    /// </summary>
+    public static void Shuffle<T>(T[] deck)
+    {
+        for (int i = 0; i < deck.Length; i++)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, deck.Length);
+
+            Swap(ref deck[i], ref deck[randomIndex]);
+        }
+    }
+
+
+    public static void Swap<T>(ref T x, ref T y)
+    {
+        T temp = x;
+        x = y;
+        y = temp;
+    }
+
 }
