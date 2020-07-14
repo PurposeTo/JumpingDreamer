@@ -4,9 +4,9 @@ using UnityEngine;
 public class Gravity : MonoBehaviour
 {
     private HashSet<Rigidbody2D> affectedBodies = new HashSet<Rigidbody2D>();
-    private const float gravityAcceleration = 9.81f;
 
-    private readonly float gravityScale = 3f;
+    public const float GravityAcceleration = 9.81f;
+    public const float GravityScale = 3f;
 
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -33,7 +33,7 @@ public class Gravity : MonoBehaviour
             Vector2 dictance = ((Vector2)transform.position - body.position);
             Vector2 forceDirection = dictance.normalized;
 
-            body.AddForce(gravityScale * forceDirection * body.mass * gravityAcceleration);
+            body.AddForce(GravityScale * forceDirection * body.mass * GravityAcceleration);
         }
     }
 }

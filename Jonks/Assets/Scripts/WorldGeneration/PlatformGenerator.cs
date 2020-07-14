@@ -1,18 +1,22 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public class PlatformGenerator : SingletonMonoBehaviour<PlatformGenerator>
 {
     public GameObject DefaultPlatform;
 
-    private float delay = 0.5f;
+    private float delay = 0.625f;
     private float counter;
+
+    private List<Vector2> directionsAroundCircle = new List<Vector2>();
 
 
     private void Start()
     {
         //GenerateRingFromPlatforms(DefaultPlatform, 15f, 5f);
         GenerateRingFromPlatforms(DefaultPlatform, 20f, 5f);
-
     }
 
 
@@ -32,15 +36,11 @@ public class PlatformGenerator : SingletonMonoBehaviour<PlatformGenerator>
     {
         range += GameManager.Instance.CentreRadius;
 
-        int platformsCount = (int)(360f / distanceAngle);
+        Vector2[] vector2sDirections = GetVector2sDirectionsAroundCircle(distanceAngle);
 
-        for (int i = 0; i < platformsCount; i++)
+        foreach (Vector2 direction in vector2sDirections)
         {
-            float rotateAngle = distanceAngle * i;
-            Quaternion rotation = Quaternion.Euler(0, 0, rotateAngle);
-            Vector2 direction = rotation * Vector3.up;
             Vector3 position = direction * range;
-
             ObjectPooler.Instance.SpawnFromPool(platform, position, Quaternion.identity);
         }
     }
@@ -54,8 +54,45 @@ public class PlatformGenerator : SingletonMonoBehaviour<PlatformGenerator>
         }
         else
         {
-            ObjectPooler.Instance.SpawnFromPool(platform, GameManager.Instance.Centre.transform.position, Quaternion.identity);
+            if (directionsAroundCircle.Count == 0)
+            {
+                // Расстояние между точками - 5 градусов
+                Vector2[] vector2sDirectionsArray = GetVector2sDirectionsAroundCircle(5f);
+                GameLogic.Shuffle(vector2sDirectionsArray);
+                directionsAroundCircle = vector2sDirectionsArray.ToList();
+                Debug.Log("Update directionsAroundCircle array in Platform generator");
+
+            }
+
+            // Позиция равна первому элементу в списке. После использования позиции, убрать из списка
+            Vector3 position = GameManager.Instance.Centre.transform.position + (Vector3)directionsAroundCircle[0];
+            directionsAroundCircle.RemoveAt(0);
+
+            ObjectPooler.Instance.SpawnFromPool(platform, position, Quaternion.identity);
             counter = delay;
         }
+    }
+
+
+    /// <summary>
+    /// Генерирует массив векторов, точки которых описывают круг
+    /// </summary>
+    /// <param name="distanceAngle">Угол, на расстоянии которого будут распологаться точки</param>
+    private Vector2[] GetVector2sDirectionsAroundCircle(float distanceAngle)
+    {
+        List<Vector2> vector2sDirections = new List<Vector2>();
+
+        int dotsCount = (int)(360f / distanceAngle);
+
+        for (int i = 0; i < dotsCount; i++)
+        {
+            float rotateAngle = distanceAngle * i;
+            Quaternion rotation = Quaternion.Euler(0, 0, rotateAngle);
+            Vector2 direction = rotation * Vector3.up;
+
+            vector2sDirections.Add(direction);
+        }
+
+        return vector2sDirections.ToArray();
     }
 }
