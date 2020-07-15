@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Animator))]
@@ -7,6 +8,8 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
     private Animator animator;
 
     private string sceneToLoadName;
+
+    private Coroutine waitingDataLoadRoutine;
 
     //1.	Исходный скрипт – Вызываем метод “сменить уровень на Scene scene”
     //2.	Shutter - Игровое время останавливается
@@ -35,8 +38,23 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
     public void LoadSceneAfterClosingShutter()
     {
         SceneManager.LoadScene(sceneToLoadName);
-        animator.SetBool("isOpen", true);
         Debug.Log($"{sceneToLoadName} was loaded.");
+
+        if (waitingDataLoadRoutine == null)
+        {
+            StartCoroutine(WaitingDataLoadEnumerator());
+        }
+        else
+        {
+            Debug.LogError("Error! WaitingDataLoadRoutine is already working!");
+        }
+    }
+
+    // Запуск сцены или первое включение игры.
+    // Заслонка закрыта. Ее необходимо открыть только тогда, когда будут загружены данные
+    public void OpenShutter()
+    {
+        animator.SetBool("isOpen", true);
     }
 
 
@@ -45,5 +63,23 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
     {
         sceneToLoadName = ""; // Необходимо очистить поле после загрузки сцены
         Time.timeScale = 1f;
+    }
+
+
+    private IEnumerator WaitingDataLoadEnumerator()
+    {
+        // Когда DataLoaderController будет доработан, просто убрать раскомментировать строки и убрать yield break;
+
+        //if (DataLoaderController.isReady())
+        //{
+        OpenShutter();
+        //}
+        //else
+        //{
+        //  yield return null;
+        //}
+
+        waitingDataLoadRoutine = null;
+        yield break;
     }
 }
