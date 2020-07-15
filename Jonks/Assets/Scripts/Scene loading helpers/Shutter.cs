@@ -19,9 +19,33 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
     //6.	Shutter - Заслонка открывается
     //7.	Shutter - Игровое время начинает идти
 
-    private void Start()
+    protected override void AwakeSingleton()
     {
+        base.AwakeSingleton();
         animator = gameObject.GetComponent<Animator>();
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        Time.timeScale = 0f;
+    }
+
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log($"OnSceneLoaded: {scene.name} in mode: {mode}");
+
+        if (waitingDataLoadRoutine == null)
+        {
+            StartCoroutine(WaitingDataLoadEnumerator());
+        }
+        else
+        {
+            Debug.LogError("Error! WaitingDataLoadRoutine is already working!");
+        }
     }
 
 
@@ -38,16 +62,6 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
     public void LoadSceneAfterClosingShutter()
     {
         SceneManager.LoadScene(sceneToLoadName);
-        Debug.Log($"{sceneToLoadName} was loaded.");
-
-        if (waitingDataLoadRoutine == null)
-        {
-            StartCoroutine(WaitingDataLoadEnumerator());
-        }
-        else
-        {
-            Debug.LogError("Error! WaitingDataLoadRoutine is already working!");
-        }
     }
 
     // Запуск сцены или первое включение игры.
