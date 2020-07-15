@@ -3,7 +3,7 @@
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
     public GameObject Player;
-    public PlayerPresenter PlayerPresenter;
+    public PlayerPresenter PlayerPresenter { get; private set; }
     public GameObject Centre;
 
     public readonly float CentreRadius = 9f;
