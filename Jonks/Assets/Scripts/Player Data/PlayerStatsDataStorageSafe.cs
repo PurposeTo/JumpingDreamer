@@ -1,17 +1,20 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 using System.IO;
-using Assets.Scripts.Player.DataModel;
 
 namespace Assets.Scripts.Player.Data
 {
+    public delegate void NewScoreRecord();
     public class PlayerStatsDataStorageSafe : SingletonMonoBehaviour<PlayerStatsDataStorageSafe>
     {
         public PlayerStatsDataModel PlayerStatsDataModel { get; private set; }
 
         private string filePath;
-        private readonly string fileName = "Stats.json"; // Имя файла с данными (как часть всего пути)
+        private readonly string fileName = "/Stats.json"; // Имя файла с данными (как часть всего пути)
+
+        public event NewScoreRecord OnNewScoreRecord;
+
+        [HideInInspector] public bool isDataFileLoaded = false;
 
 
         protected override void AwakeSingleton()
@@ -22,120 +25,134 @@ namespace Assets.Scripts.Player.Data
 
         private void LoadPlayerStatsData()
         {
-            GetFilePath();
-
             if (Application.platform == RuntimePlatform.WindowsEditor)
             {
-                PlayerStatsDataModel = GetPlayerStatsDataOnEditor();
+                filePath = Path.Combine(Application.dataPath + fileName);
+                Debug.Log(filePath);
             }
             else if (Application.platform == RuntimePlatform.Android)
             {
-                StartCoroutine(GetPlayerStatsDataOnAndroid());
+                filePath = Path.Combine(Application.persistentDataPath + fileName);
+                Debug.Log(filePath);
             }
+
+            GetPlayerStatsData();
         }
 
 
-        private void GetFilePath()
+        private void GetPlayerStatsData()
         {
-            filePath = Path.Combine(Application.streamingAssetsPath, "PlayerStatsData/" + fileName);
-            Debug.Log(filePath);
-        }
-
-
-        public PlayerStatsDataModel GetPlayerStatsDataOnEditor()
-        {
+            // Проверка на существование файла
             if (!File.Exists(filePath))
             {
-                // Вернуть значения по дефолту
-                Debug.Log($"File {fileName} didn't found. Creating empty object...");
-                return new PlayerStatsDataModel();
+                // Установить значения по дефолту
+                Debug.Log($"File path \"{filePath}\" didn't found. Creating empty object...");
+                PlayerStatsDataModel = new PlayerStatsDataModel();
+                isDataFileLoaded = true;
             }
             else
             {
-                Debug.Log($"File {fileName} was loaded.");
+                Debug.Log($"File on path \"{filePath}\" was loaded.");
+                string dataAsJSON = File.ReadAllText(filePath);
+
+                // Проверка на успешность чтения данных
+                if (dataAsJSON != null)
+                {
+                    Debug.Log($"Data from \"{fileName}\" was loaded successfully.");
+                    PlayerStatsDataModel = JsonUtility.FromJson<PlayerStatsDataModel>(dataAsJSON);
+                    isDataFileLoaded = true;
+                }
+                else
+                {
+                    Debug.LogError($"Data reading from \"{fileName}\" ERROR!");
+                    // Вывод сообщения в UI "Ошибка загрузки данных игоровой статистики! Запись новых данных заблокирована!"
+                    /*
+                     * 
+                     */
+
+                    // Вызвать событие ошибки, которое позволило бы ограничить запись данных в файл, чтобы не затереть старые данные?
+                    // Задизеблить скрипт? - это будет неявная обработка
+
+                    PlayerStatsDataModel = new PlayerStatsDataModel();
+                }
             }
-
-            string dataAsJSON = File.ReadAllText(filePath);
-            return JsonUtility.FromJson<PlayerStatsDataModel>(dataAsJSON);
-        }
-
-
-        private IEnumerator GetPlayerStatsDataOnAndroid()
-        {
-            WWW reader = new WWW(filePath);
-            yield return reader;
-
-            if (reader.error != null)
-            {
-                Debug.LogError(reader.error);
-                yield break;
-            }
-
-            string dataAsJson = reader.text;
-            PlayerStatsDataModel = JsonUtility.FromJson<PlayerStatsDataModel>(dataAsJson);
-
-            Debug.Log("Load Player Stats Data is done on Android");
         }
 
 
         public void SaveStarsData(int starsAmount)
         {
-            PlayerStatsDataModel.totalCollectedStarsAmount += starsAmount;
-
-            if (starsAmount > PlayerStatsDataModel.maxCollectedStarsAmount)
+            if (isDataFileLoaded)
             {
-                PlayerStatsDataModel.maxCollectedStarsAmount = starsAmount;
-            }
+                PlayerStatsDataModel.totalCollectedStarsAmount += starsAmount;
 
-            File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsDataModel));
+                if (starsAmount > PlayerStatsDataModel.maxCollectedStarsAmount)
+                {
+                    PlayerStatsDataModel.maxCollectedStarsAmount = starsAmount;
+                }
+
+                // А если у пользователя недостаточно памяти, чтобы создать файл?
+                File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsDataModel));
+            }
         }
 
 
         public void SaveScoreData(int scoreAmount)
         {
-            if (scoreAmount > PlayerStatsDataModel.maxEarnedPointsAmount)
+            if (isDataFileLoaded)
             {
-                PlayerStatsDataModel.maxEarnedPointsAmount = scoreAmount;
-            }
+                if (scoreAmount > PlayerStatsDataModel.maxEarnedPointsAmount)
+                {
+                    PlayerStatsDataModel.maxEarnedPointsAmount = scoreAmount;
+                    OnNewScoreRecord?.Invoke();
+                }
 
-            File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsDataModel));
+                File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsDataModel));
+            }
         }
 
 
         public void SaveScoreMultiplierData(int multiplierValue)
         {
-            if (multiplierValue > PlayerStatsDataModel.maxPointsMultiplierValue)
+            if (isDataFileLoaded)
             {
-                PlayerStatsDataModel.maxPointsMultiplierValue = multiplierValue;
-            }
+                if (multiplierValue > PlayerStatsDataModel.maxPointsMultiplierValue)
+                {
+                    PlayerStatsDataModel.maxPointsMultiplierValue = multiplierValue;
+                }
 
-            File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsDataModel));
+                File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsDataModel));
+            }
         }
 
 
         public void SaveLifeTimeData(int lifeTime)
         {
-            //playerStatsDataModel.totalLifeTime += TimeSpan.FromSeconds(lifeTime);
-            PlayerStatsDataModel.totalLifeTime += lifeTime;
-
-            if (lifeTime > PlayerStatsDataModel.maxLifeTime)
+            if (isDataFileLoaded)
             {
-                PlayerStatsDataModel.maxLifeTime = lifeTime;
-            }
+                PlayerStatsDataModel.totalLifeTime += lifeTime;
 
-            File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsDataModel));
+                if (lifeTime > PlayerStatsDataModel.maxLifeTime)
+                {
+                    PlayerStatsDataModel.maxLifeTime = lifeTime;
+                }
+
+                File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsDataModel));
+            }
         }
 
 
         [Obsolete]
         public void SaveJumpHeightData(float jumpHeight)
         {
-            //if (jumpHeight > playerStatsDataModel.maxJumpHeight)
+            //if (isDataFileLoaded)
             //{
-            //    playerStatsDataModel.maxJumpHeight = jumpHeight;
-            //}
+            //    if (jumpHeight > PlayerStatsDataModel.maxJumpHeight)
+            //    {
+            //        PlayerStatsDataModel.maxJumpHeight = jumpHeight;
+            //    }
 
-            //File.WriteAllText(filePath, JsonUtility.ToJson(playerStatsDataModel));
+            //    File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsDataModel));
+            //}
         }
     }
 }

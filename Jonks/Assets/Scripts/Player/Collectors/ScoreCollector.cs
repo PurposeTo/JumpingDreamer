@@ -32,13 +32,13 @@ public class ScoreCollector : MonoBehaviour
     private void Start()
     {
         rb2D = GetComponent<Rigidbody2D>();
-        GameMenu.Instance.GameOverScreen.GameOverStatusScreen.OnSavePlayerStats += SaveScoreStats;
+        GameMenu.Instance.GameOverScreen.GameOverStatusScreen.GameOverMenu.OnSavePlayerStats += SaveScoreStats;
     }
 
 
     private void OnDestroy()
     {
-        GameMenu.Instance.GameOverScreen.GameOverStatusScreen.OnSavePlayerStats -= SaveScoreStats;
+        GameMenu.Instance.GameOverScreen.GameOverStatusScreen.GameOverMenu.OnSavePlayerStats -= SaveScoreStats;
     }
 
 

@@ -21,13 +21,13 @@ public class StarCollector : MonoBehaviour
 
     private void Start()
     {
-        GameMenu.Instance.GameOverScreen.GameOverStatusScreen.OnSavePlayerStats += SaveStarsStats;
+        GameMenu.Instance.GameOverScreen.GameOverStatusScreen.GameOverMenu.OnSavePlayerStats += SaveStarsStats;
     }
 
 
     private void OnDestroy()
     {
-        GameMenu.Instance.GameOverScreen.GameOverStatusScreen.OnSavePlayerStats -= SaveStarsStats;
+        GameMenu.Instance.GameOverScreen.GameOverStatusScreen.GameOverMenu.OnSavePlayerStats -= SaveStarsStats;
     }
 
 
