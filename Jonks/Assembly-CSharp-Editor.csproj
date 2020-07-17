@@ -73,11 +73,11 @@
     <Compile Include="Assets\GooglePlayGames\Editor\NearbyConnectionUI.cs" />
     <None Include="Assets\ExternalDependencyManager\Editor\GoogleRegistries.xml" />
     <None Include="Assets\GooglePlayGames\Editor\GooglePlayGamesPluginDependencies.xml" />
+    <None Include="Assets\GooglePlayGames\Editor\GooglePlayGamesPlugin_v0.10.09.txt" />
     <None Include="Assets\GooglePlayGames\Editor\template-GameInfo.txt" />
     <None Include="Assets\ExternalDependencyManager\Editor\external-dependency-manager_version-1.2.153_manifest.txt" />
     <None Include="Assets\GooglePlayGames\Editor\m2repository\com\google\games\gpgs-plugin-support\maven-metadata.xml" />
     <None Include="Assets\GooglePlayGames\Editor\template-AndroidManifest.txt" />
-    <None Include="Assets\GooglePlayGames\Editor\GooglePlayGamesPlugin_v0.10.09.txt" />
     <None Include="Assets\GooglePlayGames\Editor\template-Constants.txt" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.15f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
@@ -278,22 +278,22 @@
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="Google.IOSResolver_v1.2.153">
-      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Assets/ExternalDependencyManager/Editor/Google.IOSResolver_v1.2.153.dll</HintPath>
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/ExternalDependencyManager/Editor/Google.IOSResolver_v1.2.153.dll</HintPath>
     </Reference>
     <Reference Include="Google.JarResolver_v1.2.153">
-      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Assets/ExternalDependencyManager/Editor/Google.JarResolver_v1.2.153.dll</HintPath>
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/ExternalDependencyManager/Editor/Google.JarResolver_v1.2.153.dll</HintPath>
     </Reference>
     <Reference Include="Google.PackageManagerResolver_v1.2.153">
-      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Assets/ExternalDependencyManager/Editor/Google.PackageManagerResolver_v1.2.153.dll</HintPath>
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/ExternalDependencyManager/Editor/Google.PackageManagerResolver_v1.2.153.dll</HintPath>
     </Reference>
     <Reference Include="Google.VersionHandler">
-      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Assets/ExternalDependencyManager/Editor/Google.VersionHandler.dll</HintPath>
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/ExternalDependencyManager/Editor/Google.VersionHandler.dll</HintPath>
     </Reference>
     <Reference Include="Google.VersionHandlerImpl_v1.2.153">
-      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Assets/ExternalDependencyManager/Editor/Google.VersionHandlerImpl_v1.2.153.dll</HintPath>
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/ExternalDependencyManager/Editor/Google.VersionHandlerImpl_v1.2.153.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.15f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
@@ -650,37 +650,37 @@
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.15f1/Editor/Data/MonoBleedingEdge/lib/mono/unityscript/Boo.Lang.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.TestRunner">
-      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TestRunner">
-      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline.Editor">
-      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
-      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
-      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
