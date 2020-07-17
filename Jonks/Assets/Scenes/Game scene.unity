@@ -7963,6 +7963,11 @@ PrefabInstance:
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
       objectReference: {fileID: 0}
+    - target: {fileID: 4005192987928595474, guid: 6a2fb494eb9a17d45aa3ffb8bbab2007,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4005192987928595476, guid: 6a2fb494eb9a17d45aa3ffb8bbab2007,
         type: 3}
       propertyPath: m_Color.r
