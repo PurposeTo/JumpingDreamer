@@ -60,7 +60,7 @@
 *.tga
 *.pdf
 *.zip
-*.dll
+#*.dll
 *.aif
 *.ttf
 *.rns
