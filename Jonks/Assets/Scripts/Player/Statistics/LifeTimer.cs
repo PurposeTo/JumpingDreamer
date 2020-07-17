@@ -1,8 +1,7 @@
 ﻿using Assets.Scripts.Player.Data;
 using UnityEngine;
-using System;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.Player.Statistics
 {
     public class LifeTimer : MonoBehaviour
     {
@@ -11,13 +10,13 @@ namespace Assets.Scripts
 
         private void Start()
         {
-            GameMenu.Instance.GameOverScreen.GameOverStatusScreen.OnSavePlayerStats += SaveLifeTimeStats;
+            GameMenu.Instance.GameOverScreen.GameOverStatusScreen.GameOverMenu.OnSavePlayerStats += SaveLifeTimeStats;
         }
 
 
         private void OnDestroy()
         {
-            GameMenu.Instance.GameOverScreen.GameOverStatusScreen.OnSavePlayerStats -= SaveLifeTimeStats;
+            GameMenu.Instance.GameOverScreen.GameOverStatusScreen.GameOverMenu.OnSavePlayerStats -= SaveLifeTimeStats;
         }
 
 

@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using TMPro;
-using Assets.Scripts.Player.Data;
 
 public class GameOverScreen : MonoBehaviour
 {
@@ -45,9 +44,6 @@ public class GameOverScreen : MonoBehaviour
         int stars = GameManager.Instance.PlayerPresenter.StarCollector.Stars;
         string starsText = $"Stars\n{stars}";
 
-        int record = PlayerStatsDataStorageSafe.Instance.PlayerStatsDataModel.maxEarnedPointsAmount;
-        string recordScoreText = $"Last record\n{record}"; //Показывать прошлый или текущий рекорд?
-
-        EarnedScore.text = $"{scoreText}\n{starsText}\n\n{recordScoreText}";
+        EarnedScore.text = $"{scoreText}\n{starsText}";
     }
 }

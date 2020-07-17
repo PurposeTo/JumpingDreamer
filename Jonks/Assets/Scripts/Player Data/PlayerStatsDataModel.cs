@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Assets.Scripts.Player.DataModel
+namespace Assets.Scripts.Player.Data
 {
     [Serializable]
     public class PlayerStatsDataModel
