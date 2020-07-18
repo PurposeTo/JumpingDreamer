@@ -18,7 +18,7 @@ public class GPGSLeaderboard : MonoBehaviour
         {
             if (success)
             {
-                Debug.Log("Score is load to leaderboard!");
+                Debug.Log("The score is load to leaderboard!");
             }
         });
     }
