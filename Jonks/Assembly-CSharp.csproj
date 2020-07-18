@@ -135,6 +135,7 @@
     <Compile Include="Assets\Scripts\Centre\KillingZone.cs" />
     <Compile Include="Assets\Scripts\ExtraSizer.cs" />
     <Compile Include="Assets\Scripts\GPGS\GPGSAuthentication.cs" />
+    <Compile Include="Assets\Scripts\GPGS\GPGSLeaderboard.cs" />
     <Compile Include="Assets\Scripts\GameLogic.cs" />
     <Compile Include="Assets\Scripts\Gravity.cs" />
     <Compile Include="Assets\Scripts\OrthoRotationToTheCentre.cs" />
