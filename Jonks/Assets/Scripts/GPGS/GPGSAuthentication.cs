@@ -9,7 +9,7 @@ public class GPGSAuthentication : MonoBehaviour
 {
     public static PlayGamesPlatform platform;
 
-    private void Start()
+    private void Awake()
     {
         if (platform == null)
         {
@@ -18,6 +18,12 @@ public class GPGSAuthentication : MonoBehaviour
             PlayGamesPlatform.DebugLogEnabled = true;
 
             platform = PlayGamesPlatform.Activate();
+
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
         }
 
         Social.Active.localUser.Authenticate(success =>
@@ -29,8 +35,14 @@ public class GPGSAuthentication : MonoBehaviour
             else
             {
                 Debug.LogWarning("Failed to authenticate!");
-
             }
         });
+    }
+
+
+    private void OnApplicationQuit()
+    {
+        Debug.Log("OnApplicationQuit!");
+        platform.SignOut();
     }
 }
