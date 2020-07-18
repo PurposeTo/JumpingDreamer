@@ -269,22 +269,22 @@
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="Google.IOSResolver_v1.2.153">
-      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/ExternalDependencyManager/ExternalDependencyManager/Editor/Google.IOSResolver_v1.2.153.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Assets/ExternalDependencyManager/ExternalDependencyManager/Editor/Google.IOSResolver_v1.2.153.dll</HintPath>
     </Reference>
     <Reference Include="Google.JarResolver_v1.2.153">
-      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/ExternalDependencyManager/ExternalDependencyManager/Editor/Google.JarResolver_v1.2.153.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Assets/ExternalDependencyManager/ExternalDependencyManager/Editor/Google.JarResolver_v1.2.153.dll</HintPath>
     </Reference>
     <Reference Include="Google.PackageManagerResolver_v1.2.153">
-      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/ExternalDependencyManager/ExternalDependencyManager/Editor/Google.PackageManagerResolver_v1.2.153.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Assets/ExternalDependencyManager/ExternalDependencyManager/Editor/Google.PackageManagerResolver_v1.2.153.dll</HintPath>
     </Reference>
     <Reference Include="Google.VersionHandler">
-      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/ExternalDependencyManager/ExternalDependencyManager/Editor/Google.VersionHandler.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Assets/ExternalDependencyManager/ExternalDependencyManager/Editor/Google.VersionHandler.dll</HintPath>
     </Reference>
     <Reference Include="Google.VersionHandlerImpl_v1.2.153">
-      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/ExternalDependencyManager/ExternalDependencyManager/Editor/Google.VersionHandlerImpl_v1.2.153.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Assets/ExternalDependencyManager/ExternalDependencyManager/Editor/Google.VersionHandlerImpl_v1.2.153.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.15f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
@@ -641,16 +641,16 @@
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.15f1/Editor/Data/MonoBleedingEdge/lib/mono/unityscript/Boo.Lang.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.TestRunner">
-      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TestRunner">
-      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
