@@ -14,7 +14,7 @@ namespace Assets.Scripts.Player.Data
 
         public event NewScoreRecord OnNewScoreRecord;
 
-        [HideInInspector] public bool isDataFileLoaded = false;
+        public bool IsDataFileLoaded { get; private set; } = false;
 
 
         protected override void AwakeSingleton()
@@ -48,7 +48,7 @@ namespace Assets.Scripts.Player.Data
                 // Установить значения по дефолту
                 Debug.Log($"File path \"{filePath}\" didn't found. Creating empty object...");
                 PlayerStatsDataModel = new PlayerStatsDataModel();
-                isDataFileLoaded = true;
+                IsDataFileLoaded = true;
             }
             else
             {
@@ -60,7 +60,7 @@ namespace Assets.Scripts.Player.Data
                 {
                     Debug.Log($"Data from \"{fileName}\" was loaded successfully.");
                     PlayerStatsDataModel = JsonUtility.FromJson<PlayerStatsDataModel>(dataAsJSON);
-                    isDataFileLoaded = true;
+                    IsDataFileLoaded = true;
                 }
                 else
                 {
@@ -81,7 +81,7 @@ namespace Assets.Scripts.Player.Data
 
         public void SaveStarsData(int starsAmount)
         {
-            if (isDataFileLoaded)
+            if (IsDataFileLoaded)
             {
                 PlayerStatsDataModel.totalCollectedStarsAmount += starsAmount;
 
@@ -98,7 +98,7 @@ namespace Assets.Scripts.Player.Data
 
         public void SaveScoreData(int scoreAmount)
         {
-            if (isDataFileLoaded)
+            if (IsDataFileLoaded)
             {
                 if (scoreAmount > PlayerStatsDataModel.maxEarnedPointsAmount)
                 {
@@ -113,7 +113,7 @@ namespace Assets.Scripts.Player.Data
 
         public void SaveScoreMultiplierData(int multiplierValue)
         {
-            if (isDataFileLoaded)
+            if (IsDataFileLoaded)
             {
                 if (multiplierValue > PlayerStatsDataModel.maxPointsMultiplierValue)
                 {
@@ -127,7 +127,7 @@ namespace Assets.Scripts.Player.Data
 
         public void SaveLifeTimeData(int lifeTime)
         {
-            if (isDataFileLoaded)
+            if (IsDataFileLoaded)
             {
                 PlayerStatsDataModel.totalLifeTime += lifeTime;
 

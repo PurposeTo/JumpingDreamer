@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Assets.Scripts.Player.Data;
 
 [RequireComponent(typeof(Animator))]
 public class Shutter : SingletonMonoBehaviour<Shutter>
@@ -42,7 +43,7 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
 
         if (waitingDataLoadRoutine == null)
         {
-            StartCoroutine(WaitingDataLoadEnumerator());
+            waitingDataLoadRoutine = StartCoroutine(WaitingDataLoadEnumerator());
         }
         else
         {
@@ -84,18 +85,20 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
 
     private IEnumerator WaitingDataLoadEnumerator()
     {
-        // Когда DataLoaderController будет доработан, просто убрать раскомментировать строки и убрать yield break;
+        while (true)
+        {
+            if (PlayerStatsDataStorageSafe.Instance.IsDataFileLoaded)
+            {
+                OpenShutter();
+                waitingDataLoadRoutine = null;
+                yield break;
+            }
+            else
+            {
+                yield return null;
+            }
+        }
 
-        //if (DataLoaderController.isReady())
-        //{
-        OpenShutter();
-        //}
-        //else
-        //{
-        //  yield return null;
-        //}
-
-        waitingDataLoadRoutine = null;
-        yield break;
+        // Если загрузка не произошла в течении какого времени, то открыть Shutter И вывести окошко с ошибкой
     }
 }
