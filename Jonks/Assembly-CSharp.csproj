@@ -145,7 +145,6 @@
     <Compile Include="Assets\Scripts\Platforms\Move\Base\Move.cs" />
     <Compile Include="Assets\Scripts\Platforms\Move\CircularMotion.cs" />
     <Compile Include="Assets\Scripts\Platforms\Move\MovementFromTheCenter.cs" />
-    <Compile Include="Assets\Scripts\Player Data\PlayerStatsDataModel.cs" />
     <Compile Include="Assets\Scripts\Player Data\PlayerStatsDataStorageSafe.cs" />
     <Compile Include="Assets\Scripts\Player\Collectors\ScoreCollector.cs" />
     <Compile Include="Assets\Scripts\Player\Collectors\StarCollector.cs" />
@@ -171,6 +170,7 @@
     <Compile Include="Assets\Scripts\Star.cs" />
     <Compile Include="Assets\Scripts\UI\FPSCounter.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\AdRewardMessage.cs" />
+    <Compile Include="Assets\Scripts\UI\Menu\ErrorWindow.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\GameOverScreen.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\GameOverStatus\CollectRewardsScreen.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\GameOverStatus\GameOverMenu.cs" />

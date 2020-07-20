@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Assets.Scripts.Player.Data;
+using System;
 
 [RequireComponent(typeof(Animator))]
 public class Shutter : SingletonMonoBehaviour<Shutter>
@@ -11,6 +12,8 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
     private string sceneToLoadName;
 
     private Coroutine waitingDataLoadRoutine;
+
+    public event EventHandler<string> OnLoadFileError;
 
     //1.	Исходный скрипт – Вызываем метод “сменить уровень на Scene scene”
     //2.	Shutter - Игровое время останавливается
@@ -100,5 +103,7 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
         }
 
         // Если загрузка не произошла в течении какого времени, то открыть Shutter И вывести окошко с ошибкой
+        waitingDataLoadRoutine = null;
+        OnLoadFileError?.Invoke(this, "Ошибка загрузки данных игоровой статистики! Запись новых данных заблокирована!");
     }
 }

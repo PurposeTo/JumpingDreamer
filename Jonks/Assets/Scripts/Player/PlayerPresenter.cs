@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Player.Statistics;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerPresenter : MonoBehaviour
 {

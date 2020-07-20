@@ -2,53 +2,50 @@
 using UnityEngine;
 using System;
 
-namespace Assets.Scripts.Player.Statistics
+[Obsolete]
+class JumpHeightStats : MonoBehaviour
 {
-    [Obsolete]
-    class JumpHeightStats : MonoBehaviour
+    private Rigidbody2D playerRb2D;
+    private GameObject centre;
+
+    private float jumpHeight = 0f;
+
+
+    private void Start()
     {
-        private Rigidbody2D playerRb2D;
-        private GameObject centre;
+        playerRb2D = gameObject.GetComponent<Rigidbody2D>();
+        centre = GameManager.Instance.Centre;
 
-        private float jumpHeight = 0f;
+        GameMenu.Instance.GameOverScreen.GameOverStatusScreen.GameOverMenu.OnSavePlayerStats += SaveJumpHeightStats;
+    }
 
 
-        private void Start()
+    private void OnDestroy()
+    {
+        GameMenu.Instance.GameOverScreen.GameOverStatusScreen.GameOverMenu.OnSavePlayerStats -= SaveJumpHeightStats;
+    }
+
+
+    private void FixedUpdate()
+    {
+        Vector2 toCentreVector = (Vector2)centre.transform.position - playerRb2D.position;
+
+        // Если вектор скорости игрока относительно центра направлен вверх И если игрок не касается платформы
+        float velocityOnAxisCentreProject = Vector3.Project(playerRb2D.velocity, toCentreVector).magnitude;
+
+        if (velocityOnAxisCentreProject >= 0f)
         {
-            playerRb2D = gameObject.GetComponent<Rigidbody2D>();
-            centre = GameManager.Instance.Centre;
+            float currentJumpHeight = toCentreVector.magnitude - GameManager.Instance.CentreRadius;
 
-            GameMenu.Instance.GameOverScreen.GameOverStatusScreen.GameOverMenu.OnSavePlayerStats += SaveJumpHeightStats;
-        }
-
-
-        private void OnDestroy()
-        {
-            GameMenu.Instance.GameOverScreen.GameOverStatusScreen.GameOverMenu.OnSavePlayerStats -= SaveJumpHeightStats;
-        }
-
-
-        private void FixedUpdate()
-        {
-            Vector2 toCentreVector = (Vector2)centre.transform.position - playerRb2D.position;
-
-            // Если вектор скорости игрока относительно центра направлен вверх И если игрок не касается платформы
-            float velocityOnAxisCentreProject = Vector3.Project(playerRb2D.velocity, toCentreVector).magnitude;
-
-            if (velocityOnAxisCentreProject >= 0f)
+            if (currentJumpHeight > jumpHeight)
             {
-                float currentJumpHeight = toCentreVector.magnitude - GameManager.Instance.CentreRadius;
-
-                if (currentJumpHeight > jumpHeight)
-                {
-                    jumpHeight = currentJumpHeight;
-                }
+                jumpHeight = currentJumpHeight;
             }
         }
+    }
 
-        private void SaveJumpHeightStats()
-        {
-            PlayerStatsDataStorageSafe.Instance.SaveJumpHeightData((float)Math.Round(jumpHeight, 1));
-        }
+    private void SaveJumpHeightStats()
+    {
+        PlayerStatsDataStorageSafe.Instance.SaveJumpHeightData((float)Math.Round(jumpHeight, 1));
     }
 }

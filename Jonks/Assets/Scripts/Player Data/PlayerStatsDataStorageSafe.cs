@@ -7,7 +7,23 @@ namespace Assets.Scripts.Player.Data
     public delegate void NewScoreRecord();
     public class PlayerStatsDataStorageSafe : SingletonMonoBehaviour<PlayerStatsDataStorageSafe>
     {
-        public PlayerStatsDataModel PlayerStatsDataModel { get; private set; }
+        [Serializable]
+        public class PlayerStatsDataModel
+        {
+            // Лучшие результаты за все время игры
+            public int maxCollectedStars;
+            public int maxEarnedScore;
+            public int maxPointsMultiplierValue;
+            public int maxLifeTime;
+            //public float maxJumpHeight; // json хранит double
+
+            // Общие результаты за все время игры
+            public int totalCollectedStars;
+            public int totalLifeTime;
+        }
+
+
+        public PlayerStatsDataModel PlayerStatsData { get; private set; }
 
         private string filePath;
         private readonly string fileName = "/Stats.json"; // Имя файла с данными (как часть всего пути)
@@ -47,7 +63,7 @@ namespace Assets.Scripts.Player.Data
             {
                 // Установить значения по дефолту
                 Debug.Log($"File path \"{filePath}\" didn't found. Creating empty object...");
-                PlayerStatsDataModel = new PlayerStatsDataModel();
+                PlayerStatsData = new PlayerStatsDataModel();
                 IsDataFileLoaded = true;
             }
             else
@@ -59,21 +75,18 @@ namespace Assets.Scripts.Player.Data
                 if (dataAsJSON != null)
                 {
                     Debug.Log($"Data from \"{fileName}\" was loaded successfully.");
-                    PlayerStatsDataModel = JsonUtility.FromJson<PlayerStatsDataModel>(dataAsJSON);
+                    PlayerStatsData = JsonUtility.FromJson<PlayerStatsDataModel>(dataAsJSON);
                     IsDataFileLoaded = true;
                 }
                 else
                 {
                     Debug.LogError($"Data reading from \"{fileName}\" ERROR!");
-                    // Вывод сообщения в UI "Ошибка загрузки данных игоровой статистики! Запись новых данных заблокирована!"
-                    /*
-                     * 
-                     */
 
                     // Вызвать событие ошибки, которое позволило бы ограничить запись данных в файл, чтобы не затереть старые данные?
                     // Задизеблить скрипт? - это будет неявная обработка
 
-                    PlayerStatsDataModel = new PlayerStatsDataModel();
+                    PlayerStatsData = new PlayerStatsDataModel();
+                    IsDataFileLoaded = false;
                 }
             }
         }
@@ -83,15 +96,15 @@ namespace Assets.Scripts.Player.Data
         {
             if (IsDataFileLoaded)
             {
-                PlayerStatsDataModel.totalCollectedStarsAmount += starsAmount;
+                PlayerStatsData.totalCollectedStars += starsAmount;
 
-                if (starsAmount > PlayerStatsDataModel.maxCollectedStarsAmount)
+                if (starsAmount > PlayerStatsData.maxCollectedStars)
                 {
-                    PlayerStatsDataModel.maxCollectedStarsAmount = starsAmount;
+                    PlayerStatsData.maxCollectedStars = starsAmount;
                 }
 
                 // А если у пользователя недостаточно памяти, чтобы создать файл?
-                File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsDataModel));
+                File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsData));
             }
         }
 
@@ -100,13 +113,13 @@ namespace Assets.Scripts.Player.Data
         {
             if (IsDataFileLoaded)
             {
-                if (scoreAmount > PlayerStatsDataModel.maxEarnedPointsAmount)
+                if (scoreAmount > PlayerStatsData.maxEarnedScore)
                 {
-                    PlayerStatsDataModel.maxEarnedPointsAmount = scoreAmount;
+                    PlayerStatsData.maxEarnedScore = scoreAmount;
                     OnNewScoreRecord?.Invoke();
                 }
 
-                File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsDataModel));
+                File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsData));
             }
         }
 
@@ -115,12 +128,12 @@ namespace Assets.Scripts.Player.Data
         {
             if (IsDataFileLoaded)
             {
-                if (multiplierValue > PlayerStatsDataModel.maxPointsMultiplierValue)
+                if (multiplierValue > PlayerStatsData.maxPointsMultiplierValue)
                 {
-                    PlayerStatsDataModel.maxPointsMultiplierValue = multiplierValue;
+                    PlayerStatsData.maxPointsMultiplierValue = multiplierValue;
                 }
 
-                File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsDataModel));
+                File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsData));
             }
         }
 
@@ -129,14 +142,14 @@ namespace Assets.Scripts.Player.Data
         {
             if (IsDataFileLoaded)
             {
-                PlayerStatsDataModel.totalLifeTime += lifeTime;
+                PlayerStatsData.totalLifeTime += lifeTime;
 
-                if (lifeTime > PlayerStatsDataModel.maxLifeTime)
+                if (lifeTime > PlayerStatsData.maxLifeTime)
                 {
-                    PlayerStatsDataModel.maxLifeTime = lifeTime;
+                    PlayerStatsData.maxLifeTime = lifeTime;
                 }
 
-                File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsDataModel));
+                File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsData));
             }
         }
 
@@ -146,12 +159,12 @@ namespace Assets.Scripts.Player.Data
         {
             //if (isDataFileLoaded)
             //{
-            //    if (jumpHeight > PlayerStatsDataModel.maxJumpHeight)
+            //    if (jumpHeight > PlayerStatsData.maxJumpHeight)
             //    {
-            //        PlayerStatsDataModel.maxJumpHeight = jumpHeight;
+            //        PlayerStatsData.maxJumpHeight = jumpHeight;
             //    }
 
-            //    File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsDataModel));
+            //    File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsData));
             //}
         }
     }

@@ -326,20 +326,20 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
-    <Reference Include="Google.JarResolver_v1.2.156">
-      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/ExternalDependencyManager/Editor/Google.JarResolver_v1.2.156.dll</HintPath>
-    </Reference>
-    <Reference Include="Google.VersionHandlerImpl_v1.2.156">
-      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/ExternalDependencyManager/Editor/Google.VersionHandlerImpl_v1.2.156.dll</HintPath>
-    </Reference>
     <Reference Include="Google.IOSResolver_v1.2.156">
       <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/ExternalDependencyManager/Editor/Google.IOSResolver_v1.2.156.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.JarResolver_v1.2.156">
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/ExternalDependencyManager/Editor/Google.JarResolver_v1.2.156.dll</HintPath>
     </Reference>
     <Reference Include="Google.PackageManagerResolver_v1.2.156">
       <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/ExternalDependencyManager/Editor/Google.PackageManagerResolver_v1.2.156.dll</HintPath>
     </Reference>
     <Reference Include="Google.VersionHandler">
       <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/ExternalDependencyManager/Editor/Google.VersionHandler.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.VersionHandlerImpl_v1.2.156">
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/ExternalDependencyManager/Editor/Google.VersionHandlerImpl_v1.2.156.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.4f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
