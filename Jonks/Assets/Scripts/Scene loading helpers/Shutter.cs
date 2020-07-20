@@ -11,8 +11,6 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
 
     private string sceneToLoadName;
 
-    private Coroutine waitingDataLoadRoutine;
-
     public event EventHandler<string> OnLoadFileError;
 
     //1.	Исходный скрипт – Вызываем метод “сменить уровень на Scene scene”
@@ -44,14 +42,7 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
     {
         Debug.Log($"OnSceneLoaded: {scene.name} in mode: {mode}");
 
-        if (waitingDataLoadRoutine == null)
-        {
-            waitingDataLoadRoutine = StartCoroutine(WaitingDataLoadEnumerator());
-        }
-        else
-        {
-            Debug.LogError("Error! WaitingDataLoadRoutine is already working!");
-        }
+        OpenShutter();
     }
 
 
@@ -70,8 +61,7 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
         SceneManager.LoadScene(sceneToLoadName);
     }
 
-    // Запуск сцены или первое включение игры.
-    // Заслонка закрыта. Ее необходимо открыть только тогда, когда будут загружены данные
+
     public void OpenShutter()
     {
         animator.SetBool("isOpen", true);
@@ -83,27 +73,5 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
     {
         sceneToLoadName = ""; // Необходимо очистить поле после загрузки сцены
         Time.timeScale = 1f;
-    }
-
-
-    private IEnumerator WaitingDataLoadEnumerator()
-    {
-        while (true)
-        {
-            if (PlayerStatsDataStorageSafe.Instance.IsDataFileLoaded)
-            {
-                OpenShutter();
-                waitingDataLoadRoutine = null;
-                yield break;
-            }
-            else
-            {
-                yield return null;
-            }
-        }
-
-        // Если загрузка не произошла в течении какого времени, то открыть Shutter И вывести окошко с ошибкой
-        waitingDataLoadRoutine = null;
-        OnLoadFileError?.Invoke(this, "Ошибка загрузки данных игоровой статистики! Запись новых данных заблокирована!");
     }
 }
