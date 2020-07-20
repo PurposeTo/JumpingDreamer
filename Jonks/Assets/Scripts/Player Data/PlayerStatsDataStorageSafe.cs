@@ -7,22 +7,6 @@ namespace Assets.Scripts.Player.Data
     public delegate void NewScoreRecord();
     public class PlayerStatsDataStorageSafe : SingletonMonoBehaviour<PlayerStatsDataStorageSafe>
     {
-        [Serializable]
-        public class PlayerStatsDataModel
-        {
-            // Лучшие результаты за все время игры
-            public int maxCollectedStars;
-            public int maxEarnedScore;
-            public int maxPointsMultiplierValue;
-            public int maxLifeTime;
-            //public float maxJumpHeight; // json хранит double
-
-            // Общие результаты за все время игры
-            public int totalCollectedStars;
-            public int totalLifeTime;
-        }
-
-
         public PlayerStatsDataModel PlayerStatsData { get; private set; }
 
         private string filePath;
@@ -31,6 +15,8 @@ namespace Assets.Scripts.Player.Data
         public event NewScoreRecord OnNewScoreRecord;
 
         public bool IsDataFileLoaded { get; private set; } = false;
+
+        [SerializeField] private GameObject errorWindow = null;
 
 
         protected override void AwakeSingleton()
@@ -44,13 +30,13 @@ namespace Assets.Scripts.Player.Data
             if (Application.platform == RuntimePlatform.WindowsEditor)
             {
                 filePath = Path.Combine(Application.dataPath + fileName);
-                Debug.Log(filePath);
             }
             else if (Application.platform == RuntimePlatform.Android)
             {
                 filePath = Path.Combine(Application.persistentDataPath + fileName);
-                Debug.Log(filePath);
             }
+
+            Debug.Log($"File path: {filePath}");
 
             GetPlayerStatsData();
         }
@@ -72,7 +58,7 @@ namespace Assets.Scripts.Player.Data
                 string dataAsJSON = File.ReadAllText(filePath);
 
                 // Проверка на успешность чтения данных
-                if (dataAsJSON != null)
+                if (dataAsJSON != null && dataAsJSON != "")
                 {
                     Debug.Log($"Data from \"{fileName}\" was loaded successfully.");
                     PlayerStatsData = JsonUtility.FromJson<PlayerStatsDataModel>(dataAsJSON);
@@ -82,11 +68,12 @@ namespace Assets.Scripts.Player.Data
                 {
                     Debug.LogError($"Data reading from \"{fileName}\" ERROR!");
 
-                    // Вызвать событие ошибки, которое позволило бы ограничить запись данных в файл, чтобы не затереть старые данные?
-                    // Задизеблить скрипт? - это будет неявная обработка
-
                     PlayerStatsData = new PlayerStatsDataModel();
                     IsDataFileLoaded = false;
+
+                    Instantiate(errorWindow);
+                    string errorMessage = "Ошибка загрузки данных игровой статистики! Запись новых данных заблокирована!";
+                    errorWindow.GetComponent<ErrorWindow>().errorTextObject.text = errorMessage;
                 }
             }
         }
@@ -102,9 +89,6 @@ namespace Assets.Scripts.Player.Data
                 {
                     PlayerStatsData.maxCollectedStars = starsAmount;
                 }
-
-                // А если у пользователя недостаточно памяти, чтобы создать файл?
-                File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsData));
             }
         }
 
@@ -118,8 +102,6 @@ namespace Assets.Scripts.Player.Data
                     PlayerStatsData.maxEarnedScore = scoreAmount;
                     OnNewScoreRecord?.Invoke();
                 }
-
-                File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsData));
             }
         }
 
@@ -128,12 +110,10 @@ namespace Assets.Scripts.Player.Data
         {
             if (IsDataFileLoaded)
             {
-                if (multiplierValue > PlayerStatsData.maxPointsMultiplierValue)
+                if (multiplierValue > PlayerStatsData.maxScoreMultiplierValue)
                 {
-                    PlayerStatsData.maxPointsMultiplierValue = multiplierValue;
+                    PlayerStatsData.maxScoreMultiplierValue = multiplierValue;
                 }
-
-                File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsData));
             }
         }
 
@@ -148,8 +128,6 @@ namespace Assets.Scripts.Player.Data
                 {
                     PlayerStatsData.maxLifeTime = lifeTime;
                 }
-
-                File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsData));
             }
         }
 
@@ -167,5 +145,26 @@ namespace Assets.Scripts.Player.Data
             //    File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsData));
             //}
         }
+
+
+#if UNITY_EDITOR
+
+        private void OnApplicationQuit()
+        {
+            // А если у пользователя недостаточно памяти, чтобы создать файл?
+            File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsData));
+        }
+
+#elif UNITY_ANDROID
+
+        private void OnApplicationPause(bool pause)
+        {
+            Debug.Log($"OnApplicationPause code: {pause}");
+            // А если у пользователя недостаточно памяти, чтобы создать файл?
+            File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsData));
+        }
+
+#endif
+
     }
 }

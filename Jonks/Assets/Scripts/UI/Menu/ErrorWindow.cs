@@ -9,7 +9,7 @@ public class ErrorWindow : MonoBehaviour
     private Animator panelAnimator;
 
 
-    private void Awake()
+    private void Start()
     {
         Shutter.Instance.OnLoadFileError += InitializeErrorWindow;
     }
@@ -31,9 +31,9 @@ public class ErrorWindow : MonoBehaviour
     }
 
 
-    public void OKClickHandler()
+    public void CloseClickHandler()
     {
         //panelAnimator
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 }
