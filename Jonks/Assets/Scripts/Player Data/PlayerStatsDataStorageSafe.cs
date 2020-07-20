@@ -81,10 +81,6 @@ namespace Assets.Scripts.Player.Data
                 else
                 {
                     Debug.LogError($"Data reading from \"{fileName}\" ERROR!");
-
-                    // Вызвать событие ошибки, которое позволило бы ограничить запись данных в файл, чтобы не затереть старые данные?
-                    // Задизеблить скрипт? - это будет неявная обработка
-
                     PlayerStatsData = new PlayerStatsDataModel();
                     IsDataFileLoaded = false;
                 }

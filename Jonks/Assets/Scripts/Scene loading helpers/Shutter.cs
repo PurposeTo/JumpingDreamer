@@ -11,8 +11,6 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
 
     private string sceneToLoadName;
 
-    public event EventHandler<string> OnLoadFileError;
-
     //1.	Исходный скрипт – Вызываем метод “сменить уровень на Scene scene”
     //2.	Shutter - Игровое время останавливается
     //3.	Shutter - Заслонка закрывается

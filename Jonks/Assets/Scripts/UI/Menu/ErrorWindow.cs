@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
+using Assets.Scripts.Player.Data;
 
 public class ErrorWindow : MonoBehaviour
 {
@@ -7,12 +8,6 @@ public class ErrorWindow : MonoBehaviour
     public TextMeshProUGUI errorTextObject;
 
     private Animator panelAnimator;
-
-
-    private void Awake()
-    {
-        Shutter.Instance.OnLoadFileError += InitializeErrorWindow;
-    }
 
 
     private void InitializeErrorWindow(object sender, string errorText)
