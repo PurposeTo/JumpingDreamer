@@ -5,38 +5,40 @@ using UnityEngine.SocialPlatforms;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 
-public class GPGSAuthentication : MonoBehaviour
+public class GPGSAuthentication : SingletonMonoBehaviour<GPGSAuthentication>
 {
     public static PlayGamesPlatform platform;
 
-    private void Awake()
+    protected override void AwakeSingleton() 
     {
-        if (platform == null)
+        if (platform != null)
         {
-            PlayGamesClientConfiguration configuration = new PlayGamesClientConfiguration.Builder().Build();
-            PlayGamesPlatform.InitializeInstance(configuration);
-            PlayGamesPlatform.DebugLogEnabled = true;
-
-            platform = PlayGamesPlatform.Activate();
-
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
+            Debug.LogError("PlayGamesPlatform.Activate() is already activated!");
         }
 
-        Social.Active.localUser.Authenticate(success =>
-        {
-            if (success)
-            {
-                Debug.Log("Authenticate is successfully!");
-            }
-            else
-            {
-                Debug.LogWarning("Failed to authenticate!");
-            }
+        PlayGamesClientConfiguration configuration = new PlayGamesClientConfiguration.Builder().Build();
+
+        PlayGamesPlatform.InitializeInstance(configuration);
+        PlayGamesPlatform.DebugLogEnabled = true;
+
+        platform = PlayGamesPlatform.Activate();
+
+        // authenticate user:
+        PlayGamesPlatform.Instance.Authenticate(SignInInteractivity.CanPromptOnce, (result) => {
+            Debug.Log($"Authenticate is completed with code: {result}");
         });
+
+        //Social.Active.localUser.Authenticate(success =>
+        //{
+        //    if (success)
+        //    {
+        //        Debug.Log("Authenticate is successfully!");
+        //    }
+        //    else
+        //    {
+        //        Debug.LogWarning("Failed to authenticate!");
+        //    }
+        //});
     }
 
 
