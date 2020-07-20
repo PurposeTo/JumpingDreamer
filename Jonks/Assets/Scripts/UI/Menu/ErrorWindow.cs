@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using TMPro;
-using Assets.Scripts.Player.Data;
 
 public class ErrorWindow : MonoBehaviour
 {
@@ -8,6 +7,12 @@ public class ErrorWindow : MonoBehaviour
     public TextMeshProUGUI errorTextObject;
 
     private Animator panelAnimator;
+
+
+    private void Start()
+    {
+        Shutter.Instance.OnLoadFileError += InitializeErrorWindow;
+    }
 
 
     private void InitializeErrorWindow(object sender, string errorText)
@@ -26,9 +31,9 @@ public class ErrorWindow : MonoBehaviour
     }
 
 
-    public void OKClickHandler()
+    public void CloseClickHandler()
     {
         //panelAnimator
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 }
