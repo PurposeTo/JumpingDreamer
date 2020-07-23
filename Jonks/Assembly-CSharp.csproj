@@ -132,12 +132,11 @@
     <Compile Include="Assets\Scripts\AdMob\AdMobScript.cs" />
     <Compile Include="Assets\Scripts\CameraFollow.cs" />
     <Compile Include="Assets\Scripts\Centre\Centre.cs" />
+    <Compile Include="Assets\Scripts\Centre\Gravity.cs" />
     <Compile Include="Assets\Scripts\Centre\KillingZone.cs" />
-    <Compile Include="Assets\Scripts\ExtraSizer.cs" />
     <Compile Include="Assets\Scripts\GPGS\GPGSAuthentication.cs" />
     <Compile Include="Assets\Scripts\GPGS\GPGSLeaderboard.cs" />
     <Compile Include="Assets\Scripts\GameLogic.cs" />
-    <Compile Include="Assets\Scripts\Gravity.cs" />
     <Compile Include="Assets\Scripts\OrthoRotationToTheCentre.cs" />
     <Compile Include="Assets\Scripts\Platforms\Base\BasePlatform.cs" />
     <Compile Include="Assets\Scripts\Platforms\Base\MovingPlatform.cs" />
@@ -169,6 +168,7 @@
     <Compile Include="Assets\Scripts\Singletons\Object Pooler\ObjectPooler.cs" />
     <Compile Include="Assets\Scripts\Singletons\VFX\VFXManager.cs" />
     <Compile Include="Assets\Scripts\Star.cs" />
+    <Compile Include="Assets\Scripts\Training.cs" />
     <Compile Include="Assets\Scripts\UI\FPSCounter.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\AdRewardMessage.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\ErrorWindow.cs" />
