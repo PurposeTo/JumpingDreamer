@@ -134,6 +134,7 @@
     <Compile Include="Assets\Scripts\Centre\Centre.cs" />
     <Compile Include="Assets\Scripts\Centre\Gravity.cs" />
     <Compile Include="Assets\Scripts\Centre\KillingZone.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Pursuer.cs" />
     <Compile Include="Assets\Scripts\GPGS\GPGSAuthentication.cs" />
     <Compile Include="Assets\Scripts\GPGS\GPGSLeaderboard.cs" />
     <Compile Include="Assets\Scripts\GameLogic.cs" />
