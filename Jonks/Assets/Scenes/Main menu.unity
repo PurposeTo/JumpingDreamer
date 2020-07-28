@@ -967,6 +967,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6587353836104029690, guid: 85650b25d6b64cd449fba71fdc647ea4,
+        type: 3}
+      propertyPath: errorWindow
+      value: 
+      objectReference: {fileID: 9113398689237720326, guid: a1b02bb4ce06cbe4d9fd3244f7b52f5a,
+        type: 3}
     - target: {fileID: 6587353836104029691, guid: 85650b25d6b64cd449fba71fdc647ea4,
         type: 3}
       propertyPath: m_LocalPosition.x
