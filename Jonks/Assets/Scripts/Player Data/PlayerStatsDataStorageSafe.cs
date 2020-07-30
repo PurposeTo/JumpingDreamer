@@ -50,133 +50,79 @@ namespace Assets.Scripts.Player.Data
             {
                 // Установить значения по дефолту
                 Debug.Log($"File path \"{filePath}\" didn't found. Creating empty object...");
-                InitializeModel();
+
+                PlayerStatsData = PlayerStatsDataModel.InitializeModelByDefaultValues();
                 IsDataFileLoaded = true;
             }
             else
             {
                 Debug.Log($"File on path \"{filePath}\" was loaded.");
-                //string dataAsJSON = File.ReadAllText(filePath);
 
-                //// Проверка на успешность чтения данных (ЕСЛИ НЕ ПОЛУЧИЛОСЬ ПРЕОБРАЗОВАТЬ К МОДЕЛИ, например, стерли только часть файла -> ТОЖЕ ERROR
-                //if (dataAsJSON != null && dataAsJSON != "")
-                //{
-                //    Debug.Log($"Data from \"{fileName}\" was loaded successfully.");
-                //    PlayerStatsData = JsonUtility.FromJson<PlayerStatsDataModel>(dataAsJSON);
-                //    IsDataFileLoaded = true;
-                //}
-                //else
-                //{
-                //    Debug.LogError($"Data reading from \"{fileName}\" ERROR!");
-
-                //    PlayerStatsData = new PlayerStatsDataModel();
-                //    IsDataFileLoaded = false;
-
-                //    GameObject errorMessageObject = Instantiate(errorWindow);
-                //    string errorMessage = "Ошибка загрузки данных игровой статистики! Запись новых данных заблокирована!";
-                //    errorMessageObject.GetComponent<ErrorWindow>().errorTextObject.text = errorMessage;
-                //}
-
-
-                PlayerStatsData = JsonSerializer.Deserialize<PlayerStatsDataModel>(File.ReadAllText(filePath));
-                //PlayerStatsData = JsonUtility.FromJson<PlayerStatsDataModel>(File.ReadAllText(filePath));
-
-                // Если в файле присутствуют поля со значением null (т.е. если файл изменялся), то сообщить об ошибке
-                if (!TrySetDefaultValues())
+                // Если не получилось сконверитровать файл ИЛИ полностью подтерли поле внутри файла, то сообщить об ошибке
+                if (!TryReadFile())
                 {
-                    Debug.Log($"Data from \"{fileName}\" was loaded successfully.");
-                    IsDataFileLoaded = true;
+                    Debug.LogError($"Data reading from \"{fileName}\" ERROR!");
+
+                    IsDataFileLoaded = false;
+                    CreateErrorWindow();
                 }
                 else
                 {
-                    Debug.LogError($"Data reading from \"{fileName}\" ERROR!");
-                    IsDataFileLoaded = false;
+                    Debug.Log($"Data from \"{fileName}\" was loaded successfully.");
 
-                    Instantiate(errorWindow);
-                    string errorMessage = "Ошибка загрузки данных игровой статистики! Запись новых данных заблокирована!";
-                    errorWindow.GetComponent<ErrorWindow>().errorTextObject.text = errorMessage;
+                    IsDataFileLoaded = true;
                 }
             }
         }
 
 
-        private void InitializeModel()
+        private bool TryReadFile()
         {
-            PlayerStatsData = new PlayerStatsDataModel
+            bool okConverted;
+            bool isJsonWasEdited;
+
+            try
             {
-                maxCollectedStars = default(int),
-                maxEarnedScore = default(int),
-                maxScoreMultiplierValue = default(int),
-                maxLifeTime = default(int),
-                totalCollectedStars = default(int),
-                totalLifeTime = default(int),
-            };
+                PlayerStatsData = JsonSerializer.Deserialize<PlayerStatsDataModel>(File.ReadAllText(filePath));
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError(ex.Message);
+
+                okConverted = false;
+                return okConverted;
+            }
+
+            isJsonWasEdited = PlayerStatsData.TrySetDefaultValues();
+            return !isJsonWasEdited;
         }
 
 
-        // Проверить все значения модели на null, а затем вернуть флаг (изменяли ли модель или нет). Установить все null values И ТОЛЬКО ИХ! в default для того, чтобы можно было продолжить работу с ними
-        private bool TrySetDefaultValues()
+        // Попробовать убрать из этого класса
+        private void CreateErrorWindow()
         {
-            bool haveNullValue = false;
-
-            //PlayerStatsData.maxCollectedStars ??= default;
-            //PlayerStatsData.maxEarnedScore ??= default;
-            //PlayerStatsData.maxScoreMultiplierValue ??= default;
-            //PlayerStatsData.maxLifeTime ??= default;
-            //PlayerStatsData.totalCollectedStars ??= default;
-            //PlayerStatsData.totalLifeTime ??= default;
-
-            if (!PlayerStatsData.maxCollectedStars.HasValue)
-            {
-                PlayerStatsData.maxCollectedStars = default(int);
-                haveNullValue = true;
-            }
-            if (!PlayerStatsData.maxEarnedScore.HasValue)
-            {
-                PlayerStatsData.maxEarnedScore = default(int);
-                haveNullValue = true;
-            }
-            if (!PlayerStatsData.maxScoreMultiplierValue.HasValue)
-            {
-                PlayerStatsData.maxScoreMultiplierValue = default(int);
-                haveNullValue = true;
-            }
-            if (!PlayerStatsData.maxLifeTime.HasValue)
-            {
-                PlayerStatsData.maxLifeTime = default(int);
-                haveNullValue = true;
-            }
-            if (!PlayerStatsData.totalCollectedStars.HasValue)
-            {
-                PlayerStatsData.totalCollectedStars = default(int);
-                haveNullValue = true;
-            }
-            if (!PlayerStatsData.totalLifeTime.HasValue)
-            {
-                PlayerStatsData.totalLifeTime = default(int);
-                haveNullValue = true;
-            }
-
-            return haveNullValue;
+            Instantiate(errorWindow);
+            string errorMessage = "Ошибка загрузки данных игровой статистики! Запись новых данных заблокирована!";
+            errorWindow.GetComponent<ErrorWindow>().errorTextObject.text = errorMessage;
         }
 
 
         public void SaveStarsData(int starsAmount)
         {
-            PlayerStatsData.totalCollectedStars += starsAmount;
+            PlayerStatsData.TotalCollectedStars += starsAmount;
 
-            if (starsAmount > PlayerStatsData.maxCollectedStars)
+            if (starsAmount > PlayerStatsData.MaxCollectedStars)
             {
-                PlayerStatsData.maxCollectedStars = starsAmount;
+                PlayerStatsData.MaxCollectedStars = starsAmount;
             }
         }
 
 
         public void SaveScoreData(int scoreAmount)
         {
-            if (scoreAmount > PlayerStatsData.maxEarnedScore)
+            if (scoreAmount > PlayerStatsData.MaxEarnedScore)
             {
-                PlayerStatsData.maxEarnedScore = scoreAmount;
+                PlayerStatsData.MaxEarnedScore = scoreAmount;
                 OnNewScoreRecord?.Invoke();
             }
         }
@@ -184,20 +130,20 @@ namespace Assets.Scripts.Player.Data
 
         public void SaveScoreMultiplierData(int multiplierValue)
         {
-            if (multiplierValue > PlayerStatsData.maxScoreMultiplierValue)
+            if (multiplierValue > PlayerStatsData.MaxScoreMultiplierValue)
             {
-                PlayerStatsData.maxScoreMultiplierValue = multiplierValue;
+                PlayerStatsData.MaxScoreMultiplierValue = multiplierValue;
             }
         }
 
 
         public void SaveLifeTimeData(int lifeTime)
         {
-            PlayerStatsData.totalLifeTime += lifeTime;
+            PlayerStatsData.TotalLifeTime += lifeTime;
 
-            if (lifeTime > PlayerStatsData.maxLifeTime)
+            if (lifeTime > PlayerStatsData.MaxLifeTime)
             {
-                PlayerStatsData.maxLifeTime = lifeTime;
+                PlayerStatsData.MaxLifeTime = lifeTime;
             }
         }
 
@@ -218,7 +164,6 @@ namespace Assets.Scripts.Player.Data
             {
                 // А если у пользователя недостаточно памяти, чтобы создать файл?
                 File.WriteAllText(filePath, JsonSerializer.Serialize(PlayerStatsData));
-                //File.WriteAllText(filePath, JsonUtility.ToJson(PlayerStatsData));
             }
         }
 
