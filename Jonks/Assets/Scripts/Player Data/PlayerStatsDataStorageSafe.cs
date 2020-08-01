@@ -10,7 +10,7 @@ namespace Assets.Scripts.Player.Data
     {
         public PlayerStatsDataModel PlayerStatsData { get; private set; }
 
-        private string filePath;
+        public string FilePath { get; private set; }
         private readonly string fileName = "/Stats.json"; // Имя файла с данными (как часть всего пути)
 
         public event NewScoreRecord OnNewScoreRecord;
@@ -18,6 +18,7 @@ namespace Assets.Scripts.Player.Data
         public bool IsDataFileLoaded { get; private set; } = false;
 
         [SerializeField] private GameObject errorWindow = null;
+        [SerializeField] private GameObject confirmationDeleteStatsWindow = null;
 
 
         protected override void AwakeSingleton()
@@ -26,18 +27,24 @@ namespace Assets.Scripts.Player.Data
         }
 
 
+        private void Start()
+        {
+            confirmationDeleteStatsWindow.gameObject.GetComponent<ConfirmationDeleteStatsWindow>().OnDeleteStats += DeletePlayerStatsData;
+        }
+
+
         private void LoadPlayerStatsData()
         {
             if (Application.platform == RuntimePlatform.WindowsEditor)
             {
-                filePath = Path.Combine(Application.dataPath + fileName);
+                FilePath = Path.Combine(Application.dataPath + fileName);
             }
             else if (Application.platform == RuntimePlatform.Android)
             {
-                filePath = Path.Combine(Application.persistentDataPath + fileName);
+                FilePath = Path.Combine(Application.persistentDataPath + fileName);
             }
 
-            Debug.Log($"File path: {filePath}");
+            Debug.Log($"File path: {FilePath}");
 
             GetPlayerStatsData();
         }
@@ -46,17 +53,17 @@ namespace Assets.Scripts.Player.Data
         private void GetPlayerStatsData()
         {
             // Проверка на существование файла
-            if (!File.Exists(filePath))
+            if (!File.Exists(FilePath))
             {
                 // Установить значения по дефолту
-                Debug.Log($"File path \"{filePath}\" didn't found. Creating empty object...");
+                Debug.Log($"File path \"{FilePath}\" didn't found. Creating empty object...");
 
-                PlayerStatsData = PlayerStatsDataModel.InitializeModelByDefaultValues();
+                PlayerStatsData = PlayerStatsDataModel.CreateModelWithDefaultValues();
                 IsDataFileLoaded = true;
             }
             else
             {
-                Debug.Log($"File on path \"{filePath}\" was loaded.");
+                Debug.Log($"File on path \"{FilePath}\" was loaded.");
 
                 // Если не получилось сконверитровать файл ИЛИ полностью подтерли поле внутри файла, то сообщить об ошибке
                 if (!TryReadFile())
@@ -83,7 +90,7 @@ namespace Assets.Scripts.Player.Data
 
             try
             {
-                PlayerStatsData = JsonSerializer.Deserialize<PlayerStatsDataModel>(File.ReadAllText(filePath));
+                PlayerStatsData = JsonSerializer.Deserialize<PlayerStatsDataModel>(File.ReadAllText(FilePath));
             }
             catch (Exception ex)
             {
@@ -104,6 +111,14 @@ namespace Assets.Scripts.Player.Data
             Instantiate(errorWindow);
             string errorMessage = "Ошибка загрузки данных игровой статистики! Запись новых данных заблокирована!";
             errorWindow.GetComponent<ErrorWindow>().errorTextObject.text = errorMessage;
+        }
+
+
+        private void DeletePlayerStatsData(object sender, EventArgs eventArgs)
+        {
+            PlayerStatsData = PlayerStatsDataModel.CreateModelWithDefaultValues(); // Может ли создаваться новая модель или возможно ТОЛЬКО обнуление её полей?
+            File.Delete(FilePath);
+            IsDataFileLoaded = true; // Снова можем записывать информацию в файл
         }
 
 
@@ -163,7 +178,7 @@ namespace Assets.Scripts.Player.Data
             if (IsDataFileLoaded)
             {
                 // А если у пользователя недостаточно памяти, чтобы создать файл?
-                File.WriteAllText(filePath, JsonSerializer.Serialize(PlayerStatsData));
+                File.WriteAllText(FilePath, JsonSerializer.Serialize(PlayerStatsData));
             }
         }
 

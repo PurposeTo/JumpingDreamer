@@ -15,7 +15,7 @@ public class PlayerStatsDataModel : ICloneable
     public int? TotalLifeTime { get; set; }
 
 
-    public static PlayerStatsDataModel InitializeModelByDefaultValues()
+    public static PlayerStatsDataModel CreateModelWithDefaultValues()
     {
         return new PlayerStatsDataModel
         {
