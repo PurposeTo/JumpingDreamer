@@ -50,7 +50,7 @@ public class CameraFollow : MonoBehaviour
     private float GetTheRightOrthographicSize()
     {
         
-        float expectedOrthographicSize = (toCentreVector.magnitude - GameManager.Instance.CentreRadius) * sizeChangeMultiplier;
+        float expectedOrthographicSize = (toCentreVector.magnitude - Centre.CentreRadius) * sizeChangeMultiplier;
 
         expectedOrthographicSize += cameraDefaultOrthographicSize;
 

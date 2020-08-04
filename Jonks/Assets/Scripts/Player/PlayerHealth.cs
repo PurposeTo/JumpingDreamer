@@ -7,7 +7,8 @@ public class PlayerHealth : MonoBehaviour
 
     private bool isInvulnerable = false;
 
-    private readonly float raiseHeight = 65f;
+    private readonly float maxRaiseHeight = 65f;
+    private readonly float minRaiseHeight = 20f;
 
 
     private void Start()
@@ -45,16 +46,20 @@ public class PlayerHealth : MonoBehaviour
     {
         SetInvulnerableTrue();
 
-        Vector2 toCentreDirection = ((Vector2)GameManager.Instance.Centre.transform.position - rb2D.position).normalized;
+        Vector2 toCentreVector = ((Vector2)GameManager.Instance.Centre.transform.position - rb2D.position);
+        Vector2 toCentreDirection = toCentreVector.normalized;
+        float toCentreDistance = toCentreVector.magnitude - Centre.CentreRadius;
 
         rb2D.velocity = Vector2.zero;
 
+        float differenceBetweenMaxRaiseHeightAndCurrentPosition = maxRaiseHeight - toCentreDistance / 5f;
+        float raiseHeight = differenceBetweenMaxRaiseHeightAndCurrentPosition >= minRaiseHeight ? differenceBetweenMaxRaiseHeightAndCurrentPosition : minRaiseHeight;
 
         float impulseVelocity = Mathf.Sqrt(raiseHeight * rb2D.mass * 2 * Gravity.GravityAcceleration * Gravity.GravityScale);
         rb2D.AddForce(-1 * toCentreDirection * impulseVelocity, ForceMode2D.Impulse);
 
-        float fallingTime = Mathf.Sqrt(2 * raiseHeight / (Gravity.GravityAcceleration * Gravity.GravityScale));
-        Debug.Log($"Your fallingTime after raise is {fallingTime}");
+        float fallingTime = Mathf.Sqrt(2 * (raiseHeight + toCentreDistance) / (Gravity.GravityAcceleration * Gravity.GravityScale));
+        Debug.Log($"Your falling time to the surface of the Centre after raise is {fallingTime}");
 
     }
 

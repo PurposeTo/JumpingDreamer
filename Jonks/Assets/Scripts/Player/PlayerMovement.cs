@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
 
     private float velocityMultiplier = 18f;
 
-    private float horizontalInput;
+    public float HorizontalInput { get; private set; }
 
     private Controller controller;
 
@@ -24,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        horizontalInput = controller.HorizontalInput;
+        HorizontalInput = controller.HorizontalInput;
 
         //print($"horizontalInput = {horizontalInput}");
     }
@@ -41,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
         Vector2 toCentreDirection = ((Vector2)centre.transform.position - rb2D.position).normalized;
 
         Vector2 inputVelocityDirection = GameLogic.GetOrthoNormalizedVector2(toCentreDirection);
-        inputVelocityDirection *= horizontalInput;
+        inputVelocityDirection *= HorizontalInput;
         inputVelocityDirection = -inputVelocityDirection;
 
         Vector2 inputVelocity = inputVelocityDirection * velocityMultiplier;

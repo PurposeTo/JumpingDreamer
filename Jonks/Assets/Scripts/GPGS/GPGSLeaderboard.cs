@@ -13,7 +13,7 @@ public class GPGSLeaderboard : MonoBehaviour
 
     public void UpdateLeaderboardScore()
     {
-        Social.ReportScore(PlayerStatsDataStorageSafe.Instance.PlayerStatsData.MaxEarnedScore.GetValueOrDefault(), GPGSIds.leaderboard_king_of_the_jonks, (bool success) =>
+        Social.ReportScore(PlayerStatsDataStorageSafe.Instance.PlayerStatsData.MaxEarnedScore.Value, GPGSIds.leaderboard_kings_of_the_jonks, (bool success) =>
         {
             if (success)
             {

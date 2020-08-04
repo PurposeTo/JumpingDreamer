@@ -34,7 +34,7 @@ public class PlatformGenerator : SingletonMonoBehaviour<PlatformGenerator>
     /// <param name="range">Расстояние от поверхности Центра до платформы</param>
     private void GenerateRingFromPlatforms(GameObject platform, float distanceAngle, float range)
     {
-        range += GameManager.Instance.CentreRadius;
+        range += Centre.CentreRadius;
 
         Vector2[] vector2sDirections = GetVector2sDirectionsAroundCircle(distanceAngle);
 

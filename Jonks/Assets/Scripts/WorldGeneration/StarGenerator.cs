@@ -14,7 +14,7 @@ public class StarGenerator : SingletonMonoBehaviour<StarGenerator>
 
     private void Start()
     {
-        centreRadius = GameManager.Instance.CentreRadius;
+        centreRadius = Centre.CentreRadius;
     }
 
 
