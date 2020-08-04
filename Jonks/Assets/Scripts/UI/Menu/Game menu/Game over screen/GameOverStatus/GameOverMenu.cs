@@ -37,7 +37,7 @@ public class GameOverMenu : MonoBehaviour
 
     private void SetNewBestScoreString()
     {
-        record = PlayerStatsDataStorageSafe.Instance.PlayerStatsData.MaxEarnedScore.Value;
+        record = PlayerStatsDataStorageSafe.Instance.PlayerStatsData.MaxEarnedScore;
         recordScoreText = $"New record!\n{record}";
     }
 
@@ -46,7 +46,7 @@ public class GameOverMenu : MonoBehaviour
     {
         if (recordScoreText == null)
         {
-            record = PlayerStatsDataStorageSafe.Instance.PlayerStatsData.MaxEarnedScore.Value;
+            record = PlayerStatsDataStorageSafe.Instance.PlayerStatsData.MaxEarnedScore;
             recordScoreText = $"Record\n{record}";
         }
 
