@@ -128,11 +128,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3187975396863468467, guid: 0bc72d1f9f0250c4db8c2304bece4037,
-        type: 3}
-      propertyPath: target
-      value: 
-      objectReference: {fileID: 1102161325}
     - target: {fileID: 3187975396863468468, guid: 0bc72d1f9f0250c4db8c2304bece4037,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -192,6 +187,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Pursuer
+      objectReference: {fileID: 0}
+    - target: {fileID: 3187975396863468470, guid: 0bc72d1f9f0250c4db8c2304bece4037,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bc72d1f9f0250c4db8c2304bece4037, type: 3}
@@ -3880,6 +3880,7 @@ GameObject:
   - component: {fileID: 1102161330}
   - component: {fileID: 1102161332}
   - component: {fileID: 1102161336}
+  - component: {fileID: 1102161339}
   - component: {fileID: 1102161337}
   - component: {fileID: 1102161331}
   m_Layer: 0
@@ -4198,6 +4199,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3fc3f2586bc63054899c1d1fa5276b75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1102161339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1102161325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f18aef026c17114f8aa520fa82b081d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1133801440

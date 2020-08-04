@@ -35,7 +35,7 @@ class JumpHeightStats : MonoBehaviour
 
         if (velocityOnAxisCentreProject >= 0f)
         {
-            float currentJumpHeight = toCentreVector.magnitude - GameManager.Instance.CentreRadius;
+            float currentJumpHeight = toCentreVector.magnitude - Centre.CentreRadius;
 
             if (currentJumpHeight > jumpHeight)
             {

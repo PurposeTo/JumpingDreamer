@@ -8,6 +8,7 @@ public class PlayerPresenter : MonoBehaviour
     public StarCollector StarCollector { get; private set; }
     public SpeedTrail SpeedTrail { get; private set; }
     public LifeTimer LifeTimer { get; private set; }
+    public PlayerTactics PlayerTactics { get; private set; }
 
 
     private void Awake()
@@ -18,5 +19,6 @@ public class PlayerPresenter : MonoBehaviour
         StarCollector = gameObject.GetComponent<StarCollector>();
         SpeedTrail = gameObject.GetComponent<SpeedTrail>();
         LifeTimer = gameObject.GetComponent<LifeTimer>();
+        PlayerTactics = gameObject.GetComponent<PlayerTactics>();
     }
 }

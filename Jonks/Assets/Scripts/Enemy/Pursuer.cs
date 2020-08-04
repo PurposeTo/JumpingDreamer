@@ -8,18 +8,47 @@ public class Pursuer : MonoBehaviour
     private Rigidbody2D rb2d;
 
     private Vector2 moveDirection;
-    private float velocityMultiplier = 10f;
-    private float rotationVelocity = 120f;
+    private readonly float startVelocityMultiplier = 8f;
+    private readonly float finishVelocityMultiplier = 16f;
+    private float currentVelocityMultiplier;
+
+    private readonly float startRotationVelocity = 120f;
+    private readonly float finishRotationVelocity = 80f;
+    private float currentRotationVelocity;
+
+    private readonly float maxLifeTime = 60f;
+    private float lifeTimeCounter = 0f;
+    private float percentLifeTimeCounter = 0f;
+
+
+    private float percentageOfTimeSpentByThePlayerMoving;
+    private PlayerTactics playerTactics;
 
     private GameObject target;
+
 
     private void Start()
     {
         rb2d = gameObject.GetComponent<Rigidbody2D>();
         target = GameManager.Instance.Player;
+        playerTactics = GameManager.Instance.PlayerPresenter.PlayerTactics;
 
         moveDirection = ((Vector2)target.transform.position - rb2d.position).normalized;
     }
+
+    private void Update()
+    {
+        percentageOfTimeSpentByThePlayerMoving = playerTactics.GetPercentageOfTimeSpentByThePlayerMoving();
+
+
+
+        lifeTimeCounter += Time.deltaTime;
+        percentLifeTimeCounter = lifeTimeCounter / maxLifeTime;
+
+        currentVelocityMultiplier = Mathf.Lerp(startVelocityMultiplier, finishVelocityMultiplier, percentLifeTimeCounter);
+        currentRotationVelocity = Mathf.Lerp(startRotationVelocity, finishRotationVelocity, percentLifeTimeCounter);
+    }
+
 
     private void FixedUpdate()
     {
@@ -28,9 +57,9 @@ public class Pursuer : MonoBehaviour
         // Вычисляем кватернион нужного поворота. Вектор forward говорит вокруг какой оси поворачиваться
         Quaternion toTargetRotation = Quaternion.LookRotation(forward: Vector3.forward, upwards: toTargetDirection);
 
-        Quaternion currentRotation = Quaternion.RotateTowards(transform.rotation, toTargetRotation, rotationVelocity * Time.deltaTime);
+        Quaternion currentRotation = Quaternion.RotateTowards(transform.rotation, toTargetRotation, currentRotationVelocity * Time.deltaTime);
 
-        rb2d.rotation = currentRotation.eulerAngles.z;
-        rb2d.velocity = currentRotation * moveDirection * velocityMultiplier;
+        rb2d.MoveRotation(currentRotation);
+        rb2d.velocity = currentRotation * moveDirection * currentVelocityMultiplier;
     }
 }

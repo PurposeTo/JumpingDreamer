@@ -5,10 +5,12 @@ public class Centre : MonoBehaviour
     [SerializeField]
     private KillingZone killingZone = null;
 
+    public static readonly float CentreRadius = 9f;
+
 
     private void Start()
     {
-        float Size = GameManager.Instance.CentreRadius * 2f;
+        float Size = CentreRadius * 2f;
 
         if (!Mathf.Approximately(transform.localScale.x, Size))
         {
