@@ -18,7 +18,6 @@ namespace Assets.Scripts.Player.Data
         public bool IsDataFileLoaded { get; private set; } = false;
 
         [SerializeField] private GameObject errorWindow = null;
-        [SerializeField] private GameObject confirmationDeleteStatsWindow = null;
 
 
         protected override void AwakeSingleton()
