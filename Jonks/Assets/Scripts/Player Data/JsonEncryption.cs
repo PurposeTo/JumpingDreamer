@@ -6,7 +6,7 @@ using System.IO;
 public static class JsonEncryption
 {
     private static readonly string fileName = "StatsAlpha.json";
-    private static string filePath => DataLoaderHelper.GetFilePath(fileName);
+    public static string filePath => DataLoaderHelper.GetFilePath(fileName);
 
 
     public static string Encrypt(string data)

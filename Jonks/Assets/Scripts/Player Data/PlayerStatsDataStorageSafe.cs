@@ -29,7 +29,13 @@ namespace Assets.Scripts.Player.Data
 
         private void Start()
         {
-            confirmationDeleteStatsWindow.gameObject.GetComponent<ConfirmationDeleteStatsWindow>().OnDeleteStats += DeletePlayerStatsData;
+            MainMenu.Instance.SettingsMenu.ResetStatsButton.ConfirmationDeleteWindow.OnDeleteStats += DeletePlayerStatsData;
+        }
+
+
+        private void OnDestroy()
+        {
+            MainMenu.Instance.SettingsMenu.ResetStatsButton.ConfirmationDeleteWindow.OnDeleteStats -= DeletePlayerStatsData;
         }
 
 
@@ -127,6 +133,9 @@ namespace Assets.Scripts.Player.Data
         {
             PlayerStatsData = PlayerStatsDataModel.CreateModelWithDefaultValues();
             File.Delete(FilePath);
+            File.Delete(FilePath + ".meta");
+            File.Delete(JsonEncryption.filePath);
+            File.Delete(JsonEncryption.filePath + ".meta");
             IsDataFileLoaded = true; // Снова можем записывать информацию в файл
         }
 

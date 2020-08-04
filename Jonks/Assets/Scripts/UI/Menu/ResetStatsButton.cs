@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ResetStatsButton : MonoBehaviour
 {
-    public ConfirmationDeleteStatsWindow confirmationDeleteWindow;
+    public ConfirmationDeleteStatsWindow ConfirmationDeleteWindow;
 
 
     private void Start()
@@ -23,6 +23,6 @@ public class ResetStatsButton : MonoBehaviour
 
     public void ResetPlayerStatsData()
     {
-        confirmationDeleteWindow.gameObject.SetActive(true);
+        ConfirmationDeleteWindow.gameObject.SetActive(true);
     }
 }

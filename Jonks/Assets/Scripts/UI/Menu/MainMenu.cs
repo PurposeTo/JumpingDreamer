@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class MainMenu : MonoBehaviour
+public class MainMenu : SingletonMonoBehaviour<MainMenu>
 {
+    public SettingsMenu SettingsMenu;
+
     public void StartGameClickHandler()
     {
         SceneLoader.LoadScene(SceneLoader.GameSceneName);
