@@ -145,6 +145,8 @@
     <Compile Include="Assets\Scripts\Platforms\Move\Base\Move.cs" />
     <Compile Include="Assets\Scripts\Platforms\Move\CircularMotion.cs" />
     <Compile Include="Assets\Scripts\Platforms\Move\MovementFromTheCenter.cs" />
+    <Compile Include="Assets\Scripts\Player Data\DataLoaderHelper.cs" />
+    <Compile Include="Assets\Scripts\Player Data\JsonEncryption.cs" />
     <Compile Include="Assets\Scripts\Player Data\PlayerStatsDataModel.cs" />
     <Compile Include="Assets\Scripts\Player Data\PlayerStatsDataStorageSafe.cs" />
     <Compile Include="Assets\Scripts\Player\Collectors\ScoreCollector.cs" />

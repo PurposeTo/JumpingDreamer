@@ -2,7 +2,6 @@
 using System.IO;
 using Assets.Scripts.Player.Data;
 using UnityEngine.UI;
-using System;
 
 public class ResetStatsButton : MonoBehaviour
 {

@@ -11,7 +11,7 @@ namespace Assets.Scripts.Player.Data
         public PlayerStatsDataModel PlayerStatsData { get; private set; }
 
         public string FilePath { get; private set; }
-        private readonly string fileName = "/Stats.json"; // Имя файла с данными (как часть всего пути)
+        private readonly string fileName = "Stats.json"; // Имя файла с данными (как часть всего пути)
 
         public event NewScoreRecord OnNewScoreRecord;
 
@@ -35,15 +35,7 @@ namespace Assets.Scripts.Player.Data
 
         private void LoadPlayerStatsData()
         {
-            if (Application.platform == RuntimePlatform.WindowsEditor)
-            {
-                FilePath = Path.Combine(Application.dataPath + fileName);
-            }
-            else if (Application.platform == RuntimePlatform.Android)
-            {
-                FilePath = Path.Combine(Application.persistentDataPath + fileName);
-            }
-
+            FilePath = DataLoaderHelper.GetFilePath(fileName);
             Debug.Log($"File path: {FilePath}");
 
             GetPlayerStatsData();
@@ -65,44 +57,61 @@ namespace Assets.Scripts.Player.Data
             {
                 Debug.Log($"File on path \"{FilePath}\" was loaded.");
 
-                // Если не получилось сконверитровать файл ИЛИ полностью подтерли поле внутри файла, то сообщить об ошибке
-                if (!TryReadFile())
+                string dataAsJSON = JsonEncryption.Decrypt(FilePath);
+                if (dataAsJSON != null)
                 {
-                    Debug.LogError($"Data reading from \"{fileName}\" ERROR!");
+                    PlayerStatsData = JsonSerializer.Deserialize<PlayerStatsDataModel>(dataAsJSON);
+                    IsDataFileLoaded = true;
 
-                    IsDataFileLoaded = false;
-                    CreateErrorWindow();
+                    Debug.Log($"Data from \"{fileName}\" was loaded successfully.");
+                    
                 }
                 else
                 {
-                    Debug.Log($"Data from \"{fileName}\" was loaded successfully.");
+                    PlayerStatsData = PlayerStatsDataModel.CreateModelWithDefaultValues();
+                    IsDataFileLoaded = false;
+                    CreateErrorWindow();
 
-                    IsDataFileLoaded = true;
+                    Debug.LogError($"Data reading from \"{fileName}\" ERROR!");
                 }
+                //// Если не получилось сконверитровать файл ИЛИ полностью подтерли поле внутри файла, то сообщить об ошибке
+                //if (!TryReadFile())
+                //{
+                //    Debug.LogError($"Data reading from \"{fileName}\" ERROR!");
+
+                //    IsDataFileLoaded = false;
+                //    CreateErrorWindow();
+                //}
+                //else
+                //{
+                //    Debug.Log($"Data from \"{fileName}\" was loaded successfully.");
+
+                //    IsDataFileLoaded = true;
+                //}
             }
         }
 
 
-        private bool TryReadFile()
-        {
-            bool okConverted;
-            bool isJsonWasEdited;
+        //private bool TryReadFile()
+        //{
+        //    bool okConverted;
+        //    bool isJsonWasEdited;
 
-            try
-            {
-                PlayerStatsData = JsonSerializer.Deserialize<PlayerStatsDataModel>(File.ReadAllText(FilePath));
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError(ex.Message);
+        //    try
+        //    {
+        //        PlayerStatsData = JsonSerializer.Deserialize<PlayerStatsDataModel>(File.ReadAllText(FilePath));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Debug.LogError(ex.Message);
 
-                okConverted = false;
-                return okConverted;
-            }
+        //        okConverted = false;
+        //        return okConverted;
+        //    }
 
-            isJsonWasEdited = PlayerStatsData.TrySetDefaultValues();
-            return !isJsonWasEdited;
-        }
+        //    isJsonWasEdited = PlayerStatsData.TrySetDefaultValues();
+        //    return !isJsonWasEdited;
+        //}
 
 
         // Попробовать убрать из этого класса
@@ -116,7 +125,7 @@ namespace Assets.Scripts.Player.Data
 
         private void DeletePlayerStatsData(object sender, EventArgs eventArgs)
         {
-            PlayerStatsData = PlayerStatsDataModel.CreateModelWithDefaultValues(); // Может ли создаваться новая модель или возможно ТОЛЬКО обнуление её полей?
+            PlayerStatsData = PlayerStatsDataModel.CreateModelWithDefaultValues();
             File.Delete(FilePath);
             IsDataFileLoaded = true; // Снова можем записывать информацию в файл
         }
@@ -178,7 +187,9 @@ namespace Assets.Scripts.Player.Data
             if (IsDataFileLoaded)
             {
                 // А если у пользователя недостаточно памяти, чтобы создать файл?
-                File.WriteAllText(FilePath, JsonSerializer.Serialize(PlayerStatsData));
+                string json = JsonSerializer.Serialize(PlayerStatsData);
+                string modifiedData = JsonEncryption.Encrypt(json);
+                File.WriteAllText(FilePath, modifiedData);
             }
         }
 
