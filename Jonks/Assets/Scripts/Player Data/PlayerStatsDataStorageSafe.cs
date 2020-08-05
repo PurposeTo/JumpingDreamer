@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.IO;
+using System.Text.Json;
 
 namespace Assets.Scripts.Player.Data
 {
@@ -64,7 +65,7 @@ namespace Assets.Scripts.Player.Data
                 string dataAsJSON = JsonEncryption.Decrypt(FilePath);
                 if (dataAsJSON != null)
                 {
-                    PlayerStatsData = JsonUtility.FromJson<PlayerStatsDataModel>(dataAsJSON);
+                    PlayerStatsData = JsonSerializer.Deserialize<PlayerStatsDataModel>(dataAsJSON);
                     IsDataFileLoaded = true;
 
                     Debug.Log($"Data from \"{fileName}\" was loaded successfully.");
@@ -194,7 +195,7 @@ namespace Assets.Scripts.Player.Data
             if (IsDataFileLoaded)
             {
                 // А если у пользователя недостаточно памяти, чтобы создать файл?
-                string json = JsonUtility.ToJson(PlayerStatsData);
+                string json = JsonSerializer.Serialize(PlayerStatsData);
                 string modifiedData = JsonEncryption.Encrypt(json);
                 File.WriteAllText(FilePath, modifiedData);
             }
