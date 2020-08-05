@@ -1287,10 +1287,7 @@ namespace GooglePlayGames
             if (!IsAuthenticated())
             {
                 GooglePlayGames.OurUtils.Logger.e("ShowLeaderboardUI can only be called after authentication.");
-                if (callback != null)
-                {
-                    callback(UIStatus.NotAuthorized);
-                }
+                callback?.Invoke(UIStatus.NotAuthorized);
 
                 return;
             }
@@ -1336,10 +1333,7 @@ namespace GooglePlayGames
             {
                 GooglePlayGames.OurUtils.Logger.e(
                     "LoadScores can only be called after authentication.");
-                if (callback != null)
-                {
-                    callback(false);
-                }
+                callback?.Invoke(false);
 
                 return;
             }
@@ -1359,10 +1353,7 @@ namespace GooglePlayGames
             if (!IsAuthenticated())
             {
                 GooglePlayGames.OurUtils.Logger.e("LoadScores can only be called after authentication.");
-                if (callback != null)
-                {
-                    callback(false);
-                }
+                callback?.Invoke(false);
 
                 return;
             }

@@ -4,12 +4,15 @@ using UnityEngine;
 using UnityEngine.SocialPlatforms;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
+using TMPro;
 
 public class GPGSAuthentication : SingletonMonoBehaviour<GPGSAuthentication>
 {
     public static PlayGamesPlatform platform;
+    public TextMeshProUGUI AuthenticateStatus;
 
-    protected override void AwakeSingleton() 
+
+    protected override void AwakeSingleton()
     {
         if (platform != null)
         {
@@ -24,8 +27,10 @@ public class GPGSAuthentication : SingletonMonoBehaviour<GPGSAuthentication>
         platform = PlayGamesPlatform.Activate();
 
         // authenticate user:
-        PlayGamesPlatform.Instance.Authenticate(SignInInteractivity.CanPromptOnce, (result) => {
+        PlayGamesPlatform.Instance.Authenticate(SignInInteractivity.CanPromptOnce, (result) =>
+        {
             Debug.Log($"Authenticate is completed with code: {result}");
+            AuthenticateStatus.text = $"{result}";
         });
 
         //Social.Active.localUser.Authenticate(success =>
