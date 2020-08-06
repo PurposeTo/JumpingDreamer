@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using GoogleMobileAds.Api;
 
@@ -8,9 +9,14 @@ public class CollectRewardsScreen : MonoBehaviour
 
     private bool mustRewardPlayer = false; // bool - показывали ли уже рекламу
 
+    private bool isAdClosed = false;
+    private Coroutine OnCloseAdWaitCoroutine;
+
 
     private void Start()
     {
+        // Called when an ad is shown.
+        RewardBasedVideoAd.Instance.OnAdOpening += HandleRewardBasedVideoOpened;
         // Called when the user should be rewarded for watching a video.
         RewardBasedVideoAd.Instance.OnAdRewarded += HandleRewardBasedVideoRewarded;
         // Called when the ad is closed.
@@ -20,6 +26,7 @@ public class CollectRewardsScreen : MonoBehaviour
 
     private void OnDestroy()
     {
+        RewardBasedVideoAd.Instance.OnAdOpening -= HandleRewardBasedVideoOpened;
         RewardBasedVideoAd.Instance.OnAdRewarded -= HandleRewardBasedVideoRewarded;
         RewardBasedVideoAd.Instance.OnAdClosed -= OnCloseAd;
     }
@@ -62,8 +69,22 @@ public class CollectRewardsScreen : MonoBehaviour
     private void OnCloseAd(object sender, EventArgs args)
     {
         // При закрытии рекламы
+        isAdClosed = true;
+    }
 
-        if (mustRewardPlayer) 
+    public void HandleRewardBasedVideoOpened(object sender, EventArgs args)
+    {
+        if (OnCloseAdWaitCoroutine == null) OnCloseAdWaitCoroutine = StartCoroutine(OnCloseAdWaitEnumerator());
+        else Debug.LogError("OnCloseAdWaitCoroutine is already starting!");
+    }
+
+
+    private IEnumerator OnCloseAdWaitEnumerator()
+    {
+        yield return new WaitUntil(() => isAdClosed);
+        isAdClosed = false;
+
+        if (mustRewardPlayer)
         {
             // Если должны наградить, то показать GameOverMenu
             gameOverStatusScreen.ShowGameOverMenu();
@@ -77,5 +98,7 @@ public class CollectRewardsScreen : MonoBehaviour
              */
             SceneLoader.LoadScene(SceneLoader.GameSceneName);
         }
+
+        OnCloseAdWaitCoroutine = null;
     }
 }
