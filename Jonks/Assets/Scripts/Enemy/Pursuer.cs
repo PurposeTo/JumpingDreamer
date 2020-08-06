@@ -45,8 +45,8 @@ public class Pursuer : MonoBehaviour
         lifeTimeCounter += Time.deltaTime;
         percentLifeTimeCounter = lifeTimeCounter / maxLifeTime;
 
-        currentVelocityMultiplier = Mathf.Lerp(startVelocityMultiplier, finishVelocityMultiplier, percentLifeTimeCounter);
-        currentRotationVelocity = Mathf.Lerp(startRotationVelocity, finishRotationVelocity, percentLifeTimeCounter);
+        currentVelocityMultiplier = Mathf.Lerp(startVelocityMultiplier, finishVelocityMultiplier, percentageOfTimeSpentByThePlayerMoving);
+        currentRotationVelocity = Mathf.Lerp(startRotationVelocity, finishRotationVelocity, percentageOfTimeSpentByThePlayerMoving);
     }
 
 
