@@ -69,7 +69,6 @@ namespace Assets.Scripts.Player.Data
                     IsDataFileLoaded = true;
 
                     Debug.Log($"Data from \"{fileName}\" was loaded successfully.");
-                    print($"###: maxStars: {PlayerStatsData.MaxCollectedStars} \t maxScore: {PlayerStatsData.MaxEarnedScore} \t maxLifeTime: { PlayerStatsData.MaxLifeTime} \t totalStars: {PlayerStatsData.TotalCollectedStars}");
                 }
                 else
                 {
@@ -214,7 +213,10 @@ namespace Assets.Scripts.Player.Data
         private void OnApplicationPause(bool pause)
         {
             Debug.Log($"OnApplicationPause code: {pause}");
-            WritePlayerDataToFile();
+            if (pause)
+            {
+                WritePlayerDataToFile();
+            }
         }
 
 #endif
