@@ -283,6 +283,27 @@
     <Reference Include="Google.VersionHandlerImpl_v1.2.156">
       <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Assets/ExternalDependencyManager/Editor/Google.VersionHandlerImpl_v1.2.156.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces">
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/Plugins/net-packages/Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Buffers">
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/Plugins/net-packages/System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory">
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/Plugins/net-packages/System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe">
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/Plugins/net-packages/System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web">
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/Plugins/net-packages/System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json">
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/Plugins/net-packages/System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions">
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/Plugins/net-packages/System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
     </Reference>
@@ -645,6 +666,9 @@
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.TestRunner">
       <HintPath>C:/Users/firec/Documents/GitHub/Jonks/Jonks/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>

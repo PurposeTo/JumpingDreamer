@@ -146,7 +146,10 @@
     <Compile Include="Assets\Scripts\Platforms\Move\CircularMotion.cs" />
     <Compile Include="Assets\Scripts\Platforms\Move\MovementFromTheCenter.cs" />
     <Compile Include="Assets\Scripts\Player Data\DataLoaderHelper.cs" />
-    <Compile Include="Assets\Scripts\Player Data\JsonEncryption.cs" />
+    <Compile Include="Assets\Scripts\Player Data\Encryption\JsonEncryption.cs" />
+    <Compile Include="Assets\Scripts\Player Data\Encryption\SafeFloat.cs" />
+    <Compile Include="Assets\Scripts\Player Data\Encryption\SafeInt.cs" />
+    <Compile Include="Assets\Scripts\Player Data\Encryption\SafeIntConverter.cs" />
     <Compile Include="Assets\Scripts\Player Data\PlayerStatsDataModel.cs" />
     <Compile Include="Assets\Scripts\Player Data\PlayerStatsDataStorageSafe.cs" />
     <Compile Include="Assets\Scripts\Player\Collectors\ScoreCollector.cs" />
@@ -422,6 +425,27 @@
     </Reference>
     <Reference Include="UnityEditor">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.6f1/Editor/Data/Managed/UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces">
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/Plugins/net-packages/Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Buffers">
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/Plugins/net-packages/System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory">
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/Plugins/net-packages/System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe">
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/Plugins/net-packages/System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web">
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/Plugins/net-packages/System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json">
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/Plugins/net-packages/System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions">
+      <HintPath>C:/Users/repin/source/Repos/Jonks/Jonks/Assets/Plugins/net-packages/System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.6f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

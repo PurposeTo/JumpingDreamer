@@ -11,7 +11,7 @@ public class GameOverMenu : MonoBehaviour
     public event SavePlayerStats OnSavePlayerStats;
 
     private string recordScoreText;
-    private int record;
+    private SafeInt record;
 
 
     private void Awake()

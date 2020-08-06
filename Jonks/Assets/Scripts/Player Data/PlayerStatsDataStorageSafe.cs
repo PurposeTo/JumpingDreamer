@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.IO;
+using System.Text.Json;
 
 namespace Assets.Scripts.Player.Data
 {
@@ -59,16 +60,16 @@ namespace Assets.Scripts.Player.Data
             }
             else
             {
-                Debug.Log($"File on path \"{FilePath}\" was loaded.");
+                Debug.Log($"File on path \"{FilePath}\" was found.");
 
                 string dataAsJSON = JsonEncryption.Decrypt(FilePath);
                 if (dataAsJSON != null)
                 {
-                    PlayerStatsData = JsonUtility.FromJson<PlayerStatsDataModel>(dataAsJSON);
+                    PlayerStatsData = JsonSerializer.Deserialize<PlayerStatsDataModel>(dataAsJSON);
                     IsDataFileLoaded = true;
 
                     Debug.Log($"Data from \"{fileName}\" was loaded successfully.");
-                    
+                    print($"###: maxStars: {PlayerStatsData.MaxCollectedStars} \t maxScore: {PlayerStatsData.MaxEarnedScore} \t maxLifeTime: { PlayerStatsData.MaxLifeTime} \t totalStars: {PlayerStatsData.TotalCollectedStars}");
                 }
                 else
                 {
@@ -138,7 +139,7 @@ namespace Assets.Scripts.Player.Data
         }
 
 
-        public void SaveStarsData(int starsAmount)
+        public void SaveStarsData(SafeInt starsAmount)
         {
             PlayerStatsData.TotalCollectedStars += starsAmount;
 
@@ -149,7 +150,7 @@ namespace Assets.Scripts.Player.Data
         }
 
 
-        public void SaveScoreData(int scoreAmount)
+        public void SaveScoreData(SafeInt scoreAmount)
         {
             if (scoreAmount > PlayerStatsData.MaxEarnedScore)
             {
@@ -159,7 +160,7 @@ namespace Assets.Scripts.Player.Data
         }
 
 
-        public void SaveScoreMultiplierData(int multiplierValue)
+        public void SaveScoreMultiplierData(SafeInt multiplierValue)
         {
             if (multiplierValue > PlayerStatsData.MaxScoreMultiplierValue)
             {
@@ -168,7 +169,7 @@ namespace Assets.Scripts.Player.Data
         }
 
 
-        public void SaveLifeTimeData(int lifeTime)
+        public void SaveLifeTimeData(SafeInt lifeTime)
         {
             PlayerStatsData.TotalLifeTime += lifeTime;
 
@@ -194,7 +195,8 @@ namespace Assets.Scripts.Player.Data
             if (IsDataFileLoaded)
             {
                 // А если у пользователя недостаточно памяти, чтобы создать файл?
-                string json = JsonUtility.ToJson(PlayerStatsData);
+                string json = JsonSerializer.Serialize(PlayerStatsData);
+                print($"###: maxStars: {PlayerStatsData.MaxCollectedStars} \t maxScore: {PlayerStatsData.MaxEarnedScore} \t maxLifeTime: { PlayerStatsData.MaxLifeTime} \t totalStars: {PlayerStatsData.TotalCollectedStars}");
                 string modifiedData = JsonEncryption.Encrypt(json);
                 File.WriteAllText(FilePath, modifiedData);
             }
