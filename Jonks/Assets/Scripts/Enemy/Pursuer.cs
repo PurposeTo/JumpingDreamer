@@ -38,7 +38,7 @@ public class Pursuer : MonoBehaviour
 
     private void Update()
     {
-        percentageOfTimeSpentByThePlayerMoving = playerTactics.GetPercentageOfTimeSpentByThePlayerMoving();
+        percentageOfTimeSpentByThePlayerMoving = playerTactics.PercentageOfTimeSpentByThePlayerMoving;
 
 
 
