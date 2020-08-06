@@ -10,6 +10,13 @@
 [Ll]ogs/
 [Uu]ser[Ss]ettings/
 
+# TextMeshPro meta files
+/[Aa]ssets/TextMesh Pro/[Ee]xamples & [Ee]xtras/*.meta
+/[Aa]ssets/TextMesh Pro/[Dd]ocumentation/*.meta
+
+# ExternalDependencyManager meta files
+/[Aa]ssets/ExternalDependencyManager/Editor/*.meta
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/

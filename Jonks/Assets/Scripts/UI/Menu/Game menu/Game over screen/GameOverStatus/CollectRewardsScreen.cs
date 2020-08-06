@@ -15,8 +15,6 @@ public class CollectRewardsScreen : MonoBehaviour
 
     private void Start()
     {
-        // Called when an ad is shown.
-        RewardBasedVideoAd.Instance.OnAdOpening += HandleRewardBasedVideoOpened;
         // Called when the user should be rewarded for watching a video.
         RewardBasedVideoAd.Instance.OnAdRewarded += HandleRewardBasedVideoRewarded;
         // Called when the ad is closed.
@@ -26,7 +24,6 @@ public class CollectRewardsScreen : MonoBehaviour
 
     private void OnDestroy()
     {
-        RewardBasedVideoAd.Instance.OnAdOpening -= HandleRewardBasedVideoOpened;
         RewardBasedVideoAd.Instance.OnAdRewarded -= HandleRewardBasedVideoRewarded;
         RewardBasedVideoAd.Instance.OnAdClosed -= OnCloseAd;
     }
@@ -44,6 +41,7 @@ public class CollectRewardsScreen : MonoBehaviour
 
         if (RewardBasedVideoAd.Instance.IsLoaded())
         {
+            OnCloseAdWait();
             RewardBasedVideoAd.Instance.Show();
         }
         else
@@ -72,7 +70,7 @@ public class CollectRewardsScreen : MonoBehaviour
         isAdClosed = true;
     }
 
-    public void HandleRewardBasedVideoOpened(object sender, EventArgs args)
+    private void OnCloseAdWait()
     {
         if (OnCloseAdWaitCoroutine == null) OnCloseAdWaitCoroutine = StartCoroutine(OnCloseAdWaitEnumerator());
         else Debug.LogError("OnCloseAdWaitCoroutine is already starting!");
