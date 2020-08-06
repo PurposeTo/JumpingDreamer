@@ -196,7 +196,6 @@ namespace Assets.Scripts.Player.Data
             {
                 // А если у пользователя недостаточно памяти, чтобы создать файл?
                 string json = JsonSerializer.Serialize(PlayerStatsData);
-                print($"###: maxStars: {PlayerStatsData.MaxCollectedStars} \t maxScore: {PlayerStatsData.MaxEarnedScore} \t maxLifeTime: { PlayerStatsData.MaxLifeTime} \t totalStars: {PlayerStatsData.TotalCollectedStars}");
                 string modifiedData = JsonEncryption.Encrypt(json);
                 File.WriteAllText(FilePath, modifiedData);
             }

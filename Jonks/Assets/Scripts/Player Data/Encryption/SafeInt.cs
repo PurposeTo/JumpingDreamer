@@ -35,7 +35,7 @@ public struct SafeInt
 
     public override string ToString()
     {
-        return value.ToString(); //((int)this).ToString()
+        return ((int)this).ToString();
     }
 
 
