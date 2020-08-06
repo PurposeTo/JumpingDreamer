@@ -4,9 +4,18 @@ using UnityEngine;
 
 public class PlayerTactics : MonoBehaviour
 {
-    PlayerPresenter playerPresenter;
+    public float PercentageOfTimeSpentByThePlayerMoving
+    {
+        get
+        {
+            const int fixedFramesInSecond = 50;
+            return Mathf.Abs(totalInputPerSeconds) / fixedFramesInSecond / durationOfCollectingInformationAboutTactics;
+        }
+    }
 
-    private readonly float durationOfCollectingInformationAboutTactics = 10f;
+    private PlayerPresenter playerPresenter;
+
+    private readonly float durationOfCollectingInformationAboutTactics = 18f;
     private Queue<float> horizontalInputQueue = new Queue<float>(); // Очередь необходима для ограничения записи значений
     private float totalInputPerSeconds;
     private float HorizontalInput => playerPresenter.PlayerMovement.HorizontalInput;
@@ -31,9 +40,5 @@ public class PlayerTactics : MonoBehaviour
     }
 
 
-    public float GetPercentageOfTimeSpentByThePlayerMoving()
-    {
-        int fixedFramesInSecond = 50;
-        return Mathf.Abs(totalInputPerSeconds) / fixedFramesInSecond / durationOfCollectingInformationAboutTactics;
-    }
+
 }

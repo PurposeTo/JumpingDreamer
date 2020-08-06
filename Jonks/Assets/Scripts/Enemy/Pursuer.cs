@@ -38,15 +38,15 @@ public class Pursuer : MonoBehaviour
 
     private void Update()
     {
-        percentageOfTimeSpentByThePlayerMoving = playerTactics.GetPercentageOfTimeSpentByThePlayerMoving();
+        percentageOfTimeSpentByThePlayerMoving = playerTactics.PercentageOfTimeSpentByThePlayerMoving;
 
 
 
         lifeTimeCounter += Time.deltaTime;
         percentLifeTimeCounter = lifeTimeCounter / maxLifeTime;
 
-        currentVelocityMultiplier = Mathf.Lerp(startVelocityMultiplier, finishVelocityMultiplier, percentLifeTimeCounter);
-        currentRotationVelocity = Mathf.Lerp(startRotationVelocity, finishRotationVelocity, percentLifeTimeCounter);
+        currentVelocityMultiplier = Mathf.Lerp(startVelocityMultiplier, finishVelocityMultiplier, percentageOfTimeSpentByThePlayerMoving);
+        currentRotationVelocity = Mathf.Lerp(startRotationVelocity, finishRotationVelocity, percentageOfTimeSpentByThePlayerMoving);
     }
 
 
