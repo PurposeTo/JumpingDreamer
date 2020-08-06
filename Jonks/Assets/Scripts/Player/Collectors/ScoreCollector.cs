@@ -6,8 +6,8 @@ public class ScoreCollector : MonoBehaviour
 {
     public event ScoreAmountChange OnScoreAmountChange;
 
-    private int score = 0;
-    public int Score
+    private SafeInt score = 0;
+    public SafeInt Score
     {
         get => score;
 
@@ -17,9 +17,9 @@ public class ScoreCollector : MonoBehaviour
             OnScoreAmountChange?.Invoke();
         }
     }
-    private int earnedPointsPerFlight = 0; // Очки, полученные за полет (За то время, пока скорость была достаточной для получения очков)
+    private SafeInt earnedPointsPerFlight = 0; // Очки, полученные за полет (За то время, пока скорость была достаточной для получения очков)
 
-    private int currentMaxScoreMultiplierValue { get; set; } = 1; // Для сбора статистики
+    private SafeInt CurrentMaxScoreMultiplierValue { get; set; } = 1; // Для сбора статистики
 
     private float counterScoreEarnedDelay;
     private readonly float scoreEarnedDelay = 0.25f;
@@ -56,9 +56,9 @@ public class ScoreCollector : MonoBehaviour
                 earnedPointsPerFlight++;
                 Score += earnedPointsPerFlight;
 
-                if (earnedPointsPerFlight > currentMaxScoreMultiplierValue)
+                if (earnedPointsPerFlight > CurrentMaxScoreMultiplierValue)
                 {
-                    currentMaxScoreMultiplierValue = earnedPointsPerFlight;
+                    CurrentMaxScoreMultiplierValue = earnedPointsPerFlight;
                 }
 
                 Quaternion rotation = GameLogic.GetOrthoRotation(transform.position, GameManager.Instance.Centre.transform.position);
@@ -78,6 +78,6 @@ public class ScoreCollector : MonoBehaviour
     private void SaveScoreStats()
     {
         PlayerStatsDataStorageSafe.Instance.SaveScoreData(Score);
-        PlayerStatsDataStorageSafe.Instance.SaveScoreMultiplierData(currentMaxScoreMultiplierValue);
+        PlayerStatsDataStorageSafe.Instance.SaveScoreMultiplierData(CurrentMaxScoreMultiplierValue);
     }
 }

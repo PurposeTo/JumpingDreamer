@@ -6,8 +6,8 @@ public class StarCollector : MonoBehaviour
 {
     public event StarAmountChange OnStarAmountChange;
 
-    private int stars = 0;
-    public int Stars
+    private SafeInt stars = 0;
+    public SafeInt Stars
     {
         get => stars; 
         

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using UnityEngine.UI;
 
 public class ConfirmationDeleteStatsWindow : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class ConfirmationDeleteStatsWindow : MonoBehaviour
     public void ConfirmDeleteStatsButton()
     {
         OnDeleteStats?.Invoke(this, null);
+        MainMenu.Instance.SettingsMenu.ResetStatsButton.GetComponent<Button>().interactable = false;
         CloseWindowBitton();
     }
 

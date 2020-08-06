@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class LifeTimer : MonoBehaviour
 {
-    private float lifeTime = 0f;
+    private SafeFloat lifeTime = 0f;
 
 
     private void Start()
@@ -26,6 +26,6 @@ public class LifeTimer : MonoBehaviour
 
     private void SaveLifeTimeStats()
     {
-        PlayerStatsDataStorageSafe.Instance.SaveLifeTimeData((int)lifeTime);
+        PlayerStatsDataStorageSafe.Instance.SaveLifeTimeData((SafeInt)lifeTime);
     }
 }

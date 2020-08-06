@@ -4,15 +4,15 @@
 public class PlayerStatsDataModel
 {
     // Лучшие результаты за все время игры
-    public int? MaxCollectedStars { get; set; }
-    public int? MaxEarnedScore { get; set; }
-    public int? MaxScoreMultiplierValue { get; set; }
-    public int? MaxLifeTime { get; set; }
-    //public float? maxJumpHeight; // json хранит double
+    public SafeInt MaxCollectedStars { get; set; }
+    public SafeInt MaxEarnedScore { get; set; }
+    public SafeInt MaxScoreMultiplierValue { get; set; }
+    public SafeInt MaxLifeTime { get; set; }
+    //public float maxJumpHeight; // json хранит double
 
     // Общие результаты за все время игры
-    public int? TotalCollectedStars { get; set; }
-    public int? TotalLifeTime { get; set; }
+    public SafeInt TotalCollectedStars { get; set; }
+    public SafeInt TotalLifeTime { get; set; }
 
 
     public static PlayerStatsDataModel CreateModelWithDefaultValues()
