@@ -62,7 +62,7 @@
 *.zip
 #*.dll
 *.aif
-*.ttf
+#*.ttf
 *.rns
 *.reason 
 *.lxo
