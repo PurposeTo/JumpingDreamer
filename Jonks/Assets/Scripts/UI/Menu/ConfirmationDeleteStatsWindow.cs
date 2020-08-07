@@ -1,16 +1,14 @@
-﻿using UnityEngine;
-using System;
-using UnityEngine.UI;
+﻿using System;
+using UnityEngine;
 
 public class ConfirmationDeleteStatsWindow : MonoBehaviour
 {
     public event EventHandler OnDeleteStats;
 
-
     public void ConfirmDeleteStatsButton()
     {
+        PlayerStatsDataStorageSafe.Instance.DeletePlayerStatsData();
         OnDeleteStats?.Invoke(this, null);
-        MainMenu.Instance.SettingsMenu.ResetStatsButton.GetComponent<Button>().interactable = false;
         CloseWindowBitton();
     }
 

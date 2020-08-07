@@ -15,6 +15,7 @@ public static class DataLoaderHelper
         {
             filePath = Path.Combine(Application.persistentDataPath, fileName);
         }
+        else Debug.LogError("Unknown platform to GetFilePath()!");
 
         return filePath;
     }

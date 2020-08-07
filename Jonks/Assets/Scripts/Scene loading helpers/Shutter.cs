@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using Assets.Scripts.Player.Data;
-using System;
 
 [RequireComponent(typeof(Animator))]
 public class Shutter : SingletonMonoBehaviour<Shutter>

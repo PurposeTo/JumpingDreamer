@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Player.Data;
-using UnityEngine;
+﻿using UnityEngine;
 
 public delegate void ScoreAmountChange();
 public class ScoreCollector : MonoBehaviour
@@ -19,7 +18,7 @@ public class ScoreCollector : MonoBehaviour
     }
     private SafeInt earnedPointsPerFlight = 0; // Очки, полученные за полет (За то время, пока скорость была достаточной для получения очков)
 
-    private SafeInt CurrentMaxScoreMultiplierValue { get; set; } = 1; // Для сбора статистики
+    private SafeInt currentMaxScoreMultiplierValue = 1; // Для сбора статистики
 
     private float counterScoreEarnedDelay;
     private readonly float scoreEarnedDelay = 0.25f;
@@ -56,9 +55,9 @@ public class ScoreCollector : MonoBehaviour
                 earnedPointsPerFlight++;
                 Score += earnedPointsPerFlight;
 
-                if (earnedPointsPerFlight > CurrentMaxScoreMultiplierValue)
+                if (earnedPointsPerFlight > currentMaxScoreMultiplierValue)
                 {
-                    CurrentMaxScoreMultiplierValue = earnedPointsPerFlight;
+                    currentMaxScoreMultiplierValue = earnedPointsPerFlight;
                 }
 
                 Quaternion rotation = GameLogic.GetOrthoRotation(transform.position, GameManager.Instance.Centre.transform.position);
@@ -78,6 +77,6 @@ public class ScoreCollector : MonoBehaviour
     private void SaveScoreStats()
     {
         PlayerStatsDataStorageSafe.Instance.SaveScoreData(Score);
-        PlayerStatsDataStorageSafe.Instance.SaveScoreMultiplierData(CurrentMaxScoreMultiplierValue);
+        PlayerStatsDataStorageSafe.Instance.SaveScoreMultiplierData(currentMaxScoreMultiplierValue);
     }
 }
