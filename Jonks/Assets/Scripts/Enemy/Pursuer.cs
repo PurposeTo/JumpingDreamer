@@ -5,18 +5,24 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Pursuer : MonoBehaviour, IPooledObject
 {
-    private Rigidbody2D rb2d;
-
-    private Vector2 moveDirection;
+    #region enemy data
     private readonly float startVelocityMultiplier = 8f;
     private readonly float finishVelocityMultiplier = 16f;
-    private float currentVelocityMultiplier;
 
     private readonly float startRotationVelocity = 140f;
     private readonly float finishRotationVelocity = 80f;
-    private float currentRotationVelocity;
 
     private readonly float maxLifeTime = 60f;
+    #endregion
+
+    private Rigidbody2D rb2d;
+
+    private Vector2 moveDirection;
+
+    private float currentRotationVelocity;
+
+    private float currentVelocityMultiplier;
+
     private float lifeTimeCounter = 0f;
     private float percentLifeTimeCounter;
 
@@ -53,6 +59,13 @@ public class Pursuer : MonoBehaviour, IPooledObject
 
         rb2d.MoveRotation(currentRotation);
         rb2d.velocity = currentRotation * moveDirection * currentVelocityMultiplier;
+    }
+
+
+    // Метод для аниматора - выключить объект
+    private void DisableObject()
+    {
+        gameObject.SetActive(false);
     }
 
 
