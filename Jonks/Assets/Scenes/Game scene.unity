@@ -2139,7 +2139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 918e77727971e014cbdb6f5301d076cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EarnedScore: {fileID: 1360510320}
+  EarnedScoreInGame: {fileID: 1360510322}
 --- !u!1 &790408998
 GameObject:
   m_ObjectHideFlags: 0
@@ -3730,7 +3730,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4443398a78ca96942af1dacab768e473, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EarnedScore: {fileID: 1360510320}
   GameOverStatusScreen: {fileID: 2095183917}
 --- !u!95 &1058354256
 Animator:
@@ -4911,6 +4910,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1360510319}
   - component: {fileID: 1360510321}
+  - component: {fileID: 1360510322}
   - component: {fileID: 1360510320}
   m_Layer: 5
   m_Name: Earned Score text
@@ -4992,7 +4992,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 107.75
+  m_fontSize: 189
   m_fontSizeBase: 101.67
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5033,12 +5033,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1360510320}
-    characterCount: 31
+    characterCount: 18
     spriteCount: 0
-    spaceCount: 6
-    wordCount: 6
+    spaceCount: 3
+    wordCount: 4
     linkCount: 0
-    lineCount: 7
+    lineCount: 4
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -5064,6 +5064,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1360510318}
   m_CullTransparentMesh: 0
+--- !u!114 &1360510322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1360510318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68fbfd5f530167443ad2633fd0018cc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1377841636
 GameObject:
   m_ObjectHideFlags: 0

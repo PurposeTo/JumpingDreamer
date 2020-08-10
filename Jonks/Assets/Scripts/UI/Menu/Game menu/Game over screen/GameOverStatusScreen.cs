@@ -17,7 +17,6 @@ public class GameOverStatusScreen : MonoBehaviour
         // Get singleton reward based video ad reference.
         rewardBasedVideoAd = RewardBasedVideoAd.Instance;
 
-        GameOverMenu.Initialize(this);
         RebornScreen.Initialize(this);
         CollectRewardsScreen.Initialize(this);
     }
