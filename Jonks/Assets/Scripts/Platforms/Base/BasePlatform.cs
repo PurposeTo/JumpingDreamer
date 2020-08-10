@@ -15,7 +15,7 @@ public class BasePlatform : MonoBehaviour
 
     private protected virtual void Start()
     {
-        centre = GameManager.Instance.Centre;
+        centre = GameManager.Instance.CentreObject;
     }
 
 

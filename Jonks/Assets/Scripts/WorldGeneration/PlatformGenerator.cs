@@ -65,7 +65,7 @@ public class PlatformGenerator : SingletonMonoBehaviour<PlatformGenerator>
             }
 
             // Позиция равна первому элементу в списке. После использования позиции, убрать из списка
-            Vector3 position = GameManager.Instance.Centre.transform.position + (Vector3)directionsAroundCircle[0];
+            Vector3 position = GameManager.Instance.CentreObject.transform.position + (Vector3)directionsAroundCircle[0];
             directionsAroundCircle.RemoveAt(0);
 
             ObjectPooler.Instance.SpawnFromPool(platform, position, Quaternion.identity);
