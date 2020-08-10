@@ -9,24 +9,25 @@ public class EarnedScoreInGame : MonoBehaviour
     private int RecordUI => PlayerStatsDataStorageSafe.Instance.PlayerStatsData.MaxEarnedScore;
 
     private bool isRecordNew = false;
+    private EventHandler isRecordNewEvent = null;
+
 
     // Awake вызывается при включении объекта
     private void Awake()
     {
         earnedScore = gameObject.GetComponent<TextMeshProUGUI>();
 
-
         GameManager.Instance.PlayerPresenter.ScoreCollector.OnScoreAmountChange += ShowScore;
         GameManager.Instance.PlayerPresenter.StarCollector.OnStarAmountChange += ShowScore;
         ShowScore();
-
 
         /*
         * 1. Сохраняются статы
         * 2. При сохранении статов вызывается событие <Новый рекорд!> (Если рекорд новый)
         * 3. После сохранения статов вызывается метод ShowScoreWithRecord -> См. класс GameOverMenu
         */
-        PlayerStatsDataStorageSafe.Instance.OnNewScoreRecord += delegate (object sender, EventArgs eventArgs) { isRecordNew = true; };
+        isRecordNewEvent = (sender, eventArgs) => isRecordNew = true;
+        PlayerStatsDataStorageSafe.Instance.OnNewScoreRecord += isRecordNewEvent;
     }
 
 
@@ -34,7 +35,7 @@ public class EarnedScoreInGame : MonoBehaviour
     {
         GameManager.Instance.PlayerPresenter.ScoreCollector.OnScoreAmountChange -= ShowScore;
         GameManager.Instance.PlayerPresenter.StarCollector.OnStarAmountChange -= ShowScore;
-        // Отписаться от анонимного события!
+        PlayerStatsDataStorageSafe.Instance.OnNewScoreRecord -= isRecordNewEvent;
     }
 
 
