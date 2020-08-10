@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
-using Assets.Scripts.Player.Data;
+using System;
 
 public delegate void SavePlayerStats();
 public class GameOverMenu : MonoBehaviour
@@ -11,7 +11,7 @@ public class GameOverMenu : MonoBehaviour
     public event SavePlayerStats OnSavePlayerStats;
 
     private string recordScoreText;
-    private SafeInt record;
+    private int RecordUI => PlayerStatsDataStorageSafe.Instance.PlayerStatsData.MaxEarnedScore;
 
 
     private void Awake()
@@ -23,22 +23,27 @@ public class GameOverMenu : MonoBehaviour
     }
 
 
-    private void OnEnable()
-    {
-        ShowBestScore();
-    }
-
-
     private void OnDestroy()
     {
         PlayerStatsDataStorageSafe.Instance.OnNewScoreRecord -= SetNewBestScoreString;
     }
 
 
-    private void SetNewBestScoreString()
+    private void OnEnable()
     {
-        record = PlayerStatsDataStorageSafe.Instance.PlayerStatsData.MaxEarnedScore;
-        recordScoreText = $"New record!\n{record}";
+        ShowBestScore();
+    }
+
+
+    public void Initialize(GameOverStatusScreen gameOverStatusScreen)
+    {
+        this.gameOverStatusScreen = gameOverStatusScreen;
+    }
+
+
+    private void SetNewBestScoreString(object sender, EventArgs eventArgs)
+    {
+        recordScoreText = $"New record!\n{RecordUI}";
     }
 
 
@@ -46,17 +51,10 @@ public class GameOverMenu : MonoBehaviour
     {
         if (recordScoreText == null)
         {
-            record = PlayerStatsDataStorageSafe.Instance.PlayerStatsData.MaxEarnedScore;
-            recordScoreText = $"Record\n{record}";
+            recordScoreText = $"Record\n{RecordUI}";
         }
 
         EarnedScore.text += $"\n\n{recordScoreText}";
-    }
-
-
-    public void Initialize(GameOverStatusScreen gameOverStatusScreen)
-    {
-        this.gameOverStatusScreen = gameOverStatusScreen;
     }
 
 

@@ -1,16 +1,19 @@
 ﻿using UnityEngine;
 using System.IO;
-using Assets.Scripts.Player.Data;
 using UnityEngine.UI;
+using System;
 
 public class ResetStatsButton : MonoBehaviour
 {
     public ConfirmationDeleteStatsWindow ConfirmationDeleteWindow;
+    private static bool isStatsAlreadyReset = false;
 
 
     private void Start()
     {
-        if (File.Exists(PlayerStatsDataStorageSafe.Instance.FilePath))
+        ConfirmationDeleteWindow.OnDeleteStats += TurnOffButton;
+
+        if (File.Exists(PlayerStatsDataStorageSafe.Instance.FilePath) && !isStatsAlreadyReset)
         {
             gameObject.GetComponent<Button>().interactable = true;
         }
@@ -21,8 +24,21 @@ public class ResetStatsButton : MonoBehaviour
     }
 
 
+    private void OnDestroy()
+    {
+        ConfirmationDeleteWindow.OnDeleteStats -= TurnOffButton;
+    }
+
+
     public void ResetPlayerStatsData()
     {
         ConfirmationDeleteWindow.gameObject.SetActive(true);
+    }
+
+
+    private void TurnOffButton(object sender, EventArgs eventArgs)
+    {
+        gameObject.GetComponent<Button>().interactable = false;
+        isStatsAlreadyReset = true;
     }
 }

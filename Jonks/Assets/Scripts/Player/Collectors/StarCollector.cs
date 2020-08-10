@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Player.Data;
-using UnityEngine;
+﻿using UnityEngine;
 
 public delegate void StarAmountChange();
 public class StarCollector : MonoBehaviour

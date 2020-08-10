@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-
-
-public class SceneLoader : MonoBehaviour
+﻿public static class SceneLoader
 {
     public static string MainMenuName { get; } = "Main menu";
     public static string GameSceneName { get; } = "Game scene";

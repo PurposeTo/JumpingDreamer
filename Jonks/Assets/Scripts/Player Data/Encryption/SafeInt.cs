@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 
-[JsonConverter(typeof(SafeIntConverter))]
 public struct SafeInt
 {
     private int value;
