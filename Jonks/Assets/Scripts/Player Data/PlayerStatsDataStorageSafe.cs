@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.IO;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 public class PlayerStatsDataStorageSafe : SingletonMonoBehaviour<PlayerStatsDataStorageSafe>
 {
@@ -9,7 +9,6 @@ public class PlayerStatsDataStorageSafe : SingletonMonoBehaviour<PlayerStatsData
 
     public string FilePath { get; private set; }
     private readonly string fileName = "Stats.json"; // Имя файла с данными (как часть всего пути)
-    JsonSerializerOptions serializeOptions; // Параметры сериализации
 
     public bool IsDataFileLoaded { get; private set; } = false;
 
@@ -48,11 +47,6 @@ public class PlayerStatsDataStorageSafe : SingletonMonoBehaviour<PlayerStatsData
         FilePath = DataLoaderHelper.GetFilePath(fileName);
         Debug.Log($"File path: {FilePath}");
 
-        // Инициализация параметров сериализации
-        serializeOptions = new JsonSerializerOptions();
-        serializeOptions.Converters.Add(new SafeIntConverter());
-        serializeOptions.WriteIndented = true;
-
         GetPlayerStatsData();
     }
 
@@ -64,7 +58,8 @@ public class PlayerStatsDataStorageSafe : SingletonMonoBehaviour<PlayerStatsData
         {
             Debug.Log($"File on path \"{FilePath}\" was found.");
 
-            string dataAsJSON = JsonEncryption.Decrypt(FilePath);
+            //string dataAsJSON = JsonEncryption.Decrypt(FilePath);
+            string dataAsJSON = File.ReadAllText(FilePath);
 
             bool isJsonConverted = true;
 
@@ -73,7 +68,22 @@ public class PlayerStatsDataStorageSafe : SingletonMonoBehaviour<PlayerStatsData
             {
                 try
                 {
-                    PlayerStatsData = JsonSerializer.Deserialize<PlayerStatsDataModel>(dataAsJSON, serializeOptions);
+                    JsonTextReader reader = new JsonTextReader(new StringReader(dataAsJSON));
+
+                    //JSchemaValidatingReader validatingReader = new JSchemaValidatingReader(reader);
+                    //validatingReader.Schema = JSchema.Parse(schemaJson);
+
+                    //IList<string> messages = new List<string>();
+                    //validatingReader.ValidationEventHandler += (o, a) => messages.Add(a.Message);
+
+                    JsonSerializer serializer = new JsonSerializer();
+                    serializer.Converters.Add(new SafeIntConverter());
+                    PlayerStatsData = serializer.Deserialize<PlayerStatsDataModel>(reader);
+
+                    //PlayerStatsData = JsonConvert.DeserializeObject<PlayerStatsDataModel>(dataAsJSON);
+                    print("#MaxCollectedStars: " + PlayerStatsData.MaxCollectedStars);
+                    print("#MaxEarnedScore: " + PlayerStatsData.MaxEarnedScore);
+                    print("#MaxLifeTime: " + PlayerStatsData.MaxLifeTime);
                 }
                 catch (Exception exception)
                 {
@@ -82,6 +92,10 @@ public class PlayerStatsDataStorageSafe : SingletonMonoBehaviour<PlayerStatsData
                     Debug.LogError($"Unsuccessful attempt of deserialization: {exception.Message}");
                     ErrorWindowGenerator.Instance.CreateErrorWindow($"{exception.Message}\nОшибка загрузки данных игровой статистики!\nЗапись новых данных заблокирована!");
                 }
+
+                // Проверка соответствия структуры json модели данных
+                //
+                //
             }
             else
             {
@@ -182,13 +196,12 @@ public class PlayerStatsDataStorageSafe : SingletonMonoBehaviour<PlayerStatsData
             // А если у пользователя недостаточно памяти, чтобы создать файл?
             print($"PlayerStatsData: {PlayerStatsData}");
             print($"PlayerStatsData.MaxEarnedScore: {PlayerStatsData.MaxEarnedScore}");
-            print($"TypeOfConverter: {typeof(SafeIntConverter)}");
 
             string json = "";
             bool isJsonConverted = true;
             try
             {
-                json = JsonSerializer.Serialize<PlayerStatsDataModel>(PlayerStatsData, serializeOptions);
+                json = JsonConvert.SerializeObject(PlayerStatsData);
             }
             catch (Exception exception)
             {
@@ -201,8 +214,9 @@ public class PlayerStatsDataStorageSafe : SingletonMonoBehaviour<PlayerStatsData
             if (isJsonConverted)
             {
                 print("AfterSerializingModel: " + json);
-                string modifiedData = JsonEncryption.Encrypt(json);
-                File.WriteAllText(FilePath, modifiedData);
+                //string modifiedData = JsonEncryption.Encrypt(json);
+                //File.WriteAllText(FilePath, modifiedData);
+                File.WriteAllText(FilePath, json);
             }
         }
     }
