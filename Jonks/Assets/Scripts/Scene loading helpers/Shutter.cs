@@ -54,6 +54,7 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
     public void LoadSceneAfterClosingShutter()
     {
         SceneManager.LoadScene(sceneToLoadName);
+        sceneToLoadName = ""; // Необходимо очистить поле после загрузки сцены
     }
 
 
@@ -66,7 +67,6 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
     // Этот метод вызывается после конца анимации открытия заслонки
     public void RecoverTimeAfterOpeningShutter()
     {
-        sceneToLoadName = ""; // Необходимо очистить поле после загрузки сцены
         Time.timeScale = 1f;
     }
 }
