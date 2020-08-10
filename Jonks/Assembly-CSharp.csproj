@@ -185,6 +185,7 @@
     <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\GameOverStatus\GameOverMenu.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\GameOverStatus\RebornScreen.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\GameOverStatusScreen.cs" />
+    <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\ShowFinalScore.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Game menu\GameMenu.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\MainMenu.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\PauseMenu.cs" />
