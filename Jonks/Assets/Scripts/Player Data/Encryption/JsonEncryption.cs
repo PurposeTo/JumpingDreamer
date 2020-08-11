@@ -8,11 +8,15 @@ public static class JsonEncryption
     private static readonly string fileName = "StatsAlpha.json";
     public static string filePath => DataLoaderHelper.GetFilePath(fileName);
 
+    private static readonly int salt = 100;
+
 
     public static string Encrypt(string data)
     {
-        File.WriteAllText(filePath, StringHash(data));
-        return Convert.ToBase64String(Encoding.UTF8.GetBytes(data));
+        string saltedData = AddSalt(data);
+        File.WriteAllText(filePath, StringHash(saltedData));
+
+        return Convert.ToBase64String(Encoding.UTF8.GetBytes(saltedData));
     }
 
     
@@ -20,14 +24,29 @@ public static class JsonEncryption
     {
         if (File.Exists(dataFile) && File.Exists(filePath))
         {
-            string loadedData = File.ReadAllText(dataFile);
-            string dataAsJSON = Encoding.UTF8.GetString(Convert.FromBase64String(loadedData));
+            string dataInBase64Encoding = File.ReadAllText(dataFile);
+            string saltedData = Encoding.UTF8.GetString(Convert.FromBase64String(dataInBase64Encoding));
 
             // Совпадает ли хэш считанных данных с хэшом ранее сохраненных данных?
-            return IsDataWasNotEdited(dataAsJSON) ? dataAsJSON : null;
+            return IsDataWasNotEdited(saltedData) ? AddSalt(saltedData) : null;
         }
 
         return null;
+    }
+
+
+    private static string AddSalt(string data)
+    {
+        char[] dataAsCharArray = data.ToCharArray();
+        StringBuilder saltedData = new StringBuilder();
+
+        for (int i = 0; i < dataAsCharArray.Length; i++)
+        {
+            int saltedCharacter = Convert.ToInt32(dataAsCharArray[i]) ^ salt;
+            saltedData.Append(Convert.ToChar(saltedCharacter));
+        }
+
+        return saltedData.ToString();
     }
 
 

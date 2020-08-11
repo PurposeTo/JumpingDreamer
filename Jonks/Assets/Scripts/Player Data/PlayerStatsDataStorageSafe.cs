@@ -58,8 +58,8 @@ public class PlayerStatsDataStorageSafe : SingletonMonoBehaviour<PlayerStatsData
         {
             Debug.Log($"File on path \"{FilePath}\" was found.");
 
-            //string dataAsJSON = JsonEncryption.Decrypt(FilePath);
-            string dataAsJSON = File.ReadAllText(FilePath);
+            string dataAsJSON = JsonEncryption.Decrypt(FilePath);
+            //string dataAsJSON = File.ReadAllText(FilePath);
 
             bool isJsonConverted = true;
 
@@ -214,9 +214,9 @@ public class PlayerStatsDataStorageSafe : SingletonMonoBehaviour<PlayerStatsData
             if (isJsonConverted)
             {
                 print("AfterSerializingModel: " + json);
-                //string modifiedData = JsonEncryption.Encrypt(json);
-                //File.WriteAllText(FilePath, modifiedData);
-                File.WriteAllText(FilePath, json);
+                string modifiedData = JsonEncryption.Encrypt(json);
+                File.WriteAllText(FilePath, modifiedData);
+                //File.WriteAllText(FilePath, json);
             }
         }
     }
