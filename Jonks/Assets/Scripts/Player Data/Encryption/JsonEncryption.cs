@@ -6,7 +6,7 @@ using System.IO;
 public static class JsonEncryption
 {
     private static readonly string fileName = "StatsAlpha.json";
-    public static string filePath => DataLoaderHelper.GetFilePath(fileName);
+    public static string FilePathWithHash => DataLoaderHelper.GetFilePath(fileName);
 
     private static readonly int salt = 100;
 
@@ -14,7 +14,7 @@ public static class JsonEncryption
     public static string Encrypt(string data)
     {
         string saltedData = AddSalt(data);
-        File.WriteAllText(filePath, StringHash(saltedData));
+        File.WriteAllText(FilePathWithHash, StringHash(saltedData));
 
         return Convert.ToBase64String(Encoding.UTF8.GetBytes(saltedData));
     }
@@ -22,7 +22,7 @@ public static class JsonEncryption
     
     public static string Decrypt(string dataFile)
     {
-        if (File.Exists(dataFile) && File.Exists(filePath))
+        if (File.Exists(dataFile) && File.Exists(FilePathWithHash))
         {
             string dataInBase64Encoding = File.ReadAllText(dataFile);
             string saltedData = Encoding.UTF8.GetString(Convert.FromBase64String(dataInBase64Encoding));
@@ -67,6 +67,6 @@ public static class JsonEncryption
 
     public static bool IsDataWasNotEdited(string dataAsJSON)
     {
-        return StringHash(dataAsJSON) == File.ReadAllText(filePath);
+        return StringHash(dataAsJSON) == File.ReadAllText(FilePathWithHash);
     }
 }

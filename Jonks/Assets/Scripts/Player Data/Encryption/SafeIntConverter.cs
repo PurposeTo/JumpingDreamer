@@ -24,6 +24,7 @@ public class SafeIntConverter : JsonConverter
         }
         else
         {
+            //return new SafeInt(default(int)); // Если внутри json лежит null, то эта ветвь кода сработает. Если значение стерто полностью, то конструктор просто положит null в поле, которое отсутствует, при этом считывание пройдет успешно.
             throw new JsonException($"Unexpected token or value when parsing SafeInt!");
         }
     }
@@ -31,7 +32,7 @@ public class SafeIntConverter : JsonConverter
 
     public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
     {
-        if (value is SafeInt)
+        if (value is SafeInt) // value is SafeInt?
         {
             writer.WriteValue((SafeInt)value);
         }

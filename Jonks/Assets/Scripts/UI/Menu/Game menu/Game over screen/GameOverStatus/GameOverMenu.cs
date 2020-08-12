@@ -11,7 +11,7 @@ public class GameOverMenu : MonoBehaviour
     public event SavePlayerStats OnSavePlayerStats;
 
     private string recordScoreText;
-    private int RecordUI => PlayerStatsDataStorageSafe.Instance.PlayerStatsData.MaxEarnedScore;
+    private int RecordUI => PlayerStatsDataStorageSafe.Instance.PlayerStatsData.MaxEarnedScore.Value;
 
 
     private void Awake()
