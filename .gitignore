@@ -11,10 +11,10 @@
 [Uu]ser[Ss]ettings/
 
 # TextMeshPro meta files
-/[Aa]ssets/[Tt]ext[Mm]esh [Pp]ro/**/*.meta
+Jonks/[Aa]ssets/TextMesh Pro/**/*.meta
 
 # ExternalDependencyManager meta files
-/[Aa]ssets/[Ee]xternal[Dd]ependency[Mm]anager/**/*.meta
+Jonks/[Aa]ssets/ExternalDependencyManager/**/*.meta
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
@@ -442,4 +442,3 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
-

@@ -32,6 +32,7 @@ public class PlayerHealth : MonoBehaviour
     {
         animator.SetBool("isInvulnerable", true);
         isInvulnerable = true;
+        GameManager.Instance.Centre.SetIsTriggerKillingZone(false);
     }
 
 
@@ -39,6 +40,7 @@ public class PlayerHealth : MonoBehaviour
     {
         animator.SetBool("isInvulnerable", false);
         isInvulnerable = false;
+        GameManager.Instance.Centre.SetIsTriggerKillingZone(true);
     }
 
 
@@ -46,7 +48,7 @@ public class PlayerHealth : MonoBehaviour
     {
         SetInvulnerableTrue();
 
-        Vector2 toCentreVector = ((Vector2)GameManager.Instance.Centre.transform.position - rb2D.position);
+        Vector2 toCentreVector = ((Vector2)GameManager.Instance.CentreObject.transform.position - rb2D.position);
         Vector2 toCentreDirection = toCentreVector.normalized;
         float toCentreDistance = toCentreVector.magnitude - Centre.CentreRadius;
 
@@ -59,6 +61,7 @@ public class PlayerHealth : MonoBehaviour
         rb2D.AddForce(-1 * toCentreDirection * impulseVelocity, ForceMode2D.Impulse);
 
         float fallingTime = Mathf.Sqrt(2 * (raiseHeight + toCentreDistance) / (Gravity.GravityAcceleration * Gravity.GravityScale));
+        // fallingTime учитывает только время падения; так же есть время взлёта
         Debug.Log($"Your falling time to the surface of the Centre after raise is {fallingTime}");
 
     }

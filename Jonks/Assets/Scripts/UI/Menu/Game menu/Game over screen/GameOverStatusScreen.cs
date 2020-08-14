@@ -6,6 +6,7 @@ public class GameOverStatusScreen : MonoBehaviour
     public GameOverMenu GameOverMenu;
     public RebornScreen RebornScreen;
     public CollectRewardsScreen CollectRewardsScreen;
+    public RefuseToViewAdsScreen RefuseToViewAdsScreen;
 
     [HideInInspector] public bool isPlayerMustSeeAd = false;
 
@@ -17,7 +18,6 @@ public class GameOverStatusScreen : MonoBehaviour
         // Get singleton reward based video ad reference.
         rewardBasedVideoAd = RewardBasedVideoAd.Instance;
 
-        GameOverMenu.Initialize(this);
         RebornScreen.Initialize(this);
         CollectRewardsScreen.Initialize(this);
     }
@@ -49,19 +49,31 @@ public class GameOverStatusScreen : MonoBehaviour
     }
 
 
-    private void ShowRebornScreen()
-    {
-        GameOverMenu.gameObject.SetActive(false);
-        RebornScreen.gameObject.SetActive(true);
-        CollectRewardsScreen.gameObject.SetActive(false);
-    }
-
-
     public void ShowGameOverMenu()
     {
         GameOverMenu.gameObject.SetActive(true);
         RebornScreen.gameObject.SetActive(false);
         CollectRewardsScreen.gameObject.SetActive(false);
+        RefuseToViewAdsScreen.gameObject.SetActive(false);
+    }
+
+
+    public void ShowRefuseToViewAdsScreen()
+    {
+        GameOverMenu.gameObject.SetActive(false);
+        RebornScreen.gameObject.SetActive(false);
+        CollectRewardsScreen.gameObject.SetActive(false);
+        RefuseToViewAdsScreen.gameObject.SetActive(true);
+    }
+
+
+    private void ShowRebornScreen()
+    {
+        GameOverMenu.gameObject.SetActive(false);
+        RebornScreen.gameObject.SetActive(true);
+        CollectRewardsScreen.gameObject.SetActive(false);
+        RefuseToViewAdsScreen.gameObject.SetActive(false);
+
     }
 
 
@@ -70,5 +82,6 @@ public class GameOverStatusScreen : MonoBehaviour
         GameOverMenu.gameObject.SetActive(false);
         RebornScreen.gameObject.SetActive(false);
         CollectRewardsScreen.gameObject.SetActive(true);
+        RefuseToViewAdsScreen.gameObject.SetActive(false);
     }
 }

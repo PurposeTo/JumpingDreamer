@@ -60,7 +60,7 @@ public class ScoreCollector : MonoBehaviour
                     currentMaxScoreMultiplierValue = earnedPointsPerFlight;
                 }
 
-                Quaternion rotation = GameLogic.GetOrthoRotation(transform.position, GameManager.Instance.Centre.transform.position);
+                Quaternion rotation = GameLogic.GetOrthoRotation(transform.position, GameManager.Instance.CentreObject.transform.position);
                 VFXManager.Instance.DisplayPopupText(transform.position, rotation, $"+{earnedPointsPerFlight}", Color.white, scoreFontSize);
 
                 counterScoreEarnedDelay = scoreEarnedDelay;

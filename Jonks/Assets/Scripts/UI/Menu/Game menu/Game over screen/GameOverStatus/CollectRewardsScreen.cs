@@ -9,7 +9,7 @@ public class CollectRewardsScreen : MonoBehaviour
 
     private bool mustRewardPlayer = false; // bool - показывали ли уже рекламу
 
-    private bool isAdClosed = false;
+    private bool isAdClosedByPlayer = false;
     private Coroutine OnCloseAdWaitCoroutine;
 
 
@@ -67,7 +67,7 @@ public class CollectRewardsScreen : MonoBehaviour
     private void OnCloseAd(object sender, EventArgs args)
     {
         // При закрытии рекламы
-        isAdClosed = true;
+        isAdClosedByPlayer = true;
     }
 
     private void OnCloseAdWait()
@@ -79,8 +79,8 @@ public class CollectRewardsScreen : MonoBehaviour
 
     private IEnumerator OnCloseAdWaitEnumerator()
     {
-        yield return new WaitUntil(() => isAdClosed);
-        isAdClosed = false;
+        yield return new WaitUntil(() => isAdClosedByPlayer);
+        isAdClosedByPlayer = false;
 
         if (mustRewardPlayer)
         {
@@ -89,12 +89,8 @@ public class CollectRewardsScreen : MonoBehaviour
         }
         else
         {
-            /*
-             * Если нет, то перезагрузить уровень (Показать экран с надписью: "Вы отказались от награды. Желаете возродиться? <Кнопка возродиться> <Кнопка выйти в меню>")
-             * 
-             * Должно работать, если награда игрока происходит до закрытия рекламы
-             */
-            SceneLoader.LoadScene(SceneLoader.GameSceneName);
+            // Если нет, то показать экран с надписью: "Вы отказались от награды. Желаете возродиться? <Кнопка возродиться> <Кнопка выйти в меню>"
+            gameOverStatusScreen.ShowRefuseToViewAdsScreen();
         }
 
         OnCloseAdWaitCoroutine = null;
