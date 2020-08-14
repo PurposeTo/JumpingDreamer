@@ -8,7 +8,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{C1C5C071-B83F-B023-CA69-3669697175E0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -182,6 +183,7 @@
     <Compile Include="Assets\Scripts\UI\Menu\AdRewardMessage.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\ConfirmationDeleteStatsWindow.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\ErrorWindow.cs" />
+    <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\EarnedScoreInGame.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\GameOverScreen.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\GameOverStatus\CollectRewardsScreen.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\GameOverStatus\GameOverMenu.cs" />

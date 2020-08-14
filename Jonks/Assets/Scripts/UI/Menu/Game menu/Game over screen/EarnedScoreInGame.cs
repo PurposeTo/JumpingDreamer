@@ -6,7 +6,7 @@ public class EarnedScoreInGame : MonoBehaviour
 {
     private TextMeshProUGUI earnedScore;
 
-    private int RecordUI => PlayerStatsDataStorageSafe.Instance.PlayerStatsData.MaxEarnedScore;
+    private int RecordUI => PlayerStatsDataStorageSafe.Instance.PlayerStatsData.MaxEarnedScore.Value;
 
     private bool isRecordNew = false;
     private EventHandler isRecordNewEvent = null;
