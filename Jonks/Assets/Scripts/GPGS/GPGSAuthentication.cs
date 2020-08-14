@@ -34,6 +34,8 @@ public class GPGSAuthentication : SingletonMonoBehaviour<GPGSAuthentication>
             AuthenticateStatus.text = $"{result}";
         });
 
+        StartCoroutine(ShowSelectSaveGameEnumerator());
+
         //Social.Active.localUser.Authenticate(success =>
         //{
         //    if (success)
@@ -48,13 +50,10 @@ public class GPGSAuthentication : SingletonMonoBehaviour<GPGSAuthentication>
     }
 
 
-    private void Start()
+    private IEnumerator ShowSelectSaveGameEnumerator()
     {
-        //if (platform.IsAuthenticated())
-        //{
-
-        //}
-        GPGSPStatsSaver.Instance.ShowSavedGamesSelectMenu();
+        yield return new WaitUntil(() => platform.IsAuthenticated());
+        GPGSStatsSaver.Instance.ShowSavedGamesSelectMenu();
     }
 
 

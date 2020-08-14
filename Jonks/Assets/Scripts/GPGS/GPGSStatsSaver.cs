@@ -4,7 +4,7 @@ using GooglePlayGames.BasicApi;
 using GooglePlayGames.BasicApi.SavedGame;
 using UnityEngine;
 
-public class GPGSPStatsSaver : SingletonMonoBehaviour<GPGSPStatsSaver>
+public class GPGSStatsSaver : SingletonMonoBehaviour<GPGSStatsSaver>
 {
     private PlayGamesPlatform GamesPlatform => (PlayGamesPlatform)Social.Active;
     private ISavedGameClient SavedGameClient => GamesPlatform.SavedGame;
@@ -17,9 +17,6 @@ public class GPGSPStatsSaver : SingletonMonoBehaviour<GPGSPStatsSaver>
         uint maxSavesNumberToDisplay = 5;
         bool allowCreateSave = false;
         bool allowDeleteSave = true;
-
-        Debug.Log("Instance1: " + GamesPlatform);
-        Debug.Log("Instance2: " + SavedGameClient);
 
         SavedGameClient.ShowSelectSavedGameUI("Select saved game",
             maxSavesNumberToDisplay,
