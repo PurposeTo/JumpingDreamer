@@ -31,16 +31,6 @@ public class Pursuer : MonoBehaviour, IPooledObject
     private GameObject target;
 
 
-    private void Start()
-    {
-        rb2d = gameObject.GetComponent<Rigidbody2D>();
-        target = GameManager.Instance.Player;
-        playerTactics = GameManager.Instance.PlayerPresenter.PlayerTactics;
-
-        moveDirection = ((Vector2)target.transform.position - rb2d.position).normalized;
-    }
-
-
     private void Update()
     {
         lifeTimeCounter += Time.deltaTime;
@@ -57,8 +47,20 @@ public class Pursuer : MonoBehaviour, IPooledObject
 
         Quaternion currentRotation = Quaternion.RotateTowards(transform.rotation, toTargetRotation, currentRotationVelocity * Time.deltaTime);
 
-        rb2d.MoveRotation(currentRotation);
-        rb2d.velocity = currentRotation * moveDirection * currentVelocityMultiplier;
+        moveDirection = currentRotation * Vector3.up; // Повернуть вектор движения
+
+        rb2d.MoveRotation(currentRotation); // Повернуться "лицом" к цели
+        rb2d.velocity = moveDirection * currentVelocityMultiplier;
+
+        Debug.DrawRay(transform.position, moveDirection.normalized * 3, Color.green, 2f); // Вектор непонятно куда
+        Debug.DrawRay(transform.position, (toTargetRotation * Vector3.up).normalized * 3, Color.yellow, 2f); // Вектор точный
+    }
+
+    private void Initialize()
+    {
+        rb2d = gameObject.GetComponent<Rigidbody2D>();
+        target = GameManager.Instance.Player;
+        playerTactics = GameManager.Instance.PlayerPresenter.PlayerTactics;
     }
 
 
@@ -71,6 +73,13 @@ public class Pursuer : MonoBehaviour, IPooledObject
 
     void IPooledObject.OnObjectSpawn()
     {
+        // В Start нельзя поместить потому, что OnObjectSpawn вызывается ДО.
+        // В Awake нельзя поместить потому, что в Awake инициализируются SingletonMonobehavior.
+        // Проблема присутствует потому, что поля из Initialize необходимо использовать в OnObjectSpawn().
+        Initialize();
+
+        moveDirection = ((Vector2)target.transform.position - rb2d.position).normalized;
+
         float percentageOfTimeSpentByThePlayerMoving = playerTactics.PercentageOfTimeSpentByThePlayerMoving;
         currentVelocityMultiplier = Mathf.Lerp(startVelocityMultiplier, finishVelocityMultiplier, percentageOfTimeSpentByThePlayerMoving);
         currentRotationVelocity = Mathf.Lerp(startRotationVelocity, finishRotationVelocity, percentageOfTimeSpentByThePlayerMoving);
