@@ -90,29 +90,28 @@ public class PlayerStatsDataStorageSafe : SingletonMonoBehaviour<PlayerStatsData
                     isJsonConverted = false;
 
                     Debug.LogError($"Unsuccessful attempt of deserialization: {exception.Message}");
-                    //ErrorWindowGenerator.Instance.CreateErrorWindow($"{exception.Message}\nОшибка загрузки данных игровой статистики!\nЗапись новых данных заблокирована!");
+                    ErrorWindowGenerator.Instance.CreateErrorWindow($"{exception.Message}\nОшибка загрузки данных игровой статистики!\nЗапись новых данных заблокирована!");
                 }
             }
-            else
-            {
-                isJsonConverted = false;
-
-                Debug.LogError($"Data reading from \"{fileName}\" ERROR!\nData was edited from outside.");
-                //ErrorWindowGenerator.Instance.CreateErrorWindow("Ошибка загрузки данных игровой статистики!\nЗапись новых данных заблокирована!");
-            }
-
-            if (isJsonConverted && !isJsonStructureIncorrect)
-            {
-                IsDataFileLoaded = true;
-                Debug.Log($"Data from \"{fileName}\" was loaded successfully.");
-            }
-            else
+            
+            if(dataAsJSON == null || isJsonStructureIncorrect || !isJsonConverted)
             {
                 PlayerStatsData = PlayerStatsDataModel.CreateModelWithDefaultValues();
                 print("#MaxCollectedStars: " + PlayerStatsData.MaxCollectedStars);
                 print("#MaxEarnedScore: " + PlayerStatsData.MaxEarnedScore);
                 print("#MaxLifeTime: " + PlayerStatsData.MaxLifeTime);
                 IsDataFileLoaded = false;
+
+                Debug.LogError($"Data reading from \"{fileName}\" ERROR!\nData was edited from outside.");
+                Debug.LogError($"dataAsJSON: {dataAsJSON}");
+                Debug.LogError($"isJsonStructureIncorrect: {isJsonStructureIncorrect}");
+                Debug.LogError($"isJsonConverted: {isJsonConverted}");
+                ErrorWindowGenerator.Instance.CreateErrorWindow("Ошибка загрузки данных игровой статистики!\nЗапись новых данных заблокирована!");
+            }
+            else
+            {
+                IsDataFileLoaded = true;
+                Debug.Log($"Data from \"{fileName}\" was loaded successfully.");
             }
         }
         else
@@ -210,7 +209,7 @@ public class PlayerStatsDataStorageSafe : SingletonMonoBehaviour<PlayerStatsData
                 isJsonConverted = false;
 
                 Debug.LogError($"Unsuccessful attempt of serialization: {exception.Message}");
-                //ErrorWindowGenerator.Instance.CreateErrorWindow("Ошибка записи данных игровой статистики! Пожалуйста, обратитесь в службу поддержки.");
+                ErrorWindowGenerator.Instance.CreateErrorWindow("Ошибка записи данных игровой статистики! Пожалуйста, обратитесь в службу поддержки.");
             }
 
             if (isJsonConverted)

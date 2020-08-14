@@ -5,6 +5,7 @@ using UnityEngine.SocialPlatforms;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using TMPro;
+using System;
 
 public class GPGSAuthentication : SingletonMonoBehaviour<GPGSAuthentication>
 {
@@ -19,14 +20,14 @@ public class GPGSAuthentication : SingletonMonoBehaviour<GPGSAuthentication>
             Debug.LogError("PlayGamesPlatform.Activate() is already activated!");
         }
 
-        PlayGamesClientConfiguration configuration = new PlayGamesClientConfiguration.Builder().Build();
+        PlayGamesClientConfiguration configuration = new PlayGamesClientConfiguration.Builder().EnableSavedGames().Build();
 
         PlayGamesPlatform.InitializeInstance(configuration);
         PlayGamesPlatform.DebugLogEnabled = true;
 
         platform = PlayGamesPlatform.Activate();
 
-        // authenticate user:
+        // Аутентификация пользователя
         PlayGamesPlatform.Instance.Authenticate(SignInInteractivity.CanPromptOnce, (result) =>
         {
             Debug.Log($"Authenticate is completed with code: {result}");
@@ -44,6 +45,16 @@ public class GPGSAuthentication : SingletonMonoBehaviour<GPGSAuthentication>
         //        Debug.LogWarning("Failed to authenticate!");
         //    }
         //});
+    }
+
+
+    private void Start()
+    {
+        //if (platform.IsAuthenticated())
+        //{
+
+        //}
+        GPGSPStatsSaver.Instance.ShowSavedGamesSelectMenu();
     }
 
 

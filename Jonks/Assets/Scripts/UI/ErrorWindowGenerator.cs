@@ -6,8 +6,6 @@ public class ErrorWindowGenerator : SingletonMonoBehaviour<ErrorWindowGenerator>
 
     public void CreateErrorWindow(string errorText)
     {
-        Instantiate(errorWindow);
-        string errorMessage = errorText;
-        errorWindow.GetComponent<ErrorWindow>().errorTextObject.text = errorMessage;
+        Instantiate(errorWindow).GetComponent<ErrorWindow>().errorTextObject.text = errorText;
     }
 }
