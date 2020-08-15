@@ -2,7 +2,7 @@
 using UnityEngine;
 using GoogleMobileAds.Api;
 
-public class AdMobScript : MonoBehaviour
+public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
 {
     private const string ADS_ID = "ca-app-pub-8365272256827287~9135876659";
     private const string rewardedVideoAd_ID = "ca-app-pub-8365272256827287/5171106131";
@@ -11,7 +11,7 @@ public class AdMobScript : MonoBehaviour
     private RewardBasedVideoAd rewardBasedVideoAd;
 
 
-    private void Start()
+    protected override void AwakeSingleton()
     {
         // Initialize the Google Mobile Ads SDK.
         MobileAds.Initialize(initStatus => { });
@@ -59,58 +59,59 @@ public class AdMobScript : MonoBehaviour
     }
 
 
-    public void ShowRewardVideoAd()
+    public void ShowRewardVideoAd(Action<bool> callback)
     {
-        if (rewardBasedVideoAd.IsLoaded())
-        {
-            rewardBasedVideoAd.Show();
-        }
+        bool isAdLoaded = rewardBasedVideoAd.IsLoaded();
+        callback(isAdLoaded);
+        if (isAdLoaded) rewardBasedVideoAd.Show();
     }
 
 
-    public void HandleRewardBasedVideoLoaded(object sender, EventArgs args)
+
+    #region event calls not from the main thread
+    private void HandleRewardBasedVideoLoaded(object sender, EventArgs args)
     {
-        print("HandleRewardBasedVideoLoaded event received");
+        Debug.Log("HandleRewardBasedVideoLoaded event received");
     }
 
 
-    public void HandleRewardBasedVideoFailedToLoad(object sender, AdFailedToLoadEventArgs args)
+    private void HandleRewardBasedVideoFailedToLoad(object sender, AdFailedToLoadEventArgs args)
     {
-        print($"HandleRewardBasedVideoFailedToLoad event received with message: {args.Message}");
+        Debug.Log($"HandleRewardBasedVideoFailedToLoad event received with message: {args.Message}");
     }
 
 
-    public void HandleRewardBasedVideoOpened(object sender, EventArgs args)
+    private void HandleRewardBasedVideoOpened(object sender, EventArgs args)
     {
-        print("HandleRewardBasedVideoOpened event received");
+        Debug.Log("HandleRewardBasedVideoOpened event received");
     }
 
 
-    public void HandleRewardBasedVideoStarted(object sender, EventArgs args)
+    private void HandleRewardBasedVideoStarted(object sender, EventArgs args)
     {
-        print("HandleRewardBasedVideoStarted event received");
+        Debug.Log("HandleRewardBasedVideoStarted event received");
     }
 
 
-    public void HandleRewardBasedVideoClosed(object sender, EventArgs args)
+    private void HandleRewardBasedVideoClosed(object sender, EventArgs args)
     {
-        print("HandleRewardBasedVideoClosed event received");
+        Debug.Log("HandleRewardBasedVideoClosed event received");
         // Перезагрузить рекламу
         RequestRewardBasedVideo();
     }
 
 
-    public void HandleRewardBasedVideoRewarded(object sender, Reward args)
+    private void HandleRewardBasedVideoRewarded(object sender, Reward args)
     {
         string type = args.Type;
         double amount = args.Amount;
-        print($"HandleRewardBasedVideoRewarded event received for {amount} {type}");
+        Debug.Log($"HandleRewardBasedVideoRewarded event received for {amount} {type}");
     }
 
 
-    public void HandleRewardBasedVideoLeftApplication(object sender, EventArgs args)
+    private void HandleRewardBasedVideoLeftApplication(object sender, EventArgs args)
     {
-        print("HandleRewardBasedVideoLeftApplication event received");
+        Debug.Log("HandleRewardBasedVideoLeftApplication event received");
     }
+    #endregion
 }
-

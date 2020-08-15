@@ -16,7 +16,7 @@ public class CollectRewardsScreen : MonoBehaviour
     private void Start()
     {
         // Called when the user should be rewarded for watching a video.
-        RewardBasedVideoAd.Instance.OnAdRewarded += HandleRewardBasedVideoRewarded;
+        RewardBasedVideoAd.Instance.OnAdRewarded += OnAdRewarded;
         // Called when the ad is closed.
         RewardBasedVideoAd.Instance.OnAdClosed += OnCloseAd;
     }
@@ -24,7 +24,7 @@ public class CollectRewardsScreen : MonoBehaviour
 
     private void OnDestroy()
     {
-        RewardBasedVideoAd.Instance.OnAdRewarded -= HandleRewardBasedVideoRewarded;
+        RewardBasedVideoAd.Instance.OnAdRewarded -= OnAdRewarded;
         RewardBasedVideoAd.Instance.OnAdClosed -= OnCloseAd;
     }
 
@@ -39,16 +39,18 @@ public class CollectRewardsScreen : MonoBehaviour
     {
         // Показать рекламу
 
-        if (RewardBasedVideoAd.Instance.IsLoaded())
+        AdMobScript.Instance.ShowRewardVideoAd(result =>
         {
-            OnCloseAdWait();
-            RewardBasedVideoAd.Instance.Show();
-        }
-        else
-        {
-            Debug.LogError("Ad was loaded, but now it isn't");
-            gameOverStatusScreen.ShowGameOverMenu();
-        }
+            if (result)
+            {
+                OnCloseAdWait();
+            }
+            else
+            {
+                Debug.LogError("Ad was loaded, but now it isn't");
+                gameOverStatusScreen.ShowGameOverMenu();
+            }
+        });
     }
 
     public void OpenMainMenu()
@@ -57,7 +59,7 @@ public class CollectRewardsScreen : MonoBehaviour
     }
 
 
-    private void HandleRewardBasedVideoRewarded(object sender, Reward args)
+    private void OnAdRewarded(object sender, Reward args)
     {
         //Если игрок посмотрел рекламу, наградить его
         mustRewardPlayer = true;
