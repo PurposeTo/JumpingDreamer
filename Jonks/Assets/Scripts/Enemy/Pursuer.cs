@@ -40,6 +40,8 @@ public class Pursuer : MonoBehaviour, IPooledObject
 
     private void FixedUpdate()
     {
+        GameObject target = GameManager.Instance.Player;
+
         Vector3 toTargetDirection = (target.transform.position - (Vector3)rb2d.position).normalized;
 
         // Вычисляем кватернион нужного поворота. Вектор forward говорит вокруг какой оси поворачиваться
@@ -56,11 +58,10 @@ public class Pursuer : MonoBehaviour, IPooledObject
         Debug.DrawRay(transform.position, (toTargetRotation * Vector3.up).normalized * 3, Color.yellow, 2f); // Вектор точный
     }
 
-    private void Initialize()
+
+    private void Awake()
     {
         rb2d = gameObject.GetComponent<Rigidbody2D>();
-        target = GameManager.Instance.Player;
-        playerTactics = GameManager.Instance.PlayerPresenter.PlayerTactics;
     }
 
 
@@ -73,13 +74,7 @@ public class Pursuer : MonoBehaviour, IPooledObject
 
     void IPooledObject.OnObjectSpawn()
     {
-        // В Start нельзя поместить потому, что OnObjectSpawn вызывается ДО.
-        // В Awake нельзя поместить потому, что в Awake инициализируются SingletonMonobehavior.
-        // Проблема присутствует потому, что поля из Initialize необходимо использовать в OnObjectSpawn().
-        Initialize();
-
-        moveDirection = ((Vector2)target.transform.position - rb2d.position).normalized;
-
+        playerTactics = GameManager.Instance.PlayerPresenter.PlayerTactics;
         float percentageOfTimeSpentByThePlayerMoving = playerTactics.PercentageOfTimeSpentByThePlayerMoving;
         currentVelocityMultiplier = Mathf.Lerp(startVelocityMultiplier, finishVelocityMultiplier, percentageOfTimeSpentByThePlayerMoving);
         currentRotationVelocity = Mathf.Lerp(startRotationVelocity, finishRotationVelocity, percentageOfTimeSpentByThePlayerMoving);

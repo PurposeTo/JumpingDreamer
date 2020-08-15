@@ -13,15 +13,13 @@ public class ObjectPooler : SingletonMonoBehaviour<ObjectPooler>
         [HideInInspector] public Queue<GameObject> objectPoolQueue;
     }
 
-
     public List<Pool> pools;
 
     public Dictionary<GameObject, Pool> poolDictionary = new Dictionary<GameObject, Pool>();
 
 
-    private void OnEnable()
+    protected override void AwakeSingleton()
     {
-
         for (int i = 0; i < pools.Count; i++)
         {
             GameObject parent = new GameObject(pools[i].prefab.name + " Pool");
@@ -55,7 +53,7 @@ public class ObjectPooler : SingletonMonoBehaviour<ObjectPooler>
                 GameObject objectToDisable = pools[i].objectPoolQueue.Dequeue();
 
                 objectToDisable.SetActive(false);
-                // Так же необходимо выключать все корутины на обьекте
+                // Todo: Так же необходимо выключать все корутины на обьекте
                 pools[i].objectPoolQueue.Enqueue(objectToDisable);
             }
         }
@@ -99,13 +97,9 @@ public class ObjectPooler : SingletonMonoBehaviour<ObjectPooler>
         if (parent != null) { objectToSpawn.transform.SetParent(parent); }
         objectToSpawn.SetActive(true);
 
-        if (objectToSpawn.TryGetComponent(out IPooledObject pooledObject))
-        {
-            pooledObject.OnObjectSpawn();
-        }
+        if (objectToSpawn.TryGetComponent(out IPooledObject pooledObject)) pooledObject.OnObjectSpawn();
 
         pool.objectPoolQueue.Enqueue(objectToSpawn);
-
 
         return objectToSpawn;
     }
