@@ -176,7 +176,7 @@
     <Compile Include="Assets\Scripts\Singletons\Object Pooler\ObjectPooler.cs" />
     <Compile Include="Assets\Scripts\Singletons\VFX\VFXManager.cs" />
     <Compile Include="Assets\Scripts\Star.cs" />
-    <Compile Include="Assets\Scripts\Training.cs" />
+    <Compile Include="Assets\Scripts\TrainingTutorial.cs" />
     <Compile Include="Assets\Scripts\UI\ErrorWindowGenerator.cs" />
     <Compile Include="Assets\Scripts\UI\FPSCounter.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\AdRewardMessage.cs" />

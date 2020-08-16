@@ -42,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
 
         Vector2 inputVelocityDirection = GameLogic.GetOrthoNormalizedVector2(toCentreDirection);
         inputVelocityDirection *= HorizontalInput;
-        inputVelocityDirection = -inputVelocityDirection;
+        inputVelocityDirection *= -1;
 
         Vector2 inputVelocity = inputVelocityDirection * velocityMultiplier;
 
