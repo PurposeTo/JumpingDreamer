@@ -10,10 +10,12 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : Single
 
     public static T Instance { get; private set; }
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private void Awake()
     {
         if (Instance == null)
         {
+            Debug.Log($"Initialize singletonMonoBehaviour {this}");
             Instance = this as T;
             if (dontDestroyOnLoad)
             {

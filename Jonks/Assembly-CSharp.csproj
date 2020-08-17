@@ -130,6 +130,7 @@
     <Compile Include="Assets\GooglePlayGames\Platforms\TokenClient.cs" />
     <Compile Include="Assets\GooglePlayGames\PluginVersion.cs" />
     <Compile Include="Assets\Scripts\AdMob\AdMobScript.cs" />
+    <Compile Include="Assets\Scripts\AnimatorControllers\AnimatorBlinkingController.cs" />
     <Compile Include="Assets\Scripts\CameraFollow.cs" />
     <Compile Include="Assets\Scripts\Centre\Centre.cs" />
     <Compile Include="Assets\Scripts\Centre\Gravity.cs" />

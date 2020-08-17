@@ -31,7 +31,6 @@ public class PlayerTactics : MonoBehaviour
     private float totalAbsHorizontalInputPerSeconds;
     private float HorizontalInput => playerPresenter.PlayerMovement.HorizontalInput;
     private float AbsHorizontalInput => Mathf.Abs(playerPresenter.PlayerMovement.HorizontalInput);
-    private float absHorizontalInput;
 
 
     private void Start()
@@ -42,7 +41,6 @@ public class PlayerTactics : MonoBehaviour
 
     private void FixedUpdate()
     {
-        absHorizontalInput = AbsHorizontalInput;
         UpdateHorizontalInputQueue();
         UpdateAbsHorizontalInputQueue();
     }
