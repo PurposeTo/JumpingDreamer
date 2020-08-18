@@ -134,7 +134,6 @@
     <Compile Include="Assets\Localizaton\LocalizationManager.cs" />
     <Compile Include="Assets\Localizaton\LocalizedText.cs" />
     <Compile Include="Assets\Localizaton\StartupManager.cs" />
-    <Compile Include="Assets\PlayerSettings.cs" />
     <Compile Include="Assets\Scripts\AdMob\AdMobScript.cs" />
     <Compile Include="Assets\Scripts\AnimatorControllers\AnimatorBlinkingController.cs" />
     <Compile Include="Assets\Scripts\CameraFollow.cs" />
@@ -174,6 +173,7 @@
     <Compile Include="Assets\Scripts\Player\Statistics\JumpHeightStats.cs" />
     <Compile Include="Assets\Scripts\Player\Statistics\LifeTimer.cs" />
     <Compile Include="Assets\Scripts\Player\Statistics\PlayerTactics.cs" />
+    <Compile Include="Assets\Scripts\PlayerSettings.cs" />
     <Compile Include="Assets\Scripts\Scene loading helpers\SceneLoader.cs" />
     <Compile Include="Assets\Scripts\Scene loading helpers\Shutter.cs" />
     <Compile Include="Assets\Scripts\Singletons\Base\Singleton.cs" />
