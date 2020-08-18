@@ -129,6 +129,12 @@
     <Compile Include="Assets\GooglePlayGames\Platforms\PlayGamesClientFactory.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\TokenClient.cs" />
     <Compile Include="Assets\GooglePlayGames\PluginVersion.cs" />
+    <Compile Include="Assets\Localizaton\LanguageButton.cs" />
+    <Compile Include="Assets\Localizaton\LocalizationData.cs" />
+    <Compile Include="Assets\Localizaton\LocalizationManager.cs" />
+    <Compile Include="Assets\Localizaton\LocalizedText.cs" />
+    <Compile Include="Assets\Localizaton\StartupManager.cs" />
+    <Compile Include="Assets\PlayerSettings.cs" />
     <Compile Include="Assets\Scripts\AdMob\AdMobScript.cs" />
     <Compile Include="Assets\Scripts\AnimatorControllers\AnimatorBlinkingController.cs" />
     <Compile Include="Assets\Scripts\CameraFollow.cs" />
