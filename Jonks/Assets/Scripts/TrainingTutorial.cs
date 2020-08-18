@@ -24,6 +24,7 @@ public class TrainingTutorial : MonoBehaviour
     {
         playerTactics = GameManager.Instance.PlayerPresenter.PlayerTactics;
         animatorBlinkingControllers = trainingTips.Select(x => x.GetComponentInChildren<AnimatorBlinkingController>()).ToArray();
+        animatorBlinkingControllers[0].OnDisableBlinking += DisableTutorialTips;
     }
 
 
@@ -35,6 +36,13 @@ public class TrainingTutorial : MonoBehaviour
         {
             CheckingIfTutorialNeedsToBeShownRoutine = StartCoroutine(CheckingIfTutorialNeedsToBeShownEnumerator(shouldStartByShowingTheTutorial));
         }
+
+    }
+    
+
+    private void OnDestroy()
+    {
+        animatorBlinkingControllers[0].OnDisableBlinking -= DisableTutorialTips;
     }
 
 
@@ -42,8 +50,8 @@ public class TrainingTutorial : MonoBehaviour
     {
         DisableTutorialBlinking();
         DisableTutorialTips();
-        animatorBlinkingControllers[0].OnDisableBlinking -= DisableTutorialTips;
         StopAllCoroutines();
+        isTutorialTipsEnable = false;
         ShowTutorialRoutine = null;
         CheckingIfTutorialNeedsToBeShownRoutine = null;
     }
@@ -135,11 +143,7 @@ public class TrainingTutorial : MonoBehaviour
         yield return new WaitWhile(() => IsTutorialNeedsToBeShown());
         DisableTutorialBlinking();
 
-        animatorBlinkingControllers[0].OnDisableBlinking += DisableTutorialTips;
-
         yield return new WaitWhile(() => isTutorialTipsEnable);
-
-        animatorBlinkingControllers[0].OnDisableBlinking -= DisableTutorialTips;
 
         ShowTutorialRoutine = null;
     }

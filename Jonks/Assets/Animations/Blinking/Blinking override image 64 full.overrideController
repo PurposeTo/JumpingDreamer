@@ -6,14 +6,14 @@ AnimatorOverrideController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Blinking override controller image full
+  m_Name: Blinking override image 64 full
   m_Controller: {fileID: 9100000, guid: e93b6b96254598443bf30b00b154c321, type: 2}
   m_Clips:
   - m_OriginalClip: {fileID: 7400000, guid: e7d3fa199f6572c49a4aa3bcb078d19f, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 166a30ada20cf8742aa5e97c8afbe942, type: 2}
-  - m_OriginalClip: {fileID: 7400000, guid: 86508552bcf1d4a48829ec47ee82ba01, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: e6b016aeb85fa4e4fba8a17dad42c77e, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: f0c748e65598c9f4ba7aa8c4740ae8bd, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 31bc57df7d641c54487f475bc5d6837a, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 4d90ac83d8fcaf14eaeb4c4510e60a1d, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 860f70e35e2e6964da936a3c33644a3e, type: 2}
-  - m_OriginalClip: {fileID: 7400000, guid: f0c748e65598c9f4ba7aa8c4740ae8bd, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 4f2fe37bd253c744daa82b6d27d8a63d, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 86508552bcf1d4a48829ec47ee82ba01, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: e6b016aeb85fa4e4fba8a17dad42c77e, type: 2}

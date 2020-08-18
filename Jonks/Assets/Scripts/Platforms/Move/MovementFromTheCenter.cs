@@ -62,7 +62,8 @@ public class MovementFromTheCenter : MovingPlatform, IMovable, IPooledObject
         yield return new WaitUntil(() => centre != null); // Костыль. Необходимо проверить, вызывался ли метод Start.
         InitializePlatform();
         yield return new WaitUntil(() => (centre.transform.position - transform.position).magnitude >= lifeDictance);
-        animator.SetBool("isBlinding", true);
+
+        animatorBlinkingController.StartBlinking(false);
     }
 
     void IPooledObject.OnObjectSpawn()

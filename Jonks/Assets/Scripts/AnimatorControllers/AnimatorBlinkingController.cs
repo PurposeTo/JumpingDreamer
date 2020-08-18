@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -7,8 +8,11 @@ public delegate void DisableBlinking();
 [RequireComponent(typeof(Animator))]
 public class AnimatorBlinkingController : MonoBehaviour
 {
+
     private Animator animator;
     private const string isBlinking = "isBlinking";
+    private const string haveEnableState = "haveEnableState";
+    private const string haveDisableState = "haveDisableState";
     private const float blinkingAnimationEnterExitDuration = 1f; // Длительность входа или выхрда анимации мерцания - 1 секунда
     private const float blinkingAnimationLoopDuration = 2f; // Длительность анимации мерцания - 2 секунды
 
@@ -18,15 +22,17 @@ public class AnimatorBlinkingController : MonoBehaviour
 
     public event DisableBlinking OnDisableBlinking;
 
-    //Todo Сделать возможность отключать состояния входа и выхода -> Сейчас это реализуется с помощью Animator override controller. Но пока не удается при перезаписи стейта пустой анимацией отключить её длительность...
-    //Todo Сделать возможность задавать скорость анимации
-    //Todo Добавить Animator override controller с состояниями мерцаниями, где прозрачность доходит до нуля
-    //Todo Сделать возможность задавать анимацию не только для Sprite, но и для Image
-
 
     private void Awake()
     {
         animator = gameObject.GetComponent<Animator>();
+    }
+
+
+    private void OnEnable()
+    {
+        CheckEmptyStates();
+
     }
 
 
@@ -96,5 +102,15 @@ public class AnimatorBlinkingController : MonoBehaviour
                 StopBlinking();
             }
         }
+    }
+
+
+    private void CheckEmptyStates()
+    {
+        bool isEmptyEnable = animator.runtimeAnimatorController.animationClips.Any(animationClip => animationClip.name.ToLower().Contains("empty enable"));
+        bool isEmptyDisable = animator.runtimeAnimatorController.animationClips.Any(animationClip => animationClip.name.ToLower().Contains("empty disable"));
+
+        animator.SetBool(haveEnableState, !isEmptyEnable);
+        animator.SetBool(haveDisableState, !isEmptyDisable);
     }
 }
