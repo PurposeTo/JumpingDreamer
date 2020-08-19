@@ -1,8 +1,8 @@
-﻿using System.Collections;
+﻿using System.IO;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
-
+using UnityEngine.Networking;
 
 public delegate void LocalizationСhange();
 
@@ -14,14 +14,14 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
 
     private Dictionary<string, string> localizedText;
     private bool isReady = false;
-    private string missingTextString = "Localized Text not found";
+    private const string missingTextString = "Localized Text not found";
 
     public event LocalizationСhange OnLocalizationChange;
 
     protected override void AwakeSingleton()
     {
         SetLanguageSettings();
-        LocalizationPlatform();
+        LoadLocalizedText();
     }
 
 
@@ -52,73 +52,6 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
         }
     }
 
-    public void LoadLocalizedText()
-    {
-        localizedText = new Dictionary<string, string>();
-
-
-        string filePath = Path.Combine(Application.streamingAssetsPath, "Languages/" + PlayerSettings.Language + ".json");
-
-        Debug.Log($"Language data filePath: {filePath}");
-        if (File.Exists(filePath))
-        {
-            string dataAsJson = File.ReadAllText(filePath);
-            LocalizationData loadedData = JsonUtility.FromJson<LocalizationData>(dataAsJson);
-            Debug.Log("Translate is done on Editor");
-
-
-            for (int i = 0; i < loadedData.items.Length; i++)
-            {
-                localizedText.Add(loadedData.items[i].key, loadedData.items[i].value);
-            }
-
-            Debug.Log("Data loaded, dictionary contains: " + localizedText.Count + " entries");
-        }
-        else
-        {
-            Debug.LogError("Can not find file!");
-        }
-
-
-        Debug.Log("Set language: " + Instance.GetLocalizedValue("Language"));
-        isReady = true;
-        if (OnLocalizationChange != null) OnLocalizationChange();
-        Debug.Log("Change Text event");
-    }
-
-
-    IEnumerator LoadLocalizedTextOnAndroid()
-    {
-        localizedText = new Dictionary<string, string>();
-        string filePath = Path.Combine(Application.streamingAssetsPath, "Languages/" + PlayerSettings.Language + ".json");
-        WWW reader = new WWW(filePath);
-        yield return reader;
-        Debug.LogWarning(filePath);
-        if (reader.error != null)
-        {
-            Debug.LogWarning(reader.error);
-            yield break;
-        } 
-
-        string dataAsJson = reader.text;
-        
-        LocalizationData loadedData = JsonUtility.FromJson<LocalizationData>(dataAsJson);
-        Debug.Log("Translate is done on Android");
-
-        for (int i = 0; i < loadedData.items.Length; i++)
-        {
-            localizedText.Add(loadedData.items[i].key, loadedData.items[i].value);
-            //Debug.Log("KEYS:" + loadedData.items[i].key);
-        }
-
-
-        Debug.Log("Set language: " + Instance.GetLocalizedValue("language"));
-
-        isReady = true;
-        if (OnLocalizationChange != null) OnLocalizationChange();
-        Debug.Log("Change Text event");
-    }
-
 
     public void SetLanguage()
     {
@@ -131,16 +64,13 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
         else langIndex = 1;
         PlayerSettings.Language = langArray[langIndex - 1];
 
-        LocalizationPlatform();
+        LoadLocalizedText();
     }
 
 
-    public void LocalizationPlatform()
+    public void LoadLocalizedText()
     {
-        if (Application.platform == RuntimePlatform.WindowsEditor)
-            LoadLocalizedText();
-        else if (Application.platform == RuntimePlatform.Android)
-            StartCoroutine(LoadLocalizedTextOnAndroid());
+        StartCoroutine(LoadLocalizedTextEnumerator());
     }
 
 
@@ -158,5 +88,43 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
     public bool GetIsReady()
     {
         return isReady;
+    }
+
+
+    private IEnumerator LoadLocalizedTextEnumerator()
+    {
+        localizedText = new Dictionary<string, string>();
+        string filePath = Path.Combine(Application.streamingAssetsPath, "Languages/" + PlayerSettings.Language + ".json");
+
+        var reader = new UnityWebRequest(filePath);
+        reader.downloadHandler = new DownloadHandlerBuffer();
+
+        yield return reader.SendWebRequest();
+
+        if (reader.error != null)
+        {
+            Debug.LogError(reader.error);
+            yield break;
+        }
+
+        string dataAsJson = reader.downloadHandler.text;
+
+        reader.Dispose();
+
+        LocalizationData loadedData = JsonUtility.FromJson<LocalizationData>(dataAsJson);
+        Debug.Log("Translate is done!");
+
+        for (int i = 0; i < loadedData.items.Length; i++)
+        {
+            localizedText.Add(loadedData.items[i].key, loadedData.items[i].value);
+            //Debug.Log("KEYS:" + loadedData.items[i].key);
+        }
+
+
+        Debug.Log("Set language: " + Instance.GetLocalizedValue("language"));
+
+        isReady = true;
+        OnLocalizationChange?.Invoke();
+        Debug.Log("Change Text event");
     }
 }
