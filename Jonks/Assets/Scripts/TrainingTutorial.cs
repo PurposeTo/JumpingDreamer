@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -32,7 +33,7 @@ public class TrainingTutorial : MonoBehaviour
     {
         bool shouldStartByShowingTheTutorial = PlayerStatsDataStorageSafe.Instance.PlayerStatsData.TotalLifeTime < minTotalLifeTimeToShowTutorial;
 
-        if (CheckingIfTutorialNeedsToBeShownRoutine == null)
+        if (CheckingIfTutorialNeedsToBeShownRoutine == null && IsTutorialNeedsToBeShown())
         {
             CheckingIfTutorialNeedsToBeShownRoutine = StartCoroutine(CheckingIfTutorialNeedsToBeShownEnumerator(shouldStartByShowingTheTutorial));
         }
@@ -65,16 +66,12 @@ public class TrainingTutorial : MonoBehaviour
 
     private void EnableTutorial()
     {
-        for (int i = 0; i < trainingTips.Length; i++)
+        Array.ForEach(trainingTips, gameObject => gameObject.SetActive(true));
+        Array.ForEach(animatorBlinkingControllers, (x) =>
         {
-            trainingTips[i].SetActive(true);
-        }
-
-        for (int i = 0; i < animatorBlinkingControllers.Length; i++)
-        {
-            animatorBlinkingControllers[i].SetBlinkingAnimationSpeed(blinkingAnimationSpeed);
-            animatorBlinkingControllers[i].StartBlinking(false);
-        }
+            x.SetBlinkingAnimationSpeed(blinkingAnimationSpeed);
+            x.StartBlinking(false);
+        });
 
         isTutorialTipsEnable = true;
     }

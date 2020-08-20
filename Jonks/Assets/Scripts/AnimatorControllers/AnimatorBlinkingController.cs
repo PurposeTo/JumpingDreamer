@@ -54,6 +54,7 @@ public class AnimatorBlinkingController : MonoBehaviour
 
     public void StopBlinking()
     {
+        // todo: Выключать только после того, как (state != Enry state) !!! Сделать ожидание корутиной!
         animator.SetBool(isBlinking, false);
     }
 
