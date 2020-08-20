@@ -1,16 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SocialPlatforms;
+﻿using UnityEngine;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using TMPro;
-using System;
 
 public class GPGSAuthentication : SingletonMonoBehaviour<GPGSAuthentication>
 {
     public static PlayGamesPlatform platform;
     public TextMeshProUGUI AuthenticateStatus;
+
+    public static bool IsAuthenticated
+    {
+        get
+        {
+            if (platform != null) { return platform.IsAuthenticated(); }
+            return false;
+        }
+    }
 
 
     protected override void AwakeSingleton()
@@ -34,8 +39,6 @@ public class GPGSAuthentication : SingletonMonoBehaviour<GPGSAuthentication>
             AuthenticateStatus.text = $"{result}";
         });
 
-        StartCoroutine(ShowSelectSaveGameEnumerator());
-
         //Social.Active.localUser.Authenticate(success =>
         //{
         //    if (success)
@@ -47,13 +50,6 @@ public class GPGSAuthentication : SingletonMonoBehaviour<GPGSAuthentication>
         //        Debug.LogWarning("Failed to authenticate!");
         //    }
         //});
-    }
-
-
-    private IEnumerator ShowSelectSaveGameEnumerator()
-    {
-        yield return new WaitUntil(() => platform.IsAuthenticated());
-        GPGSStatsSaver.Instance.ShowSavedGamesSelectMenu();
     }
 
 

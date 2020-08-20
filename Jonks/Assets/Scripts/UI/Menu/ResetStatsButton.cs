@@ -2,18 +2,18 @@
 using System.IO;
 using UnityEngine.UI;
 using System;
+using GooglePlayGames.BasicApi.Multiplayer;
 
 public class ResetStatsButton : MonoBehaviour
 {
     public ConfirmationDeleteStatsWindow ConfirmationDeleteWindow;
-    private static bool isStatsAlreadyReset = false;
 
 
     private void Start()
     {
-        ConfirmationDeleteWindow.OnDeleteStats += TurnOffButton;
+        PlayerDataStorageSafe.Instance.OnDeleteStats += TurnOffButton;
 
-        if (File.Exists(PlayerStatsDataStorageSafe.Instance.FilePath) && !isStatsAlreadyReset)
+        if (File.Exists(PlayerDataStorageSafe.Instance.FilePath) && !PlayerDataStorageSafe.IsPlayerDataAlreadyReset)
         {
             gameObject.GetComponent<Button>().interactable = true;
         }
@@ -26,7 +26,7 @@ public class ResetStatsButton : MonoBehaviour
 
     private void OnDestroy()
     {
-        ConfirmationDeleteWindow.OnDeleteStats -= TurnOffButton;
+        PlayerDataStorageSafe.Instance.OnDeleteStats -= TurnOffButton;
     }
 
 
@@ -39,6 +39,5 @@ public class ResetStatsButton : MonoBehaviour
     private void TurnOffButton(object sender, EventArgs eventArgs)
     {
         gameObject.GetComponent<Button>().interactable = false;
-        isStatsAlreadyReset = true;
     }
 }

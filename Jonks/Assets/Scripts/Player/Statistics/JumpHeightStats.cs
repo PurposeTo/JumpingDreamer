@@ -45,6 +45,6 @@ class JumpHeightStats : MonoBehaviour
 
     private void SaveJumpHeightStats()
     {
-        PlayerStatsDataStorageSafe.Instance.SaveJumpHeightData((float)Math.Round(jumpHeight, 1));
+        PlayerDataStorageSafe.Instance.PlayerDataModel.PlayerStats.SaveJumpHeightData((float)Math.Round(jumpHeight, 1));
     }
 }
