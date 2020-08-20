@@ -33,7 +33,7 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
     }
 
 
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Debug.Log($"OnSceneLoaded: {scene.name} in mode: {mode}");
 

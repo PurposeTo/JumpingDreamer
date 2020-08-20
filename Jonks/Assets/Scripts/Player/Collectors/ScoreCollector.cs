@@ -76,7 +76,7 @@ public class ScoreCollector : MonoBehaviour
 
     private void SaveScoreStats()
     {
-        PlayerStatsDataStorageSafe.Instance.SaveScoreData(Score);
-        PlayerStatsDataStorageSafe.Instance.SaveScoreMultiplierData(currentMaxScoreMultiplierValue);
+        PlayerDataStorageSafe.Instance.PlayerDataModel.PlayerStats.SaveScoreData(Score);
+        PlayerDataStorageSafe.Instance.PlayerDataModel.PlayerStats.SaveScoreMultiplierData(currentMaxScoreMultiplierValue);
     }
 }

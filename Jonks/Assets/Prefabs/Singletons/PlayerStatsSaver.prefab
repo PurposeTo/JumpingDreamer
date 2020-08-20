@@ -40,9 +40,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6587353836104029693}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5ac8eed9f9677e4fadf25a0c70ec5a8, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ba2be7909a5c0f49a3da0c50bca445e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 1
-  errorWindow: {fileID: 9113398689237720326, guid: a1b02bb4ce06cbe4d9fd3244f7b52f5a,
-    type: 3}

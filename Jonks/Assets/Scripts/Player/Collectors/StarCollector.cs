@@ -42,6 +42,7 @@ public class StarCollector : MonoBehaviour
 
     private void SaveStarsStats()
     {
-        PlayerStatsDataStorageSafe.Instance.SaveStarsData(Stars);
+        PlayerDataStorageSafe.Instance.PlayerDataModel.PlayerStats.SaveMaxStarsData(Stars);
+        PlayerDataStorageSafe.Instance.PlayerDataModel.PlayerInGamePurchases.SaveTotalStarsData(Stars);
     }
 }

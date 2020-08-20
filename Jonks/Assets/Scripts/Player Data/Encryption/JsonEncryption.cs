@@ -2,10 +2,11 @@
 using System.Security.Cryptography;
 using System.Text;
 using System.IO;
+using UnityEngine;
 
 public static class JsonEncryption
 {
-    private static readonly string fileName = "StatsAlpha.json";
+    private static readonly string fileName = "GameDataAlpha.json";
     public static string FilePathWithHash => DataLoaderHelper.GetFilePath(fileName);
 
     private static readonly int salt = 100;
@@ -25,7 +26,17 @@ public static class JsonEncryption
         if (File.Exists(dataFile) && File.Exists(FilePathWithHash))
         {
             string dataInBase64Encoding = File.ReadAllText(dataFile);
-            string saltedData = Encoding.UTF8.GetString(Convert.FromBase64String(dataInBase64Encoding));
+            string saltedData;
+
+            try
+            {
+                saltedData = Encoding.UTF8.GetString(Convert.FromBase64String(dataInBase64Encoding));
+            }
+            catch (Exception exception)
+            {
+                Debug.LogError(exception.Message);
+                return null;
+            }
 
             // Совпадает ли хэш считанных данных с хэшом ранее сохраненных данных?
             return IsDataWasNotEdited(saltedData) ? AddSalt(saltedData) : null;
