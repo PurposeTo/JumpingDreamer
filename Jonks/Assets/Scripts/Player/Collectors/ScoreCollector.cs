@@ -31,13 +31,13 @@ public class ScoreCollector : MonoBehaviour
     private void Start()
     {
         rb2D = GetComponent<Rigidbody2D>();
-        GameMenu.Instance.GameOverScreen.GameOverStatusScreen.GameOverMenu.OnSavePlayerStats += SaveScoreStats;
+        PlayerDataSaver.Instance.OnSavePlayerStats += SaveScoreStats;
     }
 
 
     private void OnDestroy()
     {
-        GameMenu.Instance.GameOverScreen.GameOverStatusScreen.GameOverMenu.OnSavePlayerStats -= SaveScoreStats;
+        PlayerDataSaver.Instance.OnSavePlayerStats -= SaveScoreStats;
     }
 
 
@@ -76,7 +76,7 @@ public class ScoreCollector : MonoBehaviour
 
     private void SaveScoreStats()
     {
-        PlayerDataStorageSafe.Instance.PlayerDataModel.PlayerStats.SaveScoreData(Score);
-        PlayerDataStorageSafe.Instance.PlayerDataModel.PlayerStats.SaveScoreMultiplierData(currentMaxScoreMultiplierValue);
+        PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.SaveScoreData(Score);
+        PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.SaveScoreMultiplierData(currentMaxScoreMultiplierValue);
     }
 }

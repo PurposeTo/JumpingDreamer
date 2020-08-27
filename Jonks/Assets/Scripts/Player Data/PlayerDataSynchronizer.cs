@@ -1,42 +1,81 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using UnityEngine;
 
 public static class PlayerDataSynchronizer
 {
-    // Проверка соответствия данных модели из облака и локальной модели
-    private static bool IsModelsEqual(PlayerDataModel cloudModel, PlayerDataModel localModel)
+    public static event Action<PlayerDataModel> OnLocalModelWasChanged;
+
+    private static PlayerDataModel cloudModel = null;
+
+
+    // Синхронизация данных модели из облака и локальной модели
+    public static void SynchronizePlayerDataStorages(byte[] data)
     {
+        PlayerDataModel cloudModel = JsonConverterWrapper.DeserializeObject(Encoding.UTF8.GetString(data), null);
+
+        if (cloudModel == null)
+        {
+            return;
+        }
+
+
+        PlayerDataModel localModel = PlayerDataLocalStorageSafe.Instance.PlayerDataModel;
+
         if (cloudModel.Id != localModel.Id)
         {
-            if (PlayerDataStorageSafe.IsPlayerDataAlreadyReset)
+            if (PlayerDataLocalStorageSafe.IsPlayerDataAlreadyReset)
             {
+                // Отправка изменений (данных новой модели) на облако
                 GPGSPlayerDataCloudStorage.Instance.CreateSave(Encoding.UTF8.GetBytes(JsonConverterWrapper.SerializeObject(localModel, null)));
             }
             else
             {
-                // TODO: вывести окно с предложением о выборе модели.
-                // В зависимости от выбора пользователя загрузить модель либо в облако, либо на устройство
+                // TODO: вывести окно с предложением о выборе модели. В зависимости от выбора пользователя загрузить модель либо в облако, либо на устройство
             }
-
-            return true;
-        }
-
-        return cloudModel.PlayerStats.Equals(localModel.PlayerStats) &&
-            cloudModel.PlayerInGamePurchases.Equals(localModel.PlayerInGamePurchases);
-    }
-
-
-    public static void MixModels(PlayerDataModel cloudModel, PlayerDataModel localModel)
-    {
-        if (IsModelsEqual(cloudModel, localModel))
-        {
-            Debug.Log("The model from the cloud already has up-to-date data.");
         }
         else
         {
+            if (!(cloudModel.PlayerStats.Equals(localModel.PlayerStats) &&
+            cloudModel.PlayerInGamePurchases.Equals(localModel.PlayerInGamePurchases)))
+            {
+                MixModels(cloudModel, localModel);
+            }
+            else
+            {
+                Debug.Log("Models already have the same data.");
+            }
         }
     }
 
 
-    // Если произошло смешение моделей, то необходимо обновить модель (на облаке/локально)
+    private static void MixModels(PlayerDataModel cloudModel, PlayerDataModel localModel)
+    {
+        #region Логика смешения моделей
+        // Заглушка
+        PlayerDataModel mixedPlayerDataModel = PlayerDataModel.CreateModelWithDefaultValues();
+        #endregion
+
+        // Если произошло смешение моделей, то необходимо обновить модель на облаке И локально
+        GPGSPlayerDataCloudStorage.Instance.CreateSave(
+            Encoding.UTF8.GetBytes(JsonConverterWrapper.SerializeObject(mixedPlayerDataModel, null)));
+        OnLocalModelWasChanged?.Invoke(mixedPlayerDataModel);
+    }
+
+
+    public static void SelectLocalModelHandler()
+    {
+        GPGSPlayerDataCloudStorage.Instance.CreateSave(
+            Encoding.UTF8.GetBytes(JsonConverterWrapper.SerializeObject(PlayerDataLocalStorageSafe.Instance.PlayerDataModel, null)));
+    }
+
+
+    public static void SelectCloudModelHandler()
+    {
+        // Нужна ли проверка? Выбор не будет доступен, если cloudModel == null (т.е. этому обработчику нечего будет обрабатывать, т.к. нельзя нажать на кнопку, которой нет)
+        if (cloudModel != null)
+        {
+            OnLocalModelWasChanged?.Invoke(cloudModel);
+        }
+    }
 }

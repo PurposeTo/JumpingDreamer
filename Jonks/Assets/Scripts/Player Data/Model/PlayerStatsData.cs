@@ -1,5 +1,4 @@
 ﻿using System;
-using Boo.Lang;
 using Newtonsoft.Json;
 
 public class PlayerStatsData
@@ -32,18 +31,18 @@ public class PlayerStatsData
 
     public void SaveMaxStarsData(SafeInt starsAmount)
     {
-        if (starsAmount > PlayerDataStorageSafe.Instance. PlayerDataModel.PlayerStats.MaxCollectedStars)
+        if (starsAmount > PlayerDataLocalStorageSafe.Instance. PlayerDataModel.PlayerStats.MaxCollectedStars)
         {
-            PlayerDataStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxCollectedStars = starsAmount;
+            PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxCollectedStars = starsAmount;
         }
     }
 
 
     public void SaveScoreData(SafeInt scoreAmount)
     {
-        if (scoreAmount > PlayerDataStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxEarnedScore)
+        if (scoreAmount > PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxEarnedScore)
         {
-            PlayerDataStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxEarnedScore = scoreAmount;
+            PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxEarnedScore = scoreAmount;
             OnNewScoreRecord?.Invoke(this, null);
         }
     }
@@ -51,20 +50,20 @@ public class PlayerStatsData
 
     public void SaveScoreMultiplierData(SafeInt multiplierValue)
     {
-        if (multiplierValue > PlayerDataStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxScoreMultiplierValue)
+        if (multiplierValue > PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxScoreMultiplierValue)
         {
-            PlayerDataStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxScoreMultiplierValue = multiplierValue;
+            PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxScoreMultiplierValue = multiplierValue;
         }
     }
 
 
     public void SaveLifeTimeData(SafeInt lifeTime)
     {
-        PlayerDataStorageSafe.Instance.PlayerDataModel.PlayerStats.TotalLifeTime += lifeTime;
+        PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.TotalLifeTime += lifeTime;
 
-        if (lifeTime > PlayerDataStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxLifeTime)
+        if (lifeTime > PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxLifeTime)
         {
-            PlayerDataStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxLifeTime = lifeTime;
+            PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxLifeTime = lifeTime;
         }
     }
 
@@ -175,14 +174,14 @@ public class PlayerStatsData
     }
 
 
-    // Работает?
+    // TODO: Работает?
     public override bool Equals(object obj)
     {
         return base.Equals(obj);
     }
 
 
-    // Работает?
+    // TODO: Работает?
     public override int GetHashCode()
     {
         return base.GetHashCode();

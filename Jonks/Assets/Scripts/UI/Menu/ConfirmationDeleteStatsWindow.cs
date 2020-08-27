@@ -5,7 +5,7 @@ public class ConfirmationDeleteStatsWindow : MonoBehaviour
 {
     public void ConfirmDeleteStatsButton()
     {
-        PlayerDataStorageSafe.Instance.DeletePlayerStatsData();
+        PlayerDataLocalStorageSafe.Instance.DeletePlayerData();
         CloseWindowBitton();
     }
 

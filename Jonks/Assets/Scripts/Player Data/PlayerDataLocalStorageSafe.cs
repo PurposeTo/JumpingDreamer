@@ -1,8 +1,9 @@
 ﻿using System;
 using UnityEngine;
 using System.IO;
+using System.Text;
 
-public class PlayerDataStorageSafe : SingletonMonoBehaviour<PlayerDataStorageSafe>
+public class PlayerDataLocalStorageSafe : SingletonMonoBehaviour<PlayerDataLocalStorageSafe>
 {
     public PlayerDataModel PlayerDataModel { get; private set; }
 
@@ -19,28 +20,15 @@ public class PlayerDataStorageSafe : SingletonMonoBehaviour<PlayerDataStorageSaf
     protected override void AwakeSingleton()
     {
         LoadPlayerData();
+
+        PlayerDataSynchronizer.OnLocalModelWasChanged += (changedModel) => PlayerDataModel = changedModel;
     }
 
 
-#if UNITY_EDITOR
-
-    private void OnApplicationQuit()
+    private void OnDestroy()
     {
-        WritePlayerDataToFile();
+        PlayerDataSynchronizer.OnLocalModelWasChanged -= (changedModel) => PlayerDataModel = changedModel;
     }
-
-#elif UNITY_ANDROID
-
-        private void OnApplicationPause(bool pause)
-        {
-            Debug.Log($"OnApplicationPause code: {pause}");
-            if (pause)
-            {
-                WritePlayerDataToFile();
-            }
-        }
-
-#endif
 
 
     private void LoadPlayerData()
@@ -120,7 +108,7 @@ public class PlayerDataStorageSafe : SingletonMonoBehaviour<PlayerDataStorageSaf
     }
 
 
-    public void DeletePlayerStatsData()
+    public void DeletePlayerData()
     {
         PlayerDataModel = PlayerDataModel.CreateModelWithDefaultValues();
 
@@ -133,11 +121,12 @@ public class PlayerDataStorageSafe : SingletonMonoBehaviour<PlayerDataStorageSaf
         IsPlayerDataAlreadyReset = true;
         OnDeleteStats?.Invoke(this, null);
 
-        // TODO: Загрузка новых данных в облако
+        GPGSPlayerDataCloudStorage.Instance.CreateSave(
+            Encoding.UTF8.GetBytes(JsonConverterWrapper.SerializeObject(PlayerDataModel, null)));
     }
 
 
-    private void WritePlayerDataToFile()
+    public void WritePlayerDataToFile()
     {
         if (IsDataFileLoaded)
         {

@@ -12,8 +12,7 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
     public DateTime StartPlayingTime { get; private set; }
     public const string CloudFilePath = "GameData.json";
 
-    private PlayGamesPlatform GamePlatform => (PlayGamesPlatform)Social.Active;
-    private ISavedGameClient SavedGameClient => GamePlatform.SavedGame;
+    private ISavedGameClient SavedGameClient => ((PlayGamesPlatform)Social.Active).SavedGame;
 
 
     private void Start()
@@ -25,54 +24,24 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
     private IEnumerator LoadSavedGameFromCloudEnumerator()
     {
         yield return new WaitUntil(() => GPGSAuthentication.IsAuthenticated);
-        yield return new WaitUntil(() => PlayerDataStorageSafe.Instance.IsDataFileLoaded);
+
+        // Как только выполнена аутентификация, необходимо начать отсчет времени для текущей сессии игры
+        StartPlayingTime = DateTime.Now;
+
+        yield return new WaitUntil(() => PlayerDataLocalStorageSafe.Instance.IsDataFileLoaded);
 
         // Загрузка данных из облака
         ReadSavedGame(CloudFilePath);
     }
 
 
-    #region Selection menu
-    //public void ShowSavedGamesSelectMenu()
-    //{
-    //    uint maxSavesNumberToDisplay = 5;
-    //    bool allowCreateSave = false;
-    //    bool allowDeleteSave = true;
-
-    //    SavedGameClient.ShowSelectSavedGameUI("Select saved game",
-    //        maxSavesNumberToDisplay,
-    //        allowCreateSave,
-    //        allowDeleteSave,
-    //        OnSavedGameSelected);
-    //}
-
-
-    //private void OnSavedGameSelected(SelectUIStatus selectUIStatus, ISavedGameMetadata gameMetadata)
-    //{
-    //    if (selectUIStatus == SelectUIStatus.SavedGameSelected)
-    //    {
-    //        // handle selected game save
-    //
-    //        // Чтение данных или удаление?
-    //    }
-    //    else
-    //    {
-    //        // handle cancel or error
-    //    }
-    //}
-    #endregion
-
-
     private void OpenSavedGame(string fileName, Action<SavedGameRequestStatus, ISavedGameMetadata> OnSavedGameOpened)
     {
-        // need?
         if (!GPGSAuthentication.IsAuthenticated)
         {
-            OnSavedGameOpened?.Invoke(SavedGameRequestStatus.AuthenticationError, null);
             return;
         }
 
-        // Also conflict can be resolved by OpenWithManualConflictResolution()
         SavedGameClient.OpenWithAutomaticConflictResolution(fileName,
             DataSource.ReadCacheOrNetwork,                                              // ?
             ConflictResolutionStrategy.UseLongestPlaytime,                              // ?
@@ -82,34 +51,62 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
 
     public void CreateSave(byte[] dataToSave)
     {
-        // Если есть доступ к облако, а не была ли пройдена аутентификация !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        if (!GPGSAuthentication.IsAuthenticated || dataToSave == null || !PlayerDataStorageSafe.Instance.IsDataFileLoaded) // data.Length == 0
+        Debug.Log("#CreateSave: begin");
+
+        if (!GPGSAuthentication.IsAuthenticated ||
+            !InternetConnectionChecker.Instance.IsInternetConnectionAvaliable() ||
+            dataToSave == null ||
+            dataToSave.Length == 0 ||
+            !PlayerDataLocalStorageSafe.Instance.IsDataFileLoaded)
         {
             return;
         }
+        
 
-        // AH - video !!!!!!!!!!!!!!!!
-        OpenSavedGame(CloudFilePath, (gameRequestStatus, gameMetadata) =>
+        Debug.Log("#CreateSave: after checking");
+
+
+        void SavePlayerData()
         {
-            if (gameRequestStatus == SavedGameRequestStatus.Success)
-            {
-                TimeSpan allPlayingTime = DateTime.Now - StartPlayingTime;
-                SavedGameMetadataUpdate.Builder builder = new SavedGameMetadataUpdate.Builder();
+            TimeSpan allPlayingTime = DateTime.Now - StartPlayingTime;
+            SavedGameMetadataUpdate.Builder builder = new SavedGameMetadataUpdate.Builder();
 
-                builder = builder.WithUpdatedPlayedTime(CurrentGameMetadata.TotalTimePlayed + allPlayingTime).WithUpdatedDescription("Saved game at " + DateTime.Now).WithUpdatedPngCoverImage(GetScreenshot().EncodeToPNG());
+            builder = builder.WithUpdatedPlayedTime(CurrentGameMetadata.TotalTimePlayed + allPlayingTime).WithUpdatedDescription("Saved game at " + DateTime.Now).WithUpdatedPngCoverImage(GetScreenshot().EncodeToPNG());
 
-                SavedGameMetadataUpdate metadataUpdate = builder.Build();
-                SavedGameClient.CommitUpdate(gameMetadata, metadataUpdate, dataToSave, OnSaveCreated);
-            }
-            else
+            SavedGameMetadataUpdate updatedMetadata = builder.Build();
+            SavedGameClient.CommitUpdate(CurrentGameMetadata, updatedMetadata, dataToSave, OnSaveCreated);
+        }
+
+
+        if (CurrentGameMetadata == null)
+        {
+            Debug.Log("#CreateSave: CurrentGameMetadata == null");
+
+            OpenSavedGame(CloudFilePath, (gameRequestStatus, gameMetadata) =>
             {
-                // handle error
-            }
-        });
+                if (gameRequestStatus == SavedGameRequestStatus.Success)
+                {
+                    // Получаем метаданные открытого файла
+                    CurrentGameMetadata = gameMetadata;
+
+                    SavePlayerData();
+                }
+                else
+                {
+                    // handle error
+                }
+            });
+
+            return;
+        }
+
+        Debug.Log("#CreateSave: CurrentGameMetadata != null");
+
+        SavePlayerData();
     }
 
 
-    public void OnSaveCreated(SavedGameRequestStatus status, ISavedGameMetadata gameMetadata)
+    private void OnSaveCreated(SavedGameRequestStatus status, ISavedGameMetadata gameMetadata)
     {
         if (status == SavedGameRequestStatus.Success)
         {
@@ -130,20 +127,21 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
 
     public void ReadSavedGame(string fileName)
     {
-        if (!GPGSAuthentication.IsAuthenticated)
+        if (!GPGSAuthentication.IsAuthenticated || !InternetConnectionChecker.Instance.IsInternetConnectionAvaliable())
         {
             return;
         }
 
-        // TODO: Если файла на облаке не существует (сможем ли выполнить чтение?)
         OpenSavedGame(fileName, (gameRequestStatus, gameMetadata) =>
         {
+            Debug.Log("Данные с облака были открыты со статусом " + gameRequestStatus);
+
             if (gameRequestStatus == SavedGameRequestStatus.Success)
             {
-                SavedGameClient.ReadBinaryData(gameMetadata, OnSavedGameDataRead);
-
                 // Получаем метаданные открытого файла
                 CurrentGameMetadata = gameMetadata;
+
+                SavedGameClient.ReadBinaryData(gameMetadata, OnSavedGameDataRead);
             }
             else
             {
@@ -155,27 +153,18 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
 
     private void OnSavedGameDataRead(SavedGameRequestStatus status, byte[] data)
     {
+        Debug.Log($"Данные с облака были извлечены. Длина извлеченного массива байт = {data.Length}.\nДанные в виде строки: " + Encoding.UTF8.GetString(data));
+
         if (status == SavedGameRequestStatus.Success)
         {
             // handle processing the byte array data
 
-            // Как только данные загружены, необходимо начать отсчет времени для текущей сессии игры
-            StartPlayingTime = DateTime.Now;
-
-            if (data == null) // data.Length == 0
+            // Синхронизация данных модели из облака и локальной модели
+            if (data.Length != 0)
             {
-                // TODO: Загрузить данные на облако из локальной модели
+                PlayerDataSynchronizer.SynchronizePlayerDataStorages(data);
             }
-
-            PlayerDataModel cloudModel = JsonConverterWrapper.DeserializeObject(Encoding.UTF8.GetString(data), null);
-            if (cloudModel != null)
-            {
-                // Смешение моделей(синхронизация данных)
-                if (!GameManager.IsGameRunning)
-                {
-                    PlayerDataSynchronizer.MixModels(cloudModel, PlayerDataStorageSafe.Instance.PlayerDataModel);
-                }
-            }
+            else { Debug.Log("Данные на облаке не были найдены."); }
         }
         else
         {
@@ -196,6 +185,8 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
             if (gameRequestStatus == SavedGameRequestStatus.Success)
             {
                 SavedGameClient.Delete(gameMetadata);
+
+                CurrentGameMetadata = null;
             }
             else
             {

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6587353836104029691}
   - component: {fileID: 6587353836104029690}
   m_Layer: 0
-  m_Name: PlayerStatsSaver
+  m_Name: PlayerDataSaver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

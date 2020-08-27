@@ -11,9 +11,9 @@ public class ResetStatsButton : MonoBehaviour
 
     private void Start()
     {
-        PlayerDataStorageSafe.Instance.OnDeleteStats += TurnOffButton;
+        PlayerDataLocalStorageSafe.Instance.OnDeleteStats += TurnOffButton;
 
-        if (File.Exists(PlayerDataStorageSafe.Instance.FilePath) && !PlayerDataStorageSafe.IsPlayerDataAlreadyReset)
+        if (File.Exists(PlayerDataLocalStorageSafe.Instance.FilePath) && !PlayerDataLocalStorageSafe.IsPlayerDataAlreadyReset)
         {
             gameObject.GetComponent<Button>().interactable = true;
         }
@@ -26,7 +26,7 @@ public class ResetStatsButton : MonoBehaviour
 
     private void OnDestroy()
     {
-        PlayerDataStorageSafe.Instance.OnDeleteStats -= TurnOffButton;
+        PlayerDataLocalStorageSafe.Instance.OnDeleteStats -= TurnOffButton;
     }
 
 
