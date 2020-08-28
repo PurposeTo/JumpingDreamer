@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using TMPro;
 
-public class ErrorWindow : MonoBehaviour
+public class DialogWindow : MonoBehaviour
 {
     public GameObject panel;
-    public TextMeshProUGUI errorTextObject;
+    public TextMeshProUGUI textMeshProToShow;
 
     private Animator panelAnimator;
 
@@ -17,7 +17,7 @@ public class ErrorWindow : MonoBehaviour
 
     public void CloseClickHandler()
     {
-        //panelAnimator
+        // TODO: Panel closing animation
         Destroy(gameObject);
     }
 }

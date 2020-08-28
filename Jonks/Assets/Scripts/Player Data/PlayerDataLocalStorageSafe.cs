@@ -12,7 +12,7 @@ public class PlayerDataLocalStorageSafe : SingletonMonoBehaviour<PlayerDataLocal
 
     public bool IsDataFileLoaded { get; private set; } = false;
 
-    public event EventHandler OnDeleteStats;
+    public event Action OnDeletePlayerData;
     public static bool IsPlayerDataAlreadyReset { get; private set; } = false;
 
 
@@ -56,22 +56,23 @@ public class PlayerDataLocalStorageSafe : SingletonMonoBehaviour<PlayerDataLocal
             {
                 PlayerDataModel = JsonConverterWrapper.DeserializeObject(dataAsJSON, (success, exception) =>
                 {
-                    if (success)
-                    {
-                        print("#MaxCollectedStars: " + PlayerDataModel.PlayerStats.MaxCollectedStars);
-                        print("#MaxEarnedScore: " + PlayerDataModel.PlayerStats.MaxEarnedScore);
-                        print("#MaxLifeTime: " + PlayerDataModel.PlayerStats.MaxLifeTime);
-
-                        // Структура json соответствует модели данных?
-                        isJsonStructureIncorrect = PlayerDataModel.IsModelHasNullValues();
-                    }
-                    else
+                    if (!success)
                     {
                         isJsonConverted = false;
 
-                        ErrorWindowGenerator.Instance.CreateErrorWindow($"{exception.Message}\nОшибка загрузки данных игровой статистики!\nЗапись новых данных заблокирована!");
+                        DialogWindowGenerator.Instance.CreateErrorWindow($"{exception.Message}\nОшибка загрузки данных игровой статистики!\nЗапись новых данных заблокирована!");
                     }
                 });
+
+                if (isJsonConverted)
+                {
+                    print("#MaxCollectedStars: " + PlayerDataModel.PlayerStats.MaxCollectedStars);
+                    print("#MaxEarnedScore: " + PlayerDataModel.PlayerStats.MaxEarnedScore);
+                    print("#MaxLifeTime: " + PlayerDataModel.PlayerStats.MaxLifeTime);
+
+                    // Структура json соответствует модели данных?
+                    isJsonStructureIncorrect = PlayerDataModel.IsModelHasNullValues();
+                }
             }
             
             if(dataAsJSON == null || isJsonStructureIncorrect || !isJsonConverted)
@@ -86,7 +87,7 @@ public class PlayerDataLocalStorageSafe : SingletonMonoBehaviour<PlayerDataLocal
                 Debug.LogError($"dataAsJSON: {dataAsJSON}");
                 Debug.LogError($"isJsonStructureIncorrect: {isJsonStructureIncorrect}");
                 Debug.LogError($"isJsonConverted: {isJsonConverted}");
-                ErrorWindowGenerator.Instance.CreateErrorWindow("Ошибка загрузки данных игровой статистики!\nЗапись новых данных заблокирована!");
+                DialogWindowGenerator.Instance.CreateErrorWindow("Ошибка загрузки данных игровой статистики!\nЗапись новых данных заблокирована!");
             }
             else
             {
@@ -119,7 +120,7 @@ public class PlayerDataLocalStorageSafe : SingletonMonoBehaviour<PlayerDataLocal
 
         IsDataFileLoaded = true; // Снова можем записывать информацию в файл
         IsPlayerDataAlreadyReset = true;
-        OnDeleteStats?.Invoke(this, null);
+        OnDeletePlayerData?.Invoke();
 
         GPGSPlayerDataCloudStorage.Instance.CreateSave(
             Encoding.UTF8.GetBytes(JsonConverterWrapper.SerializeObject(PlayerDataModel, null)));
@@ -143,7 +144,7 @@ public class PlayerDataLocalStorageSafe : SingletonMonoBehaviour<PlayerDataLocal
                 {
                     isJsonConverted = false;
 
-                    ErrorWindowGenerator.Instance.CreateErrorWindow("Ошибка записи данных игровой статистики! Пожалуйста, обратитесь в службу поддержки.");
+                    DialogWindowGenerator.Instance.CreateErrorWindow("Ошибка записи данных игровой статистики! Пожалуйста, обратитесь в службу поддержки.");
                 }
             });
 

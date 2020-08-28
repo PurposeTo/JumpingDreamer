@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6687179783305391086}
   - component: {fileID: 6687179783305391085}
   m_Layer: 0
-  m_Name: Error window generator
+  m_Name: Dialog window generator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 1
-  errorWindow: {fileID: 9113398689237720326, guid: a1b02bb4ce06cbe4d9fd3244f7b52f5a,
+  dialogWindow: {fileID: 9113398689237720326, guid: a1b02bb4ce06cbe4d9fd3244f7b52f5a,
     type: 3}
