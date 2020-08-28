@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
@@ -7,6 +9,10 @@ public class AnimatorBlinkingController : MonoBehaviour
 {
 
     private Animator animator;
+    private const string entryState = "Entry state";
+    private const string enableBlinkingState = "Enable blinking";
+    private const string blinkingState = "Blinking";
+    private const string disableBlinkingState = "Disable blinking";
     private const string isBlinking = "isBlinking";
     private const string haveEnableState = "haveEnableState";
     private const string haveDisableState = "haveDisableState";
@@ -19,6 +25,8 @@ public class AnimatorBlinkingController : MonoBehaviour
 
     public event Action OnDisableBlinking;
 
+    private Coroutine stopBlinkingCoroutine;
+
 
     private void Awake()
     {
@@ -30,21 +38,6 @@ public class AnimatorBlinkingController : MonoBehaviour
     {
         CheckEmptyStates();
 
-    }
-
-
-    private void Update()
-    {
-        // todo: как узнать текущий animation state?
-        //var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        //string firstStateName = animator.runtimeAnimatorController.animationClips[0].name;
-        //int firstStateHash = Animator.StringToHash(firstStateName);
-        //bool isFirstState = stateInfo.IsName(firstStateName);
-        //print($"Animator first state info: {firstStateName}. {firstStateHash}");
-        //print($"Animator state info: {stateInfo.fullPathHash}. {isFirstState}");
-
-
-        
     }
 
 
@@ -66,8 +59,7 @@ public class AnimatorBlinkingController : MonoBehaviour
 
     public void StopBlinking()
     {
-        // todo: Выключать только после того, как (state != Enry state) !!! Сделать ожидание корутиной!
-        animator.SetBool(isBlinking, false);
+        if(stopBlinkingCoroutine == null) stopBlinkingCoroutine = StartCoroutine(StopBlinkingEnumerator());
     }
 
 
@@ -126,5 +118,14 @@ public class AnimatorBlinkingController : MonoBehaviour
 
         animator.SetBool(haveEnableState, !isEmptyEnable);
         animator.SetBool(haveDisableState, !isEmptyDisable);
+    }
+
+
+    private IEnumerator StopBlinkingEnumerator()
+    {
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+        yield return new WaitWhile(() => stateInfo.IsName(enableBlinkingState));
+        animator.SetBool(isBlinking, false);
     }
 }
