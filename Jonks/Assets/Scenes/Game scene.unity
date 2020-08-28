@@ -2999,7 +2999,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 817976960}
   m_CullTransparentMesh: 0
---- !u!1001 &829259291
+--- !u!1001 &848820162
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -3064,7 +3064,7 @@ PrefabInstance:
     - target: {fileID: 6587353836104029693, guid: 85650b25d6b64cd449fba71fdc647ea4,
         type: 3}
       propertyPath: m_Name
-      value: PlayerStatsSaver
+      value: PlayerDataModelController
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 85650b25d6b64cd449fba71fdc647ea4, type: 3}

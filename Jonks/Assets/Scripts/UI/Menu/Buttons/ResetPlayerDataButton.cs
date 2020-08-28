@@ -2,11 +2,11 @@
 {
     public override void ResetPlayerData()
     {
-        ConfirmationOperationWindow.Initialize("ConfirmDeleteData", "KeyDialog", success =>
+        ConfirmationOperationWindow.Initialize("ConfirmResetDataKeyword", "DialogConfirmResetData", success =>
         {
             if (success)
             {
-                PlayerDataLocalStorageSafe.Instance.DeletePlayerData();
+                PlayerDataModelController.Instance.DeletePlayerData();
                 // TODO Localization
                 DialogWindowGenerator.Instance.CreateErrorWindow("Прогресс удален!");
             }

@@ -20,13 +20,13 @@ public class StarCollector : MonoBehaviour
 
     private void Start()
     {
-        PlayerDataSaver.Instance.OnSavePlayerStats += SaveStarsStats;
+        PlayerDataModelController.Instance.OnSavePlayerStats += SaveStarsStats;
     }
 
 
     private void OnDestroy()
     {
-        PlayerDataSaver.Instance.OnSavePlayerStats -= SaveStarsStats;
+        PlayerDataModelController.Instance.OnSavePlayerStats -= SaveStarsStats;
     }
 
 
@@ -42,7 +42,7 @@ public class StarCollector : MonoBehaviour
 
     private void SaveStarsStats()
     {
-        PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.SaveMaxStarsData(Stars);
-        PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerInGamePurchases.SaveTotalStarsData(Stars);
+        PlayerDataModelController.Instance.PlayerDataLocalModel.PlayerStats.SaveMaxStarsData(Stars);
+        PlayerDataModelController.Instance.PlayerDataLocalModel.PlayerInGamePurchases.SaveTotalStarsData(Stars);
     }
 }

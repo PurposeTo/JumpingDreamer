@@ -16,7 +16,7 @@ public class PlayerInGamePurchases
 
     public void SaveTotalStarsData(SafeInt starsAmount)
     {
-        PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerInGamePurchases.TotalCollectedStars += starsAmount;
+        PlayerDataModelController.Instance.PlayerDataLocalModel.PlayerInGamePurchases.TotalCollectedStars += starsAmount;
     }
 
 

@@ -6,7 +6,7 @@ public class EarnedScoreInGame : MonoBehaviour
 {
     private TextMeshProUGUI earnedScore;
 
-    private int RecordUI => PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxEarnedScore.Value;
+    private int RecordUI => PlayerDataModelController.Instance.PlayerDataLocalModel.PlayerStats.MaxEarnedScore.Value;
 
     private bool isRecordNew = false;
     private EventHandler isRecordNewEvent = null;
@@ -27,7 +27,7 @@ public class EarnedScoreInGame : MonoBehaviour
         * 3. После сохранения статов вызывается метод ShowScoreWithRecord -> См. класс GameOverMenu
         */
         isRecordNewEvent = (sender, eventArgs) => isRecordNew = true;
-        PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.OnNewScoreRecord += isRecordNewEvent;
+        PlayerDataModelController.Instance.PlayerDataLocalModel.PlayerStats.OnNewScoreRecord += isRecordNewEvent;
     }
 
 
@@ -35,7 +35,7 @@ public class EarnedScoreInGame : MonoBehaviour
     {
         GameManager.Instance.PlayerPresenter.ScoreCollector.OnScoreAmountChange -= ShowScore;
         GameManager.Instance.PlayerPresenter.StarCollector.OnStarAmountChange -= ShowScore;
-        PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.OnNewScoreRecord -= isRecordNewEvent;
+        PlayerDataModelController.Instance.PlayerDataLocalModel.PlayerStats.OnNewScoreRecord -= isRecordNewEvent;
     }
 
 

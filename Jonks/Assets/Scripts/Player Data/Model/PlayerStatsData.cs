@@ -31,18 +31,18 @@ public class PlayerStatsData
 
     public void SaveMaxStarsData(SafeInt starsAmount)
     {
-        if (starsAmount > PlayerDataLocalStorageSafe.Instance. PlayerDataModel.PlayerStats.MaxCollectedStars)
+        if (starsAmount > PlayerDataModelController.Instance. PlayerDataLocalModel.PlayerStats.MaxCollectedStars)
         {
-            PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxCollectedStars = starsAmount;
+            PlayerDataModelController.Instance.PlayerDataLocalModel.PlayerStats.MaxCollectedStars = starsAmount;
         }
     }
 
 
     public void SaveScoreData(SafeInt scoreAmount)
     {
-        if (scoreAmount > PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxEarnedScore)
+        if (scoreAmount > PlayerDataModelController.Instance.PlayerDataLocalModel.PlayerStats.MaxEarnedScore)
         {
-            PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxEarnedScore = scoreAmount;
+            PlayerDataModelController.Instance.PlayerDataLocalModel.PlayerStats.MaxEarnedScore = scoreAmount;
             OnNewScoreRecord?.Invoke(this, null);
         }
     }
@@ -50,20 +50,20 @@ public class PlayerStatsData
 
     public void SaveScoreMultiplierData(SafeInt multiplierValue)
     {
-        if (multiplierValue > PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxScoreMultiplierValue)
+        if (multiplierValue > PlayerDataModelController.Instance.PlayerDataLocalModel.PlayerStats.MaxScoreMultiplierValue)
         {
-            PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxScoreMultiplierValue = multiplierValue;
+            PlayerDataModelController.Instance.PlayerDataLocalModel.PlayerStats.MaxScoreMultiplierValue = multiplierValue;
         }
     }
 
 
     public void SaveLifeTimeData(SafeInt lifeTime)
     {
-        PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.TotalLifeTime += lifeTime;
+        PlayerDataModelController.Instance.PlayerDataLocalModel.PlayerStats.TotalLifeTime += lifeTime;
 
-        if (lifeTime > PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxLifeTime)
+        if (lifeTime > PlayerDataModelController.Instance.PlayerDataLocalModel.PlayerStats.MaxLifeTime)
         {
-            PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxLifeTime = lifeTime;
+            PlayerDataModelController.Instance.PlayerDataLocalModel.PlayerStats.MaxLifeTime = lifeTime;
         }
     }
 

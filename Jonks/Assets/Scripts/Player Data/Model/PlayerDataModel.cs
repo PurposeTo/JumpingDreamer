@@ -2,6 +2,8 @@
 
 public class PlayerDataModel
 {
+    public const string FileName = "GameData.json";
+
     public string Id { get; set; }
     public PlayerStatsData PlayerStats { get; set; }
     public PlayerInGamePurchases PlayerInGamePurchases { get; set; }

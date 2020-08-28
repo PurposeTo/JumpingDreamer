@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
-using System.Runtime.ExceptionServices;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
@@ -57,9 +56,16 @@ public class AnimatorBlinkingController : MonoBehaviour
     }
 
 
-    public void StopBlinking()
+    public void StopBlinking(bool safety)
     {
-        if(stopBlinkingCoroutine == null) stopBlinkingCoroutine = StartCoroutine(StopBlinkingEnumerator());
+        if (safety)
+        {
+            if (stopBlinkingCoroutine == null) stopBlinkingCoroutine = StartCoroutine(StopBlinkingEnumerator());
+        }
+        else
+        {
+            animator.SetBool(isBlinking, false);
+        }
     }
 
 
@@ -105,7 +111,7 @@ public class AnimatorBlinkingController : MonoBehaviour
         {
             if (currentLoopCount >= amountOfLoopsToExit)
             {
-                StopBlinking();
+                StopBlinking(true);
             }
         }
     }

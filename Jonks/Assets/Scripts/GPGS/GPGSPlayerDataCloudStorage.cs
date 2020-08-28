@@ -10,7 +10,6 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
 {
     public ISavedGameMetadata CurrentGameMetadata { get; private set; }
     public DateTime StartPlayingTime { get; private set; }
-    public const string CloudFilePath = "GameData.json";
 
     private ISavedGameClient SavedGameClient => ((PlayGamesPlatform)Social.Active).SavedGame;
 
@@ -21,43 +20,17 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
     }
 
 
-    private IEnumerator LoadSavedGameFromCloudEnumerator()
+    public void CreateSave(PlayerDataModel modelToSaveOnCload)
     {
-        yield return new WaitUntil(() => GPGSAuthentication.IsAuthenticated);
+        byte[] dataToSave = Encoding.UTF8.GetBytes(JsonConverterWrapper.SerializeObject(modelToSaveOnCload, null));
 
-        // Как только выполнена аутентификация, необходимо начать отсчет времени для текущей сессии игры
-        StartPlayingTime = DateTime.Now;
-
-        yield return new WaitUntil(() => PlayerDataLocalStorageSafe.Instance.IsDataFileLoaded);
-
-        // Загрузка данных из облака
-        ReadSavedGame(CloudFilePath);
-    }
-
-
-    private void OpenSavedGame(string fileName, Action<SavedGameRequestStatus, ISavedGameMetadata> OnSavedGameOpened)
-    {
-        if (!GPGSAuthentication.IsAuthenticated)
-        {
-            return;
-        }
-
-        SavedGameClient.OpenWithAutomaticConflictResolution(fileName,
-            DataSource.ReadCacheOrNetwork,                                              // ?
-            ConflictResolutionStrategy.UseLongestPlaytime,                              // ?
-            OnSavedGameOpened);
-    }
-
-
-    public void CreateSave(byte[] dataToSave)
-    {
         Debug.Log("#CreateSave: begin");
 
         if (!GPGSAuthentication.IsAuthenticated ||
             !InternetConnectionChecker.Instance.IsInternetConnectionAvaliable() ||
             dataToSave == null ||
             dataToSave.Length == 0 ||
-            !PlayerDataLocalStorageSafe.Instance.IsDataFileLoaded)
+            !PlayerDataModelController.Instance.IsDataFileLoaded)
         {
             return;
         }
@@ -82,7 +55,7 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
         {
             Debug.Log("#CreateSave: CurrentGameMetadata == null");
 
-            OpenSavedGame(CloudFilePath, (gameRequestStatus, gameMetadata) =>
+            OpenSavedGame(PlayerDataModel.FileName, (gameRequestStatus, gameMetadata) =>
             {
                 if (gameRequestStatus == SavedGameRequestStatus.Success)
                 {
@@ -106,34 +79,13 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
     }
 
 
-    private void OnSaveCreated(SavedGameRequestStatus gameRequestStatus, ISavedGameMetadata gameMetadata)
-    {
-        if (gameRequestStatus == SavedGameRequestStatus.Success)
-        {
-            // handle writing of saved game.
-
-            // Так как при сохранении метаданные обновляются, то после его завершения необходимо их перезаписать
-            CurrentGameMetadata = gameMetadata;
-
-            // Заново считаем время игры с момента записи сохранения
-            StartPlayingTime = DateTime.Now;
-        }
-        else
-        {
-            // handle error
-        }
-    }
-
-
-    public byte[] ReadSavedGame(string fileName)
+    public PlayerDataModel ReadSavedGame(string fileName)
     {
         if (!GPGSAuthentication.IsAuthenticated || !InternetConnectionChecker.Instance.IsInternetConnectionAvaliable())
         {
-            // null?
             return null;
         }
 
-        // null?
         byte[] receivedData = null;
 
 
@@ -154,8 +106,6 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
                     if (data.Length != 0)
                     {
                         receivedData = data;
-
-                        PlayerDataSynchronizer.SynchronizePlayerDataStorages(data);
                     }
                     else { Debug.Log("Данные на облаке не были найдены."); }
                 }
@@ -179,7 +129,7 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
             }
         });
 
-        return receivedData;
+        return JsonConverterWrapper.DeserializeObject(Encoding.UTF8.GetString(receivedData), null);
     }
 
 
@@ -206,7 +156,7 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
     }
 
 
-    public Texture2D GetScreenshot()
+    private Texture2D GetScreenshot()
     {
         // Create a 2D texture that is 1024x700 pixels from which the PNG will be extracted
         Texture2D screenShot = new Texture2D(1024, 700);
@@ -215,5 +165,53 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
         screenShot.ReadPixels(new Rect(0, 0, Screen.width, (Screen.width / 1024) * 700), 0, 0);
 
         return screenShot;
+    }
+
+
+    private IEnumerator LoadSavedGameFromCloudEnumerator()
+    {
+        yield return new WaitUntil(() => GPGSAuthentication.IsAuthenticated);
+
+        // Как только выполнена аутентификация, необходимо начать отсчет времени для текущей сессии игры
+        StartPlayingTime = DateTime.Now;
+
+        yield return new WaitUntil(() => PlayerDataModelController.Instance.IsDataFileLoaded);
+
+        // Загрузка данных из облака
+        PlayerDataModel cloudModel = ReadSavedGame(PlayerDataModel.FileName);
+        PlayerDataModelController.Instance.SynchronizePlayerDataStorages(cloudModel);
+    }
+
+
+    private void OpenSavedGame(string fileName, Action<SavedGameRequestStatus, ISavedGameMetadata> OnSavedGameOpened)
+    {
+        if (!GPGSAuthentication.IsAuthenticated)
+        {
+            return;
+        }
+
+        SavedGameClient.OpenWithAutomaticConflictResolution(fileName,
+            DataSource.ReadCacheOrNetwork,                                              // ?
+            ConflictResolutionStrategy.UseLongestPlaytime,                              // ?
+            OnSavedGameOpened);
+    }
+
+
+    private void OnSaveCreated(SavedGameRequestStatus gameRequestStatus, ISavedGameMetadata gameMetadata)
+    {
+        if (gameRequestStatus == SavedGameRequestStatus.Success)
+        {
+            // handle writing of saved game.
+
+            // Так как при сохранении метаданные обновляются, то после его завершения необходимо их перезаписать
+            CurrentGameMetadata = gameMetadata;
+
+            // Заново считаем время игры с момента записи сохранения
+            StartPlayingTime = DateTime.Now;
+        }
+        else
+        {
+            // handle error
+        }
     }
 }

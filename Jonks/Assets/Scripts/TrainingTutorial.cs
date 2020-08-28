@@ -31,7 +31,7 @@ public class TrainingTutorial : MonoBehaviour
 
     private void OnEnable()
     {
-        bool shouldStartByShowingTheTutorial = PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.TotalLifeTime < minTotalLifeTimeToShowTutorial;
+        bool shouldStartByShowingTheTutorial = PlayerDataModelController.Instance.PlayerDataLocalModel.PlayerStats.TotalLifeTime < minTotalLifeTimeToShowTutorial;
 
         if (CheckingIfTutorialNeedsToBeShownRoutine == null && IsTutorialNeedsToBeShown())
         {
@@ -49,7 +49,7 @@ public class TrainingTutorial : MonoBehaviour
 
     private void OnDisable()
     {
-        DisableTutorialBlinking();
+        DisableTutorialBlinking(false);
         DisableTutorialTips();
         StopAllCoroutines();
         isTutorialTipsEnable = false;
@@ -77,11 +77,11 @@ public class TrainingTutorial : MonoBehaviour
     }
 
 
-    private void DisableTutorialBlinking()
+    private void DisableTutorialBlinking(bool safety)
     {
         for (int i = 0; i < animatorBlinkingControllers.Length; i++)
         {
-            animatorBlinkingControllers[i].StopBlinking();
+            animatorBlinkingControllers[i].StopBlinking(safety);
         }
     }
 
@@ -138,7 +138,7 @@ public class TrainingTutorial : MonoBehaviour
     {
         EnableTutorial();
         yield return new WaitWhile(() => IsTutorialNeedsToBeShown());
-        DisableTutorialBlinking();
+        DisableTutorialBlinking(true);
 
         yield return new WaitWhile(() => isTutorialTipsEnable);
 

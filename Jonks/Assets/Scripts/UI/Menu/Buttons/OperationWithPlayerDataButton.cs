@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System;
 
 public abstract class OperationWithPlayerDataButton : MonoBehaviour
 {
@@ -13,7 +12,7 @@ public abstract class OperationWithPlayerDataButton : MonoBehaviour
     {
         button = gameObject.GetComponent<Button>();
 
-        PlayerDataLocalStorageSafe.Instance.OnDeletePlayerData += ToggleButton;
+        PlayerDataModelController.Instance.OnDeletePlayerData += ToggleButton;
 
         ToggleButton();
     }
@@ -21,7 +20,7 @@ public abstract class OperationWithPlayerDataButton : MonoBehaviour
 
     private void OnDestroy()
     {
-        PlayerDataLocalStorageSafe.Instance.OnDeletePlayerData -= ToggleButton;
+        PlayerDataModelController.Instance.OnDeletePlayerData -= ToggleButton;
     }
 
 
@@ -33,6 +32,6 @@ public abstract class OperationWithPlayerDataButton : MonoBehaviour
 
     private void ToggleButton()
     {
-        button.interactable = !PlayerDataLocalStorageSafe.IsPlayerDataAlreadyReset;
+        button.interactable = !PlayerDataModelController.IsPlayerDataAlreadyReset;
     }
 }
