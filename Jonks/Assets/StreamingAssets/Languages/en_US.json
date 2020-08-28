@@ -1,7 +1,7 @@
 {"items":[
 {"key":"Language", "value":"Language"},
 {"key":"Tap", "value":"Tap!"},
-{"key":"AdRewardMessage", "value":"The Ad will be shown before receiving the rewards"}
-
-
+{"key":"AdRewardMessage", "value":"The Ad will be shown before receiving the rewards"},
+{"key":"ConfirmDeleteData", "value":"DELETE"},
+{"key":"KeyDialog", "value":"Warning! You are going to delete all your progress in this game. To confirm, enter the word \"{0}\" in the field below and click \"OK\""}
 ]}

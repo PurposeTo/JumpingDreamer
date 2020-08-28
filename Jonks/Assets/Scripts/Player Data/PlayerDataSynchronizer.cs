@@ -6,8 +6,6 @@ public static class PlayerDataSynchronizer
 {
     public static event Action<PlayerDataModel> OnLocalModelWasChanged;
 
-    private static PlayerDataModel cloudModel = null;
-
 
     // Синхронизация данных модели из облака и локальной модели
     public static void SynchronizePlayerDataStorages(byte[] data)
@@ -49,6 +47,7 @@ public static class PlayerDataSynchronizer
     }
 
 
+    // TODO: Перенести в PlayerDataModel
     private static void MixModels(PlayerDataModel cloudModel, PlayerDataModel localModel)
     {
         #region Логика смешения моделей
@@ -70,12 +69,19 @@ public static class PlayerDataSynchronizer
     }
 
 
-    public static void SelectCloudModelHandler()
+    public static void SelectCloudModelHandler(PlayerDataModel cloudModel)
     {
         // Нужна ли проверка? Выбор не будет доступен, если cloudModel == null (т.е. этому обработчику нечего будет обрабатывать, т.к. нельзя нажать на кнопку, которой нет)
         if (cloudModel != null)
         {
             OnLocalModelWasChanged?.Invoke(cloudModel);
         }
+    }
+
+
+    public static void RestorePlayerDataFromCloud()
+    {
+        // 1. Получить облачную модель из GPGSPlayerDataCloudStorage
+        // 2. Сделать Set приватному полю модели
     }
 }

@@ -4,7 +4,6 @@ public class SettingsMenu : MonoBehaviour
 {
     public GameObject SettingsButton;
     public GameObject SettingsScreen;
-    public ResetStatsButton ResetStatsButton;
     private Animator animator;
 
 

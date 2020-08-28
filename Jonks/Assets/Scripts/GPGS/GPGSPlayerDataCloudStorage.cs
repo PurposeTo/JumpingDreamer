@@ -106,9 +106,9 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
     }
 
 
-    private void OnSaveCreated(SavedGameRequestStatus status, ISavedGameMetadata gameMetadata)
+    private void OnSaveCreated(SavedGameRequestStatus gameRequestStatus, ISavedGameMetadata gameMetadata)
     {
-        if (status == SavedGameRequestStatus.Success)
+        if (gameRequestStatus == SavedGameRequestStatus.Success)
         {
             // handle writing of saved game.
 
@@ -125,16 +125,46 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
     }
 
 
-    public void ReadSavedGame(string fileName)
+    public byte[] ReadSavedGame(string fileName)
     {
         if (!GPGSAuthentication.IsAuthenticated || !InternetConnectionChecker.Instance.IsInternetConnectionAvaliable())
         {
-            return;
+            // null?
+            return null;
         }
+
+        // null?
+        byte[] receivedData = null;
+
 
         OpenSavedGame(fileName, (gameRequestStatus, gameMetadata) =>
         {
             Debug.Log("Данные с облака были открыты со статусом " + gameRequestStatus);
+
+
+            void OnSavedGameDataRead(SavedGameRequestStatus requestStatus, byte[] data)
+            {
+                Debug.Log($"Данные с облака были извлечены. Длина извлеченного массива байт = {data.Length}.\nДанные в виде строки: " + Encoding.UTF8.GetString(data));
+
+                if (requestStatus == SavedGameRequestStatus.Success)
+                {
+                    // handle processing the byte array data
+
+                    // Синхронизация данных модели из облака и локальной модели
+                    if (data.Length != 0)
+                    {
+                        receivedData = data;
+
+                        PlayerDataSynchronizer.SynchronizePlayerDataStorages(data);
+                    }
+                    else { Debug.Log("Данные на облаке не были найдены."); }
+                }
+                else
+                {
+                    // handle error
+                }
+            }
+
 
             if (gameRequestStatus == SavedGameRequestStatus.Success)
             {
@@ -148,28 +178,8 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
                 // handle error
             }
         });
-    }
 
-
-    private void OnSavedGameDataRead(SavedGameRequestStatus status, byte[] data)
-    {
-        Debug.Log($"Данные с облака были извлечены. Длина извлеченного массива байт = {data.Length}.\nДанные в виде строки: " + Encoding.UTF8.GetString(data));
-
-        if (status == SavedGameRequestStatus.Success)
-        {
-            // handle processing the byte array data
-
-            // Синхронизация данных модели из облака и локальной модели
-            if (data.Length != 0)
-            {
-                PlayerDataSynchronizer.SynchronizePlayerDataStorages(data);
-            }
-            else { Debug.Log("Данные на облаке не были найдены."); }
-        }
-        else
-        {
-            // handle error
-        }
+        return receivedData;
     }
 
 
