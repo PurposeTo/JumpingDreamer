@@ -36,6 +36,21 @@ public class AnimatorBlinkingController : MonoBehaviour
     }
 
 
+    private void Update()
+    {
+        // todo: как узнать текущий animation state?
+        //var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        //string firstStateName = animator.runtimeAnimatorController.animationClips[0].name;
+        //int firstStateHash = Animator.StringToHash(firstStateName);
+        //bool isFirstState = stateInfo.IsName(firstStateName);
+        //print($"Animator first state info: {firstStateName}. {firstStateHash}");
+        //print($"Animator state info: {stateInfo.fullPathHash}. {isFirstState}");
+
+
+        
+    }
+
+
     public enum DurationType
     {
         Loops,
@@ -92,6 +107,7 @@ public class AnimatorBlinkingController : MonoBehaviour
     }
 
 
+    // Данный метод предусмотрен для animation event. Не менять имя! Аниматор обращается по стринге, имени метода!
     private void CheckLoopAnimator()
     {
         currentLoopCount++;
