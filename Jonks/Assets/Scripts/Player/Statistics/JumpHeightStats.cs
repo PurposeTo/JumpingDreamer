@@ -15,13 +15,13 @@ class JumpHeightStats : MonoBehaviour
         playerRb2D = gameObject.GetComponent<Rigidbody2D>();
         centre = GameManager.Instance.CentreObject;
 
-        GameMenu.Instance.GameOverScreen.GameOverStatusScreen.GameOverMenu.OnSavePlayerStats += SaveJumpHeightStats;
+        PlayerDataSaver.Instance.OnSavePlayerStats += SaveJumpHeightStats;
     }
 
 
     private void OnDestroy()
     {
-        GameMenu.Instance.GameOverScreen.GameOverStatusScreen.GameOverMenu.OnSavePlayerStats -= SaveJumpHeightStats;
+        PlayerDataSaver.Instance.OnSavePlayerStats -= SaveJumpHeightStats;
     }
 
 
@@ -45,6 +45,6 @@ class JumpHeightStats : MonoBehaviour
 
     private void SaveJumpHeightStats()
     {
-        PlayerStatsDataStorageSafe.Instance.SaveJumpHeightData((float)Math.Round(jumpHeight, 1));
+        PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.SaveJumpHeightData((float)Math.Round(jumpHeight, 1));
     }
 }

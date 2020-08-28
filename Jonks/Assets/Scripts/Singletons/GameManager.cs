@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
@@ -10,7 +12,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     protected override void AwakeSingleton()
     {
-        base.AwakeSingleton();
         PlayerPresenter = Player.GetComponent<PlayerPresenter>();
         Centre = CentreObject.GetComponent<Centre>();
     }

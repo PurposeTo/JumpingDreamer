@@ -31,7 +31,7 @@ public class TrainingTutorial : MonoBehaviour
 
     private void OnEnable()
     {
-        bool shouldStartByShowingTheTutorial = PlayerStatsDataStorageSafe.Instance.PlayerStatsData.TotalLifeTime < minTotalLifeTimeToShowTutorial;
+        bool shouldStartByShowingTheTutorial = PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.TotalLifeTime < minTotalLifeTimeToShowTutorial;
 
         if (CheckingIfTutorialNeedsToBeShownRoutine == null && IsTutorialNeedsToBeShown())
         {

@@ -1,42 +1,90 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-[Serializable]
-public class PlayerStatsDataModel
+public class PlayerStatsData
 {
+    public event EventHandler OnNewScoreRecord;
+
     // Лучшие результаты за все время игры
     [JsonConverter(typeof(SafeIntConverter))] public SafeInt? MaxCollectedStars { get; set; }
     [JsonConverter(typeof(SafeIntConverter))] public SafeInt? MaxEarnedScore { get; set; }
     [JsonConverter(typeof(SafeIntConverter))] public SafeInt? MaxScoreMultiplierValue { get; set; }
     [JsonConverter(typeof(SafeIntConverter))] public SafeInt? MaxLifeTime { get; set; }
-    //public float maxJumpHeight; // json хранит double
+    //public float MaxJumpHeight; // json хранит double
 
     // Общие результаты за все время игры
-    [JsonConverter(typeof(SafeIntConverter))] public SafeInt? TotalCollectedStars { get; set; }
     [JsonConverter(typeof(SafeIntConverter))] public SafeInt? TotalLifeTime { get; set; }
 
 
-    public static PlayerStatsDataModel CreateModelWithDefaultValues()
+    public static PlayerStatsData CreateStatsWithDefaultValues()
     {
-        return new PlayerStatsDataModel
+        return new PlayerStatsData
         {
             MaxCollectedStars = default(int),
             MaxEarnedScore = default(int),
             MaxScoreMultiplierValue = default(int),
             MaxLifeTime = default(int),
-            TotalCollectedStars = default(int),
             TotalLifeTime = default(int),
         };
     }
 
 
-    // Если не хватает какого-либо поля в файле, т.е. его значение равно null, то это значит, что файл изменялся
-    public bool IsModelHasNullValues()
+    public void SaveMaxStarsData(SafeInt starsAmount)
+    {
+        if (starsAmount > PlayerDataLocalStorageSafe.Instance. PlayerDataModel.PlayerStats.MaxCollectedStars)
+        {
+            PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxCollectedStars = starsAmount;
+        }
+    }
+
+
+    public void SaveScoreData(SafeInt scoreAmount)
+    {
+        if (scoreAmount > PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxEarnedScore)
+        {
+            PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxEarnedScore = scoreAmount;
+            OnNewScoreRecord?.Invoke(this, null);
+        }
+    }
+
+
+    public void SaveScoreMultiplierData(SafeInt multiplierValue)
+    {
+        if (multiplierValue > PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxScoreMultiplierValue)
+        {
+            PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxScoreMultiplierValue = multiplierValue;
+        }
+    }
+
+
+    public void SaveLifeTimeData(SafeInt lifeTime)
+    {
+        PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.TotalLifeTime += lifeTime;
+
+        if (lifeTime > PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxLifeTime)
+        {
+            PlayerDataLocalStorageSafe.Instance.PlayerDataModel.PlayerStats.MaxLifeTime = lifeTime;
+        }
+    }
+
+
+    [Obsolete]
+    public void SaveJumpHeightData(float jumpHeight)
+    {
+        //if (jumpHeight > PlayerStatsData.PlayerStats.MaxJumpHeight)
+        //{
+        //    PlayerStatsData.PlayerStats.MaxJumpHeight = jumpHeight;
+        //}
+    }
+
+
+    // Если не хватает какого-либо поля в объекте статов игрока, т.е. значение этого поля равно null, то это значит, что файл изменялся
+    public bool IsStatsHaveNullValues()
     {
         //bool haveNullValue = false;
 
         #region C# 8.0 don't support by Unity
-        //PlayerStatsDataModel dataModel = (PlayerStatsDataModel)PlayerStatsData.Clone();
+        //PlayerStatsData dataModel = (PlayerStatsData)PlayerStats.Clone();
 
         //dataModel.MaxCollectedStars ??= default;
         //dataModel.MaxEarnedScore ??= default;
@@ -45,10 +93,10 @@ public class PlayerStatsDataModel
         //dataModel.TotalCollectedStars ??= default;
         //dataModel.TotalLifeTime ??= default;
 
-        //if (!dataModel.Equals(PlayerStatsData))
+        //if (!dataModel.Equals(PlayerStats))
         //{
         //    haveNullValue = true;
-        //    PlayerStatsData = dataModel;
+        //    PlayerStats = dataModel;
         //}
 
         //public override bool Equals(object obj)
@@ -107,7 +155,35 @@ public class PlayerStatsDataModel
             MaxEarnedScore.HasValue &&
             MaxScoreMultiplierValue.HasValue &&
             MaxLifeTime.HasValue &&
-            TotalCollectedStars.HasValue &&
             TotalLifeTime.HasValue);
+    }
+
+
+    public static PlayerStatsData MixPlayerStats(PlayerStatsData cloudPlayerStatsData, PlayerStatsData localPlayerStatsData)
+    {
+        if (cloudPlayerStatsData is null)
+        {
+            return localPlayerStatsData;
+        }
+
+        PlayerStatsData mixedPlayerStatsData = null;
+
+        // TODO: mix stats
+
+        return mixedPlayerStatsData;
+    }
+
+
+    // TODO: Работает?
+    public override bool Equals(object obj)
+    {
+        return base.Equals(obj);
+    }
+
+
+    // TODO: Работает?
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
     }
 }
