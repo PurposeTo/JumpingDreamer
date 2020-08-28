@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public delegate void DisableBlinking();
 [RequireComponent(typeof(Animator))]
 public class AnimatorBlinkingController : MonoBehaviour
 {
@@ -19,7 +17,7 @@ public class AnimatorBlinkingController : MonoBehaviour
     private int amountOfLoopsToExit = 1;
     private int currentLoopCount = 0; // Значение вычисляется в конце петли анимации
 
-    public event DisableBlinking OnDisableBlinking;
+    public event Action OnDisableBlinking;
 
 
     private void Awake()
