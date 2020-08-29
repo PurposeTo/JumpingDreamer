@@ -56,16 +56,9 @@ public class AnimatorBlinkingController : MonoBehaviour
     }
 
 
-    public void StopBlinking(bool safety)
+    public void StopBlinking()
     {
-        if (safety)
-        {
-            if (stopBlinkingCoroutine == null) stopBlinkingCoroutine = StartCoroutine(StopBlinkingEnumerator());
-        }
-        else
-        {
-            animator.SetBool(isBlinking, false);
-        }
+        if (stopBlinkingCoroutine == null) stopBlinkingCoroutine = StartCoroutine(StopBlinkingEnumerator());
     }
 
 
@@ -111,7 +104,7 @@ public class AnimatorBlinkingController : MonoBehaviour
         {
             if (currentLoopCount >= amountOfLoopsToExit)
             {
-                StopBlinking(true);
+                StopBlinking();
             }
         }
     }
