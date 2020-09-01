@@ -14,6 +14,16 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
     private ISavedGameClient SavedGameClient => ((PlayGamesPlatform)Social.Active).SavedGame;
 
 
+    public enum ReadingCloudDataStatus
+    {
+        NoDataOnCloud,
+        InternetNotAvaliable,
+        SuccessReading,
+        NotAuthenticated,
+        Default
+    }
+
+
     private void Start()
     {
         StartCoroutine(LoadSavedGameFromCloudEnumerator());
@@ -79,15 +89,21 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
     }
 
 
-    public PlayerDataModel ReadSavedGame(string fileName)
+    public PlayerDataModel ReadSavedGame(string fileName, out ReadingCloudDataStatus readingStatus)
     {
-        if (!GPGSAuthentication.IsAuthenticated || !InternetConnectionChecker.Instance.IsInternetConnectionAvaliable())
+        if (!GPGSAuthentication.IsAuthenticated)
         {
+            readingStatus = ReadingCloudDataStatus.NotAuthenticated;
+            return null;
+        }
+        else if (!InternetConnectionChecker.Instance.IsInternetConnectionAvaliable())
+        {
+            readingStatus = ReadingCloudDataStatus.InternetNotAvaliable;
             return null;
         }
 
-        byte[] receivedData = null;
 
+        byte[] receivedData = null;
 
         OpenSavedGame(fileName, (gameRequestStatus, gameMetadata) =>
         {
@@ -102,9 +118,8 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
                 {
                     // handle processing the byte array data
 
-                    receivedData = data;
-
-                    if (data.Length == 0) { Debug.Log("Данные на облаке не были найдены."); }
+                    if (data != null) { receivedData = data; }
+                    else { Debug.LogError("Данные на облаке не были найдены."); } // Если на облаке нет данных, то возвращается пустой массив байт
                 }
                 else
                 {
@@ -126,7 +141,16 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
             }
         });
 
+        if (receivedData.Length == 0) { readingStatus = ReadingCloudDataStatus.NoDataOnCloud; }
+        else { readingStatus = ReadingCloudDataStatus.SuccessReading; }
+
         return JsonConverterWrapper.DeserializeObject(Encoding.UTF8.GetString(receivedData), null);
+    }
+
+
+    public PlayerDataModel ReadSavedGame(string fileName)
+    {
+        return ReadSavedGame(fileName, out _);
     }
 
 
@@ -136,6 +160,7 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
         {
             return;
         }
+
 
         OpenSavedGame(fileName, (gameRequestStatus, gameMetadata) =>
         {

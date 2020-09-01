@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using UnityEngine; // Не удалять, т.к. используется для платформозависимой компиляции
 
 
@@ -50,15 +49,9 @@ public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelC
     }
 
 
-    public void SynchronizePlayerDataStorages(PlayerDataModel cloudModel)
-    {
-        playerDataSynchronizer.SynchronizePlayerDataStorages(PlayerDataLocalModel, cloudModel);
-    }
-
-
     public void RestorePlayerDataFromCloud()
     {
-        PlayerDataModel cloudModel = GPGSPlayerDataCloudStorage.Instance.ReadSavedGame(PlayerDataModel.FileName);
+        PlayerDataModel cloudModel = GPGSPlayerDataCloudStorage.Instance.ReadSavedGame(PlayerDataModel.FileName, out GPGSPlayerDataCloudStorage.ReadingCloudDataStatus readingCloudDataStatus);
 
         if (cloudModel != null)
         {
@@ -66,10 +59,23 @@ public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelC
         }
         else
         {
-            // TODO: Сделать проверку. Если данных на облаке не было, то создать пустую модель.
-            // Если не было соединения с интернетом, то вывести окно "Ошибка соединения!" и НИЧЕГО НЕ ДЕЛАТЬ
-            PlayerDataLocalModel = PlayerDataModel.CreateModelWithDefaultValues();
+            if (readingCloudDataStatus == GPGSPlayerDataCloudStorage.ReadingCloudDataStatus.NoDataOnCloud)
+            {
+                PlayerDataLocalModel = PlayerDataModel.CreateModelWithDefaultValues();
+                return;
+            }
+            else if (readingCloudDataStatus == GPGSPlayerDataCloudStorage.ReadingCloudDataStatus.InternetNotAvaliable)
+            {
+                DialogWindowGenerator.Instance.CreateDialogWindow("Ошибка соединения!");
+                return;
+            }
         }
+    }
+
+
+    public void SynchronizePlayerDataStorages(PlayerDataModel cloudModel)
+    {
+        playerDataSynchronizer.SynchronizePlayerDataStorages(PlayerDataLocalModel, cloudModel);
     }
 
 

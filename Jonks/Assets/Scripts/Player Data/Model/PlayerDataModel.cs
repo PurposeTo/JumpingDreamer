@@ -29,4 +29,20 @@ public class PlayerDataModel
 
         return PlayerStats.IsStatsHaveNullValues() || PlayerInGamePurchases.IsInGamePurchasesHaveNullValues();
     }
+
+
+    public static PlayerDataModel MixPlayerModels(PlayerDataModel cloudPlayerDataModel, PlayerDataModel localPlayerDataModel)
+    {
+        if (cloudPlayerDataModel == null)
+        {
+            return localPlayerDataModel;
+        }
+
+        PlayerDataModel mixedPlayerDataModel = CreateModelWithDefaultValues();
+
+        mixedPlayerDataModel.PlayerStats = PlayerStatsData.MixPlayerStats(cloudPlayerDataModel.PlayerStats, localPlayerDataModel.PlayerStats);
+        mixedPlayerDataModel.PlayerInGamePurchases = PlayerInGamePurchases.MixPlayerInGamePurchases(cloudPlayerDataModel.PlayerInGamePurchases, localPlayerDataModel.PlayerInGamePurchases);
+
+        return mixedPlayerDataModel;
+    }
 }

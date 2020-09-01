@@ -7,13 +7,11 @@
             if (success)
             {
                 PlayerDataModelController.Instance.RestorePlayerDataFromCloud();
-                // TODO Localization
-                DialogWindowGenerator.Instance.CreateErrorWindow("Прогресс восстановлен!");
+                DialogWindowGenerator.Instance.CreateDialogWindow(LocalizationManager.Instance.GetLocalizedValue("ProgressWasRestored"));
             }
             else
             {
-                // TODO Localization
-                DialogWindowGenerator.Instance.CreateErrorWindow("Операция не была подтверждена!");
+                DialogWindowGenerator.Instance.CreateDialogWindow(LocalizationManager.Instance.GetLocalizedValue("OperationNotConfirm"));
             }
         });
 

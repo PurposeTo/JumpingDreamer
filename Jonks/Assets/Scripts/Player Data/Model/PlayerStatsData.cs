@@ -161,14 +161,24 @@ public class PlayerStatsData
 
     public static PlayerStatsData MixPlayerStats(PlayerStatsData cloudPlayerStatsData, PlayerStatsData localPlayerStatsData)
     {
-        if (cloudPlayerStatsData is null)
+        if (cloudPlayerStatsData == null)
         {
             return localPlayerStatsData;
         }
 
-        PlayerStatsData mixedPlayerStatsData = null;
+        PlayerStatsData mixedPlayerStatsData = CreateStatsWithDefaultValues();
 
-        // TODO: mix stats
+        mixedPlayerStatsData.MaxCollectedStars = cloudPlayerStatsData.MaxCollectedStars > localPlayerStatsData.MaxCollectedStars ? cloudPlayerStatsData.MaxCollectedStars : localPlayerStatsData.MaxCollectedStars;
+
+        mixedPlayerStatsData.MaxEarnedScore = cloudPlayerStatsData.MaxEarnedScore > localPlayerStatsData.MaxEarnedScore ? cloudPlayerStatsData.MaxEarnedScore : localPlayerStatsData.MaxEarnedScore;
+
+        mixedPlayerStatsData.MaxLifeTime = cloudPlayerStatsData.MaxLifeTime > localPlayerStatsData.MaxLifeTime ? cloudPlayerStatsData.MaxLifeTime : localPlayerStatsData.MaxLifeTime;
+
+        mixedPlayerStatsData.MaxScoreMultiplierValue = cloudPlayerStatsData.MaxScoreMultiplierValue > localPlayerStatsData.MaxScoreMultiplierValue ? cloudPlayerStatsData.MaxScoreMultiplierValue : localPlayerStatsData.MaxScoreMultiplierValue;
+
+        mixedPlayerStatsData.TotalLifeTime = cloudPlayerStatsData.TotalLifeTime > localPlayerStatsData.TotalLifeTime ? cloudPlayerStatsData.TotalLifeTime : localPlayerStatsData.TotalLifeTime;
+
+        mixedPlayerStatsData.MaxCollectedStars = cloudPlayerStatsData.MaxCollectedStars > localPlayerStatsData.MaxCollectedStars ? cloudPlayerStatsData.MaxCollectedStars : localPlayerStatsData.MaxCollectedStars;
 
         return mixedPlayerStatsData;
     }

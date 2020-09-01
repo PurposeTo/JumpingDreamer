@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerDataSynchronizer
 {
@@ -42,10 +40,7 @@ public class PlayerDataSynchronizer
 
     private void MixModels(PlayerDataModel localModel, PlayerDataModel cloudModel)
     {
-        #region Логика смешения моделей
-        // Заглушка
-        PlayerDataModel mixedPlayerDataModel = PlayerDataModel.CreateModelWithDefaultValues();
-        #endregion
+        PlayerDataModel mixedPlayerDataModel = PlayerDataModel.MixPlayerModels(cloudModel, localModel);
 
         // Если произошло смешение моделей, то необходимо обновить модель на облаке И локально
         GPGSPlayerDataCloudStorage.Instance.CreateSave(mixedPlayerDataModel);
@@ -54,16 +49,21 @@ public class PlayerDataSynchronizer
 
 
     // Обработка предложенного пользователю выбора одной из моделей
-    private PlayerDataModel SelectDataModel(PlayerDataModel localModel, PlayerDataModel cloudModel)
+    private void SelectDataModel(PlayerDataModel localModel, PlayerDataModel cloudModel)
     {
         // TODO: Вызвать корутину ожидания с предложением игроку выбрать модель
         // TODO: вывести окно с предложением о выборе модели. В зависимости от выбора пользователя загрузить модель либо в облако, либо на устройство
+        /* 1. Создать объект окна выбора модели
+         * 2. Получить с него скрипт (выбора)
+         * 3. Проинициализировать значения (два поля) внутри скрипта двумя моделями
+         * 4. Ждать пока пользователь выберет модель (isSelected == true)
+         * 5. Получить значения selected model из UI скрипта. Присвоить полученное значение в модель, которая будет передана в корутину в качестве параметра.
+         * 6. Вызвать метод в UI скрипте - "Закрыть окошко"
+         */
         #region Игрок выбирает модель
         // Заглушка
         PlayerDataModel selectedModel = PlayerDataModel.CreateModelWithDefaultValues();
         #endregion
-
-        return selectedModel;
     }
 
 }

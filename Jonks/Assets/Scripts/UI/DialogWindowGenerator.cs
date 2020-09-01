@@ -5,7 +5,7 @@ public class DialogWindowGenerator : SingletonMonoBehaviour<DialogWindowGenerato
 {
     [SerializeField] private GameObject dialogWindow = null;
 
-    public void CreateErrorWindow(string textToShow)
+    public void CreateDialogWindow(string textToShow)
     {
         Instantiate(dialogWindow).GetComponent<DialogWindow>().textMeshProToShow.text = textToShow;
     }
