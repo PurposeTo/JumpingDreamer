@@ -55,18 +55,24 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: ad766119b6228e7499dd217835398ca6, type: 3}
-    totalSpriteSurfaceArea: 65536
+    totalSpriteSurfaceArea: 114688
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: 8e3c5c10b56b77f4ca33c9378e3df0c3, type: 3}
+  - {fileID: 21300000, guid: e0bb01b61197c9e4c9209a87112210a3, type: 3}
   - {fileID: 21300000, guid: cf030ee85957ebb4d93b9c4daa97fb98, type: 3}
   - {fileID: 21300000, guid: b96843da6eff293449ae1df212aac471, type: 3}
   - {fileID: 21300000, guid: 22d38d6cc2d83ec4b9df134fab4ac8dc, type: 3}
+  - {fileID: 21300000, guid: 0ed6702ee442ffb49ac33677599adc9e, type: 3}
   - {fileID: 21300000, guid: c696c02e37f16384484489f8528af28e, type: 3}
   m_PackedSpriteNamesToIndex:
+  - Leaderboard button
+  - Shop button
   - Close button
   - Pause button
   - Play button
+  - Settings button
   - Menu button
   m_Tag: UI atlas
   m_IsVariant: 0

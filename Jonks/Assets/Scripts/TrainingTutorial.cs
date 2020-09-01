@@ -49,7 +49,6 @@ public class TrainingTutorial : MonoBehaviour
 
     private void OnDisable()
     {
-        DisableTutorialBlinking(false);
         DisableTutorialTips();
         StopAllCoroutines();
         isTutorialTipsEnable = false;
@@ -77,13 +76,14 @@ public class TrainingTutorial : MonoBehaviour
     }
 
 
-    private void DisableTutorialBlinking(bool safety)
+    private void DisableTutorialBlinking()
     {
         for (int i = 0; i < animatorBlinkingControllers.Length; i++)
         {
-            animatorBlinkingControllers[i].StopBlinking(safety);
+            animatorBlinkingControllers[i].StopBlinking();
         }
     }
+
 
     private void DisableTutorialTips()
     {
@@ -138,7 +138,7 @@ public class TrainingTutorial : MonoBehaviour
     {
         EnableTutorial();
         yield return new WaitWhile(() => IsTutorialNeedsToBeShown());
-        DisableTutorialBlinking(true);
+        DisableTutorialBlinking();
 
         yield return new WaitWhile(() => isTutorialTipsEnable);
 

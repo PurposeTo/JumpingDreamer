@@ -48,7 +48,7 @@ public class PlayerDataSynchronizer
         #endregion
 
         // Если произошло смешение моделей, то необходимо обновить модель на облаке И локально
-        GPGSPlayerDataCloudStorage.Instance.CreateSave(localModel);
+        GPGSPlayerDataCloudStorage.Instance.CreateSave(mixedPlayerDataModel);
         localModel = mixedPlayerDataModel;
     }
 
