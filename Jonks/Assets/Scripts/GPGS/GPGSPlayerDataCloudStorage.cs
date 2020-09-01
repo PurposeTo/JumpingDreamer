@@ -30,9 +30,9 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
     }
 
 
-    public void CreateSave(PlayerDataModel modelToSaveOnCload)
+    public void CreateSave(PlayerDataModel modelToSaveOnCloud)
     {
-        byte[] dataToSave = Encoding.UTF8.GetBytes(JsonConverterWrapper.SerializeObject(modelToSaveOnCload, null));
+        byte[] dataToSave = Encoding.UTF8.GetBytes(JsonConverterWrapper.SerializeObject(modelToSaveOnCloud, null));
 
         Debug.Log("#CreateSave: begin");
 

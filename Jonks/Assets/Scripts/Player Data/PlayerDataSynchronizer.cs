@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
+using System.Collections;
+using System;
 
 public class PlayerDataSynchronizer
 {
     // Синхронизация данных модели из облака и локальной модели
-    public void SynchronizePlayerDataStorages(PlayerDataModel localModel, PlayerDataModel cloudModel)
+    public void SynchronizePlayerDataStorages(PlayerDataModel localModel, PlayerDataModel cloudModel, Action WaitForPlayerChoose)
     {
         if (cloudModel == null)
         {
@@ -20,7 +22,7 @@ public class PlayerDataSynchronizer
             }
             else
             {
-                SelectDataModel(localModel, cloudModel);
+                SelectDataModel(localModel, cloudModel, WaitForPlayerChoose);
             }
         }
         else
@@ -49,21 +51,27 @@ public class PlayerDataSynchronizer
 
 
     // Обработка предложенного пользователю выбора одной из моделей
-    private void SelectDataModel(PlayerDataModel localModel, PlayerDataModel cloudModel)
+    private void SelectDataModel(PlayerDataModel localModel, PlayerDataModel cloudModel, Action WaitForPlayerChoose)
     {
-        // TODO: Вызвать корутину ожидания с предложением игроку выбрать модель
-        // TODO: вывести окно с предложением о выборе модели. В зависимости от выбора пользователя загрузить модель либо в облако, либо на устройство
-        /* 1. Создать объект окна выбора модели
-         * 2. Получить с него скрипт (выбора)
-         * 3. Проинициализировать значения (два поля) внутри скрипта двумя моделями
-         * 4. Ждать пока пользователь выберет модель (isSelected == true)
-         * 5. Получить значения selected model из UI скрипта. Присвоить полученное значение в модель, которая будет передана в корутину в качестве параметра.
-         * 6. Вызвать метод в UI скрипте - "Закрыть окошко"
-         */
-        #region Игрок выбирает модель
-        // Заглушка
-        PlayerDataModel selectedModel = PlayerDataModel.CreateModelWithDefaultValues();
-        #endregion
+        // Вызов корутины ожидания с предложением выбора модели (локальной или облачной) игроку
+        WaitForPlayerChoose?.Invoke();
+
+        // В зависимости от выбора пользователя загрузить модель либо в облако, либо на устройство
+        if (PlayerDataModelController.Instance.PlayerDataLocalModel.Equals(cloudModel))
+        {
+            localModel = GPGSPlayerDataCloudStorage.Instance.ReadSavedGame(PlayerDataModel.FileName);
+        }
+        else { GPGSPlayerDataCloudStorage.Instance.CreateSave(localModel); }
     }
 
+
+    public IEnumerator WaitForPlayerChooseEnumerator(PlayerDataModel localModel, PlayerDataModel cloudModel)
+    {
+        MixingModelsWindow mixingModelsWindow = DialogWindowGenerator.Instance.CreateChoosingWindow(localModel, cloudModel);
+        yield return new WaitUntil(() => mixingModelsWindow.IsSelected);
+
+        localModel = mixingModelsWindow.SelectedPlayerDataModel;
+
+        mixingModelsWindow.CloseWindow();
+    }
 }

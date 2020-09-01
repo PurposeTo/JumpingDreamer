@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 public class PlayerStatsData
@@ -184,16 +185,36 @@ public class PlayerStatsData
     }
 
 
+    #region Моя реализация Equals
+    //public override bool Equals(object obj)
+    //{
+    //    return obj is PlayerStatsData && base.Equals(obj);
+    //}
+    #endregion
+
+
     // TODO: Работает?
     public override bool Equals(object obj)
     {
-        return base.Equals(obj);
+        return obj is PlayerStatsData data &&
+               EqualityComparer<SafeInt?>.Default.Equals(MaxCollectedStars, data.MaxCollectedStars) &&
+               EqualityComparer<SafeInt?>.Default.Equals(MaxEarnedScore, data.MaxEarnedScore) &&
+               EqualityComparer<SafeInt?>.Default.Equals(MaxScoreMultiplierValue, data.MaxScoreMultiplierValue) &&
+               EqualityComparer<SafeInt?>.Default.Equals(MaxLifeTime, data.MaxLifeTime) &&
+               EqualityComparer<SafeInt?>.Default.Equals(TotalLifeTime, data.TotalLifeTime);
     }
 
 
     // TODO: Работает?
     public override int GetHashCode()
     {
-        return base.GetHashCode();
+        int hashCode = 502919464;
+        hashCode = hashCode * -1521134295 + MaxCollectedStars.GetHashCode();
+        hashCode = hashCode * -1521134295 + MaxEarnedScore.GetHashCode();
+        hashCode = hashCode * -1521134295 + MaxScoreMultiplierValue.GetHashCode();
+        hashCode = hashCode * -1521134295 + MaxLifeTime.GetHashCode();
+        hashCode = hashCode * -1521134295 + TotalLifeTime.GetHashCode();
+
+        return hashCode;
     }
 }

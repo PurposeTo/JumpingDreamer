@@ -11,7 +11,6 @@ public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelC
 
     public bool IsDataFileLoaded => localStorageSafe.IsDataFileLoaded;
 
-    // TODO: Включать bool когда данные с облака были успешно (Интернет соединение было и т.п.) удалены
     public static bool IsPlayerDataAlreadyReset { get; private set; } = false;
 
     public event Action OnSavePlayerStats;
@@ -56,12 +55,14 @@ public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelC
         if (cloudModel != null)
         {
             PlayerDataLocalModel = cloudModel;
+            IsPlayerDataAlreadyReset = true;
         }
         else
         {
             if (readingCloudDataStatus == GPGSPlayerDataCloudStorage.ReadingCloudDataStatus.NoDataOnCloud)
             {
                 PlayerDataLocalModel = PlayerDataModel.CreateModelWithDefaultValues();
+                IsPlayerDataAlreadyReset = true;
                 return;
             }
             else if (readingCloudDataStatus == GPGSPlayerDataCloudStorage.ReadingCloudDataStatus.InternetNotAvaliable)
@@ -75,7 +76,10 @@ public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelC
 
     public void SynchronizePlayerDataStorages(PlayerDataModel cloudModel)
     {
-        playerDataSynchronizer.SynchronizePlayerDataStorages(PlayerDataLocalModel, cloudModel);
+        playerDataSynchronizer.SynchronizePlayerDataStorages(
+            PlayerDataLocalModel,
+            cloudModel,
+            () => StartCoroutine(playerDataSynchronizer.WaitForPlayerChooseEnumerator(PlayerDataLocalModel, cloudModel)));
     }
 
 

@@ -1,6 +1,6 @@
 ﻿public class RestorePlayerDataButton : OperationWithPlayerDataButton
 {
-    public override void ResetPlayerData()
+    public override void DoOperationWithPlayerData()
     {
         ConfirmationOperationWindow.Initialize("ConfirmRestoreDataKeyword", "DialogConfirmRestoreData", success =>
         {
@@ -15,6 +15,6 @@
             }
         });
 
-        base.ResetPlayerData();
+        base.DoOperationWithPlayerData();
     }
 }

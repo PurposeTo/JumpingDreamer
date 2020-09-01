@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 public class PlayerInGamePurchases
 {
@@ -38,5 +39,33 @@ public class PlayerInGamePurchases
         }
 
         return cloudPlayerInGamePurchasesData.EstimatedCostInStars > localPlayerInGamePurchasesData.EstimatedCostInStars ? cloudPlayerInGamePurchasesData : localPlayerInGamePurchasesData;
+    }
+
+
+    #region Моя реализация Equals
+    //public override bool Equals(object obj)
+    //{
+    //    return obj is PlayerInGamePurchases && base.Equals(obj);
+    //}
+    #endregion
+
+
+    // TODO: Работает?
+    public override bool Equals(object obj)
+    {
+        return obj is PlayerInGamePurchases purchases &&
+               EqualityComparer<SafeInt?>.Default.Equals(TotalStars, purchases.TotalStars) &&
+               EqualityComparer<SafeInt?>.Default.Equals(EstimatedCostInStars, purchases.EstimatedCostInStars);
+    }
+
+
+    // TODO: Работает?
+    public override int GetHashCode()
+    {
+        int hashCode = -1596784190;
+        hashCode = hashCode * -1521134295 + TotalStars.GetHashCode();
+        hashCode = hashCode * -1521134295 + EstimatedCostInStars.GetHashCode();
+
+        return hashCode;
     }
 }

@@ -24,7 +24,7 @@ public abstract class OperationWithPlayerDataButton : MonoBehaviour
     }
 
 
-    public virtual void ResetPlayerData()
+    public virtual void DoOperationWithPlayerData()
     {
         ConfirmationOperationWindow.gameObject.SetActive(true);
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 public class PlayerDataModel
 {
@@ -44,5 +45,38 @@ public class PlayerDataModel
         mixedPlayerDataModel.PlayerInGamePurchases = PlayerInGamePurchases.MixPlayerInGamePurchases(cloudPlayerDataModel.PlayerInGamePurchases, localPlayerDataModel.PlayerInGamePurchases);
 
         return mixedPlayerDataModel;
+    }
+
+
+    #region Моя реализация Equals
+    //public override bool Equals(object obj)
+    //{
+    //    return obj is PlayerDataModel dataModel &&
+    //        Id == dataModel.Id &&
+    //        PlayerStats.Equals(dataModel.PlayerStats) &&
+    //        PlayerInGamePurchases.Equals(dataModel.PlayerInGamePurchases);
+    //}
+    #endregion
+
+
+    // TODO: Работает?
+    public override bool Equals(object obj)
+    {
+        return obj is PlayerDataModel model &&
+               Id == model.Id &&
+               EqualityComparer<PlayerStatsData>.Default.Equals(PlayerStats, model.PlayerStats) &&
+               EqualityComparer<PlayerInGamePurchases>.Default.Equals(PlayerInGamePurchases, model.PlayerInGamePurchases);
+    }
+
+
+    // TODO: Работает?
+    public override int GetHashCode()
+    {
+        int hashCode = -125219266;
+        hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Id);
+        hashCode = hashCode * -1521134295 + EqualityComparer<PlayerStatsData>.Default.GetHashCode(PlayerStats);
+        hashCode = hashCode * -1521134295 + EqualityComparer<PlayerInGamePurchases>.Default.GetHashCode(PlayerInGamePurchases);
+
+        return hashCode;
     }
 }
