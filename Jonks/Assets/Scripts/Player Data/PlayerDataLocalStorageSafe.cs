@@ -94,7 +94,6 @@ public class PlayerDataLocalStorageSafe
                 {
                     DialogWindowGenerator.Instance.CreateErrorWindow($"{exception.Message}\nОшибка загрузки данных игровой статистики!\nЗапись новых данных заблокирована!");
                 }
-
             });
 
             return returnedSuccess;
@@ -106,12 +105,14 @@ public class PlayerDataLocalStorageSafe
 
             Debug.LogError($"Data reading from \"{PlayerDataModel.FileName}\" ERROR!\nData was edited from outside.");
             DialogWindowGenerator.Instance.CreateErrorWindow("Ошибка загрузки данных игровой статистики!\nЗапись новых данных заблокирована!");
+
             return PlayerDataModel.CreateModelWithDefaultValues();
         }
         else
         {
             IsDataFileLoaded = true;
             Debug.Log($"Data from \"{PlayerDataModel.FileName}\" was loaded successfully.");
+
             return playerDataModel;
         }
     }

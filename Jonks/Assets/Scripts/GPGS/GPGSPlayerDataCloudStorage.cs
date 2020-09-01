@@ -102,12 +102,9 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
                 {
                     // handle processing the byte array data
 
-                    // Синхронизация данных модели из облака и локальной модели
-                    if (data.Length != 0)
-                    {
-                        receivedData = data;
-                    }
-                    else { Debug.Log("Данные на облаке не были найдены."); }
+                    receivedData = data;
+
+                    if (data.Length == 0) { Debug.Log("Данные на облаке не были найдены."); }
                 }
                 else
                 {
@@ -179,6 +176,7 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
 
         // Загрузка данных из облака
         PlayerDataModel cloudModel = ReadSavedGame(PlayerDataModel.FileName);
+
         PlayerDataModelController.Instance.SynchronizePlayerDataStorages(cloudModel);
     }
 
