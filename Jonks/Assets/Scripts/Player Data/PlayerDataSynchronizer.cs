@@ -53,6 +53,7 @@ public class PlayerDataSynchronizer
     }
 
 
+    // Обработка предложенного пользователю выбора одной из моделей
     private PlayerDataModel SelectDataModel(PlayerDataModel localModel, PlayerDataModel cloudModel)
     {
         // TODO: Вызвать корутину ожидания с предложением игроку выбрать модель
