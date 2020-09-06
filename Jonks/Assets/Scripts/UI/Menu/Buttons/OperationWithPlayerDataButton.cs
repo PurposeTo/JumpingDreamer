@@ -13,6 +13,7 @@ public abstract class OperationWithPlayerDataButton : MonoBehaviour
         button = gameObject.GetComponent<Button>();
 
         PlayerDataModelController.Instance.OnDeletePlayerData += ToggleButton;
+        PlayerDataModelController.Instance.OnRestoreDataFromCloud += ToggleButton;
 
         ToggleButton();
     }
@@ -21,6 +22,7 @@ public abstract class OperationWithPlayerDataButton : MonoBehaviour
     private void OnDestroy()
     {
         PlayerDataModelController.Instance.OnDeletePlayerData -= ToggleButton;
+        PlayerDataModelController.Instance.OnRestoreDataFromCloud -= ToggleButton;
     }
 
 
@@ -32,6 +34,6 @@ public abstract class OperationWithPlayerDataButton : MonoBehaviour
 
     private void ToggleButton()
     {
-        button.interactable = !PlayerDataModelController.IsPlayerDataAlreadyReset;
+        button.interactable = !PlayerDataModelController.IsPlayerDataHaveAlreadyDeletedOrRestored;
     }
 }

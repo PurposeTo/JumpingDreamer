@@ -2,9 +2,6 @@
 
 public class MixingModelsWindow : MonoBehaviour
 {
-    public PlayerDataModel SelectedPlayerDataModel { get; private set; }
-    public bool IsSelected { get; private set; }
-
     private PlayerDataModel localModel;
     private PlayerDataModel cloudModel;
 
@@ -18,19 +15,19 @@ public class MixingModelsWindow : MonoBehaviour
 
     public void ChooseLocalModelData()
     {
-        SelectedPlayerDataModel = localModel;
-        IsSelected = true;
+        PlayerDataModelController.Instance.OnDataModelSelected(localModel, PlayerDataModelController.DataModelSelectionStatus.LocalModel);
+        CloseWindow();
     }
 
 
     public void ChooseCloudModelData()
     {
-        SelectedPlayerDataModel = cloudModel;
-        IsSelected = true;
+        PlayerDataModelController.Instance.OnDataModelSelected(cloudModel, PlayerDataModelController.DataModelSelectionStatus.CloudModel);
+        CloseWindow();
     }
 
 
-    public void CloseWindow()
+    private void CloseWindow()
     {
         Destroy(gameObject);
     }

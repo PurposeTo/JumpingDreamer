@@ -17,9 +17,9 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
     public enum ReadingCloudDataStatus
     {
         NoDataOnCloud,
-        InternetNotAvaliable,
         SuccessReading,
         NotAuthenticated,
+        ReadingDataFromClourError,
         Default
     }
 
@@ -37,14 +37,13 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
         Debug.Log("#CreateSave: begin");
 
         if (!GPGSAuthentication.IsAuthenticated ||
-            !InternetConnectionChecker.Instance.IsInternetConnectionAvaliable() ||
             dataToSave == null ||
             dataToSave.Length == 0 ||
             !PlayerDataModelController.Instance.IsDataFileLoaded)
         {
             return;
         }
-        
+
 
         Debug.Log("#CreateSave: after checking");
 
@@ -74,6 +73,11 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
 
                     SavePlayerData();
                 }
+                // Не было интернет соединения
+                else if (gameRequestStatus == SavedGameRequestStatus.InternalError)
+                {
+                    DialogWindowGenerator.Instance.CreateDialogWindow("Ошибка соединения!");
+                }
                 else
                 {
                     // handle error
@@ -96,11 +100,6 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
             readingStatus = ReadingCloudDataStatus.NotAuthenticated;
             return null;
         }
-        else if (!InternetConnectionChecker.Instance.IsInternetConnectionAvaliable())
-        {
-            readingStatus = ReadingCloudDataStatus.InternetNotAvaliable;
-            return null;
-        }
 
 
         byte[] receivedData = null;
@@ -119,7 +118,7 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
                     // handle processing the byte array data
 
                     if (data != null) { receivedData = data; }
-                    else { Debug.LogError("Данные на облаке не были найдены."); } // Если на облаке нет данных, то возвращается пустой массив байт
+                    else { Debug.LogError("Данные на облаке не были найдены. Если даже на облаке нет данных, то возвращается пустой массив байт. Так что этот блок не должен выполняться."); }
                 }
                 else
                 {
@@ -135,14 +134,30 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
 
                 SavedGameClient.ReadBinaryData(gameMetadata, OnSavedGameDataRead);
             }
+            // Не было интернет соединения
+            else if (gameRequestStatus == SavedGameRequestStatus.InternalError)
+            {
+                DialogWindowGenerator.Instance.CreateDialogWindow("Ошибка соединения!");
+            }
             else
             {
                 // handle error
             }
         });
 
-        if (receivedData.Length == 0) { readingStatus = ReadingCloudDataStatus.NoDataOnCloud; }
+
+        if (receivedData == null)
+        {
+            readingStatus = ReadingCloudDataStatus.ReadingDataFromClourError;
+            return null;
+        }
+        else if (receivedData.Length == 0)
+        {
+            readingStatus = ReadingCloudDataStatus.NoDataOnCloud;
+            return null;
+        }
         else { readingStatus = ReadingCloudDataStatus.SuccessReading; }
+
 
         return JsonConverterWrapper.DeserializeObject(Encoding.UTF8.GetString(receivedData), null);
     }
@@ -170,6 +185,11 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
 
                 CurrentGameMetadata = null;
             }
+            // Не было интернет соединения
+            else if (gameRequestStatus == SavedGameRequestStatus.InternalError)
+            {
+                DialogWindowGenerator.Instance.CreateDialogWindow("Ошибка соединения!");
+            }
             else
             {
                 // handle error
@@ -193,16 +213,15 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
     private IEnumerator LoadSavedGameFromCloudEnumerator()
     {
         yield return new WaitUntil(() => GPGSAuthentication.IsAuthenticated);
-
-        // Как только выполнена аутентификация, необходимо начать отсчет времени для текущей сессии игры
-        StartPlayingTime = DateTime.Now;
-
         yield return new WaitUntil(() => PlayerDataModelController.Instance.IsDataFileLoaded);
 
         // Загрузка данных из облака
         PlayerDataModel cloudModel = ReadSavedGame(PlayerDataModel.FileName);
 
         PlayerDataModelController.Instance.SynchronizePlayerDataStorages(cloudModel);
+
+        // Начать отсчет времени для текущей сессии игры
+        StartPlayingTime = DateTime.Now;
     }
 
 

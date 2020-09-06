@@ -5,7 +5,8 @@ public class PlayerDataLocalStorageSafe
 {
     public string FilePath { get; private set; }
 
-    public bool IsDataFileLoaded { get; private set; } = false;
+    // Public set, т.к. в соответствии с архитектурой приложения объект этого класса может находиться только в контроллере. При этом так как это часть контроллера, то он может напрямую изменять значения этого свойства.
+    public bool IsDataFileLoaded { get; set; } = false;
 
 
     public PlayerDataModel LoadPlayerData()

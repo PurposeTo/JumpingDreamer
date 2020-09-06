@@ -11,10 +11,18 @@ public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelC
 
     public bool IsDataFileLoaded => localStorageSafe.IsDataFileLoaded;
 
-    public static bool IsPlayerDataAlreadyReset { get; private set; } = false;
+    public static bool IsPlayerDataHaveAlreadyDeletedOrRestored { get; private set; } = false;
 
     public event Action OnSavePlayerStats;
     public event Action OnDeletePlayerData;
+    public event Action OnRestoreDataFromCloud;
+
+
+    public enum DataModelSelectionStatus
+    {
+        LocalModel,
+        CloudModel
+    }
 
 
     protected override void AwakeSingleton()
@@ -30,20 +38,16 @@ public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelC
     }
 
 
-    public void SavePlayerData()
-    {
-        localStorageSafe.WritePlayerDataToFile(PlayerDataLocalModel);
-        GPGSPlayerDataCloudStorage.Instance.CreateSave(PlayerDataLocalModel);
-    }
-
-
     public void DeletePlayerData()
     {
         PlayerDataLocalModel = PlayerDataModel.CreateModelWithDefaultValues();
+
         localStorageSafe.DeletePlayerData();
+
+        // Загрузка обновленных данных на облако
         GPGSPlayerDataCloudStorage.Instance.CreateSave(PlayerDataLocalModel);
 
-        IsPlayerDataAlreadyReset = true;
+        IsPlayerDataHaveAlreadyDeletedOrRestored = true;
         OnDeletePlayerData?.Invoke();
     }
 
@@ -55,20 +59,24 @@ public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelC
         if (cloudModel != null)
         {
             PlayerDataLocalModel = cloudModel;
-            IsPlayerDataAlreadyReset = true;
+
+            localStorageSafe.IsDataFileLoaded = true;
+            IsPlayerDataHaveAlreadyDeletedOrRestored = true;
+
+            OnRestoreDataFromCloud?.Invoke();
         }
         else
         {
             if (readingCloudDataStatus == GPGSPlayerDataCloudStorage.ReadingCloudDataStatus.NoDataOnCloud)
             {
+                Debug.Log("Полученные пустые данные с облака.");
+
                 PlayerDataLocalModel = PlayerDataModel.CreateModelWithDefaultValues();
-                IsPlayerDataAlreadyReset = true;
-                return;
-            }
-            else if (readingCloudDataStatus == GPGSPlayerDataCloudStorage.ReadingCloudDataStatus.InternetNotAvaliable)
-            {
-                DialogWindowGenerator.Instance.CreateDialogWindow("Ошибка соединения!");
-                return;
+
+                localStorageSafe.IsDataFileLoaded = true;
+                IsPlayerDataHaveAlreadyDeletedOrRestored = true;
+
+                OnRestoreDataFromCloud?.Invoke();
             }
         }
     }
@@ -76,10 +84,20 @@ public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelC
 
     public void SynchronizePlayerDataStorages(PlayerDataModel cloudModel)
     {
-        playerDataSynchronizer.SynchronizePlayerDataStorages(
-            PlayerDataLocalModel,
-            cloudModel,
-            () => StartCoroutine(playerDataSynchronizer.WaitForPlayerChooseEnumerator(PlayerDataLocalModel, cloudModel)));
+        playerDataSynchronizer.SynchronizePlayerDataStorages(PlayerDataLocalModel, cloudModel);
+    }
+
+
+    public void OnDataModelSelected(PlayerDataModel selectedModel, DataModelSelectionStatus modelSelectionStatus)
+    {
+        playerDataSynchronizer.OnDataModelSelected(selectedModel, PlayerDataLocalModel, modelSelectionStatus);
+    }
+
+
+    private void SavePlayerData()
+    {
+        localStorageSafe.WritePlayerDataToFile(PlayerDataLocalModel);
+        GPGSPlayerDataCloudStorage.Instance.CreateSave(PlayerDataLocalModel);
     }
 
 
