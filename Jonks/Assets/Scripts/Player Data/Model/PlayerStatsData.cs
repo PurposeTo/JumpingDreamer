@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 public class PlayerStatsData
@@ -161,29 +162,59 @@ public class PlayerStatsData
 
     public static PlayerStatsData MixPlayerStats(PlayerStatsData cloudPlayerStatsData, PlayerStatsData localPlayerStatsData)
     {
-        if (cloudPlayerStatsData is null)
+        if (cloudPlayerStatsData == null)
         {
             return localPlayerStatsData;
         }
 
-        PlayerStatsData mixedPlayerStatsData = null;
+        PlayerStatsData mixedPlayerStatsData = CreateStatsWithDefaultValues();
 
-        // TODO: mix stats
+        mixedPlayerStatsData.MaxCollectedStars = cloudPlayerStatsData.MaxCollectedStars > localPlayerStatsData.MaxCollectedStars ? cloudPlayerStatsData.MaxCollectedStars : localPlayerStatsData.MaxCollectedStars;
+
+        mixedPlayerStatsData.MaxEarnedScore = cloudPlayerStatsData.MaxEarnedScore > localPlayerStatsData.MaxEarnedScore ? cloudPlayerStatsData.MaxEarnedScore : localPlayerStatsData.MaxEarnedScore;
+
+        mixedPlayerStatsData.MaxLifeTime = cloudPlayerStatsData.MaxLifeTime > localPlayerStatsData.MaxLifeTime ? cloudPlayerStatsData.MaxLifeTime : localPlayerStatsData.MaxLifeTime;
+
+        mixedPlayerStatsData.MaxScoreMultiplierValue = cloudPlayerStatsData.MaxScoreMultiplierValue > localPlayerStatsData.MaxScoreMultiplierValue ? cloudPlayerStatsData.MaxScoreMultiplierValue : localPlayerStatsData.MaxScoreMultiplierValue;
+
+        mixedPlayerStatsData.TotalLifeTime = cloudPlayerStatsData.TotalLifeTime > localPlayerStatsData.TotalLifeTime ? cloudPlayerStatsData.TotalLifeTime : localPlayerStatsData.TotalLifeTime;
+
+        mixedPlayerStatsData.MaxCollectedStars = cloudPlayerStatsData.MaxCollectedStars > localPlayerStatsData.MaxCollectedStars ? cloudPlayerStatsData.MaxCollectedStars : localPlayerStatsData.MaxCollectedStars;
 
         return mixedPlayerStatsData;
     }
 
 
+    #region Моя реализация Equals
+    //public override bool Equals(object obj)
+    //{
+    //    return obj is PlayerStatsData && base.Equals(obj);
+    //}
+    #endregion
+
+
     // TODO: Работает?
     public override bool Equals(object obj)
     {
-        return base.Equals(obj);
+        return obj is PlayerStatsData data &&
+               EqualityComparer<SafeInt?>.Default.Equals(MaxCollectedStars, data.MaxCollectedStars) &&
+               EqualityComparer<SafeInt?>.Default.Equals(MaxEarnedScore, data.MaxEarnedScore) &&
+               EqualityComparer<SafeInt?>.Default.Equals(MaxScoreMultiplierValue, data.MaxScoreMultiplierValue) &&
+               EqualityComparer<SafeInt?>.Default.Equals(MaxLifeTime, data.MaxLifeTime) &&
+               EqualityComparer<SafeInt?>.Default.Equals(TotalLifeTime, data.TotalLifeTime);
     }
 
 
     // TODO: Работает?
     public override int GetHashCode()
     {
-        return base.GetHashCode();
+        int hashCode = 502919464;
+        hashCode = hashCode * -1521134295 + MaxCollectedStars.GetHashCode();
+        hashCode = hashCode * -1521134295 + MaxEarnedScore.GetHashCode();
+        hashCode = hashCode * -1521134295 + MaxScoreMultiplierValue.GetHashCode();
+        hashCode = hashCode * -1521134295 + MaxLifeTime.GetHashCode();
+        hashCode = hashCode * -1521134295 + TotalLifeTime.GetHashCode();
+
+        return hashCode;
     }
 }

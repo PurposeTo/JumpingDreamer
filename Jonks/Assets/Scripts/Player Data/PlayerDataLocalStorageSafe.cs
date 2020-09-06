@@ -5,7 +5,8 @@ public class PlayerDataLocalStorageSafe
 {
     public string FilePath { get; private set; }
 
-    public bool IsDataFileLoaded { get; private set; } = false;
+    // Public set, т.к. в соответствии с архитектурой приложения объект этого класса может находиться только в контроллере. При этом так как это часть контроллера, то он может напрямую изменять значения этого свойства.
+    public bool IsDataFileLoaded { get; set; } = false;
 
 
     public PlayerDataModel LoadPlayerData()
@@ -43,7 +44,7 @@ public class PlayerDataLocalStorageSafe
                 {
                     isJsonConverted = false;
 
-                    DialogWindowGenerator.Instance.CreateErrorWindow("Ошибка записи данных игровой статистики! Пожалуйста, обратитесь в службу поддержки.");
+                    DialogWindowGenerator.Instance.CreateDialogWindow("Ошибка записи данных игровой статистики! Пожалуйста, обратитесь в службу поддержки.");
                 }
             });
 
@@ -92,7 +93,7 @@ public class PlayerDataLocalStorageSafe
 
                 if (!success)
                 {
-                    DialogWindowGenerator.Instance.CreateErrorWindow($"{exception.Message}\nОшибка загрузки данных игровой статистики!\nЗапись новых данных заблокирована!");
+                    DialogWindowGenerator.Instance.CreateDialogWindow($"{exception.Message}\nОшибка загрузки данных игровой статистики!\nЗапись новых данных заблокирована!");
                 }
             });
 
@@ -104,7 +105,7 @@ public class PlayerDataLocalStorageSafe
             IsDataFileLoaded = false;
 
             Debug.LogError($"Data reading from \"{PlayerDataModel.FileName}\" ERROR!\nData was edited from outside.");
-            DialogWindowGenerator.Instance.CreateErrorWindow("Ошибка загрузки данных игровой статистики!\nЗапись новых данных заблокирована!");
+            DialogWindowGenerator.Instance.CreateDialogWindow("Ошибка загрузки данных игровой статистики!\nЗапись новых данных заблокирована!");
 
             return PlayerDataModel.CreateModelWithDefaultValues();
         }

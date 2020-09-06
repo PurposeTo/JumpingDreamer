@@ -1,22 +1,20 @@
 ﻿public class RestorePlayerDataButton : OperationWithPlayerDataButton
 {
-    public override void ResetPlayerData()
+    public override void DoOperationWithPlayerData()
     {
         ConfirmationOperationWindow.Initialize("ConfirmRestoreDataKeyword", "DialogConfirmRestoreData", success =>
         {
             if (success)
             {
                 PlayerDataModelController.Instance.RestorePlayerDataFromCloud();
-                // TODO Localization
-                DialogWindowGenerator.Instance.CreateErrorWindow("Прогресс восстановлен!");
+                DialogWindowGenerator.Instance.CreateDialogWindow(LocalizationManager.Instance.GetLocalizedValue("ProgressWasRestored"));
             }
             else
             {
-                // TODO Localization
-                DialogWindowGenerator.Instance.CreateErrorWindow("Операция не была подтверждена!");
+                DialogWindowGenerator.Instance.CreateDialogWindow(LocalizationManager.Instance.GetLocalizedValue("OperationNotConfirm"));
             }
         });
 
-        base.ResetPlayerData();
+        base.DoOperationWithPlayerData();
     }
 }

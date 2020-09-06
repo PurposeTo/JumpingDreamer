@@ -1,22 +1,20 @@
 ﻿public class ResetPlayerDataButton : OperationWithPlayerDataButton
 {
-    public override void ResetPlayerData()
+    public override void DoOperationWithPlayerData()
     {
         ConfirmationOperationWindow.Initialize("ConfirmResetDataKeyword", "DialogConfirmResetData", success =>
         {
             if (success)
             {
                 PlayerDataModelController.Instance.DeletePlayerData();
-                // TODO Localization
-                DialogWindowGenerator.Instance.CreateErrorWindow("Прогресс удален!");
+                DialogWindowGenerator.Instance.CreateDialogWindow(LocalizationManager.Instance.GetLocalizedValue("ProgressWasDeleted"));
             }
             else
             {    
-                // TODO Localization
-                DialogWindowGenerator.Instance.CreateErrorWindow("Операция не была подтверждена!");
+                DialogWindowGenerator.Instance.CreateDialogWindow(LocalizationManager.Instance.GetLocalizedValue("OperationNotConfirm"));
             }
         });
 
-        base.ResetPlayerData();
+        base.DoOperationWithPlayerData();
     }
 }

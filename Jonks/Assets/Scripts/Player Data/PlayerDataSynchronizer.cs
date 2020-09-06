@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerDataSynchronizer
 {
@@ -15,14 +13,14 @@ public class PlayerDataSynchronizer
 
         if (localModel.Id != cloudModel.Id)
         {
-            if (PlayerDataModelController.IsPlayerDataAlreadyReset)
+            if (PlayerDataModelController.IsPlayerDataHaveAlreadyDeletedOrRestored)
             {
                 // Отправка изменений (данных новой модели) на облако
                 GPGSPlayerDataCloudStorage.Instance.CreateSave(localModel);
             }
             else
             {
-                SelectDataModel(localModel, cloudModel);
+                ToProvideModelsSelection(localModel, cloudModel);
             }
         }
         else
@@ -40,30 +38,30 @@ public class PlayerDataSynchronizer
     }
 
 
+    // В зависимости от выбора пользователя загрузить модель либо в облако, либо на устройство
+    public void OnDataModelSelected(PlayerDataModel selectedModel, PlayerDataModel localModel, PlayerDataModelController.DataModelSelectionStatus modelSelectionStatus)
+    {
+        if (modelSelectionStatus == PlayerDataModelController.DataModelSelectionStatus.LocalModel)
+        {
+            GPGSPlayerDataCloudStorage.Instance.CreateSave(selectedModel);
+        }
+        // Выбрана модель из облака
+        else { localModel = GPGSPlayerDataCloudStorage.Instance.ReadSavedGame(PlayerDataModel.FileName); }
+    }
+
+
+    private void ToProvideModelsSelection(PlayerDataModel localModel, PlayerDataModel cloudModel)
+    {
+        DialogWindowGenerator.Instance.CreateChoosingWindow(localModel, cloudModel);
+    }
+
+
     private void MixModels(PlayerDataModel localModel, PlayerDataModel cloudModel)
     {
-        #region Логика смешения моделей
-        // Заглушка
-        PlayerDataModel mixedPlayerDataModel = PlayerDataModel.CreateModelWithDefaultValues();
-        #endregion
+        PlayerDataModel mixedPlayerDataModel = PlayerDataModel.MixPlayerModels(cloudModel, localModel);
 
         // Если произошло смешение моделей, то необходимо обновить модель на облаке И локально
         GPGSPlayerDataCloudStorage.Instance.CreateSave(mixedPlayerDataModel);
         localModel = mixedPlayerDataModel;
     }
-
-
-    // Обработка предложенного пользователю выбора одной из моделей
-    private PlayerDataModel SelectDataModel(PlayerDataModel localModel, PlayerDataModel cloudModel)
-    {
-        // TODO: Вызвать корутину ожидания с предложением игроку выбрать модель
-        // TODO: вывести окно с предложением о выборе модели. В зависимости от выбора пользователя загрузить модель либо в облако, либо на устройство
-        #region Игрок выбирает модель
-        // Заглушка
-        PlayerDataModel selectedModel = PlayerDataModel.CreateModelWithDefaultValues();
-        #endregion
-
-        return selectedModel;
-    }
-
 }
