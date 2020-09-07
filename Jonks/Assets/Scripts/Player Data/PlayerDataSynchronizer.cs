@@ -20,7 +20,7 @@ public class PlayerDataSynchronizer
             }
             else
             {
-                ToProvideModelsSelection(localModel, cloudModel);
+                ToProvideModelSelection(localModel, cloudModel);
             }
         }
         else
@@ -41,16 +41,19 @@ public class PlayerDataSynchronizer
     // В зависимости от выбора пользователя загрузить модель либо в облако, либо на устройство
     public void OnDataModelSelected(PlayerDataModel selectedModel, PlayerDataModel localModel, PlayerDataModelController.DataModelSelectionStatus modelSelectionStatus)
     {
-        if (modelSelectionStatus == PlayerDataModelController.DataModelSelectionStatus.LocalModel)
+        switch(modelSelectionStatus)
         {
-            GPGSPlayerDataCloudStorage.Instance.CreateSave(selectedModel);
+            case PlayerDataModelController.DataModelSelectionStatus.LocalModel:
+                GPGSPlayerDataCloudStorage.Instance.CreateSave(selectedModel);
+                break;
+            case PlayerDataModelController.DataModelSelectionStatus.CloudModel:
+                localModel = selectedModel;
+                break;
         }
-        // Выбрана модель из облака
-        else { localModel = GPGSPlayerDataCloudStorage.Instance.ReadSavedGame(PlayerDataModel.FileName); }
     }
 
 
-    private void ToProvideModelsSelection(PlayerDataModel localModel, PlayerDataModel cloudModel)
+    private void ToProvideModelSelection(PlayerDataModel localModel, PlayerDataModel cloudModel)
     {
         DialogWindowGenerator.Instance.CreateChoosingWindow(localModel, cloudModel);
     }
@@ -61,7 +64,7 @@ public class PlayerDataSynchronizer
         PlayerDataModel mixedPlayerDataModel = PlayerDataModel.MixPlayerModels(cloudModel, localModel);
 
         // Если произошло смешение моделей, то необходимо обновить модель на облаке И локально
-        GPGSPlayerDataCloudStorage.Instance.CreateSave(mixedPlayerDataModel);
         localModel = mixedPlayerDataModel;
+        GPGSPlayerDataCloudStorage.Instance.CreateSave(mixedPlayerDataModel);
     }
 }
