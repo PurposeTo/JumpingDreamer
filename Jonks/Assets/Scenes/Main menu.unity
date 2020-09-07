@@ -1718,7 +1718,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1051028420}
-        m_MethodName: ResetPlayerData
+        m_MethodName: DoOperationWithPlayerData
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2355,7 +2355,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1252405992}
-        m_MethodName: ResetPlayerData
+        m_MethodName: DoOperationWithPlayerData
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

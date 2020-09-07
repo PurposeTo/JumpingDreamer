@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using UnityEngine; // Не удалять, т.к. используется для платформозависимой компиляции
 
 
@@ -12,11 +11,18 @@ public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelC
 
     public bool IsDataFileLoaded => localStorageSafe.IsDataFileLoaded;
 
-    // TODO: Включать bool когда данные с облака были успешно (Интернет соединение было и т.п.) удалены
-    public static bool IsPlayerDataAlreadyReset { get; private set; } = false;
+    public static bool IsPlayerDataHaveAlreadyDeletedOrRestored { get; private set; } = false;
 
     public event Action OnSavePlayerStats;
     public event Action OnDeletePlayerData;
+    public event Action OnRestoreDataFromCloud;
+
+
+    public enum DataModelSelectionStatus
+    {
+        LocalModel,
+        CloudModel
+    }
 
 
     protected override void AwakeSingleton()
@@ -32,21 +38,47 @@ public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelC
     }
 
 
-    public void SavePlayerData()
-    {
-        localStorageSafe.WritePlayerDataToFile(PlayerDataLocalModel);
-        GPGSPlayerDataCloudStorage.Instance.CreateSave(PlayerDataLocalModel);
-    }
-
-
     public void DeletePlayerData()
     {
         PlayerDataLocalModel = PlayerDataModel.CreateModelWithDefaultValues();
+
         localStorageSafe.DeletePlayerData();
+
+        // Загрузка обновленных данных на облако
         GPGSPlayerDataCloudStorage.Instance.CreateSave(PlayerDataLocalModel);
 
-        IsPlayerDataAlreadyReset = true;
+        IsPlayerDataHaveAlreadyDeletedOrRestored = true;
         OnDeletePlayerData?.Invoke();
+    }
+
+
+    public void RestorePlayerDataFromCloud()
+    {
+        PlayerDataModel cloudModel = GPGSPlayerDataCloudStorage.Instance.ReadSavedGame(PlayerDataModel.FileName, out GPGSPlayerDataCloudStorage.ReadingCloudDataStatus readingCloudDataStatus);
+
+        if (cloudModel != null)
+        {
+            PlayerDataLocalModel = cloudModel;
+
+            localStorageSafe.IsDataFileLoaded = true;
+            IsPlayerDataHaveAlreadyDeletedOrRestored = true;
+
+            OnRestoreDataFromCloud?.Invoke();
+        }
+        else
+        {
+            if (readingCloudDataStatus == GPGSPlayerDataCloudStorage.ReadingCloudDataStatus.NoDataOnCloud)
+            {
+                Debug.Log("Полученные пустые данные с облака.");
+
+                PlayerDataLocalModel = PlayerDataModel.CreateModelWithDefaultValues();
+
+                localStorageSafe.IsDataFileLoaded = true;
+                IsPlayerDataHaveAlreadyDeletedOrRestored = true;
+
+                OnRestoreDataFromCloud?.Invoke();
+            }
+        }
     }
 
 
@@ -56,20 +88,16 @@ public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelC
     }
 
 
-    public void RestorePlayerDataFromCloud()
+    public void OnDataModelSelected(PlayerDataModel selectedModel, DataModelSelectionStatus modelSelectionStatus)
     {
-        PlayerDataModel cloudModel = GPGSPlayerDataCloudStorage.Instance.ReadSavedGame(PlayerDataModel.FileName);
+        playerDataSynchronizer.OnDataModelSelected(selectedModel, PlayerDataLocalModel, modelSelectionStatus);
+    }
 
-        if (cloudModel != null)
-        {
-            PlayerDataLocalModel = cloudModel;
-        }
-        else
-        {
-            // TODO: Сделать проверку. Если данных на облаке не было, то создать пустую модель.
-            // Если не было соединения с интернетом, то вывести окно "Ошибка соединения!" и НИЧЕГО НЕ ДЕЛАТЬ
-            PlayerDataLocalModel = PlayerDataModel.CreateModelWithDefaultValues();
-        }
+
+    private void SavePlayerData()
+    {
+        localStorageSafe.WritePlayerDataToFile(PlayerDataLocalModel);
+        GPGSPlayerDataCloudStorage.Instance.CreateSave(PlayerDataLocalModel);
     }
 
 
