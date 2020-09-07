@@ -1,4 +1,5 @@
 ﻿using System;
+using GooglePlayGames.BasicApi.SavedGame;
 using UnityEngine; // Не удалять, т.к. используется для платформозависимой компиляции
 
 
@@ -54,31 +55,33 @@ public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelC
 
     public void RestorePlayerDataFromCloud()
     {
-        PlayerDataModel cloudModel = GPGSPlayerDataCloudStorage.Instance.ReadSavedGame(PlayerDataModel.FileName, out GPGSPlayerDataCloudStorage.ReadingCloudDataStatus readingCloudDataStatus);
-
-        if (cloudModel != null)
+        GPGSPlayerDataCloudStorage.Instance.ReadSavedGame((cloudModel, readingCloudDataStatus) =>
         {
-            PlayerDataLocalModel = cloudModel;
-
-            localStorageSafe.IsDataFileLoaded = true;
-            IsPlayerDataHaveAlreadyDeletedOrRestored = true;
-
-            OnRestoreDataFromCloud?.Invoke();
-        }
-        else
-        {
-            if (readingCloudDataStatus == GPGSPlayerDataCloudStorage.ReadingCloudDataStatus.NoDataOnCloud)
+            if (cloudModel != null)
             {
-                Debug.Log("Полученные пустые данные с облака.");
-
-                PlayerDataLocalModel = PlayerDataModel.CreateModelWithDefaultValues();
+                PlayerDataLocalModel = cloudModel;
 
                 localStorageSafe.IsDataFileLoaded = true;
                 IsPlayerDataHaveAlreadyDeletedOrRestored = true;
 
                 OnRestoreDataFromCloud?.Invoke();
             }
-        }
+            else
+            {
+                if (readingCloudDataStatus == SavedGameRequestStatus.Success)
+                {
+                    Debug.Log("Полученные пустые данные с облака.");
+
+                    PlayerDataLocalModel = PlayerDataModel.CreateModelWithDefaultValues();
+
+                    localStorageSafe.IsDataFileLoaded = true;
+                    IsPlayerDataHaveAlreadyDeletedOrRestored = true;
+
+                    OnRestoreDataFromCloud?.Invoke();
+                }
+                else { DialogWindowGenerator.Instance.CreateDialogWindow("Ошибка соединения!"); }
+            }
+        });
     }
 
 
