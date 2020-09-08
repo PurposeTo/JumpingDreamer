@@ -21,7 +21,7 @@ public struct SafeInt
 
     public override bool Equals(object obj)
     {
-        return (int)this == (int)obj;
+        return obj is SafeInt safeInt && (int)this == (int)safeInt;
     }
 
 
