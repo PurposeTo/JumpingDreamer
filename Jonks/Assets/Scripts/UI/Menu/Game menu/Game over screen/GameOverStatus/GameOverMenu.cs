@@ -28,5 +28,8 @@ public class GameOverMenu : MonoBehaviour
     public void OpenShop() { }
 
 
-    public void OpenLeaderboard() { }
+    public void OpenLeaderboardClickHandler()
+    {
+        GPGSLeaderboard.Instance.OpenLeaderboard();
+    }
 }

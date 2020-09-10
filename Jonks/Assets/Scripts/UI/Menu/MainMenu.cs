@@ -9,4 +9,10 @@ public class MainMenu : SingletonMonoBehaviour<MainMenu>
     {
         SceneLoader.LoadScene(SceneLoader.GameSceneName);
     }
+
+
+    public void OpenLeaderboardClickHandler()
+    {
+        GPGSLeaderboard.Instance.OpenLeaderboard();
+    }
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class GPGSLeaderboard : MonoBehaviour
+public class GPGSLeaderboard : SingletonMonoBehaviour<GPGSLeaderboard>
 {
     public void OpenLeaderboard()
     {

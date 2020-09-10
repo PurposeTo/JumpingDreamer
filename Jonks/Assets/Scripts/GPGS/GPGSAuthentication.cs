@@ -36,7 +36,7 @@ public class GPGSAuthentication : SingletonMonoBehaviour<GPGSAuthentication>
         PlayGamesPlatform.Instance.Authenticate(SignInInteractivity.CanPromptOnce, (result) =>
         {
             Debug.Log($"Authenticate is completed with code: {result}");
-            AuthenticateStatus.text = $"{result}";
+            if(AuthenticateStatus != null) AuthenticateStatus.text = $"{result}";
         });
 
         //Social.Active.localUser.Authenticate(success =>
