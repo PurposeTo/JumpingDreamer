@@ -6,32 +6,42 @@ using UnityEngine;
 [Obsolete]
 public class InternetConnectionChecker : SingletonMonoBehaviour<InternetConnectionChecker>
 {
-    public bool IsInternetConnectionAvaliable()
+    public bool IsInternetAvaliable { get; private set; }
+
+    private UnityWebRequest request;
+
+    private Coroutine pingGoogleRoutine;
+
+
+    private void Start()
     {
-        bool isInternetAvaliable = false;
-
-        // TODO: Ожидать с помощью корутины пока выполниться корутина
-        StartCoroutine(CheckInternetConnectionEnumerator(isDeviceHasInternetConnection => isInternetAvaliable = isDeviceHasInternetConnection));
-
-        return isInternetAvaliable;
+        request = new UnityWebRequest("http://google.com", "GET");
+        StartCoroutine(CheckInternetConnectionEnumerator());
     }
 
 
-    private IEnumerator CheckInternetConnectionEnumerator(Action<bool> action)
+    private IEnumerator CheckInternetConnectionEnumerator()
     {
-        using (UnityWebRequest request = new UnityWebRequest("http://google.com", "GET"))
+        while (true)
         {
-            yield return request.SendWebRequest();
-
-            if (request.error != null) //  || isHttpError == true - Вдруг у гугла ошибки с серверами будут? :)
-            {
-                Debug.LogWarning(request.error);
-                action(false);
-            }
-            else
-            {
-                action(true);
-            }
+            if (pingGoogleRoutine == null) { pingGoogleRoutine = StartCoroutine(PingGoogleEnumerator()); }
+            yield return pingGoogleRoutine;
+            yield return new WaitForSeconds(15.0f);
         }
+    }
+
+
+    private IEnumerator PingGoogleEnumerator()
+    {
+        yield return request.SendWebRequest();
+
+        if (request.error != null || request.isHttpError == true)
+        {
+            Debug.LogWarning(request.error);
+            IsInternetAvaliable = false;
+        }
+        else { IsInternetAvaliable = true; }
+
+        pingGoogleRoutine = null;
     }
 }

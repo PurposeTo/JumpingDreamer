@@ -5,7 +5,7 @@ public abstract class OperationWithPlayerDataButton : MonoBehaviour
 {
     public ConfirmationOperationWindow ConfirmationOperationWindow;
 
-    private Button button;
+    private protected Button button;
 
 
     private void Start()
@@ -32,7 +32,7 @@ public abstract class OperationWithPlayerDataButton : MonoBehaviour
     }
 
 
-    private void ToggleButton()
+    private protected virtual void ToggleButton()
     {
         button.interactable = !PlayerDataModelController.IsPlayerDataHaveAlreadyDeletedOrRestored;
     }
