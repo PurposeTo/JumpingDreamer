@@ -29,31 +29,22 @@ public class PlayerDataLocalStorageSafe
     }
 
 
-    public void WritePlayerDataToFile(PlayerDataModel playerDataModel)
+    public void WritePlayerDataToFile(PlayerDataModel localPlayerDataModel)
     {
         if (IsDataFileLoaded)
         {
             // TODO: А если у пользователя недостаточно памяти, чтобы создать файл?
 
-            string json = "";
-            bool isJsonConverted = true;
+            bool isSerializingSuccess = false;
+            string json = JsonConverterWrapper.SerializeObject(localPlayerDataModel, (success, exception) => isSerializingSuccess = success);
 
-            json = JsonConverterWrapper.SerializeObject(playerDataModel, (success, exception) =>
-            {
-                if (!success)
-                {
-                    isJsonConverted = false;
-
-                    DialogWindowGenerator.Instance.CreateDialogWindow("Ошибка записи данных игровой статистики! Пожалуйста, обратитесь в службу поддержки.");
-                }
-            });
-
-            if (isJsonConverted)
+            if (isSerializingSuccess)
             {
                 Debug.Log("AfterSerializingModel: " + json);
                 string modifiedData = JsonEncryption.Encrypt(json);
                 File.WriteAllText(FilePath, modifiedData);
             }
+            else DialogWindowGenerator.Instance.CreateDialogWindow("Ошибка записи данных игровой статистики! Пожалуйста, обратитесь в службу поддержки.");
         }
     }
 
