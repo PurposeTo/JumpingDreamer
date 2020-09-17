@@ -20,6 +20,7 @@ public class MovementFromTheCenter : MovingPlatform, IMovable, IPooledObject
         if (UpdateMoveDirectionEveryFrame)
         {
             UpdateMoveDirection();
+            SetVelocity(moveDirection * velocityMultiplier);
         }
     }
 
@@ -32,8 +33,7 @@ public class MovementFromTheCenter : MovingPlatform, IMovable, IPooledObject
         // Если платформа не в центре
         if (transform.position != centre.transform.position)
         {
-            Vector2 toCentreDirection = (centre.transform.position - transform.position).normalized;
-            moveDirection = toCentreDirection * -1;
+            moveDirection = GetUpdatedMoveDirection();
         }
         else // Если платформа в центре
         {
@@ -51,9 +51,15 @@ public class MovementFromTheCenter : MovingPlatform, IMovable, IPooledObject
     {
         if (transform.position != centre.transform.position)
         {
-            Vector2 toCentreDirection = (centre.transform.position - transform.position).normalized;
-            moveDirection = toCentreDirection * -1;
+            moveDirection = GetUpdatedMoveDirection();
         }
+    }
+
+
+    private Vector2 GetUpdatedMoveDirection()
+    {
+        Vector2 toCentreDirection = (centre.transform.position - transform.position).normalized;
+        return toCentreDirection * -1;
     }
 
 
