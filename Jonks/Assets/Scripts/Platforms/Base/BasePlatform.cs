@@ -16,10 +16,7 @@ public class BasePlatform : MonoBehaviour
         animatorBlinkingController.SetBlinkingAnimationSpeed(blinkingAnimationSpeed);
         animatorBlinkingController.SetAnimationDuration(AnimatorBlinkingController.DurationType.Loops, 3);
         animatorBlinkingController.OnDisableBlinking += DisableObject;
-    }
 
-    private protected virtual void Start()
-    {
         centre = GameManager.Instance.CentreObject;
     }
 

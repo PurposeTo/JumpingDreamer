@@ -2,9 +2,8 @@
 
 public class CircularMotion : MovingPlatform, IMovable
 {
-    private protected override void Start()
+    private void Start()
     {
-        base.Start();
         velocityMultiplier = 10f;
     }
 

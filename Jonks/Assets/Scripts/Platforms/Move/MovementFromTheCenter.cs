@@ -25,7 +25,7 @@ public class MovementFromTheCenter : MovingPlatform, IMovable, IPooledObject
 
 
     /// <summary>
-    /// Инициализирует платформу. Обращаться только после выполнения base.Start() !
+    /// Инициализирует платформу
     /// </summary>
     private void InitializePlatform()
     {
@@ -59,8 +59,6 @@ public class MovementFromTheCenter : MovingPlatform, IMovable, IPooledObject
 
     private IEnumerator LifeCycleEnumerator()
     {
-        yield return new WaitUntil(() => centre != null); // Костыль. Необходимо проверить, вызывался ли метод Start.
-        InitializePlatform();
         yield return new WaitUntil(() => (centre.transform.position - transform.position).magnitude >= lifeDictance);
 
         animatorBlinkingController.StartBlinking(false);
@@ -68,6 +66,7 @@ public class MovementFromTheCenter : MovingPlatform, IMovable, IPooledObject
 
     void IPooledObject.OnObjectSpawn()
     {
+        InitializePlatform();
         StartCoroutine(LifeCycleEnumerator());
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -7,15 +6,14 @@ public class PlatformGenerator : SingletonMonoBehaviour<PlatformGenerator>
 {
     public GameObject DefaultPlatform;
 
-    private float delay = 0.625f;
-    private float counter;
+    private readonly float delay = 0.35f;
+    private float counter = 0f;
 
     private List<Vector2> directionsAroundCircle = new List<Vector2>();
 
 
     private void Start()
     {
-        //GenerateRingFromPlatforms(DefaultPlatform, 15f, 5f);
         GenerateRingFromPlatforms(DefaultPlatform, 20f, 5f);
     }
 

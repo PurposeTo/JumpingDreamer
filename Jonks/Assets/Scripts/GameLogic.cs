@@ -46,4 +46,9 @@ public static class GameLogic
         y = temp;
     }
 
+
+    public static float ClampValueByAnotherValue(float valueToClamp, float valueWhichClamping, float howManyTimes)
+    {
+        return (valueToClamp + (valueWhichClamping * howManyTimes)) / howManyTimes;
+    }
 }

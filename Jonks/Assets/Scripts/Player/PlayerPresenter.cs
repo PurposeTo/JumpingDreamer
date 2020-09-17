@@ -9,6 +9,7 @@ public class PlayerPresenter : MonoBehaviour
     public SpeedTrail SpeedTrail { get; private set; }
     public LifeTimer LifeTimer { get; private set; }
     public PlayerTactics PlayerTactics { get; private set; }
+    public GravitySensitive GravitySensitive { get; private set; }
 
 
     private void Awake()
@@ -20,5 +21,6 @@ public class PlayerPresenter : MonoBehaviour
         SpeedTrail = gameObject.GetComponent<SpeedTrail>();
         LifeTimer = gameObject.GetComponent<LifeTimer>();
         PlayerTactics = gameObject.GetComponent<PlayerTactics>();
+        GravitySensitive = gameObject.GetComponent<GravitySensitive>();
     }
 }

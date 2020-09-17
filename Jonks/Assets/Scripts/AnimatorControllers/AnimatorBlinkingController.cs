@@ -4,10 +4,8 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
-public class AnimatorBlinkingController : MonoBehaviour
+public class AnimatorBlinkingController : AnimatorControllerWrapper
 {
-
-    private Animator animator;
     private const string entryState = "Entry state";
     private const string enableBlinkingState = "Enable blinking";
     private const string blinkingState = "Blinking";
@@ -15,7 +13,7 @@ public class AnimatorBlinkingController : MonoBehaviour
     private const string isBlinking = "isBlinking";
     private const string haveEnableState = "haveEnableState";
     private const string haveDisableState = "haveDisableState";
-    private const float blinkingAnimationEnterExitDuration = 1f; // Длительность входа или выхрда анимации мерцания - 1 секунда
+    private const float blinkingAnimationEnterExitDuration = 1f; // Длительность входа или выхода анимации мерцания - 1 секунда
     private const float blinkingAnimationLoopDuration = 2f; // Длительность анимации мерцания - 2 секунды
 
     private bool isHasALimitedDuration = false;
@@ -26,24 +24,16 @@ public class AnimatorBlinkingController : MonoBehaviour
 
     private Coroutine stopBlinkingCoroutine;
 
-
-    private void Awake()
+    public enum DurationType
     {
-        animator = gameObject.GetComponent<Animator>();
+        Loops,
+        Seconds
     }
 
 
     private void OnEnable()
     {
         CheckEmptyStates();
-
-    }
-
-
-    public enum DurationType
-    {
-        Loops,
-        Seconds
     }
 
 
@@ -126,5 +116,7 @@ public class AnimatorBlinkingController : MonoBehaviour
 
         yield return new WaitWhile(() => stateInfo.IsName(enableBlinkingState));
         animator.SetBool(isBlinking, false);
+
+        stopBlinkingCoroutine = null;
     }
 }
