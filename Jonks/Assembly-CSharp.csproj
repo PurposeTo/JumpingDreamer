@@ -131,9 +131,9 @@
     <Compile Include="Assets\GooglePlayGames\PluginVersion.cs" />
     <Compile Include="Assets\Scripts\AdMob\AdMobScript.cs" />
     <Compile Include="Assets\Scripts\AnimatorControllers\AnimatorBlinkingController.cs" />
-    <Compile Include="Assets\Scripts\AnimatorControllers\AnimatorPulsingController.cs" />
     <Compile Include="Assets\Scripts\AnimatorControllers\Base\AnimatorControllerWrapper.cs" />
-    <Compile Include="Assets\Scripts\CameraFollow.cs" />
+    <Compile Include="Assets\Scripts\Camera\CameraFollow.cs" />
+    <Compile Include="Assets\Scripts\Camera\CameraSizeChecker.cs" />
     <Compile Include="Assets\Scripts\Centre\Centre.cs" />
     <Compile Include="Assets\Scripts\Centre\Gravity.cs" />
     <Compile Include="Assets\Scripts\Centre\KillingZone.cs" />
@@ -216,7 +216,11 @@
     <Compile Include="Assets\Scripts\UI\Menu\SettingsMenu.cs" />
     <Compile Include="Assets\Scripts\UI\PlayerUI.cs" />
     <Compile Include="Assets\Scripts\UI\PopUpText.cs" />
-    <Compile Include="Assets\Scripts\WorldGeneration\PlatformGenerator.cs" />
+    <Compile Include="Assets\Scripts\WorldGeneration\PlatformGenerator\Base\PlatformGeneratorData.cs" />
+    <Compile Include="Assets\Scripts\WorldGeneration\PlatformGenerator\Base\PlatformGeneratorState.cs" />
+    <Compile Include="Assets\Scripts\WorldGeneration\PlatformGenerator\DefaultPlatformGenerator.cs" />
+    <Compile Include="Assets\Scripts\WorldGeneration\PlatformGenerator\PlatformGeneratorController.cs" />
+    <Compile Include="Assets\Scripts\WorldGeneration\PlatformGenerator\SpiralMotionPlatformGenerator.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\StarGenerator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />

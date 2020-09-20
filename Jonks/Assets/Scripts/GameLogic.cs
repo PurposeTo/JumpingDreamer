@@ -25,6 +25,30 @@ public static class GameLogic
         return quaternionRotation;
     }
 
+
+    /// <summary>
+    /// Генерирует массив векторов, точки которых описывают круг, радиус которого равен единице
+    /// </summary>
+    /// <param name="distanceAngle">Угол, на расстоянии которого будут распологаться точки</param>
+    public static Vector2[] GetVector2sDirectionsAroundCircle(float distanceAngle)
+    {
+        List<Vector2> vector2sDirections = new List<Vector2>();
+
+        int dotsCount = (int)(360f / distanceAngle);
+
+        for (int i = 0; i < dotsCount; i++)
+        {
+            float rotateAngle = distanceAngle * i;
+            Quaternion rotation = Quaternion.Euler(0, 0, rotateAngle);
+            Vector2 direction = rotation * Vector3.up;
+
+            vector2sDirections.Add(direction);
+        }
+
+        return vector2sDirections.ToArray();
+    }
+
+
     /// <summary>
     /// Перемешивает массив элементов 
     /// </summary>

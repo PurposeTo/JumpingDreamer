@@ -3,11 +3,10 @@
 [RequireComponent(typeof(Rigidbody2D))]
 public class BasePlatform : MonoBehaviour
 {
-    private protected GameObject centre;
     private protected Rigidbody2D rb2D;
     private protected AnimatorBlinkingController animatorBlinkingController;
 
-    private float blinkingAnimationSpeed = 1.25f;
+    private readonly float blinkingAnimationSpeed = 1.25f;
 
     private protected virtual void Awake()
     {
@@ -16,8 +15,6 @@ public class BasePlatform : MonoBehaviour
         animatorBlinkingController.SetBlinkingAnimationSpeed(blinkingAnimationSpeed);
         animatorBlinkingController.SetAnimationDuration(AnimatorBlinkingController.DurationType.Loops, 3);
         animatorBlinkingController.OnDisableBlinking += DisableObject;
-
-        centre = GameManager.Instance.CentreObject;
     }
 
 
@@ -27,7 +24,7 @@ public class BasePlatform : MonoBehaviour
     }
 
 
-    public void DisableObject()
+    private void DisableObject()
     {
         gameObject.SetActive(false);
     }
