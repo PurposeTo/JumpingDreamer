@@ -1,6 +1,4 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine;
 
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
@@ -8,6 +6,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     public PlayerPresenter PlayerPresenter { get; private set; }
     public GameObject CentreObject;
     public Centre Centre { get; private set; }
+
+    public GameObject CameraObject;
 
 
     protected override void AwakeSingleton()

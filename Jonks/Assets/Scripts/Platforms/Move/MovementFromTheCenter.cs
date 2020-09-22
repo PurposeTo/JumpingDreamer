@@ -20,20 +20,20 @@ public class MovementFromTheCenter : MovingPlatform, IMovable, IPooledObject
         if (UpdateMoveDirectionEveryFrame)
         {
             UpdateMoveDirection();
+            SetVelocity(moveDirection * velocityMultiplier);
         }
     }
 
 
     /// <summary>
-    /// Инициализирует платформу. Обращаться только после выполнения base.Start() !
+    /// Инициализирует платформу
     /// </summary>
     private void InitializePlatform()
     {
         // Если платформа не в центре
-        if (transform.position != centre.transform.position)
+        if (transform.position != GameManager.Instance.CentreObject.transform.position)
         {
-            Vector2 toCentreDirection = (centre.transform.position - transform.position).normalized;
-            moveDirection = toCentreDirection * -1;
+            moveDirection = GetUpdatedMoveDirection();
         }
         else // Если платформа в центре
         {
@@ -49,25 +49,30 @@ public class MovementFromTheCenter : MovingPlatform, IMovable, IPooledObject
 
     private void UpdateMoveDirection()
     {
-        if (transform.position != centre.transform.position)
+        if (transform.position != GameManager.Instance.CentreObject.transform.position)
         {
-            Vector2 toCentreDirection = (centre.transform.position - transform.position).normalized;
-            moveDirection = toCentreDirection * -1;
+            moveDirection = GetUpdatedMoveDirection();
         }
+    }
+
+
+    private Vector2 GetUpdatedMoveDirection()
+    {
+        Vector2 toCentreDirection = (GameManager.Instance.CentreObject.transform.position - transform.position).normalized;
+        return toCentreDirection * -1;
     }
 
 
     private IEnumerator LifeCycleEnumerator()
     {
-        yield return new WaitUntil(() => centre != null); // Костыль. Необходимо проверить, вызывался ли метод Start.
-        InitializePlatform();
-        yield return new WaitUntil(() => (centre.transform.position - transform.position).magnitude >= lifeDictance);
+        yield return new WaitUntil(() => (GameManager.Instance.CentreObject.transform.position - transform.position).magnitude >= lifeDictance);
 
         animatorBlinkingController.StartBlinking(false);
     }
 
     void IPooledObject.OnObjectSpawn()
     {
+        InitializePlatform();
         StartCoroutine(LifeCycleEnumerator());
     }
 }

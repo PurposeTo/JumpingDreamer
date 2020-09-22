@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
 
     private float velocityMultiplier = 18f;
 
+    public Vector2 GravityProjectVector { get; private set; }
     public float HorizontalInput { get; private set; }
 
     private Controller controller;
@@ -46,13 +47,13 @@ public class PlayerMovement : MonoBehaviour
 
         Vector2 inputVelocity = inputVelocityDirection * velocityMultiplier;
 
-        Vector2 gravityProjectVector = (Vector2)Vector3.Project(rb2D.velocity, toCentreDirection);
+        GravityProjectVector = (Vector2)Vector3.Project(rb2D.velocity, toCentreDirection);
 
-        Vector2 finalVelocity = inputVelocity + gravityProjectVector;
+        Vector2 finalVelocity = inputVelocity + GravityProjectVector;
 
         rb2D.velocity = finalVelocity;
 
-        DrawForceRay(inputVelocityDirection, gravityProjectVector);
+        DrawForceRay(inputVelocityDirection, GravityProjectVector);
     }
 
 

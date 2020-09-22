@@ -9,13 +9,13 @@ public class TrainingTutorial : MonoBehaviour
     private AnimatorBlinkingController[] animatorBlinkingControllers;
 
     private PlayerTactics playerTactics;
-    private float AbsAverageHorizontalInput;
-    private float minHorizontalInputToShowTutorial = 0.2f;
-    private int minTotalLifeTimeToShowTutorial = 60;
-    private float delay = 30f;
+    private float absAverageHorizontalInput;
+    private readonly float minHorizontalInputToShowTutorial = 0.2f;
+    private readonly int minTotalLifeTimeToShowTutorial = 60;
+    private readonly float delay = 30f;
     private bool isTutorialTipsEnable = false;
 
-    private float blinkingAnimationSpeed = 1.25f;
+    private readonly float blinkingAnimationSpeed = 1.25f;
 
     private Coroutine ShowTutorialRoutine = null;
     private Coroutine CheckingIfTutorialNeedsToBeShownRoutine = null;
@@ -39,7 +39,7 @@ public class TrainingTutorial : MonoBehaviour
         }
 
     }
-    
+
 
     private void OnDestroy()
     {
@@ -59,7 +59,7 @@ public class TrainingTutorial : MonoBehaviour
 
     private void Update()
     {
-        AbsAverageHorizontalInput = playerTactics.AverageAbsVelocityDirection;
+        absAverageHorizontalInput = playerTactics.AverageAbsVelocityDirection;
     }
 
 
@@ -78,10 +78,7 @@ public class TrainingTutorial : MonoBehaviour
 
     private void DisableTutorialBlinking()
     {
-        for (int i = 0; i < animatorBlinkingControllers.Length; i++)
-        {
-            animatorBlinkingControllers[i].StopBlinking();
-        }
+        Array.ForEach(animatorBlinkingControllers, (x) => x.StopBlinking());
     }
 
 
@@ -98,7 +95,7 @@ public class TrainingTutorial : MonoBehaviour
 
     private bool IsTutorialNeedsToBeShown()
     {
-        return AbsAverageHorizontalInput <= minHorizontalInputToShowTutorial;
+        return absAverageHorizontalInput <= minHorizontalInputToShowTutorial;
     }
 
 

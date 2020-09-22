@@ -10,7 +10,7 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : Single
 
     public static T Instance { get; private set; }
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)] //FixMe: Это не работает!
     private void Awake()
     {
         if (Instance == null)

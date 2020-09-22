@@ -2,10 +2,18 @@
 
 public class CircularMotion : MovingPlatform, IMovable
 {
-    private protected override void Start()
+    private readonly int[] directionsToChoice = { -1, 1 };
+    private readonly float minVelocityMultiplier = 2.5f;
+    private readonly float maxVelocityMultiplier = 10f;
+
+    private int direction;
+
+
+    private void OnEnable()
     {
-        base.Start();
-        velocityMultiplier = 10f;
+        direction = directionsToChoice[Random.Range(0, directionsToChoice.Length)];
+        velocityMultiplier = Random.Range(minVelocityMultiplier, maxVelocityMultiplier);
+
     }
 
 
@@ -17,8 +25,8 @@ public class CircularMotion : MovingPlatform, IMovable
 
     private void MoveAround()
     {
-        Vector2 toCentreDirection = ((Vector2)centre.transform.position - rb2D.position).normalized;
-        moveDirection = GameLogic.GetOrthoNormalizedVector2(toCentreDirection);
+        Vector2 toCentreDirection = ((Vector2)GameManager.Instance.CentreObject.transform.position - rb2D.position).normalized;
+        moveDirection = GameLogic.GetOrthoNormalizedVector2(toCentreDirection) * direction;
 
         SetVelocity(moveDirection * velocityMultiplier);
     }
