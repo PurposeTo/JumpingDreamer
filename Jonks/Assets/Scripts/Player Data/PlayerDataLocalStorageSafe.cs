@@ -31,6 +31,8 @@ public class PlayerDataLocalStorageSafe
 
     public void WritePlayerDataToFile(PlayerDataModel localPlayerDataModel)
     {
+        if (localPlayerDataModel == null) throw new System.ArgumentNullException("Local model can't have null value!");
+
         if (IsDataFileLoaded)
         {
             // TODO: А если у пользователя недостаточно памяти, чтобы создать файл?

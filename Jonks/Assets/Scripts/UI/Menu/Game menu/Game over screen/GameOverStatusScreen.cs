@@ -73,7 +73,6 @@ public class GameOverStatusScreen : MonoBehaviour
         RebornScreen.gameObject.SetActive(true);
         CollectRewardsScreen.gameObject.SetActive(false);
         RefuseToViewAdsScreen.gameObject.SetActive(false);
-
     }
 
 
