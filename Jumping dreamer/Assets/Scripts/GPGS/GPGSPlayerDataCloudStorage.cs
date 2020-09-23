@@ -146,10 +146,18 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
             return;
         }
 
-        SavedGameClient.OpenWithAutomaticConflictResolution(PlayerDataModel.FileName,
-            DataSource.ReadCacheOrNetwork,                                              // ?
-            ConflictResolutionStrategy.UseLongestPlaytime,                              // ?
-            OnSavedGameOpened);
+        print("Opening!");
+        SavedGameClient.OpenWithManualConflictResolution(PlayerDataModel.FileName, DataSource.ReadCacheOrNetwork, true, new ConflictCallback((conflictResolver, originGameMetadata, originData, unmergedGameMetadata, unmergedData) =>
+        {
+            print("OpenWithManualConflictResolution");
+            print($"Origin data: {originData}");
+            print($"Unmerged data: {unmergedData}");
+        }), OnSavedGameOpened);
+
+        //SavedGameClient.OpenWithAutomaticConflictResolution(PlayerDataModel.FileName,
+        //    DataSource.ReadCacheOrNetwork,                                              // ?
+        //    ConflictResolutionStrategy.UseLongestPlaytime,                              // ?
+        //    OnSavedGameOpened);
     }
 
 
