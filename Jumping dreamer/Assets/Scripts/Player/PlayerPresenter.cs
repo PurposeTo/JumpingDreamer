@@ -2,6 +2,8 @@
 
 public class PlayerPresenter : MonoBehaviour
 {
+    public Rigidbody2D PlayerRigidbody2D { get; private set; }
+
     public PlayerHealth PlayerHealth { get; private set; }
     public PlayerMovement PlayerMovement { get; private set; }
     public ScoreCollector ScoreCollector { get; private set; }
@@ -14,6 +16,7 @@ public class PlayerPresenter : MonoBehaviour
 
     private void Awake()
     {
+        PlayerRigidbody2D = gameObject.GetComponent<Rigidbody2D>();
         PlayerHealth = gameObject.GetComponent<PlayerHealth>();
         PlayerMovement = gameObject.GetComponent<PlayerMovement>();
         ScoreCollector = gameObject.GetComponent<ScoreCollector>();

@@ -6,10 +6,6 @@ public class PlatformGeneratorController : SingletonMonoBehaviour<PlatformGenera
 
     private PlatformGeneratorState platformGeneratorState;
 
-    // Тест! Убрать!
-    private float testCounter = 0f;
-
-
     private void Start()
     {
         platformGeneratorData = gameObject.GetComponent<PlatformGeneratorData>();
@@ -22,11 +18,6 @@ public class PlatformGeneratorController : SingletonMonoBehaviour<PlatformGenera
     private void Update()
     {
         platformGeneratorState.Generating();
-
-        // Тест! Убрать!
-        testCounter += Time.deltaTime;
-        if(testCounter >= 40f && !(platformGeneratorState is SpiralMotionPlatformGenerator))
-            platformGeneratorState = platformGeneratorData.SpiralMotionGeneratorState;
     }
 
 

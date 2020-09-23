@@ -6,9 +6,8 @@ public class PlayerMovement : MonoBehaviour
     private GameObject centre;
     private Rigidbody2D rb2D;
 
-    private float velocityMultiplier = 18f;
+    private readonly float velocityMultiplier = 18f;
 
-    public Vector2 GravityProjectVector { get; private set; }
     public float HorizontalInput { get; private set; }
 
     private Controller controller;
@@ -47,13 +46,43 @@ public class PlayerMovement : MonoBehaviour
 
         Vector2 inputVelocity = inputVelocityDirection * velocityMultiplier;
 
-        GravityProjectVector = (Vector2)Vector3.Project(rb2D.velocity, toCentreDirection);
+        Vector2 gravityProjectVector = GetGravityProjectVector();
 
-        Vector2 finalVelocity = inputVelocity + GravityProjectVector;
+        Vector2 finalVelocity = inputVelocity + gravityProjectVector;
 
         rb2D.velocity = finalVelocity;
 
-        DrawForceRay(inputVelocityDirection, GravityProjectVector);
+        DrawForceRay(inputVelocityDirection, gravityProjectVector);
+    }
+
+
+    public Vector2 GetGravityProjectVector()
+    {
+        Vector2 toCentreDirection = ((Vector2)centre.transform.position - rb2D.position).normalized;
+        return (Vector2)Vector3.Project(rb2D.velocity, toCentreDirection);
+    }
+
+
+    public void TossUp()
+    {
+        //float minGravityVelocity = 30f;
+        //float bounciness = 0.05f;
+        //float jumpScale = GravityProjectVector.magnitude < minGravityVelocity
+        //    ? minGravityVelocity / GravityProjectVector.magnitude * bounciness
+        //    : 1f;
+
+        //Vector2 inputVelocity = rb2D.velocity - GravityProjectVector;
+        //print($"КРЯ! rb2D.velocity: {rb2D.velocity}, GravityProjectVector: {GravityProjectVector}, inputVelocity: {inputVelocity}");
+
+
+        //print($"КРЯ! jumpScale: {jumpScale}, GravityProjectVector: {GravityProjectVector.magnitude}");
+
+        //print($"КРЯ! GravityProjectVector: {GravityProjectVector}");
+        //GravityProjectVector *= -1;// * bounciness * jumpScale;
+        //Vector2 finalVelocity = inputVelocity + GravityProjectVector;
+        //print($"КРЯ! inputVelocity: {inputVelocity}, GravityProjectVector: {GravityProjectVector} finalVelocity: {finalVelocity}");
+
+        //rb2D.velocity = finalVelocity;
     }
 
 
