@@ -156,6 +156,7 @@
     <Compile Include="Assets\Scripts\Platforms\Move\Base\Move.cs" />
     <Compile Include="Assets\Scripts\Platforms\Move\CircularMotion.cs" />
     <Compile Include="Assets\Scripts\Platforms\Move\MovementFromTheCenter.cs" />
+    <Compile Include="Assets\Scripts\Platforms\Springboard.cs" />
     <Compile Include="Assets\Scripts\Player Data\Converters\JsonConverterWrapper.cs" />
     <Compile Include="Assets\Scripts\Player Data\Converters\SafeIntConverter.cs" />
     <Compile Include="Assets\Scripts\Player Data\DataLoaderHelper.cs" />
@@ -220,7 +221,6 @@
     <Compile Include="Assets\Scripts\WorldGeneration\PlatformGenerator\Base\PlatformGeneratorState.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\PlatformGenerator\DefaultPlatformGenerator.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\PlatformGenerator\PlatformGeneratorController.cs" />
-    <Compile Include="Assets\Scripts\WorldGeneration\PlatformGenerator\SpiralMotionPlatformGenerator.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\StarGenerator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />

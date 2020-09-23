@@ -66,7 +66,12 @@ public class MovementFromTheCenter : MovingPlatform, IMovable, IPooledObject
     private IEnumerator LifeCycleEnumerator()
     {
         yield return new WaitUntil(() => (GameManager.Instance.CentreObject.transform.position - transform.position).magnitude >= lifeDictance);
+        velocityMultiplier *= -1;
+        SetVelocity(moveDirection * velocityMultiplier);
+        yield return new WaitWhile(() => (GameManager.Instance.CentreObject.transform.position - transform.position).magnitude >= lifeDictance);
 
+
+        yield return new WaitUntil(() => (GameManager.Instance.CentreObject.transform.position - transform.position).magnitude >= lifeDictance);
         animatorBlinkingController.StartBlinking(false);
     }
 

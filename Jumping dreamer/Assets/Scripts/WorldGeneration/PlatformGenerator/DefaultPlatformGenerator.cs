@@ -8,7 +8,7 @@ public class DefaultPlatformGenerator : PlatformGeneratorState
     }
 
 
-    private protected override float Delay => 0.35f;
+    private protected override float Delay => 0.4f;
     private readonly GameObject platform;
 
 

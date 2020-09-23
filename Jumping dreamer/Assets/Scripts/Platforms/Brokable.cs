@@ -15,7 +15,7 @@ public class Brokable : MonoBehaviour
 
     private void OnDisable()
     {
-        MakeIMoreBreakable();
+        MakeItMoreBreakable();
     }
 
 
@@ -39,7 +39,7 @@ public class Brokable : MonoBehaviour
     }
 
 
-    private void MakeIMoreBreakable()
+    private void MakeItMoreBreakable()
     {
         if (touchesToBroke > 1) touchesToBroke--;
     }

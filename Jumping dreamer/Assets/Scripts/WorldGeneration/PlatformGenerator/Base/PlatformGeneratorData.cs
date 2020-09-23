@@ -12,6 +12,5 @@ public class PlatformGeneratorData : MonoBehaviour
     private void Awake()
     {
         DefaultGeneratorState = new DefaultPlatformGenerator(DefaultPlatform);
-        SpiralMotionGeneratorState = new SpiralMotionPlatformGenerator(SpiralMotionPlatformPlatform);
     }
 }
