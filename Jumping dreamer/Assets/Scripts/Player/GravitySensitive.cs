@@ -16,7 +16,7 @@ public class GravitySensitive : MonoBehaviour
 
     private void FixedUpdate()
     {
-        gravityProjectMagnitude = playerMovement.GetGravityProjectVector().magnitude;
+        gravityProjectMagnitude = playerMovement.GravityProjectVector.magnitude;
 
         if (gravityProjectMagnitude > maxGravityProjectMagnitude) maxGravityProjectMagnitude = gravityProjectMagnitude;
     }

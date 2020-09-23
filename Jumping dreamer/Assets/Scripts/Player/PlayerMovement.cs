@@ -7,7 +7,11 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb2D;
 
     private readonly float velocityMultiplier = 18f;
+    private readonly float minGravityVelocity = 30f;
+    private readonly float bounciness = 0.8f;
 
+    public Vector2 GravityProjectVector { get; private set; }
+    public Vector2 InputVelocity { get; private set; }
     public float HorizontalInput { get; private set; }
 
     private Controller controller;
@@ -39,56 +43,54 @@ public class PlayerMovement : MonoBehaviour
     private void MoveCharacter()
     {
         Vector2 toCentreDirection = ((Vector2)centre.transform.position - rb2D.position).normalized;
+        GravityProjectVector = GetGravityProjectVector(toCentreDirection);
+        InputVelocity = GetInputVelocity(toCentreDirection);
 
+        SetPlayerVelocity();
+        DrawForceRay(InputVelocity, GravityProjectVector);
+    }
+
+
+    private Vector2 GetGravityProjectVector(Vector2 toCentreDirection)
+    {
+        return (Vector2)Vector3.Project(rb2D.velocity, toCentreDirection);
+    }
+
+
+    private Vector2 GetInputVelocity(Vector2 toCentreDirection)
+    {
         Vector2 inputVelocityDirection = GameLogic.GetOrthoNormalizedVector2(toCentreDirection);
         inputVelocityDirection *= HorizontalInput;
         inputVelocityDirection *= -1;
 
-        Vector2 inputVelocity = inputVelocityDirection * velocityMultiplier;
-
-        Vector2 gravityProjectVector = GetGravityProjectVector();
-
-        Vector2 finalVelocity = inputVelocity + gravityProjectVector;
-
-        rb2D.velocity = finalVelocity;
-
-        DrawForceRay(inputVelocityDirection, gravityProjectVector);
+        return inputVelocityDirection * velocityMultiplier;
     }
 
 
-    public Vector2 GetGravityProjectVector()
+    private void SetPlayerVelocity()
     {
-        Vector2 toCentreDirection = ((Vector2)centre.transform.position - rb2D.position).normalized;
-        return (Vector2)Vector3.Project(rb2D.velocity, toCentreDirection);
+        rb2D.velocity = InputVelocity + GravityProjectVector;
     }
 
 
     public void TossUp()
     {
-        //float minGravityVelocity = 30f;
-        //float bounciness = 0.05f;
-        //float jumpScale = GravityProjectVector.magnitude < minGravityVelocity
-        //    ? minGravityVelocity / GravityProjectVector.magnitude * bounciness
-        //    : 1f;
-
-        //Vector2 inputVelocity = rb2D.velocity - GravityProjectVector;
-        //print($"КРЯ! rb2D.velocity: {rb2D.velocity}, GravityProjectVector: {GravityProjectVector}, inputVelocity: {inputVelocity}");
 
 
-        //print($"КРЯ! jumpScale: {jumpScale}, GravityProjectVector: {GravityProjectVector.magnitude}");
+        GravityProjectVector *= -1 * bounciness;
 
-        //print($"КРЯ! GravityProjectVector: {GravityProjectVector}");
-        //GravityProjectVector *= -1;// * bounciness * jumpScale;
-        //Vector2 finalVelocity = inputVelocity + GravityProjectVector;
-        //print($"КРЯ! inputVelocity: {inputVelocity}, GravityProjectVector: {GravityProjectVector} finalVelocity: {finalVelocity}");
+        float jumpScale = GravityProjectVector.magnitude < minGravityVelocity
+            ? minGravityVelocity / GravityProjectVector.magnitude
+            : 1f;
+        GravityProjectVector *= jumpScale;
 
-        //rb2D.velocity = finalVelocity;
+        SetPlayerVelocity();
     }
 
 
     private void DrawForceRay(Vector2 forceDirection, Vector2 gravityProjectVector)
     {
-        Debug.DrawRay(transform.position, -forceDirection * 3, Color.yellow, 2f);
+        Debug.DrawRay(transform.position, -forceDirection.normalized * 3, Color.yellow, 2f);
 
         Debug.DrawRay(transform.position, gravityProjectVector.normalized * 3, Color.green, 2f);
     }
