@@ -148,6 +148,8 @@
     <Compile Include="Assets\Scripts\Localizaton\LocalizationManager.cs" />
     <Compile Include="Assets\Scripts\Localizaton\LocalizedText.cs" />
     <Compile Include="Assets\Scripts\Localizaton\StartupManager.cs" />
+    <Compile Include="Assets\Scripts\Obstacles\Flash.cs" />
+    <Compile Include="Assets\Scripts\Obstacles\FlashGenerator.cs" />
     <Compile Include="Assets\Scripts\OrthoRotationToTheCentre.cs" />
     <Compile Include="Assets\Scripts\Platforms\Base\BasePlatform.cs" />
     <Compile Include="Assets\Scripts\Platforms\Base\MovingPlatform.cs" />
