@@ -38,7 +38,7 @@ public class ConfirmationOperationWindow : MonoBehaviour
     }
 
 
-    public void ConfirmDeletePlayerDataButton()
+    public void ConfirmOperationPlayerDataButton()
     {
         if (inputField.text == confirmationOperationKeyword) { onOperationConfirmed(true); }
         else { onOperationConfirmed(false); }

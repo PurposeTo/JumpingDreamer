@@ -9,7 +9,7 @@ public class EarnedScoreInGame : MonoBehaviour
     private int RecordUI => PlayerDataModelController.Instance.PlayerDataLocalModel.PlayerStats.MaxEarnedScore.Value;
 
     private bool isRecordNew = false;
-    private EventHandler isRecordNewEvent = null;
+    private Action isRecordNewEvent = null;
 
 
     // Awake вызывается при включении объекта
@@ -26,7 +26,7 @@ public class EarnedScoreInGame : MonoBehaviour
         * 2. При сохранении статов вызывается событие <Новый рекорд!> (Если рекорд новый)
         * 3. После сохранения статов вызывается метод ShowScoreWithRecord -> См. класс GameOverMenu
         */
-        isRecordNewEvent = (sender, eventArgs) => isRecordNew = true;
+        isRecordNewEvent = () => isRecordNew = true;
         PlayerDataModelController.Instance.PlayerDataLocalModel.PlayerStats.OnNewScoreRecord += isRecordNewEvent;
     }
 

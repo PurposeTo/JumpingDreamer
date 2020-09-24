@@ -6,8 +6,9 @@ using UnityEngine;
 
 public static class JsonEncryption
 {
-    private static readonly string fileName = "GameDataAlpha.json";
     public static string FilePathWithHash => DataLoaderHelper.GetFilePath(fileName);
+
+    private static readonly string fileName = $"{PlayerDataModel.FileName}Alpha{PlayerDataModel.FileName.Remove(0, PlayerDataModel.FileName.Length - ".json".Length)}";
 
     private static readonly int salt = 100;
 

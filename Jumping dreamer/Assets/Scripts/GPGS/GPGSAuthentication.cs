@@ -5,14 +5,14 @@ using TMPro;
 
 public class GPGSAuthentication : SingletonMonoBehaviour<GPGSAuthentication>
 {
-    public static PlayGamesPlatform platform;
+    public static PlayGamesPlatform Platform { get; private set; }
     public TextMeshProUGUI AuthenticateStatus;
 
     public static bool IsAuthenticated
     {
         get
         {
-            if (platform != null) { return platform.IsAuthenticated(); }
+            if (Platform != null) { return Platform.IsAuthenticated(); }
             return false;
         }
     }
@@ -20,7 +20,31 @@ public class GPGSAuthentication : SingletonMonoBehaviour<GPGSAuthentication>
 
     protected override void AwakeSingleton()
     {
-        if (platform != null)
+        ConfigurePlayGamesPlatform();
+        Authenticate();
+    }
+
+
+    public void Authenticate()
+    {
+        if (IsAuthenticated)
+        {
+            Debug.LogError("Authentication has already been passed!");
+            return;
+        }
+
+        // Аутентификация пользователя
+        PlayGamesPlatform.Instance.Authenticate(SignInInteractivity.CanPromptOnce, (result) =>
+        {
+            Debug.Log($"Authenticate is completed with code: {result}");
+            if (AuthenticateStatus != null) AuthenticateStatus.text = $"{result}";
+        });
+    }
+
+
+    private void ConfigurePlayGamesPlatform()
+    {
+        if (Platform != null)
         {
             Debug.LogError("PlayGamesPlatform.Activate() is already activated!");
         }
@@ -30,32 +54,13 @@ public class GPGSAuthentication : SingletonMonoBehaviour<GPGSAuthentication>
         PlayGamesPlatform.InitializeInstance(configuration);
         PlayGamesPlatform.DebugLogEnabled = true;
 
-        platform = PlayGamesPlatform.Activate();
-
-        // Аутентификация пользователя
-        PlayGamesPlatform.Instance.Authenticate(SignInInteractivity.CanPromptOnce, (result) =>
-        {
-            Debug.Log($"Authenticate is completed with code: {result}");
-            if(AuthenticateStatus != null) AuthenticateStatus.text = $"{result}";
-        });
-
-        //Social.Active.localUser.Authenticate(success =>
-        //{
-        //    if (success)
-        //    {
-        //        Debug.Log("Authenticate is successfully!");
-        //    }
-        //    else
-        //    {
-        //        Debug.LogWarning("Failed to authenticate!");
-        //    }
-        //});
+        Platform = PlayGamesPlatform.Activate();
     }
 
 
     private void OnApplicationQuit()
     {
         Debug.Log("OnApplicationQuit!");
-        platform.SignOut();
+        Platform.SignOut();
     }
 }

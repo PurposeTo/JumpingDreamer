@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 public class PlayerStatsData
 {
-    public event EventHandler OnNewScoreRecord;
+    public event Action OnNewScoreRecord;
 
     // Лучшие результаты за все время игры
     [JsonConverter(typeof(SafeIntConverter))] public SafeInt? MaxCollectedStars { get; set; }
@@ -44,7 +44,7 @@ public class PlayerStatsData
         if (scoreAmount > PlayerDataModelController.Instance.PlayerDataLocalModel.PlayerStats.MaxEarnedScore)
         {
             PlayerDataModelController.Instance.PlayerDataLocalModel.PlayerStats.MaxEarnedScore = scoreAmount;
-            OnNewScoreRecord?.Invoke(this, null);
+            OnNewScoreRecord?.Invoke();
         }
     }
 
