@@ -150,8 +150,8 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
         SavedGameClient.OpenWithManualConflictResolution(PlayerDataModel.FileName, DataSource.ReadCacheOrNetwork, true, new ConflictCallback((conflictResolver, originGameMetadata, originData, unmergedGameMetadata, unmergedData) =>
         {
             print("OpenWithManualConflictResolution");
-            print($"Origin data: {originData}");
-            print($"Unmerged data: {unmergedData}");
+            print($"Origin data as string: {Encoding.UTF8.GetString(originData)}");
+            print($"Unmerged data as string: {Encoding.UTF8.GetString(unmergedData)}");
         }), OnSavedGameOpened);
 
         //SavedGameClient.OpenWithAutomaticConflictResolution(PlayerDataModel.FileName,
