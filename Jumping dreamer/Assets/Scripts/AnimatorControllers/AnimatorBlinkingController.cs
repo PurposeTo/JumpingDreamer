@@ -69,12 +69,6 @@ public class AnimatorBlinkingController : AnimatorControllerWrapper
     }
 
 
-    public void OnDisableBlinkingEventInvoke()
-    {
-        OnDisableBlinking?.Invoke();
-    }
-
-
     public void SetManualControl(bool manualControlEnableState, bool manualControlDisableState)
     {
         animator.SetBool(enableAlphaColor, !manualControlEnableState);
@@ -121,6 +115,13 @@ public class AnimatorBlinkingController : AnimatorControllerWrapper
                 StopBlinking();
             }
         }
+    }
+
+
+    // Данный метод предусмотрен для animation event. Не менять имя! Аниматор обращается по стринге, имени метода!
+    private void OnDisableBlinkingEventInvoke()
+    {
+        OnDisableBlinking?.Invoke();
     }
 
 
