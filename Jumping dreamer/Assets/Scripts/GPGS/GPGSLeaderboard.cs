@@ -29,7 +29,7 @@ public class GPGSLeaderboard : SingletonMonoBehaviour<GPGSLeaderboard>
     {
         if (PlayerDataModelController.Instance.IsDataFileLoaded)
         {
-            Social.ReportScore(PlayerDataModelController.Instance.PlayerDataLocalModel.PlayerStats.MaxEarnedScore.Value, GPGSIds.leaderboard_kings_of_the_jonks, (bool success) =>
+            Social.ReportScore(PlayerDataModelController.Instance.PlayerDataLocalModel.PlayerStats.MaxEarnedScore.Value, GPGSIds.leaderboard_dreamer_the_king, (bool success) =>
             {
                 if (success)
                 {

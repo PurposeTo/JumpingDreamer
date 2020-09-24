@@ -58,7 +58,7 @@ public class MovementFromTheCenter : MovingPlatform, IMovable, IPooledObject
 
     private Vector2 GetUpdatedMoveDirection()
     {
-        Vector2 toCentreDirection = (GameManager.Instance.CentreObject.transform.position - transform.position).normalized;
+        Vector2 toCentreDirection = GameManager.Instance.GetToCentreDirection(transform.position);
         return toCentreDirection * -1;
     }
 
@@ -69,8 +69,10 @@ public class MovementFromTheCenter : MovingPlatform, IMovable, IPooledObject
         animatorBlinkingController.StartBlinking(false);
     }
 
+
     void IPooledObject.OnObjectSpawn()
     {
+        animatorBlinkingController.EnableAlphaColor();
         InitializePlatform();
         StartCoroutine(LifeCycleEnumerator());
     }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class BasePlatform : MonoBehaviour
+public abstract class BasePlatform : MonoBehaviour
 {
     private protected Rigidbody2D rb2D;
     private protected AnimatorBlinkingController animatorBlinkingController;
@@ -14,6 +14,7 @@ public class BasePlatform : MonoBehaviour
         animatorBlinkingController = GetComponent<AnimatorBlinkingController>();
         animatorBlinkingController.SetBlinkingAnimationSpeed(blinkingAnimationSpeed);
         animatorBlinkingController.SetAnimationDuration(AnimatorBlinkingController.DurationType.Loops, 3);
+        animatorBlinkingController.SetManualControl(manualControlEnableState: true, manualControlDisableState: false);
         animatorBlinkingController.OnDisableBlinking += DisableObject;
     }
 

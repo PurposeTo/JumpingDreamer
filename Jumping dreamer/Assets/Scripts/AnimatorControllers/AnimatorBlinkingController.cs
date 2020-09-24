@@ -7,12 +7,16 @@ using UnityEngine;
 public class AnimatorBlinkingController : AnimatorControllerWrapper
 {
     private const string entryState = "Entry state";
-    private const string enableBlinkingState = "Enable blinking";
+    private const string enableAlphaColorState = "Enable alpha color";
     private const string blinkingState = "Blinking";
-    private const string disableBlinkingState = "Disable blinking";
+    private const string disableAlphaColorState = "Disable alpha color";
+
     private const string isBlinking = "isBlinking";
     private const string haveEnableState = "haveEnableState";
     private const string haveDisableState = "haveDisableState";
+    private const string enableAlphaColor = "Enable";
+    private const string disableAlphaColor = "Disable";
+
     private const float blinkingAnimationEnterExitDuration = 1f; // Длительность входа или выхода анимации мерцания - 1 секунда
     private const float blinkingAnimationLoopDuration = 2f; // Длительность анимации мерцания - 2 секунды
 
@@ -42,6 +46,7 @@ public class AnimatorBlinkingController : AnimatorControllerWrapper
         if (unscaledTime) animator.updateMode = AnimatorUpdateMode.UnscaledTime;
         else animator.updateMode = AnimatorUpdateMode.Normal;
 
+
         animator.SetBool(isBlinking, true);
     }
 
@@ -52,9 +57,28 @@ public class AnimatorBlinkingController : AnimatorControllerWrapper
     }
 
 
+    public void EnableAlphaColor()
+    {
+        animator.SetBool(enableAlphaColor, true);
+    }
+
+
+    public void DisableAlphaColor()
+    {
+        animator.SetBool(enableAlphaColor, true);
+    }
+
+
     public void OnDisableBlinkingEventInvoke()
     {
         OnDisableBlinking?.Invoke();
+    }
+
+
+    public void SetManualControl(bool manualControlEnableState, bool manualControlDisableState)
+    {
+        animator.SetBool(enableAlphaColor, !manualControlEnableState);
+        animator.SetBool(disableAlphaColor, !manualControlDisableState);
     }
 
 
@@ -114,7 +138,7 @@ public class AnimatorBlinkingController : AnimatorControllerWrapper
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        yield return new WaitWhile(() => stateInfo.IsName(enableBlinkingState));
+        yield return new WaitWhile(() => stateInfo.IsName(enableAlphaColorState));
         animator.SetBool(isBlinking, false);
 
         stopBlinkingCoroutine = null;

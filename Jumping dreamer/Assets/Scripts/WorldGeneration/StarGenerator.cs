@@ -6,7 +6,7 @@ public class StarGenerator : SingletonMonoBehaviour<StarGenerator>
     public GameObject Star;
     private float centreRadius;
 
-    private float delay = 10f;
+    private readonly float delay = 10f;
     private float counter;
 
     public int NumberOfActiveStars { get; set; }
@@ -35,7 +35,7 @@ public class StarGenerator : SingletonMonoBehaviour<StarGenerator>
     private void GenerateStar()
     {
         Vector2 randomDirection = Random.insideUnitCircle.normalized;
-        float range = Random.Range(centreRadius * 1.5f, 60f);
+        float range = Random.Range(centreRadius + 10f, 70f);
         Vector3 randomPosition = randomDirection * range;
 
         ObjectPooler.Instance.SpawnFromPool(Star, randomPosition, Quaternion.identity);

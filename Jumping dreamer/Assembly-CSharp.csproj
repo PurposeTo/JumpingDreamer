@@ -155,7 +155,7 @@
     <Compile Include="Assets\Scripts\Platforms\Base\MovingPlatform.cs" />
     <Compile Include="Assets\Scripts\Platforms\Brokable.cs" />
     <Compile Include="Assets\Scripts\Platforms\Move\Base\IMovable.cs" />
-    <Compile Include="Assets\Scripts\Platforms\Move\Base\Move.cs" />
+    <Compile Include="Assets\Scripts\Platforms\Move\Base\Movement.cs" />
     <Compile Include="Assets\Scripts\Platforms\Move\CircularMotion.cs" />
     <Compile Include="Assets\Scripts\Platforms\Move\MovementFromTheCenter.cs" />
     <Compile Include="Assets\Scripts\Platforms\Springboard.cs" />

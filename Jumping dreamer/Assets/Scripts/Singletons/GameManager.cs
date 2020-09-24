@@ -15,4 +15,16 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         PlayerPresenter = Player.GetComponent<PlayerPresenter>();
         Centre = CentreObject.GetComponent<Centre>();
     }
+
+
+    public Vector2 GetToCentreVector(Vector2 position)
+    {
+        return (Vector2)CentreObject.transform.position - position;
+    }
+
+
+    public Vector2 GetToCentreDirection(Vector2 position)
+    {
+        return GetToCentreVector(position).normalized;
+    }
 }

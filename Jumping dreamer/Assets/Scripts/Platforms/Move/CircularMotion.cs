@@ -25,7 +25,7 @@ public class CircularMotion : MovingPlatform, IMovable
 
     private void MoveAround()
     {
-        Vector2 toCentreDirection = ((Vector2)GameManager.Instance.CentreObject.transform.position - rb2D.position).normalized;
+        Vector2 toCentreDirection = GameManager.Instance.GetToCentreDirection(rb2D.position);
         moveDirection = GameLogic.GetOrthoNormalizedVector2(toCentreDirection) * direction;
 
         SetVelocity(moveDirection * velocityMultiplier);
