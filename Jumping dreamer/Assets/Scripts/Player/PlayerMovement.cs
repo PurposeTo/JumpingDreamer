@@ -42,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void MoveCharacter()
     {
-        Vector2 toCentreDirection = ((Vector2)centre.transform.position - rb2D.position).normalized;
+        Vector2 toCentreDirection = GameManager.Instance.GetToCentreDirection(rb2D.position);
         GravityProjectVector = GetGravityProjectVector(toCentreDirection);
         InputVelocity = GetInputVelocity(toCentreDirection);
 
@@ -73,17 +73,19 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    public void TossUp()
+    public void TossUp(bool onlyUp)
     {
+        if (onlyUp) // Подбросить только вверх
+        {
+            GravityProjectVector = GameManager.Instance.GetToCentreDirection(transform.position) * -1 * GravityProjectVector.magnitude * bounciness;
+        }
+        else // Отразить скорость
+        {
+            GravityProjectVector *= -1 * bounciness;
+        }
 
 
-        GravityProjectVector *= -1 * bounciness;
-
-        float jumpScale = GravityProjectVector.magnitude < minGravityVelocity
-            ? minGravityVelocity / GravityProjectVector.magnitude
-            : 1f;
-        GravityProjectVector *= jumpScale;
-
+        GravityProjectVector = GameLogic.ClampVectorByMagnitude(GravityProjectVector, minGravityVelocity);
         SetPlayerVelocity();
     }
 

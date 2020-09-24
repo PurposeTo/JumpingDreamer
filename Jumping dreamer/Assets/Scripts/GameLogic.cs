@@ -75,4 +75,13 @@ public static class GameLogic
     {
         return (valueToClamp + (valueWhichClamping * howManyTimes)) / howManyTimes;
     }
+
+
+    public static Vector2 ClampVectorByMagnitude(Vector2 vector, float minMagnitude)
+    {
+        float scale = vector.magnitude < minMagnitude
+            ? minMagnitude / vector.magnitude
+            : 1f;
+        return vector * scale;
+    }
 }

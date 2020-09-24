@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 3831292459548958180}
   - component: {fileID: 4440618660956165925}
   - component: {fileID: 8235671811413646632}
+  - component: {fileID: 2174944452442663017}
   - component: {fileID: 7788431073906995449}
   - component: {fileID: 6972453592572408174}
-  - component: {fileID: 2174944452442663017}
   - component: {fileID: 1921353013124953376}
   - component: {fileID: 3341666627142754377}
   - component: {fileID: 6788460187542422528}
@@ -153,9 +153,28 @@ PlatformEffector2D:
   m_UseOneWay: 1
   m_UseOneWayGrouping: 0
   m_SurfaceArc: 180
-  m_UseSideFriction: 1
-  m_UseSideBounce: 1
+  m_UseSideFriction: 0
+  m_UseSideBounce: 0
   m_SideArc: 1
+--- !u!95 &2174944452442663017
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3806970468814158532}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: f8dd26de6a2bf014189f4093f62b4df4, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &7788431073906995449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,25 +199,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6de206bcc520b06448c69769051cdbd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!95 &2174944452442663017
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3806970468814158532}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 3e63834ee976b174fbb12ee0c8e36b0f, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &1921353013124953376
 MonoBehaviour:
   m_ObjectHideFlags: 0

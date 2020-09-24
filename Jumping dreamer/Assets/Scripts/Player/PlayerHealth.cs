@@ -48,7 +48,7 @@ public class PlayerHealth : MonoBehaviour
     {
         SetInvulnerableTrue();
 
-        Vector2 toCentreVector = ((Vector2)GameManager.Instance.CentreObject.transform.position - rb2D.position);
+        Vector2 toCentreVector = GameManager.Instance.GetToCentreVector(rb2D.position);
         Vector2 toCentreDirection = toCentreVector.normalized;
         float toCentreDistance = toCentreVector.magnitude - Centre.CentreRadius;
 

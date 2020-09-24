@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Move : MonoBehaviour
+public class Movement : MonoBehaviour
 {
     private Rigidbody2D rb2D;
 
