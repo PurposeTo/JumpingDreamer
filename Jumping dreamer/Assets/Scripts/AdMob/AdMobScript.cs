@@ -2,6 +2,7 @@
 using UnityEngine;
 using GoogleMobileAds.Api;
 
+[RequireComponent(typeof(AdShow))]
 public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
 {
     private const string ADS_ID = "ca-app-pub-8365272256827287~9135876659";
@@ -9,6 +10,8 @@ public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
     private const string rewardedVideoAdForTest_ID = "ca-app-pub-3940256099942544/5224354917";
 
     private RewardBasedVideoAd rewardBasedVideoAd;
+
+    private AdShow adShow;
 
 
     protected override void AwakeSingleton()
@@ -35,6 +38,8 @@ public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
         rewardBasedVideoAd.OnAdLeavingApplication += HandleRewardBasedVideoLeftApplication;
 
         RequestRewardBasedVideo();
+
+        adShow = gameObject.GetComponent<AdShow>();
     }
 
 
@@ -50,6 +55,20 @@ public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
     }
 
 
+    public void ShowRewardVideoAd(Action<bool> isAdLoadedCallback)
+    {
+        bool isAdWasLoaded = rewardBasedVideoAd.IsLoaded();
+        if (isAdWasLoaded) rewardBasedVideoAd.Show();
+        isAdLoadedCallback?.Invoke(isAdWasLoaded);
+    }
+
+
+    public void OnCloseAdWait(Action<bool> mustRewardPlayerCallback)
+    {
+        adShow.OnCloseAdWait(mustRewardPlayerCallback);
+    }
+
+
     private void RequestRewardBasedVideo()
     {
         // Create an empty ad request.
@@ -57,15 +76,6 @@ public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
         // Load the rewarded video ad with the request.
         rewardBasedVideoAd.LoadAd(request, rewardedVideoAdForTest_ID);
     }
-
-
-    public void ShowRewardVideoAd(Action<bool> callback)
-    {
-        bool isAdLoaded = rewardBasedVideoAd.IsLoaded();
-        if (isAdLoaded) rewardBasedVideoAd.Show();
-        callback(isAdLoaded);
-    }
-
 
 
     #region event calls not from the main thread

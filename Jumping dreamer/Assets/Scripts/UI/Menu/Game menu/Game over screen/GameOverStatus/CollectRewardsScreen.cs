@@ -7,28 +7,6 @@ public class CollectRewardsScreen : MonoBehaviour
 {
     private GameOverStatusScreen gameOverStatusScreen;
 
-    private bool mustRewardPlayer = false; // bool - показывали ли уже рекламу
-
-    private bool isAdClosedByPlayer = false;
-    private Coroutine OnCloseAdWaitCoroutine;
-
-
-    private void Start()
-    {
-        // Called when the user should be rewarded for watching a video.
-        RewardBasedVideoAd.Instance.OnAdRewarded += OnAdRewarded;
-        // Called when the ad is closed.
-        RewardBasedVideoAd.Instance.OnAdClosed += OnCloseAd;
-    }
-
-
-    private void OnDestroy()
-    {
-        RewardBasedVideoAd.Instance.OnAdRewarded -= OnAdRewarded;
-        RewardBasedVideoAd.Instance.OnAdClosed -= OnCloseAd;
-    }
-
-
     public void Initialize(GameOverStatusScreen gameOverStatusScreen)
     {
         this.gameOverStatusScreen = gameOverStatusScreen;
@@ -39,11 +17,24 @@ public class CollectRewardsScreen : MonoBehaviour
     {
         // Показать рекламу
 
-        AdMobScript.Instance.ShowRewardVideoAd(result =>
+        AdMobScript.Instance.ShowRewardVideoAd(isAdWasLoaded =>
         {
-            if (result)
+            if (isAdWasLoaded)
             {
-                OnCloseAdWait();
+                AdMobScript.Instance.OnCloseAdWait(mustRewardPlayer =>
+                {
+                    // Стоит ли наградить игрока?
+                    if (mustRewardPlayer)
+                    {
+                        // Если должны наградить, то показать GameOverMenu
+                        gameOverStatusScreen.ShowGameOverMenu();
+                    }
+                    else
+                    {
+                        // Если нет, то показать экран с надписью: "Вы отказались от награды. Желаете возродиться? <Кнопка возродиться> <Кнопка выйти в меню>"
+                        gameOverStatusScreen.ShowRefuseToViewAdsScreen();
+                    }
+                });
             }
             else
             {
@@ -53,48 +44,9 @@ public class CollectRewardsScreen : MonoBehaviour
         });
     }
 
+
     public void OpenMainMenu()
     {
         SceneLoader.LoadScene(SceneLoader.MainMenuName);
-    }
-
-
-    private void OnAdRewarded(object sender, Reward args)
-    {
-        //Если игрок посмотрел рекламу, наградить его
-        mustRewardPlayer = true;
-    }
-
-
-    private void OnCloseAd(object sender, EventArgs args)
-    {
-        // При закрытии рекламы
-        isAdClosedByPlayer = true;
-    }
-
-    private void OnCloseAdWait()
-    {
-        if (OnCloseAdWaitCoroutine == null) OnCloseAdWaitCoroutine = StartCoroutine(OnCloseAdWaitEnumerator());
-        else Debug.LogError("OnCloseAdWaitCoroutine is already starting!");
-    }
-
-
-    private IEnumerator OnCloseAdWaitEnumerator()
-    {
-        yield return new WaitUntil(() => isAdClosedByPlayer);
-        isAdClosedByPlayer = false;
-
-        if (mustRewardPlayer)
-        {
-            // Если должны наградить, то показать GameOverMenu
-            gameOverStatusScreen.ShowGameOverMenu();
-        }
-        else
-        {
-            // Если нет, то показать экран с надписью: "Вы отказались от награды. Желаете возродиться? <Кнопка возродиться> <Кнопка выйти в меню>"
-            gameOverStatusScreen.ShowRefuseToViewAdsScreen();
-        }
-
-        OnCloseAdWaitCoroutine = null;
     }
 }
