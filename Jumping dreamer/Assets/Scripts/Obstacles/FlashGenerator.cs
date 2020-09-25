@@ -5,8 +5,7 @@ public class FlashGenerator : MonoBehaviour
 {
     [SerializeField] private GameObject Flash = null;
 
-    private float spawnFrequency = 4f;
-    private Vector2 direction;
+    private readonly float spawnFrequency = 4f;
 
 
     private void Start()
@@ -17,11 +16,13 @@ public class FlashGenerator : MonoBehaviour
 
     private IEnumerator GenerateFlashEnumerator()
     {
+        WaitForSeconds waitForSeconds = new WaitForSeconds(spawnFrequency);
+
         while (true)
         {
-            yield return new WaitForSeconds(spawnFrequency);
-            direction = Random.insideUnitCircle.normalized * Centre.CentreRadius;
+            Vector2 direction = Random.insideUnitCircle.normalized * Centre.CentreRadius;
             ObjectPooler.Instance.SpawnFromPool(Flash, direction, Quaternion.identity);
+            yield return waitForSeconds;
         }
     }
 }
