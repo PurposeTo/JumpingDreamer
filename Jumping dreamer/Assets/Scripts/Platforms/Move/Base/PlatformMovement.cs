@@ -1,10 +1,10 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Movement : MonoBehaviour
+public class PlatformMovement : MonoBehaviour
 {
     private Rigidbody2D rb2D;
 
@@ -19,13 +19,15 @@ public class Movement : MonoBehaviour
 
         IMovableArray = gameObject.GetComponents<IMovable>();
 
-        // Не получилось свернуть в linq
-        for (int i = 0; i < IMovableArray.Length; i++)
-        {
-            IMovableArray[i].OnVelocityChanged += UpdateFinalVelocity;
-        }
+        Array.ForEach(IMovableArray, IMovable => IMovable.OnVelocityChanged += UpdateFinalVelocity);
 
         UpdateFinalVelocity();
+    }
+
+
+    private void OnDestroy()
+    {
+        if (IMovableArray != null) Array.ForEach(IMovableArray, IMovable => IMovable.OnVelocityChanged -= UpdateFinalVelocity);
     }
 
 

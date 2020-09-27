@@ -11,13 +11,14 @@
 [Uu]ser[Ss]ettings/
 
 # TextMeshPro meta files
-Jonks/[Aa]ssets/TextMesh Pro/**/*.meta
+*/[Aa]ssets/TextMesh Pro/**/*.meta
 
 # ExternalDependencyManager meta files
-Jonks/[Aa]ssets/ExternalDependencyManager/**/*.meta
+*/[Aa]ssets/ExternalDependencyManager/**/*.meta
 
 # JsonDotNet Documentation meta files
-Jonks/[Aa]ssets/JsonDotNet/Documentation/**/*.meta
+*/[Aa]ssets/JsonDotNet/Documentation.meta
+*/[Aa]ssets/JsonDotNet/Documentation/**/*.meta
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data

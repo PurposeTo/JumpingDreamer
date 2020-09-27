@@ -4,9 +4,19 @@ public class Springboard : MonoBehaviour
 {
     private bool onlyUpToss; // Костыль, но и фиг с ним. Подбрасывать вверх только если это платформа с PlatformEffector2D.
 
+
     private void Awake()
     {
         onlyUpToss = gameObject.TryGetComponent(out PlatformEffector2D _);
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.TryGetComponent(out PlayerPresenter playerPresenter))
+        {
+            TossUp(playerPresenter.PlayerMovement);
+        }
     }
 
 
@@ -18,7 +28,6 @@ public class Springboard : MonoBehaviour
             {
                 TossUp(playerPresenter.PlayerMovement);
             }
-
         }
     }
 

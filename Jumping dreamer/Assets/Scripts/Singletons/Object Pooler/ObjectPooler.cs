@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectPooler : SingletonMonoBehaviour<ObjectPooler>
@@ -97,7 +98,10 @@ public class ObjectPooler : SingletonMonoBehaviour<ObjectPooler>
         if (parent != null) { objectToSpawn.transform.SetParent(parent); }
         objectToSpawn.SetActive(true);
 
-        if (objectToSpawn.TryGetComponent(out IPooledObject pooledObject)) pooledObject.OnObjectSpawn();
+        IPooledObject[] pooledComponents = objectToSpawn.GetComponents<IPooledObject>();
+        Array.ForEach(pooledComponents, pooledComponent => pooledComponent.OnObjectSpawn());
+
+        //if (objectToSpawn.TryGetComponent(out IPooledObject pooledObject)) pooledObject.OnObjectSpawn(); Если на объекте несколько таких интерфейсов, то будет вызван лишь один
 
         pool.objectPoolQueue.Enqueue(objectToSpawn);
 

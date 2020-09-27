@@ -131,8 +131,11 @@
     <Compile Include="Assets\GooglePlayGames\PluginVersion.cs" />
     <Compile Include="Assets\Scripts\AdMob\AdMobScript.cs" />
     <Compile Include="Assets\Scripts\AdMob\AdShow.cs" />
-    <Compile Include="Assets\Scripts\AnimatorControllers\AnimatorBlinkingController.cs" />
     <Compile Include="Assets\Scripts\AnimatorControllers\Base\AnimatorControllerWrapper.cs" />
+    <Compile Include="Assets\Scripts\AnimatorControllers\Base\IAnimatorInitializerConfigs.cs" />
+    <Compile Include="Assets\Scripts\AnimatorControllers\Blinking controller\AnimatorBlinkingController.cs" />
+    <Compile Include="Assets\Scripts\AnimatorControllers\Blinking controller\AnimatorBlinkingData.cs" />
+    <Compile Include="Assets\Scripts\AnimatorControllers\Blinking controller\AnimatorBlinkingInitializingConfigs.cs" />
     <Compile Include="Assets\Scripts\Camera\CameraFollow.cs" />
     <Compile Include="Assets\Scripts\Camera\CameraSizeChecker.cs" />
     <Compile Include="Assets\Scripts\Centre\Centre.cs" />
@@ -153,13 +156,13 @@
     <Compile Include="Assets\Scripts\Obstacles\Flash.cs" />
     <Compile Include="Assets\Scripts\Obstacles\FlashGenerator.cs" />
     <Compile Include="Assets\Scripts\OrthoRotationToTheCentre.cs" />
-    <Compile Include="Assets\Scripts\Platforms\Base\BasePlatform.cs" />
-    <Compile Include="Assets\Scripts\Platforms\Base\MovingPlatform.cs" />
     <Compile Include="Assets\Scripts\Platforms\Brokable.cs" />
     <Compile Include="Assets\Scripts\Platforms\Move\Base\IMovable.cs" />
-    <Compile Include="Assets\Scripts\Platforms\Move\Base\Movement.cs" />
+    <Compile Include="Assets\Scripts\Platforms\Move\Base\PlatformMovable.cs" />
+    <Compile Include="Assets\Scripts\Platforms\Move\Base\PlatformMovement.cs" />
     <Compile Include="Assets\Scripts\Platforms\Move\CircularMotion.cs" />
     <Compile Include="Assets\Scripts\Platforms\Move\MovementFromTheCenter.cs" />
+    <Compile Include="Assets\Scripts\Platforms\PlatformLifeCycle.cs" />
     <Compile Include="Assets\Scripts\Platforms\Springboard.cs" />
     <Compile Include="Assets\Scripts\Player Data\Converters\JsonConverterWrapper.cs" />
     <Compile Include="Assets\Scripts\Player Data\Converters\SafeIntConverter.cs" />
@@ -461,7 +464,7 @@
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.11f1/Editor/Data/Managed/UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>C:/Users/repin/source/Repos/JumpingDreamer/Jumping dreamer/Assets/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Assets/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.11f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
@@ -818,31 +821,31 @@
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.11f1/Editor/Data/MonoBleedingEdge/lib/mono/unityscript/Boo.Lang.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline.Editor">
-      <HintPath>C:/Users/repin/source/Repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
-      <HintPath>C:/Users/repin/source/Repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>C:/Users/repin/source/Repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>C:/Users/repin/source/Repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-      <HintPath>C:/Users/repin/source/Repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>C:/Users/repin/source/Repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
-      <HintPath>C:/Users/repin/source/Repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>C:/Users/repin/source/Repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-      <HintPath>C:/Users/repin/source/Repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

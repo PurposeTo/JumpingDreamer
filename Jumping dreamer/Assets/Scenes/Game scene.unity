@@ -724,6 +724,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DefaultPlatform: {fileID: 3249365153289606194, guid: 2f68473af3538f042ab6154d89af0cff,
     type: 3}
+  CircularMotionPlatform: {fileID: 1026947578347733229, guid: ff4d162bed8093a4f84cda29022a2780,
+    type: 3}
   SpiralMotionPlatformPlatform: {fileID: 3571525438777159919, guid: 1690e0ca4dea36f4d9d855f755820a39,
     type: 3}
 --- !u!1 &422865762
@@ -4262,7 +4264,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1318143219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7372,7 +7374,7 @@ PrefabInstance:
     - target: {fileID: 2024437486911971761, guid: 97d55d6e73264b64b97f822e8db8f566,
         type: 3}
       propertyPath: pools.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2024437486911971761, guid: 97d55d6e73264b64b97f822e8db8f566,
         type: 3}
@@ -7474,12 +7476,12 @@ PrefabInstance:
         type: 3}
       propertyPath: pools.Array.data[6].prefab
       value: 
-      objectReference: {fileID: 3187975396863468470, guid: 0bc72d1f9f0250c4db8c2304bece4037,
+      objectReference: {fileID: 1026947578347733229, guid: ff4d162bed8093a4f84cda29022a2780,
         type: 3}
     - target: {fileID: 2024437486911971761, guid: 97d55d6e73264b64b97f822e8db8f566,
         type: 3}
       propertyPath: pools.Array.data[6].size
-      value: 1
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2024437486911971761, guid: 97d55d6e73264b64b97f822e8db8f566,
         type: 3}

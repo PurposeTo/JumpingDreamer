@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class MovingPlatform : BasePlatform, IMovable
+public abstract class PlatformMovable : MonoBehaviour, IMovable
 {
     private protected Vector2 moveDirection;
     private protected float velocityMultiplier;

@@ -3,6 +3,7 @@
 public class PlatformGeneratorData : MonoBehaviour
 {
     public GameObject DefaultPlatform;
+    public GameObject CircularMotionPlatform;
     public GameObject SpiralMotionPlatformPlatform;
 
     public PlatformGeneratorState DefaultGeneratorState { get; private set; }
@@ -11,6 +12,6 @@ public class PlatformGeneratorData : MonoBehaviour
 
     private void Awake()
     {
-        DefaultGeneratorState = new DefaultPlatformGenerator(DefaultPlatform);
+        DefaultGeneratorState = new DefaultPlatformGenerator(CircularMotionPlatform);
     }
 }

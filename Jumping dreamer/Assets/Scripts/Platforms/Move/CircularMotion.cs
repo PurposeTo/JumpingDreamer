@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class CircularMotion : MovingPlatform, IMovable
+public class CircularMotion : PlatformMovable, IMovable
 {
     private readonly int[] directionsToChoice = { -1, 1 };
     private readonly float minVelocityMultiplier = 2.5f;
@@ -25,7 +25,7 @@ public class CircularMotion : MovingPlatform, IMovable
 
     private void MoveAround()
     {
-        Vector2 toCentreDirection = GameManager.Instance.GetToCentreDirection(rb2D.position);
+        Vector2 toCentreDirection = GameManager.Instance.GetToCentreDirection(transform.position);
         moveDirection = GameLogic.GetOrthoNormalizedVector2(toCentreDirection) * direction;
 
         SetVelocity(moveDirection * velocityMultiplier);

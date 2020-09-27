@@ -18,6 +18,9 @@ public class DefaultPlatformGenerator : PlatformGeneratorState
         Vector3 position = GameManager.Instance.CentreObject.transform.position + (Vector3)directionsAroundCircle[0];
         directionsAroundCircle.RemoveAt(0);
 
+        position *= Random.Range(12f, 70f);
+
+
         ObjectPooler.Instance.SpawnFromPool(platform, position, Quaternion.identity);
     }
 }

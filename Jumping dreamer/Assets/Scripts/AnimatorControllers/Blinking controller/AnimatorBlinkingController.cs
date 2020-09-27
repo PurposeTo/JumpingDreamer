@@ -6,19 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class AnimatorBlinkingController : AnimatorControllerWrapper
 {
-    private const string entryState = "Entry state";
-    private const string enableAlphaColorState = "Enable alpha color";
-    private const string blinkingState = "Blinking";
-    private const string disableAlphaColorState = "Disable alpha color";
-
-    private const string isBlinking = "isBlinking";
-    private const string haveEnableState = "haveEnableState";
-    private const string haveDisableState = "haveDisableState";
-    private const string enableAlphaColor = "Enable";
-    private const string disableAlphaColor = "Disable";
-
-    private const float blinkingAnimationEnterExitDuration = 1f; // Длительность входа или выхода анимации мерцания - 1 секунда
-    private const float blinkingAnimationLoopDuration = 2f; // Длительность анимации мерцания - 2 секунды
+    private readonly AnimatorBlinkingInitializingConfigs animatorBlinkingInitializingConfigs = new AnimatorBlinkingInitializingConfigs();
+    private protected override IAnimatorInitializerConfigs AnimatorInitializerConfigs => animatorBlinkingInitializingConfigs;
 
     private bool isHasALimitedDuration = false;
     private int amountOfLoopsToExit = 1;
@@ -27,6 +16,7 @@ public class AnimatorBlinkingController : AnimatorControllerWrapper
     public event Action OnDisableBlinking;
 
     private Coroutine stopBlinkingCoroutine;
+
 
     public enum DurationType
     {
@@ -47,7 +37,7 @@ public class AnimatorBlinkingController : AnimatorControllerWrapper
         else animator.updateMode = AnimatorUpdateMode.Normal;
 
 
-        animator.SetBool(isBlinking, true);
+        animator.SetBool(AnimatorBlinkingData.isBlinking, true);
     }
 
 
@@ -59,20 +49,19 @@ public class AnimatorBlinkingController : AnimatorControllerWrapper
 
     public void EnableAlphaColor()
     {
-        animator.SetBool(enableAlphaColor, true);
+        animator.SetBool(AnimatorBlinkingData.enableAlphaColor, true);
     }
 
 
     public void DisableAlphaColor()
     {
-        animator.SetBool(enableAlphaColor, true);
+        animator.SetBool(AnimatorBlinkingData.enableAlphaColor, true);
     }
 
 
     public void SetManualControl(bool manualControlEnableState, bool manualControlDisableState)
     {
-        animator.SetBool(enableAlphaColor, !manualControlEnableState);
-        animator.SetBool(disableAlphaColor, !manualControlDisableState);
+        animatorBlinkingInitializingConfigs.SetManualControl(manualControlEnableState, manualControlDisableState);
     }
 
 
@@ -86,7 +75,7 @@ public class AnimatorBlinkingController : AnimatorControllerWrapper
                 amountOfLoopsToExit = durationValue;
                 break;
             case DurationType.Seconds:
-                int _amountOfLoopsToExit = Mathf.RoundToInt(durationValue / blinkingAnimationLoopDuration);
+                int _amountOfLoopsToExit = Mathf.RoundToInt(durationValue / AnimatorBlinkingData.blinkingAnimationLoopDuration);
                 if (_amountOfLoopsToExit == 0) Debug.LogWarning("Внимание! Вы пытаетесь использовать слишком короткую длительность анимации!");
                 amountOfLoopsToExit = _amountOfLoopsToExit;
                 break;
@@ -99,7 +88,7 @@ public class AnimatorBlinkingController : AnimatorControllerWrapper
 
     public void SetBlinkingAnimationSpeed(float secondsForAnimation)
     {
-        animator.speed = blinkingAnimationLoopDuration / secondsForAnimation;
+        animatorBlinkingInitializingConfigs.SetBlinkingAnimationSpeed(secondsForAnimation);
     }
 
 
@@ -130,8 +119,8 @@ public class AnimatorBlinkingController : AnimatorControllerWrapper
         bool isEmptyEnable = animator.runtimeAnimatorController.animationClips.Any(animationClip => animationClip.name.ToLower().Contains("empty enable"));
         bool isEmptyDisable = animator.runtimeAnimatorController.animationClips.Any(animationClip => animationClip.name.ToLower().Contains("empty disable"));
 
-        animator.SetBool(haveEnableState, !isEmptyEnable);
-        animator.SetBool(haveDisableState, !isEmptyDisable);
+        animator.SetBool(AnimatorBlinkingData.haveEnableState, !isEmptyEnable);
+        animator.SetBool(AnimatorBlinkingData.haveDisableState, !isEmptyDisable);
     }
 
 
@@ -139,8 +128,8 @@ public class AnimatorBlinkingController : AnimatorControllerWrapper
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        yield return new WaitWhile(() => stateInfo.IsName(enableAlphaColorState));
-        animator.SetBool(isBlinking, false);
+        yield return new WaitWhile(() => stateInfo.IsName(AnimatorBlinkingData.enableAlphaColorState));
+        animator.SetBool(AnimatorBlinkingData.isBlinking, false);
 
         stopBlinkingCoroutine = null;
     }

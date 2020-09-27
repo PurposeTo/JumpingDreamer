@@ -1,16 +1,10 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// Платформа при создании движется от центра
 /// </summary>
-public class MovementFromTheCenter : MovingPlatform, IMovable, IPooledObject
+public class MovementFromTheCenter : PlatformMovable, IMovable, IPooledObject
 {
-    private float lifeDictance; // Максимальное расстояние от центра до точки, где платформы еще могут существовать
-    private readonly float minlifeDictance = 50f;
-    private readonly float maxlifeDictance = 80f;
-
-
     [SerializeField]
     private bool UpdateMoveDirectionEveryFrame = false;
 
@@ -28,21 +22,14 @@ public class MovementFromTheCenter : MovingPlatform, IMovable, IPooledObject
     /// <summary>
     /// Инициализирует платформу
     /// </summary>
-    private void InitializePlatform()
+    private void InitializePlatform() // todo: Метод должен принимать параметр. Платформа движется из Центра; платформа движется наверх; платформа движется вниз
     {
         // Если платформа не в центре
-        if (transform.position != GameManager.Instance.CentreObject.transform.position)
-        {
-            moveDirection = GetUpdatedMoveDirection();
-        }
-        else // Если платформа в центре
-        {
-            moveDirection = Random.insideUnitCircle.normalized;
-        }
+        if (transform.position != GameManager.Instance.CentreObject.transform.position) moveDirection = GetUpdatedMoveDirection();
+        // Если платформа в центре
+        else moveDirection = Random.insideUnitCircle.normalized;
 
         velocityMultiplier = Random.Range(2f, 5f);
-        lifeDictance = Random.Range(minlifeDictance, maxlifeDictance);
-
         SetVelocity(moveDirection * velocityMultiplier);
     }
 
@@ -63,17 +50,8 @@ public class MovementFromTheCenter : MovingPlatform, IMovable, IPooledObject
     }
 
 
-    private IEnumerator LifeCycleEnumerator()
-    {
-        yield return new WaitUntil(() => (GameManager.Instance.CentreObject.transform.position - transform.position).magnitude >= lifeDictance);
-        animatorBlinkingController.StartBlinking(false);
-    }
-
-
     void IPooledObject.OnObjectSpawn()
     {
-        animatorBlinkingController.EnableAlphaColor();
         InitializePlatform();
-        StartCoroutine(LifeCycleEnumerator());
     }
 }
