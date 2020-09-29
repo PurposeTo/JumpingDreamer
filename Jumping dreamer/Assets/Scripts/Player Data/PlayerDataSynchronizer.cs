@@ -20,7 +20,7 @@ public class PlayerDataSynchronizer
             }
             else
             {
-                ToProvideModelSelection(localModel, cloudModel);
+                ProvideModelSelection(localModel, cloudModel);
             }
         }
         else
@@ -53,7 +53,7 @@ public class PlayerDataSynchronizer
     }
 
 
-    private void ToProvideModelSelection(PlayerDataModel localModel, PlayerDataModel cloudModel)
+    private void ProvideModelSelection(PlayerDataModel localModel, PlayerDataModel cloudModel)
     {
         DialogWindowGenerator.Instance.CreateChoosingWindow(localModel, cloudModel);
     }

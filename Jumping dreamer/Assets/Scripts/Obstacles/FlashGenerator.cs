@@ -20,8 +20,7 @@ public class FlashGenerator : MonoBehaviour
 
         while (true)
         {
-            Vector2 direction = Random.insideUnitCircle.normalized * Centre.CentreRadius;
-            ObjectPooler.Instance.SpawnFromPool(Flash, direction, Quaternion.identity);
+            ObjectPooler.Instance.SpawnFromPool(Flash, Vector2.zero, Quaternion.identity);
             yield return waitForSeconds;
         }
     }

@@ -31,7 +31,7 @@ public class PlayerDataLocalStorageSafe
 
     public void WritePlayerDataToFile(PlayerDataModel localPlayerDataModel)
     {
-        if (localPlayerDataModel == null) throw new System.ArgumentNullException("Local model can't have null value!");
+        if (localPlayerDataModel == null) throw new System.ArgumentNullException("Local model can't be null!");
 
         if (IsDataFileLoaded)
         {
@@ -81,16 +81,7 @@ public class PlayerDataLocalStorageSafe
         bool IsJsonConverted()
         {
             bool returnedSuccess = false;
-
-            playerDataModel = JsonConverterWrapper.DeserializeObject(dataAsJSON, (success, exception) =>
-            {
-                returnedSuccess = success;
-
-                if (!success)
-                {
-                    DialogWindowGenerator.Instance.CreateDialogWindow($"{exception.Message}\nОшибка загрузки данных игровой статистики!\nЗапись новых данных заблокирована!");
-                }
-            });
+            playerDataModel = JsonConverterWrapper.DeserializeObject(dataAsJSON, (success, exception) => returnedSuccess = success);
 
             return returnedSuccess;
         }
