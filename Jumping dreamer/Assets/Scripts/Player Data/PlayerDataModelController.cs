@@ -5,7 +5,7 @@ using UnityEngine; // Не удалять, т.к. используется дл�
 
 public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelController>
 {
-    public PlayerDataModel PlayerDataLocalModel { get; private set; }
+    private PlayerDataModel playerDataLocalModel;
 
     private PlayerDataLocalStorageSafe localStorageSafe = new PlayerDataLocalStorageSafe();
     private PlayerDataSynchronizer playerDataSynchronizer = new PlayerDataSynchronizer();
@@ -28,8 +28,11 @@ public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelC
 
     protected override void AwakeSingleton()
     {
-        PlayerDataLocalModel = localStorageSafe.LoadPlayerData();
+        playerDataLocalModel = localStorageSafe.LoadPlayerData();
     }
+
+
+    public PlayerDataModel GetPlayerDataModel() => playerDataLocalModel;
 
 
     public void UpdatePlayerModelAndSavePlayerData()
@@ -41,12 +44,12 @@ public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelC
 
     public void DeletePlayerData()
     {
-        PlayerDataLocalModel = PlayerDataModel.CreateModelWithDefaultValues();
+        playerDataLocalModel = PlayerDataModel.CreateModelWithDefaultValues();
 
         localStorageSafe.DeletePlayerData();
 
         // Загрузка обновленных данных на облако
-        GPGSPlayerDataCloudStorage.Instance.CreateSave(PlayerDataLocalModel);
+        GPGSPlayerDataCloudStorage.Instance.CreateSave(playerDataLocalModel);
 
         IsPlayerDataHaveAlreadyDeletedOrRestored = true;
         OnDeletePlayerData?.Invoke();
@@ -59,7 +62,7 @@ public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelC
         {
             if (cloudModel != null)
             {
-                PlayerDataLocalModel = cloudModel;
+                playerDataLocalModel = cloudModel;
 
                 localStorageSafe.IsDataFileLoaded = true;
                 IsPlayerDataHaveAlreadyDeletedOrRestored = true;
@@ -72,7 +75,7 @@ public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelC
                 {
                     Debug.Log("Полученные пустые данные с облака.");
 
-                    PlayerDataLocalModel = PlayerDataModel.CreateModelWithDefaultValues();
+                    playerDataLocalModel = PlayerDataModel.CreateModelWithDefaultValues();
 
                     localStorageSafe.IsDataFileLoaded = true;
                     IsPlayerDataHaveAlreadyDeletedOrRestored = true;
@@ -87,20 +90,20 @@ public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelC
 
     public void SynchronizePlayerDataStorages(PlayerDataModel cloudModel)
     {
-        playerDataSynchronizer.SynchronizePlayerDataStorages(PlayerDataLocalModel, cloudModel);
+        playerDataSynchronizer.SynchronizePlayerDataStorages(ref playerDataLocalModel, cloudModel);
     }
 
 
     public void OnDataModelSelected(PlayerDataModel selectedModel, DataModelSelectionStatus modelSelectionStatus)
     {
-        playerDataSynchronizer.OnDataModelSelected(selectedModel, PlayerDataLocalModel, modelSelectionStatus);
+        playerDataSynchronizer.OnDataModelSelected(selectedModel, ref playerDataLocalModel, modelSelectionStatus);
     }
 
 
     private void SavePlayerData()
     {
-        localStorageSafe.WritePlayerDataToFile(PlayerDataLocalModel);
-        GPGSPlayerDataCloudStorage.Instance.CreateSave(PlayerDataLocalModel);
+        localStorageSafe.WritePlayerDataToFile(playerDataLocalModel);
+        GPGSPlayerDataCloudStorage.Instance.CreateSave(playerDataLocalModel);
     }
 
 
