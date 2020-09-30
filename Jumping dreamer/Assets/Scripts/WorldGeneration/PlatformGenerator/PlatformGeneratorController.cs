@@ -1,23 +1,40 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class PlatformGeneratorController : SingletonMonoBehaviour<PlatformGeneratorController>
 {
     private PlatformGeneratorData platformGeneratorData;
+    public PlatformGenerator PlatformGenerator { get; private set; }
 
-    private PlatformGeneratorState platformGeneratorState;
+    private readonly float timePeriodForTheGenerationRules = 40f;
+    private Coroutine lifeCycleRoutine;
+
 
     private void Start()
     {
         platformGeneratorData = gameObject.GetComponent<PlatformGeneratorData>();
-        //platformGeneratorState = platformGeneratorData.DefaultGeneratorState;
-        platformGeneratorState = platformGeneratorData.DefaultGeneratorState;
-        GenerateRingFromPlatforms(platformGeneratorData.DefaultPlatform, 20f, 5f);
+        PlatformGenerator = new PlatformGenerator(platformGeneratorData);
+        if (lifeCycleRoutine == null) StartCoroutine(LifeCycleEnumerator());
     }
 
 
     private void Update()
     {
-        platformGeneratorState.Generating();
+        PlatformGenerator.Generating();
+    }
+
+
+    private IEnumerator LifeCycleEnumerator()
+    {
+        GenerateRingFromPlatforms(platformGeneratorData.VerticalMotionPlatform, 20f, 5f);
+
+        while (true)
+        {
+            yield return new WaitForSeconds(timePeriodForTheGenerationRules);
+            PlatformGenerator.SetNewPlatformGeneratorConfigs();
+        }
+
+        lifeCycleRoutine = null;
     }
 
 

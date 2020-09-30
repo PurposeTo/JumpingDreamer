@@ -722,7 +722,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2abe4370d465574f81969936e878831, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultPlatform: {fileID: 3249365153289606194, guid: 2f68473af3538f042ab6154d89af0cff,
+  VerticalMotionPlatform: {fileID: 3249365153289606194, guid: 2f68473af3538f042ab6154d89af0cff,
     type: 3}
   CircularMotionPlatform: {fileID: 1026947578347733229, guid: ff4d162bed8093a4f84cda29022a2780,
     type: 3}

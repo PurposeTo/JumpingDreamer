@@ -158,10 +158,11 @@
     <Compile Include="Assets\Scripts\OrthoRotationToTheCentre.cs" />
     <Compile Include="Assets\Scripts\Platforms\Brokable.cs" />
     <Compile Include="Assets\Scripts\Platforms\Move\Base\IMovable.cs" />
+    <Compile Include="Assets\Scripts\Platforms\Move\Base\MovingConfigs\PlatformMotionConfig.cs" />
     <Compile Include="Assets\Scripts\Platforms\Move\Base\PlatformMovable.cs" />
     <Compile Include="Assets\Scripts\Platforms\Move\Base\PlatformMovement.cs" />
     <Compile Include="Assets\Scripts\Platforms\Move\CircularMotion.cs" />
-    <Compile Include="Assets\Scripts\Platforms\Move\MovementFromTheCenter.cs" />
+    <Compile Include="Assets\Scripts\Platforms\Move\VerticalMotion.cs" />
     <Compile Include="Assets\Scripts\Platforms\PlatformLifeCycle.cs" />
     <Compile Include="Assets\Scripts\Platforms\Springboard.cs" />
     <Compile Include="Assets\Scripts\Player Data\Converters\JsonConverterWrapper.cs" />
@@ -225,9 +226,10 @@
     <Compile Include="Assets\Scripts\UI\Menu\SettingsMenu.cs" />
     <Compile Include="Assets\Scripts\UI\PlayerUI.cs" />
     <Compile Include="Assets\Scripts\UI\PopUpText.cs" />
+    <Compile Include="Assets\Scripts\WorldGeneration\PlatformGenerator\Base\PlatformGenerator.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\PlatformGenerator\Base\PlatformGeneratorData.cs" />
-    <Compile Include="Assets\Scripts\WorldGeneration\PlatformGenerator\Base\PlatformGeneratorState.cs" />
-    <Compile Include="Assets\Scripts\WorldGeneration\PlatformGenerator\DefaultPlatformGenerator.cs" />
+    <Compile Include="Assets\Scripts\WorldGeneration\PlatformGenerator\PlatformConfigsData.cs" />
+    <Compile Include="Assets\Scripts\WorldGeneration\PlatformGenerator\PlatformGeneratorConfigs.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\PlatformGenerator\PlatformGeneratorController.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\StarGenerator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />

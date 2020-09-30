@@ -2,6 +2,8 @@
 
 public abstract class PlatformMovable : MonoBehaviour, IMovable
 {
+    private protected readonly int[] directionsToChoice = { -1, 1 };
+
     private protected Vector2 moveDirection;
     private protected float velocityMultiplier;
 
