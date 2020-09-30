@@ -27,4 +27,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     {
         return GetToCentreVector(position).normalized;
     }
+
+
+    public float GetToCentreMagnitude(Vector2 position)
+    {
+        return GetToCentreVector(position).magnitude;
+    }
 }
