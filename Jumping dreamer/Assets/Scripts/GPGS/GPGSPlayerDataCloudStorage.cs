@@ -24,13 +24,12 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
     {
         Debug.Log("#CreateSave: begin");
 
+        if (localModelToSaveOnCloud == null) throw new ArgumentNullException("Local model can't be null!");
+
         bool isSerializationSuccess = false;
         string json = JsonConverterWrapper.SerializeObject(localModelToSaveOnCloud, (success, exception) => isSerializationSuccess = success);
 
-        if (!isSerializationSuccess || !PlayerDataModelController.Instance.IsDataFileLoaded)
-        {
-            return;
-        }
+        if (!isSerializationSuccess || !PlayerDataModelController.Instance.IsDataFileLoaded) return;
 
         byte[] dataToSave = Encoding.UTF8.GetBytes(json);
 

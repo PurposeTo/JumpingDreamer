@@ -8,13 +8,13 @@ public class GPGSLeaderboard : SingletonMonoBehaviour<GPGSLeaderboard>
 
     private void Start()
     {
-        PlayerDataModelController.Instance.PlayerDataLocalModel.PlayerStats.OnNewScoreRecord += SetUpdateLeaderboardMethodToAction;
+        PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.OnNewScoreRecord += SetUpdateLeaderboardMethodToAction;
     }
 
 
     private void OnDestroy()
     {
-        PlayerDataModelController.Instance.PlayerDataLocalModel.PlayerStats.OnNewScoreRecord -= SetUpdateLeaderboardMethodToAction;
+        PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.OnNewScoreRecord -= SetUpdateLeaderboardMethodToAction;
     }
 
 
@@ -29,7 +29,7 @@ public class GPGSLeaderboard : SingletonMonoBehaviour<GPGSLeaderboard>
     {
         if (PlayerDataModelController.Instance.IsDataFileLoaded)
         {
-            Social.ReportScore(PlayerDataModelController.Instance.PlayerDataLocalModel.PlayerStats.MaxEarnedScore.Value, GPGSIds.leaderboard_dreamer_the_king, (bool success) =>
+            Social.ReportScore(PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.MaxEarnedScore.Value, GPGSIds.leaderboard_dreamer_the_king, (bool success) =>
             {
                 if (success)
                 {

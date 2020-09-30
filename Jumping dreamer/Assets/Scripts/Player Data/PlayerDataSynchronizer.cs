@@ -3,7 +3,7 @@
 public class PlayerDataSynchronizer
 {
     // Синхронизация данных модели из облака и локальной модели
-    public void SynchronizePlayerDataStorages(PlayerDataModel localModel, PlayerDataModel cloudModel)
+    public void SynchronizePlayerDataStorages(ref PlayerDataModel localModel, PlayerDataModel cloudModel)
     {
         if (cloudModel == null)
         {
@@ -20,7 +20,7 @@ public class PlayerDataSynchronizer
             }
             else
             {
-                ToProvideModelSelection(localModel, cloudModel);
+                ProvideModelSelection(localModel, cloudModel);
             }
         }
         else
@@ -28,7 +28,7 @@ public class PlayerDataSynchronizer
             if (!(localModel.PlayerStats.Equals(cloudModel.PlayerStats) &&
             localModel.PlayerInGamePurchases.Equals(cloudModel.PlayerInGamePurchases)))
             {
-                MixModels(localModel, cloudModel);
+                MixModels(ref localModel, cloudModel);
             }
             else
             {
@@ -39,7 +39,7 @@ public class PlayerDataSynchronizer
 
 
     // В зависимости от выбора пользователя загрузить модель либо в облако, либо на устройство
-    public void OnDataModelSelected(PlayerDataModel selectedModel, PlayerDataModel localModel, PlayerDataModelController.DataModelSelectionStatus modelSelectionStatus)
+    public void OnDataModelSelected(PlayerDataModel selectedModel, ref PlayerDataModel localModel, PlayerDataModelController.DataModelSelectionStatus modelSelectionStatus)
     {
         switch(modelSelectionStatus)
         {
@@ -53,13 +53,13 @@ public class PlayerDataSynchronizer
     }
 
 
-    private void ToProvideModelSelection(PlayerDataModel localModel, PlayerDataModel cloudModel)
+    private void ProvideModelSelection(PlayerDataModel localModel, PlayerDataModel cloudModel)
     {
         DialogWindowGenerator.Instance.CreateChoosingWindow(localModel, cloudModel);
     }
 
 
-    private void MixModels(PlayerDataModel localModel, PlayerDataModel cloudModel)
+    private void MixModels(ref PlayerDataModel localModel, PlayerDataModel cloudModel)
     {
         PlayerDataModel mixedPlayerDataModel = PlayerDataModel.MixPlayerModels(cloudModel, localModel);
 
