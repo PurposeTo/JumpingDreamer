@@ -6,7 +6,7 @@ public class PlatformGeneratorController : SingletonMonoBehaviour<PlatformGenera
     private PlatformGeneratorData platformGeneratorData;
     public PlatformGenerator PlatformGenerator { get; private set; }
 
-    private readonly float timePeriodForTheGenerationRules = 40f;
+    private readonly float timePeriodForTheGenerationRules = 30f;
     private Coroutine lifeCycleRoutine;
 
 
