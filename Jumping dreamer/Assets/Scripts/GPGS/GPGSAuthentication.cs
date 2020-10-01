@@ -3,7 +3,7 @@ using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using TMPro;
 
-public class GPGSAuthentication : SingletonMonoBehaviour<GPGSAuthentication>
+public class GPGSAuthentication : MonoBehaviour
 {
     public static PlayGamesPlatform Platform { get; private set; }
     public TextMeshProUGUI AuthenticateStatus;
@@ -18,7 +18,7 @@ public class GPGSAuthentication : SingletonMonoBehaviour<GPGSAuthentication>
     }
 
 
-    protected override void AwakeSingleton()
+    private void Awake()
     {
         ConfigurePlayGamesPlatform();
         Authenticate();

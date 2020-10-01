@@ -2,6 +2,9 @@
 
 public class PlayerDataSynchronizer
 {
+    private GPGSPlayerDataCloudStorage GPGSPlayerDataCloudStorage => GPGSServices.Instance.GPGSPlayerDataCloudStorage;
+
+
     // Синхронизация данных модели из облака и локальной модели
     public void SynchronizePlayerDataStorages(ref PlayerDataModel localModel, PlayerDataModel cloudModel)
     {
@@ -16,7 +19,7 @@ public class PlayerDataSynchronizer
             if (PlayerDataModelController.IsPlayerDataHaveAlreadyDeletedOrRestored)
             {
                 // Отправка изменений (данных новой модели) на облако
-                GPGSPlayerDataCloudStorage.Instance.CreateSave(localModel);
+                GPGSPlayerDataCloudStorage.CreateSave(localModel);
             }
             else
             {
@@ -44,7 +47,7 @@ public class PlayerDataSynchronizer
         switch(modelSelectionStatus)
         {
             case PlayerDataModelController.DataModelSelectionStatus.LocalModel:
-                GPGSPlayerDataCloudStorage.Instance.CreateSave(selectedModel);
+                GPGSPlayerDataCloudStorage.CreateSave(selectedModel);
                 break;
             case PlayerDataModelController.DataModelSelectionStatus.CloudModel:
                 localModel = selectedModel;
@@ -65,6 +68,6 @@ public class PlayerDataSynchronizer
 
         // Если произошло смешение моделей, то необходимо обновить модель на облаке И локально
         localModel = mixedPlayerDataModel;
-        GPGSPlayerDataCloudStorage.Instance.CreateSave(mixedPlayerDataModel);
+        GPGSPlayerDataCloudStorage.CreateSave(mixedPlayerDataModel);
     }
 }

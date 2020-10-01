@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
 
-public class GPGSLeaderboard : SingletonMonoBehaviour<GPGSLeaderboard>
+public class GPGSLeaderboard : MonoBehaviour
 {
     private Action UpdateLeaderboard;
 

@@ -10,6 +10,7 @@ public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelC
     private PlayerDataLocalStorageSafe localStorageSafe = new PlayerDataLocalStorageSafe();
     private PlayerDataSynchronizer playerDataSynchronizer = new PlayerDataSynchronizer();
 
+    private GPGSPlayerDataCloudStorage GPGSPlayerDataCloudStorage => GPGSServices.Instance.GPGSPlayerDataCloudStorage;
     public bool IsDataFileLoaded => localStorageSafe.IsDataFileLoaded;
 
     public static bool IsPlayerDataHaveAlreadyDeletedOrRestored { get; private set; } = false;
@@ -49,7 +50,7 @@ public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelC
         localStorageSafe.DeletePlayerData();
 
         // Загрузка обновленных данных на облако
-        GPGSPlayerDataCloudStorage.Instance.CreateSave(playerDataLocalModel);
+        GPGSPlayerDataCloudStorage.CreateSave(playerDataLocalModel);
 
         IsPlayerDataHaveAlreadyDeletedOrRestored = true;
         OnDeletePlayerData?.Invoke();
@@ -58,7 +59,7 @@ public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelC
 
     public void RestorePlayerDataFromCloud()
     {
-        GPGSPlayerDataCloudStorage.Instance.ReadSavedGame((cloudModel, readingCloudDataStatus) =>
+        GPGSPlayerDataCloudStorage.ReadSavedGame((cloudModel, readingCloudDataStatus) =>
         {
             if (cloudModel != null)
             {
@@ -103,7 +104,7 @@ public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelC
     private void SavePlayerData()
     {
         localStorageSafe.WritePlayerDataToFile(playerDataLocalModel);
-        GPGSPlayerDataCloudStorage.Instance.CreateSave(playerDataLocalModel);
+        GPGSPlayerDataCloudStorage.CreateSave(playerDataLocalModel);
     }
 
 
