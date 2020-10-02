@@ -59,6 +59,7 @@ public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
     {
         bool isAdWasLoaded = rewardBasedVideoAd.IsLoaded();
         if (isAdWasLoaded) rewardBasedVideoAd.Show();
+        else RequestRewardBasedVideo();
         isAdLoadedCallback?.Invoke(isAdWasLoaded);
     }
 
