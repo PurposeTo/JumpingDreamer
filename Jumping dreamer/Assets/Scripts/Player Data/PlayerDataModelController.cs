@@ -10,7 +10,7 @@ public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelC
     private PlayerDataLocalStorageSafe localStorageSafe = new PlayerDataLocalStorageSafe();
     private PlayerDataSynchronizer playerDataSynchronizer = new PlayerDataSynchronizer();
 
-    private GPGSPlayerDataCloudStorage GPGSPlayerDataCloudStorage => GPGSServices.Instance.GPGSPlayerDataCloudStorage;
+    private GPGSPlayerDataCloudStorage GPGSPlayerDataCloudStorage => GPGSPlayerDataCloudStorage.Instance;
     public bool IsDataFileLoaded => localStorageSafe.IsDataFileLoaded;
 
     public static bool IsPlayerDataHaveAlreadyDeletedOrRestored { get; private set; } = false;

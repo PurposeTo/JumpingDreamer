@@ -4,7 +4,7 @@ public class GameOverMenu : MonoBehaviour
 {
     public EarnedScoreInGame EarnedScoreInGame;
 
-    private GPGSLeaderboard GPGSLeaderboard => GPGSServices.Instance.GPGSLeaderboard;
+    private GPGSLeaderboard GPGSLeaderboard => GPGSLeaderboard.Instance;
 
     private void Awake()
     {

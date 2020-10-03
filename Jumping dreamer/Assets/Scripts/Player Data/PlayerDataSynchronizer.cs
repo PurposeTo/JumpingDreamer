@@ -2,7 +2,7 @@
 
 public class PlayerDataSynchronizer
 {
-    private GPGSPlayerDataCloudStorage GPGSPlayerDataCloudStorage => GPGSServices.Instance.GPGSPlayerDataCloudStorage;
+    private GPGSPlayerDataCloudStorage GPGSPlayerDataCloudStorage => GPGSPlayerDataCloudStorage.Instance;
 
 
     // Синхронизация данных модели из облака и локальной модели

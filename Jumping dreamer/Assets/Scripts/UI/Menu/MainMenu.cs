@@ -5,7 +5,7 @@ public class MainMenu : SingletonMonoBehaviour<MainMenu>
 {
     public SettingsMenu SettingsMenu;
 
-    private GPGSLeaderboard GPGSLeaderboard => GPGSServices.Instance.GPGSLeaderboard;
+    private GPGSLeaderboard GPGSLeaderboard => GPGSLeaderboard.Instance;
 
     public void StartGameClickHandler()
     {

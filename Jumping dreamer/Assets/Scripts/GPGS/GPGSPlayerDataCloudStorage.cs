@@ -6,7 +6,7 @@ using UnityEngine;
 using System.Collections;
 using System.Text;
 
-public class GPGSPlayerDataCloudStorage : MonoBehaviour
+public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataCloudStorage>
 {
     public ISavedGameMetadata CurrentGameMetadata { get; private set; }
     public DateTime StartPlayingTime { get; private set; }
