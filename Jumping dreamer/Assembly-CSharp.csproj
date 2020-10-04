@@ -143,6 +143,7 @@
     <Compile Include="Assets\Scripts\Centre\KillingZone.cs" />
     <Compile Include="Assets\Scripts\Compass\FlashCompass.cs" />
     <Compile Include="Assets\Scripts\Compass\FlashCompassGenerator.cs" />
+    <Compile Include="Assets\Scripts\Compass\PlayerCompass.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyGenerator.cs" />
     <Compile Include="Assets\Scripts\Enemy\Pursuer.cs" />
     <Compile Include="Assets\Scripts\GPGS\GPGSAuthentication.cs" />
@@ -165,7 +166,9 @@
     <Compile Include="Assets\Scripts\Platforms\Move\CircularMotion.cs" />
     <Compile Include="Assets\Scripts\Platforms\Move\VerticalMotion.cs" />
     <Compile Include="Assets\Scripts\Platforms\PlatformLifeCycle.cs" />
-    <Compile Include="Assets\Scripts\Platforms\Springboard.cs" />
+    <Compile Include="Assets\Scripts\Platforms\Toss\Toss.cs" />
+    <Compile Include="Assets\Scripts\Platforms\Toss\TossDown.cs" />
+    <Compile Include="Assets\Scripts\Platforms\Toss\TossUp.cs" />
     <Compile Include="Assets\Scripts\Player Data\Converters\JsonConverterWrapper.cs" />
     <Compile Include="Assets\Scripts\Player Data\Converters\SafeIntConverter.cs" />
     <Compile Include="Assets\Scripts\Player Data\DataLoaderHelper.cs" />

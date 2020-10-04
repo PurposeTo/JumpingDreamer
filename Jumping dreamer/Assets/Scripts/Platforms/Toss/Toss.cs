@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 
-public class Springboard : MonoBehaviour
+public abstract class Toss : MonoBehaviour
 {
-    private bool onlyUpToss; // Костыль, но и фиг с ним. Подбрасывать вверх только если это платформа с PlatformEffector2D.
-
-
-    private void Awake()
+    private protected enum TossDirectionEnum
     {
-        onlyUpToss = gameObject.TryGetComponent(out PlatformEffector2D _);
+        Up,
+        Down
     }
+
+    private protected abstract TossDirectionEnum TossDirection { get; }
 
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -34,6 +34,20 @@ public class Springboard : MonoBehaviour
 
     private void TossUp(PlayerMovement playerMovement)
     {
-        playerMovement.TossUp(onlyUpToss);
+        playerMovement.TossUp(GetDirecrion(TossDirection));
+    }
+
+
+    private float GetDirecrion(TossDirectionEnum tossDirection)
+    {
+        switch (tossDirection)
+        {
+            case TossDirectionEnum.Up:
+                return 1f;
+            case TossDirectionEnum.Down:
+                return -1f;
+            default:
+                return 0f;
+        }
     }
 }

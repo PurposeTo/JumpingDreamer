@@ -1,9 +1,9 @@
 lastUpgrade=01009
 proj.pluginVersion=0.10.09
-proj.AppId=852299600560
-and.BundleId=com.Desdiene.Jonks
+proj.AppId=948878247275
+and.BundleId=com.Desdiene.JumpingDreamer
 proj.classDir=Assets
 proj.ConstantsClassName=GPGSIds
-and.ResourceData=%3c%3fxml+version%3d%221.0%22+encoding%3d%22utf-8%22%3f%3e%0d%0a%3c%21--%0d%0aGoogle+Play+game+services+IDs.%0d%0aSave+this+file+as+res%2fvalues%2fgames-ids.xml+in+your+project.%0d%0a--%3e%0d%0a%3cresources%3e%0d%0a++%3c%21--+app_id+--%3e%0d%0a++%3cstring+name%3d%22app_id%22+translatable%3d%22false%22%3e852299600560%3c%2fstring%3e%0d%0a++%3c%21--+package_name+--%3e%0d%0a++%3cstring+name%3d%22package_name%22+translatable%3d%22false%22%3ecom.Desdiene.Jonks%3c%2fstring%3e%0d%0a++%3c%21--+leaderboard+Kings_of_the_Jonks+--%3e%0d%0a++%3cstring+name%3d%22leaderboard_kings_of_the_jonks%22+translatable%3d%22false%22%3eCgkIsKWPiOcYEAIQAQ%3c%2fstring%3e%0d%0a%3c%2fresources%3e%0d%0a
-and.ClientId=852299600560-kdn4espa9acpla52rbifd4m9q43laahn.apps.googleusercontent.com
+and.ResourceData=%3c%3fxml+version%3d%221.0%22+encoding%3d%22utf-8%22%3f%3e%0d%0a%3c%21--%0d%0aGoogle+Play+game+services+IDs.%0d%0aSave+this+file+as+res%2fvalues%2fgames-ids.xml+in+your+project.%0d%0a--%3e%0d%0a%3cresources%3e%0d%0a++%3c%21--+app_id+--%3e%0d%0a++%3cstring+name%3d%22app_id%22+translatable%3d%22false%22%3e948878247275%3c%2fstring%3e%0d%0a++%3c%21--+package_name+--%3e%0d%0a++%3cstring+name%3d%22package_name%22+translatable%3d%22false%22%3ecom.Desdiene.JumpingDreamer%3c%2fstring%3e%0d%0a++%3c%21--+leaderboard+Dreamer+the+king+--%3e%0d%0a++%3cstring+name%3d%22leaderboard_dreamer_the_king%22+translatable%3d%22false%22%3eCgkI64q07M4bEAIQAA%3c%2fstring%3e%0d%0a%3c%2fresources%3e%0d%0a
+and.ClientId=948878247275-5tr9eimc8kk913fq7038tqis8vvsjn4v.apps.googleusercontent.com
 android.SetupDone=true

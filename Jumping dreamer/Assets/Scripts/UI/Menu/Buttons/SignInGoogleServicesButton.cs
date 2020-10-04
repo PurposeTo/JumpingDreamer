@@ -5,6 +5,7 @@ public class SignInGoogleServicesButton : MonoBehaviour
 {
     private Button button;
 
+    private GPGSAuthentication GPGSAuthentication => GPGSAuthentication.Instance;
 
     private void Start()
     {
@@ -15,7 +16,7 @@ public class SignInGoogleServicesButton : MonoBehaviour
 
     public void SignInGoogleServices()
     {
-        GPGSAuthentication.Instance.Authenticate();
+        GPGSAuthentication.Authenticate();
         SetButtonInteractable();
     }
 

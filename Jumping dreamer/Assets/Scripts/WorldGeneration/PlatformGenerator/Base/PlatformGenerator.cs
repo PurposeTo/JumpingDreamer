@@ -7,7 +7,7 @@ public class PlatformGenerator
     public PlatformGenerator(PlatformGeneratorData platformGeneratorData)
     {
         this.platformGeneratorData = platformGeneratorData;
-        PlatformGeneratorConfigs = new PlatformGeneratorConfigs(Creating.Default);
+        PlatformGeneratorConfigs = PlatformGeneratorConfigs.GetDefault();
     }
 
     public PlatformGeneratorConfigs PlatformGeneratorConfigs { get; private set; }
@@ -19,7 +19,7 @@ public class PlatformGenerator
 
     public void SetNewPlatformGeneratorConfigs()
     {
-        this.PlatformGeneratorConfigs = new PlatformGeneratorConfigs(Creating.Random);
+        this.PlatformGeneratorConfigs = PlatformGeneratorConfigs.GetRandom();
     }
 
 

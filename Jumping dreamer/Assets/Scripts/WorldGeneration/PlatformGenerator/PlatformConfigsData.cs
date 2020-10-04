@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 public class PlatformConfigsData
 {
@@ -80,6 +79,9 @@ public class PlatformConfigsData
                 case VerticalMotionConfig.VerticalMotionConfigs.Down:
                     availablePlatformCreatingPlaces.Add(PlatformCreatingPlace.InHighestArea);
                     break;
+                case VerticalMotionConfig.VerticalMotionConfigs.Random:
+                    availablePlatformCreatingPlaces.Add(PlatformCreatingPlace.InRandomArea);
+                    break;
                 default:
                     throw new System.Exception($"{verticalMotionConfig.MotionConfig} is unknown MotionConfig!");
             }
@@ -102,16 +104,5 @@ public class PlatformConfigsData
         else if (!isPlatformVerticalMotion && isPlatformCircularMotion) platformCauseOfDestroys.Add(PlatformCauseOfDestroy.AsTimePasses);
 
         return GameLogic.GetRandomItem(platformCauseOfDestroys.ToArray());
-    }
-
-
-    /// <summary>
-    /// Получить период времени создания платформ
-    /// </summary>
-    /// <returns></returns>
-    public float GetTimePeriodForGeneratingPlatforms()
-    {
-        // todo: должно определяться в зависимости от настроек генерации
-        return 0.3f;
     }
 }

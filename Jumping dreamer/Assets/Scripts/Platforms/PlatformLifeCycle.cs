@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlatformLifeCycle : MonoBehaviour, IPooledObject
 {
     private protected AnimatorBlinkingController animatorBlinkingController;
-    private readonly float blinkingAnimationSpeed = 1.25f;
+    private readonly float blinkingAnimationSeconds = 1.25f;
 
     private float maxAvailableHight;
 
@@ -56,7 +56,8 @@ public class PlatformLifeCycle : MonoBehaviour, IPooledObject
                 IsAlive = () => !(lifeTime >= lifeTimeToDestroy);
                 break;
             case PlatformConfigsData.PlatformCauseOfDestroy.NoLifeTime:
-                IsAlive = () => false;
+                lifeTimeToDestroy = 1f;
+                IsAlive = () => !(lifeTime >= lifeTimeToDestroy);
                 break;
             case PlatformConfigsData.PlatformCauseOfDestroy.VerticalCauseOfDeathControl:
                 // todo: определяется в зависимости от движения платформы...
@@ -67,7 +68,7 @@ public class PlatformLifeCycle : MonoBehaviour, IPooledObject
                     case PlatformConfigsData.VerticalCauseOfDeathControl.TopBorder:
                         maxAvailableHight = UnityEngine.Random.Range(PlatformGeneratorData.PlatformAvailableHighestArea * (2f / 3f), PlatformGeneratorData.PlatformAvailableHighestArea);
                         IsAlive = () => 
-                        !((GameManager.Instance.CentreObject.transform.position - transform.position).magnitude >= maxAvailableHight);
+                        !((GameManager.Instance.GetToCentreMagnitude(transform.position)) >= maxAvailableHight);
                         break;
                     case PlatformConfigsData.VerticalCauseOfDeathControl.BottomBorder:
                         float minAvailableHight = Centre.CentreRadius * 2f;
@@ -105,6 +106,7 @@ public class PlatformLifeCycle : MonoBehaviour, IPooledObject
 
         // Должно выполняться после SetMotionConfigs, тк как может зависеть от него
         SetCauseOfDestroy();
+        animatorBlinkingController.SetBlinkingAnimationSpeed(GetBlinkingAnimationSpeed());
         yield return new WaitWhile(() => IsAlive());
         animatorBlinkingController.StartBlinking(false);
 
@@ -128,9 +130,28 @@ public class PlatformLifeCycle : MonoBehaviour, IPooledObject
 
     private void SetAnimationConfings()
     {
-        animatorBlinkingController.SetBlinkingAnimationSpeed(blinkingAnimationSpeed);
+        animatorBlinkingController.SetBlinkingAnimationSpeed(blinkingAnimationSeconds);
         animatorBlinkingController.SetAnimationDuration(AnimatorBlinkingController.DurationType.Loops, 3);
         animatorBlinkingController.SetManualControl(manualControlEnableState: true, manualControlDisableState: false);
+    }
+
+
+    private float GetBlinkingAnimationSpeed()
+    {
+        PlatformConfigsData.PlatformCauseOfDestroy platformCauseOfDestroy = PlatformGeneratorController.Instance.PlatformGenerator.PlatformGeneratorConfigs.PlatformConfigs.PlatformCauseOfDestroy;
+
+        switch (platformCauseOfDestroy)
+        {
+            case PlatformConfigsData.PlatformCauseOfDestroy.AsTimePasses:
+                return blinkingAnimationSeconds;
+            case PlatformConfigsData.PlatformCauseOfDestroy.NoLifeTime:
+                return blinkingAnimationSeconds * 1.5f;
+            case PlatformConfigsData.PlatformCauseOfDestroy.VerticalCauseOfDeathControl:
+                return blinkingAnimationSeconds;
+            default:
+                Debug.LogError($"{platformCauseOfDestroy} is unknown PlatformCauseOfDestroy!");
+                return blinkingAnimationSeconds;
+        }
     }
 
 

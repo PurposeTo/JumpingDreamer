@@ -1,21 +1,21 @@
 ﻿using Newtonsoft.Json;
 using UnityEngine;
 
-public enum Creating
+public enum CreatingValuesInClassMode
 {
     Random,
     Default
 }
 public class PlatformGeneratorConfigs
 {
-    public PlatformGeneratorConfigs(Creating creating)
+    private PlatformGeneratorConfigs(CreatingValuesInClassMode creating)
     {
         switch (creating)
         {
-            case Creating.Random:
+            case CreatingValuesInClassMode.Random:
                 PlatformConfigs = PlatformConfigs.GetRandom();
                 break;
-            case Creating.Default:
+            case CreatingValuesInClassMode.Default:
                 PlatformConfigs = PlatformConfigs.GetDefault();
                 break;
             default:
@@ -24,24 +24,52 @@ public class PlatformGeneratorConfigs
         
         Debug.Log($"Create new platformConfigs: {PlatformConfigs}");
         // todo: должно определяться в зависимости от настроек генерации
-        TimePeriodForGeneratingPlatforms = 0.25f; // = platformConfigsData.GetTimePeriodForGeneratingPlatforms(); 
+        TimePeriodForGeneratingPlatforms = GetTimePeriodForGeneratingPlatforms(PlatformConfigs);
     }
+
+
+    public static PlatformGeneratorConfigs GetDefault()
+    {
+        return new PlatformGeneratorConfigs(CreatingValuesInClassMode.Default);
+    }
+
+
+    public static PlatformGeneratorConfigs GetRandom()
+    {
+        return new PlatformGeneratorConfigs(CreatingValuesInClassMode.Random);
+    }
+
 
     public PlatformConfigs PlatformConfigs { get; private set; }
     public float TimePeriodForGeneratingPlatforms { get; private set; }
+
+
+    /// <summary>
+    /// Получить период времени создания платформ
+    /// </summary>
+    /// <returns></returns>
+    public float GetTimePeriodForGeneratingPlatforms(PlatformConfigs platformConfigs)
+    {
+        float delay = 0.4f;
+
+        if (platformConfigs.PlatformCreatingPlace == PlatformConfigsData.PlatformCreatingPlace.InRandomArea) delay -= 0.04f;
+        if (platformConfigs.PlatformCauseOfDestroy == PlatformConfigsData.PlatformCauseOfDestroy.NoLifeTime) delay -= 0.1f;
+
+        return delay;
+    }
 }
 
 
 public class PlatformConfigs
 {
-    private PlatformConfigs(Creating creating)
+    private PlatformConfigs(CreatingValuesInClassMode creating)
     {
         switch (creating)
         {
-            case Creating.Random:
+            case CreatingValuesInClassMode.Random:
                 InitializePropertiesByRandomValues();
                 break;
-            case Creating.Default:
+            case CreatingValuesInClassMode.Default:
                 break;
             default:
                 throw new System.Exception($"{creating} is unknown Creating!");
@@ -56,7 +84,7 @@ public class PlatformConfigs
 
     public static PlatformConfigs GetDefault()
     {
-        return new PlatformConfigs(Creating.Default)
+        return new PlatformConfigs(CreatingValuesInClassMode.Default)
         {
             PlatformMovingTypes = new PlatformConfigsData.PlatformMovingType[] { PlatformConfigsData.PlatformMovingType.VerticalMotion },
             PlatformMovingTypeConfigs = new IPlatformMotionConfig[] { VerticalMotionConfig.GetDefault() },
@@ -67,7 +95,7 @@ public class PlatformConfigs
 
     public static PlatformConfigs GetRandom()
     {
-        return new PlatformConfigs(Creating.Random);
+        return new PlatformConfigs(CreatingValuesInClassMode.Random);
     }
 
     public override string ToString()

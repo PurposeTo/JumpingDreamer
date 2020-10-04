@@ -4,6 +4,7 @@ public class GameOverMenu : MonoBehaviour
 {
     public EarnedScoreInGame EarnedScoreInGame;
 
+    private GPGSLeaderboard GPGSLeaderboard => GPGSLeaderboard.Instance;
 
     private void Awake()
     {
@@ -30,6 +31,6 @@ public class GameOverMenu : MonoBehaviour
 
     public void OpenLeaderboardClickHandler()
     {
-        GPGSLeaderboard.Instance.OpenLeaderboard();
+        GPGSLeaderboard.OpenLeaderboard();
     }
 }
