@@ -55,11 +55,12 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: ad766119b6228e7499dd217835398ca6, type: 3}
-    totalSpriteSurfaceArea: 147456
+    totalSpriteSurfaceArea: 163840
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 8e3c5c10b56b77f4ca33c9378e3df0c3, type: 3}
+  - {fileID: 21300000, guid: f967f7a07df53f64eb1962fd592a557d, type: 3}
   - {fileID: 21300000, guid: e0bb01b61197c9e4c9209a87112210a3, type: 3}
   - {fileID: 21300000, guid: d53dcb2782dad8b46aeeb66d8549aaa6, type: 3}
   - {fileID: 21300000, guid: c290ff7878f036f46812fdcd43c8b59c, type: 3}
@@ -70,6 +71,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: c696c02e37f16384484489f8528af28e, type: 3}
   m_PackedSpriteNamesToIndex:
   - Leaderboard button
+  - Wide arrow down
   - Shop button
   - Leaderboard inverse button
   - Shop inverse button

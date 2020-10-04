@@ -50,7 +50,7 @@ public class PlatformGeneratorConfigs
     /// <returns></returns>
     public float GetTimePeriodForGeneratingPlatforms(PlatformConfigs platformConfigs)
     {
-        float delay = 0.4f;
+        float delay = 0.42f;
 
         if (platformConfigs.PlatformCreatingPlace == PlatformConfigsData.PlatformCreatingPlace.InRandomArea) delay -= 0.04f;
         if (platformConfigs.PlatformCauseOfDestroy == PlatformConfigsData.PlatformCauseOfDestroy.NoLifeTime) delay -= 0.1f;

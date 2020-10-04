@@ -39,7 +39,8 @@ public class FlashCompass : MonoBehaviour
 
     private void Update()
     {
-        SetCompassCharacteristics();
+        if (flash != null) // Добавил эту проверку, так как пока нет локиги спавна компаса
+            SetCompassCharacteristics();
     }
 
 

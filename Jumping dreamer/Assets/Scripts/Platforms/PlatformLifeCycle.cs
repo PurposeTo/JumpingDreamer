@@ -56,7 +56,7 @@ public class PlatformLifeCycle : MonoBehaviour, IPooledObject
                 IsAlive = () => !(lifeTime >= lifeTimeToDestroy);
                 break;
             case PlatformConfigsData.PlatformCauseOfDestroy.NoLifeTime:
-                lifeTimeToDestroy = 1f;
+                lifeTimeToDestroy = 2f;
                 IsAlive = () => !(lifeTime >= lifeTimeToDestroy);
                 break;
             case PlatformConfigsData.PlatformCauseOfDestroy.VerticalCauseOfDeathControl:
@@ -106,7 +106,6 @@ public class PlatformLifeCycle : MonoBehaviour, IPooledObject
 
         // Должно выполняться после SetMotionConfigs, тк как может зависеть от него
         SetCauseOfDestroy();
-        animatorBlinkingController.SetBlinkingAnimationSpeed(GetBlinkingAnimationSpeed());
         yield return new WaitWhile(() => IsAlive());
         animatorBlinkingController.StartBlinking(false);
 
@@ -130,28 +129,11 @@ public class PlatformLifeCycle : MonoBehaviour, IPooledObject
 
     private void SetAnimationConfings()
     {
+        print($"SetAnimationConfings {gameObject.GetInstanceID()}");
+
         animatorBlinkingController.SetBlinkingAnimationSpeed(blinkingAnimationSeconds);
         animatorBlinkingController.SetAnimationDuration(AnimatorBlinkingController.DurationType.Loops, 3);
         animatorBlinkingController.SetManualControl(manualControlEnableState: true, manualControlDisableState: false);
-    }
-
-
-    private float GetBlinkingAnimationSpeed()
-    {
-        PlatformConfigsData.PlatformCauseOfDestroy platformCauseOfDestroy = PlatformGeneratorController.Instance.PlatformGenerator.PlatformGeneratorConfigs.PlatformConfigs.PlatformCauseOfDestroy;
-
-        switch (platformCauseOfDestroy)
-        {
-            case PlatformConfigsData.PlatformCauseOfDestroy.AsTimePasses:
-                return blinkingAnimationSeconds;
-            case PlatformConfigsData.PlatformCauseOfDestroy.NoLifeTime:
-                return blinkingAnimationSeconds * 1.5f;
-            case PlatformConfigsData.PlatformCauseOfDestroy.VerticalCauseOfDeathControl:
-                return blinkingAnimationSeconds;
-            default:
-                Debug.LogError($"{platformCauseOfDestroy} is unknown PlatformCauseOfDestroy!");
-                return blinkingAnimationSeconds;
-        }
     }
 
 

@@ -5,7 +5,8 @@ public class FlashGenerator : MonoBehaviour
 {
     [SerializeField] private GameObject Flash = null;
 
-    private readonly float spawnFrequency = 4f;
+    private readonly float startDelay = 20f;
+    private readonly float spawnFrequency = 5f;
 
 
     private void Start()
@@ -16,8 +17,9 @@ public class FlashGenerator : MonoBehaviour
 
     private IEnumerator GenerateFlashEnumerator()
     {
-        WaitForSeconds waitForSeconds = new WaitForSeconds(spawnFrequency);
+        yield return new WaitForSeconds(startDelay);
 
+        WaitForSeconds waitForSeconds = new WaitForSeconds(spawnFrequency);
         while (true)
         {
             ObjectPooler.Instance.SpawnFromPool(Flash, Vector2.zero, Quaternion.identity);
