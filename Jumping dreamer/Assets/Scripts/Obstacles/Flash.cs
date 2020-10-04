@@ -23,8 +23,7 @@ public class Flash : MonoBehaviour, IPooledObject
 
     private void InitializeFlashDirection()
     {
-        //Direction = Random.insideUnitCircle.normalized * Centre.CentreRadius;
-        Direction = Vector2.up * Centre.CentreRadius;
+        Direction = Random.insideUnitCircle.normalized * Centre.CentreRadius;
         transform.position = Direction;
     }
 

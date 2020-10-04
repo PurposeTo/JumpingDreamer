@@ -75,7 +75,7 @@ public class FlashCompass : MonoBehaviour
     {
         // С эффектом "заплытия" за экран
         compassTransform.position = new Vector2(
-            Mathf.Lerp(-compassOxOffset, transformOfCompassCanvas.rect.width + compassOxOffset, differenceAngleMappingOnPlayerViewingRange), compassOyOffset);
+            Mathf.Lerp(transformOfCompassCanvas.rect.width + compassOxOffset, -compassOxOffset, differenceAngleMappingOnPlayerViewingRange), compassOyOffset);
     }
 
 
