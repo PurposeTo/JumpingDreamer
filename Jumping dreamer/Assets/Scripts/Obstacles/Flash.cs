@@ -3,12 +3,13 @@ using System.Collections;
 
 public class Flash : MonoBehaviour, IPooledObject
 {
-    public static float FlashStartDelay => 2f;
+    public Vector2 Direction { get; private set; }
 
-    [SerializeField] private GameObject killingZoneObject;
+
+    [SerializeField] private GameObject killingZoneObject = null;
 
     //private readonly float width = 5f;
-    private Vector2 direction;
+    private readonly float flashStartDelay = 2f;
     private readonly float flashOperatingTime = 1.5f;
 
     private Coroutine lifeCycleRoutine;
@@ -22,8 +23,9 @@ public class Flash : MonoBehaviour, IPooledObject
 
     private void InitializeFlashDirection()
     {
-        direction = Random.insideUnitCircle.normalized * Centre.CentreRadius;
-        transform.position = direction;
+        //Direction = Random.insideUnitCircle.normalized * Centre.CentreRadius;
+        Direction = Vector2.up * Centre.CentreRadius;
+        transform.position = Direction;
     }
 
 
@@ -44,11 +46,12 @@ public class Flash : MonoBehaviour, IPooledObject
     private IEnumerator LifeCycleEnumerator()
     {
         InitializeFlashDirection();
-        FlashCompassGenerator.Instance.GenerateFlashCompass(direction);
-        yield return new WaitForSeconds(FlashStartDelay);
+        FlashCompassGenerator.Instance.GenerateFlashCompass(this);
+        yield return new WaitForSeconds(flashStartDelay);
 
         killingZoneObject.SetActive(true); // Включение дочернего объекта
         yield return new WaitForSeconds(flashOperatingTime);
+        FlashCompassGenerator.Instance.TurnOffCompass();
         TurnOffFlash();
 
         lifeCycleRoutine = null;

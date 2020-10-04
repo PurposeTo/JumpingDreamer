@@ -2,12 +2,23 @@
 
 public class FlashCompassGenerator : SingletonMonoBehaviour<FlashCompassGenerator>
 {
-    [SerializeField] private GameObject FlashCompass = null;
+    [SerializeField] private GameObject flashCompass = null;
+    //[SerializeField] private Canvas compassCanvas = null;
 
 
-    public void GenerateFlashCompass(Vector3 compassDirection)
+    public void GenerateFlashCompass(Flash flash)
     {
-        ObjectPooler.Instance.SpawnFromPool(FlashCompass, compassDirection, Quaternion.identity);
+        //GameObject flashCompassObject = ObjectPooler.Instance.SpawnFromPool(
+        //    flashCompass,
+        //    compassCanvas.GetComponentInChildren<FlashCompass>().GetComponent<RectTransform>().position,
+        //    Quaternion.identity);
+        //flashCompassObject.GetComponent<FlashCompass>().Constructor(flash);
+
+        flashCompass.SetActive(true);
+        flashCompass.GetComponent<FlashCompass>().Constructor(flash);
     }
+
+
+    public void TurnOffCompass() => flashCompass.SetActive(false);
 }
 
