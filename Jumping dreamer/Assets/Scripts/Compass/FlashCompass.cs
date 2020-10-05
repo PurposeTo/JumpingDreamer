@@ -15,6 +15,12 @@ public class FlashCompass : MonoBehaviour
     private Vector2 defaultPosition => new Vector2(compassOxOffset, compassOyOffset);
     private readonly float defaultTransparency = 0.25f;
 
+    private readonly float maxTransparency = 1f;
+    private float transparencyRange => maxTransparency - defaultTransparency;
+
+    /// <summary>
+    /// Для смещения центра компаса относительно угла (к которому привязан компас)
+    /// </summary>
     private float compassOxOffset;
     private float compassOyOffset;
 
@@ -85,11 +91,12 @@ public class FlashCompass : MonoBehaviour
         float alphaColor;
 
         // TODO: Сделать нормально
+        // Сейчас, для того , чтобы при положении компаса на середине экрана (0,5f) значении прозрачности было максимальным (1f), диапозон прозрачности ИСКУССТВЕННО увеличивается на значение разницы между максимальным и минимальным значениями прозрачности. 
         if (differenceAngleMappingOnPlayerViewingRange <= 0.5f)
         {
-            alphaColor = Mathf.Lerp(0.25f, 1f + 0.75f, differenceAngleMappingOnPlayerViewingRange);
+            alphaColor = Mathf.Lerp(defaultTransparency, maxTransparency + transparencyRange, differenceAngleMappingOnPlayerViewingRange);
         }
-        else alphaColor = Mathf.Lerp(1f + 0.75f, 0.25f, differenceAngleMappingOnPlayerViewingRange);
+        else alphaColor = Mathf.Lerp(maxTransparency + transparencyRange, defaultTransparency, differenceAngleMappingOnPlayerViewingRange);
 
         image.color = new Color(image.color.r, image.color.g, image.color.b, alphaColor);
     }
