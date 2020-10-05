@@ -50,7 +50,6 @@ public class AnimatorBlinkingController : AnimatorControllerWrapper
     public void EnableAlphaColor()
     {
         animator.SetBool(AnimatorBlinkingData.enableAlphaColor, true);
-        print($"EnableAlphaColor {gameObject.GetInstanceID()}");
     }
 
 
