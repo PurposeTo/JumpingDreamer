@@ -141,9 +141,6 @@
     <Compile Include="Assets\Scripts\Centre\Centre.cs" />
     <Compile Include="Assets\Scripts\Centre\Gravity.cs" />
     <Compile Include="Assets\Scripts\Centre\KillingZone.cs" />
-    <Compile Include="Assets\Scripts\Compass\FlashCompass.cs" />
-    <Compile Include="Assets\Scripts\Compass\FlashCompassGenerator.cs" />
-    <Compile Include="Assets\Scripts\Compass\PlayerCompass.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyGenerator.cs" />
     <Compile Include="Assets\Scripts\Enemy\Pursuer.cs" />
     <Compile Include="Assets\Scripts\GPGS\GPGSAuthentication.cs" />
@@ -155,8 +152,9 @@
     <Compile Include="Assets\Scripts\Localizaton\LocalizationManager.cs" />
     <Compile Include="Assets\Scripts\Localizaton\LocalizedText.cs" />
     <Compile Include="Assets\Scripts\Localizaton\StartupManager.cs" />
-    <Compile Include="Assets\Scripts\Obstacles\Flash.cs" />
-    <Compile Include="Assets\Scripts\Obstacles\FlashGenerator.cs" />
+    <Compile Include="Assets\Scripts\Obstacles\FlashObstacle\Compass\FlashCompass.cs" />
+    <Compile Include="Assets\Scripts\Obstacles\FlashObstacle\Flash.cs" />
+    <Compile Include="Assets\Scripts\Obstacles\FlashObstacle\FlashObstacleGenerator.cs" />
     <Compile Include="Assets\Scripts\OrthoRotationToTheCentre.cs" />
     <Compile Include="Assets\Scripts\Platforms\Brokable.cs" />
     <Compile Include="Assets\Scripts\Platforms\Move\Base\IMovable.cs" />
@@ -188,6 +186,7 @@
     <Compile Include="Assets\Scripts\Player\Controllers\MobileController.cs" />
     <Compile Include="Assets\Scripts\Player\Controllers\WindowsEditorController.cs" />
     <Compile Include="Assets\Scripts\Player\GravitySensitive.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerCompass.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerHealth.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerPresenter.cs" />

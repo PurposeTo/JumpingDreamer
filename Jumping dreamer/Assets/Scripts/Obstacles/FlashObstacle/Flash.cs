@@ -45,12 +45,10 @@ public class Flash : MonoBehaviour, IPooledObject
     private IEnumerator LifeCycleEnumerator()
     {
         InitializeFlashDirection();
-        FlashCompassGenerator.Instance.GenerateFlashCompass(this);
         yield return new WaitForSeconds(flashStartDelay);
 
         killingZoneObject.SetActive(true); // Включение дочернего объекта
         yield return new WaitForSeconds(flashOperatingTime);
-        FlashCompassGenerator.Instance.TurnOffCompass();
         TurnOffFlash();
 
         lifeCycleRoutine = null;

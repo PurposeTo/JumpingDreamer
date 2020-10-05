@@ -2068,7 +2068,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 643361137}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f11ad30386536454690bec4566e788da, type: 3}
+  m_Script: {fileID: 11500000, guid: bf58852cf6a7f21499e4d63cdb677d1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   compassCanvas: {fileID: 1953523481}
@@ -2842,7 +2842,7 @@ PrefabInstance:
     - target: {fileID: 6587353836104029691, guid: 85650b25d6b64cd449fba71fdc647ea4,
         type: 3}
       propertyPath: m_RootOrder
-      value: 17
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 6587353836104029691, guid: 85650b25d6b64cd449fba71fdc647ea4,
         type: 3}
@@ -3426,51 +3426,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 974014347}
   m_CullTransparentMesh: 0
---- !u!1 &991950139
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 991950141}
-  - component: {fileID: 991950140}
-  m_Layer: 0
-  m_Name: Compass generator
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &991950140
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 991950139}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7a5159f06b863a499da9c61124c3365, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
-  flashCompass: {fileID: 643361137}
---- !u!4 &991950141
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 991950139}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 11
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1013041114
 GameObject:
   m_ObjectHideFlags: 0
@@ -4620,7 +4575,7 @@ GameObject:
   - component: {fileID: 1318143220}
   - component: {fileID: 1318143219}
   m_Layer: 0
-  m_Name: FlashGenerator
+  m_Name: Flash obstacle generator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4635,10 +4590,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1318143218}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86bee6f2c23d38f42bdc2d98d62a8551, type: 3}
+  m_Script: {fileID: 11500000, guid: 60864da1da85c374283f2faceae61aef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Flash: {fileID: 2313998528000746802, guid: 091cea180da60764bacf3ca27c491f6f, type: 3}
+  flashCompass: {fileID: 643361137}
 --- !u!4 &1318143220
 Transform:
   m_ObjectHideFlags: 0
@@ -6069,7 +6025,7 @@ PrefabInstance:
     - target: {fileID: 7237526332153162636, guid: 93880a725ad2dca40ba6c5a781846f1e,
         type: 3}
       propertyPath: m_RootOrder
-      value: 21
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7237526332153162636, guid: 93880a725ad2dca40ba6c5a781846f1e,
         type: 3}
@@ -6375,7 +6331,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 22
+  m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1686611803
 GameObject:
@@ -7518,7 +7474,7 @@ PrefabInstance:
     - target: {fileID: 6687179783305391086, guid: fad1063bb8b7b0849b166d997398b20a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 19
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 6687179783305391086, guid: fad1063bb8b7b0849b166d997398b20a,
         type: 3}
@@ -7773,7 +7729,7 @@ PrefabInstance:
     - target: {fileID: 2024437486911971760, guid: 97d55d6e73264b64b97f822e8db8f566,
         type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2024437486911971760, guid: 97d55d6e73264b64b97f822e8db8f566,
         type: 3}
@@ -8711,7 +8667,7 @@ PrefabInstance:
     - target: {fileID: 42721397819333701, guid: 4cc27548a79984a4096c6a4309d1b4e5,
         type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 42721397819333701, guid: 4cc27548a79984a4096c6a4309d1b4e5,
         type: 3}
@@ -8785,7 +8741,7 @@ PrefabInstance:
     - target: {fileID: 3615121469247626522, guid: eec5154f6adcbea41982c39224febfb6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 20
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 3615121469247626522, guid: eec5154f6adcbea41982c39224febfb6,
         type: 3}
@@ -8859,7 +8815,7 @@ PrefabInstance:
     - target: {fileID: 4005192986996057848, guid: 6a2fb494eb9a17d45aa3ffb8bbab2007,
         type: 3}
       propertyPath: m_RootOrder
-      value: 16
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4005192986996057848, guid: 6a2fb494eb9a17d45aa3ffb8bbab2007,
         type: 3}
@@ -9018,7 +8974,7 @@ PrefabInstance:
     - target: {fileID: 4367876907044146196, guid: b2360086f3c738f478ed50aa572ca24d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 4367876907044146196, guid: b2360086f3c738f478ed50aa572ca24d,
         type: 3}
@@ -9082,7 +9038,7 @@ PrefabInstance:
     - target: {fileID: 6723082194595277184, guid: f5342ce500219044d830047ea9d4474f,
         type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 6723082194595277184, guid: f5342ce500219044d830047ea9d4474f,
         type: 3}
@@ -9151,7 +9107,7 @@ PrefabInstance:
     - target: {fileID: 8548239448575069216, guid: ee0d3f3cadfb678469074dd9bf9436e0,
         type: 3}
       propertyPath: m_RootOrder
-      value: 15
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 8548239448575069216, guid: ee0d3f3cadfb678469074dd9bf9436e0,
         type: 3}

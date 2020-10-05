@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class FlashCompass : MonoBehaviour
 {
@@ -31,6 +32,8 @@ public class FlashCompass : MonoBehaviour
 
     private Image image;
 
+    private Coroutine lifeCycleRoutine;
+
 
     private void Start()
     {
@@ -43,16 +46,35 @@ public class FlashCompass : MonoBehaviour
     }
 
 
+    private void OnDisable() => flash = null;
+
+
     private void Update()
     {
-        if (flash != null) // Добавил эту проверку, так как пока нет локиги спавна компаса
-            SetCompassCharacteristics();
+        if (flash != null) SetCompassCharacteristics();
     }
 
 
     public void Constructor(Flash flash)
     {
+        if (flash == null)
+        {
+            Debug.LogError("Не установлена ссылка на вспышку для компаса!");
+            gameObject.SetActive(false);
+            return;
+        }
+
         this.flash = flash;
+        if (lifeCycleRoutine == null) lifeCycleRoutine = StartCoroutine(LifeCycleEnumerator());
+    }
+
+
+    private IEnumerator LifeCycleEnumerator()
+    {
+        yield return new WaitWhile(() => flash.gameObject.activeSelf);
+        gameObject.SetActive(false);
+
+        lifeCycleRoutine = null;
     }
 
 
