@@ -118,4 +118,37 @@ public static class GameLogic
             : 1f;
         return vector * scale;
     }
+
+
+    /// <summary>
+    /// Линейнай процентная интерполяция между двумя значениями.
+    /// </summary>
+    /// <param name="minValue"></param>
+    /// <param name="maxValue"></param>
+    /// <param name="currentValue"></param>
+    /// <returns>Процентное значение интерполяции между двумя значениями. Может быть больше 1.0f</returns>
+    public static float PercentLerpUnclaimed(in float minValue, float maxValue, float currentValue)
+    {
+        currentValue -= minValue;
+        maxValue -= minValue;
+
+        float returnedValue = currentValue / maxValue;
+        if (returnedValue < 0f) returnedValue = 0f;
+        return returnedValue;
+    }
+
+    /// <summary>
+    /// Линейнай процентная интерполяция между двумя значениями.
+    /// </summary>
+    /// <param name="minValue"></param>
+    /// <param name="maxValue"></param>
+    /// <param name="currentValue"></param>
+    /// <returns>Процентное значение интерполяции между двумя значениями. Строго от 0.0f до 1.0f</returns>
+    public static float PercentLerp(in float minValue, float maxValue, float currentValue)
+    {
+        float returnedValue = PercentLerpUnclaimed(minValue, maxValue, currentValue);
+
+        if (returnedValue > 1f) returnedValue = 1f;
+        return returnedValue;
+    }
 }
