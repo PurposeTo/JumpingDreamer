@@ -31,6 +31,21 @@ public class Pursuer : MonoBehaviour, IPooledObject
     private GameObject target;
 
 
+    private void Awake()
+    {
+        rb2d = gameObject.GetComponent<Rigidbody2D>();
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.TryGetComponent(out PlayerPresenter _))
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
+
     private void Update()
     {
         lifeTimeCounter += Time.deltaTime;
@@ -56,12 +71,6 @@ public class Pursuer : MonoBehaviour, IPooledObject
 
         Debug.DrawRay(transform.position, moveDirection.normalized * 3, Color.green, 2f); // Вектор непонятно куда
         Debug.DrawRay(transform.position, (toTargetRotation * Vector3.up).normalized * 3, Color.yellow, 2f); // Вектор точный
-    }
-
-
-    private void Awake()
-    {
-        rb2d = gameObject.GetComponent<Rigidbody2D>();
     }
 
 
