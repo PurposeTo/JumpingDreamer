@@ -53,7 +53,7 @@ public class PlatformGeneratorConfigs
         float delay = 0.42f;
 
         if (platformConfigs.PlatformCreatingPlace == PlatformConfigsData.PlatformCreatingPlace.InRandomArea) delay -= 0.04f;
-        if (platformConfigs.PlatformCauseOfDestroy == PlatformConfigsData.PlatformCauseOfDestroy.NoLifeTime) delay -= 0.1f;
+        if (platformConfigs.PlatformCauseOfDestroy == PlatformConfigsData.PlatformCauseOfDestroy.NoLifeTime) delay -= 0.15f;
 
         return delay;
     }
