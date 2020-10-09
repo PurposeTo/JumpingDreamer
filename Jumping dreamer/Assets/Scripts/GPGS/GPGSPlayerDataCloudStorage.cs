@@ -111,7 +111,7 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
                         // handle error
                     }
 
-                    Debug.Log($"Received from cloud model: {cloudModel}. Reading status: {readingCloudDataStatus}.");
+                    Debug.Log($"Received from cloud model: {cloudModel}.\nCloud model as json: {JsonConverterWrapper.SerializeObject(cloudModel, null)}\nReading status: {readingCloudDataStatus}.");
                     action?.Invoke(cloudModel, readingCloudDataStatus);
                 });
             }
@@ -171,7 +171,7 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
         // Загрузка данных из облака
         ReadSavedGame((cloudModel, readingStatus) =>
         {
-            Debug.Log("###ДЕСЕРИАЛИЗАЦИЯ ДАННЫХ С ОБЛАКА ЗАВЕРШЕНА. РЕЗУЛЬТАТ: " + cloudModel);
+            Debug.Log($"###ДЕСЕРИАЛИЗАЦИЯ ДАННЫХ С ОБЛАКА ЗАВЕРШЕНА.\nReceived from cloud model: {cloudModel}.\nCloud model as json: {JsonConverterWrapper.SerializeObject(cloudModel, null)}");
 
             PlayerDataModelController.Instance.SynchronizePlayerDataStorages(cloudModel);
         });

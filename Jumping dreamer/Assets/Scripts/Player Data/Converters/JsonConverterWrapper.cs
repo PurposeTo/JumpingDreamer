@@ -39,6 +39,7 @@ public static class JsonConverterWrapper
         {
             PlayerDataModel playerDataModel = JsonConvert.DeserializeObject<PlayerDataModel>(json, serializerSettings);
             onDeserialize?.Invoke(true, null);
+            Debug.Log("Успешная десериализация!");
 
             return playerDataModel;
         }
@@ -47,6 +48,7 @@ public static class JsonConverterWrapper
             Debug.LogError($"Unsuccessful attempt of deserialization: {exception.Message}");
             onDeserialize?.Invoke(false, exception);
 
+            Debug.Log("Неуспешная десериализация!");
             return null;
         }
 
