@@ -2,57 +2,63 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class FlashCompass : MonoBehaviour
+public class FlashCompass : MonoBehaviour, IPooledObject
 {
-    [SerializeField] private Canvas compassCanvas = null;
-    private RectTransform transformOfCompassCanvas;
+    public AnimationCurve ChangingInitialTransparencyCurve;
+    public AnimationCurve ChangingTransparencyCurve;
+
     private RectTransform compassTransform;
+    private Image image;
 
     private Flash flash;
 
-    private readonly float lowerBoundOfPlayerViewingRange = -135f;
-    private readonly float upperBoundOfPlayerViewingRange = 135f;
+    private float lowerBoundOfPlayerViewingRange => -upperBoundOfPlayerViewingRange;
+    private readonly float upperBoundOfPlayerViewingRange = 180f;
 
-    private Vector2 defaultPosition => new Vector2(compassOxOffset, compassOyOffset);
-    private readonly float defaultTransparency = 0.25f;
+    private readonly float initialTransparency = 0f;
+    //private readonly float maxTransparency = 1f;
 
-    private readonly float maxTransparency = 1f;
-    private float transparencyRange => maxTransparency - defaultTransparency;
+    private Vector2 compassInitialScale;
 
     /// <summary>
-    /// Для смещения центра компаса относительно угла (к которому привязан компас)
+    /// Смещение компаса относительно позиции якоря
     /// </summary>
     private float compassOxOffset;
     private float compassOyOffset;
 
     private Vector2 playerDirection => GameManager.Instance.GetToCentreDirection(GameManager.Instance.Player.transform.position) * -1f;
 
-    //private float transparencyWhileBlinking = 1f;
-    //private readonly float blinkingRate = 30f;
-
-    private Image image;
-
     private Coroutine lifeCycleRoutine;
+    private Coroutine turnOnCompassAnimationRoutine;
+    private Coroutine flashCompassOperationRoutine;
+    private Coroutine turnOffCompassAnimationRoutine;
+
+
+    private void Awake() => image = gameObject.GetComponent<Image>();
 
 
     private void Start()
     {
-        image = gameObject.GetComponent<Image>();
-        transformOfCompassCanvas = compassCanvas.GetComponent<RectTransform>();
         compassTransform = gameObject.GetComponent<RectTransform>();
+
+        compassInitialScale = compassTransform.sizeDelta;
 
         compassOxOffset = compassTransform.rect.width / 2;
         compassOyOffset = compassTransform.rect.height / 2;
     }
 
 
-    private void OnDisable() => flash = null;
-
-
-    private void Update()
+    private void OnDisable()
     {
-        if (flash != null) SetCompassCharacteristics();
+        flash = null;
+        RepairFlashCompass();
     }
+
+
+    //private void Update()
+    //{
+    //    if (flash != null) SetCompassCharacteristics();
+    //}
 
 
     public void Constructor(Flash flash)
@@ -65,61 +71,158 @@ public class FlashCompass : MonoBehaviour
         }
 
         this.flash = flash;
+
         if (lifeCycleRoutine == null) lifeCycleRoutine = StartCoroutine(LifeCycleEnumerator());
     }
 
 
     private IEnumerator LifeCycleEnumerator()
     {
-        yield return new WaitWhile(() => flash.gameObject.activeSelf);
+        if (turnOnCompassAnimationRoutine == null)
+        {
+            turnOnCompassAnimationRoutine = StartCoroutine(TurnOnCompassAnimationEnumerator());
+            yield return turnOnCompassAnimationRoutine;
+        }
+
+        // Для того, чтобы не дергалось, необходимо менять позицию в Update()
+        if (flashCompassOperationRoutine == null)
+        {
+            flashCompassOperationRoutine = StartCoroutine(FlashCompassOperationEnumerator());
+            yield return flashCompassOperationRoutine;
+        }
+
+        //yield return new WaitUntil(() => flash.IsFlashKillingZoneActive);
+
+        if (turnOffCompassAnimationRoutine == null)
+        {
+            turnOffCompassAnimationRoutine = StartCoroutine(TurnOffCompassAnimationEnumerator());
+            yield return turnOffCompassAnimationRoutine;
+        }
+
         gameObject.SetActive(false);
 
         lifeCycleRoutine = null;
     }
 
 
-    private void SetCompassCharacteristics()
+    private IEnumerator TurnOnCompassAnimationEnumerator()
     {
-        float differenceAngle = Vector2.SignedAngle(playerDirection, flash.Direction);
+        float differenceAngleMappingOnPlayerViewingRange = CalculateDifferenceAngleMapping();
 
-        if ((lowerBoundOfPlayerViewingRange <= differenceAngle) && (differenceAngle <= upperBoundOfPlayerViewingRange))
+        float alphaColor = CalculateTransparency(differenceAngleMappingOnPlayerViewingRange/*, initialTransparency, maxTransparency*/);
+        float timer = 0f;
+
+        // Изменение прозрачности в соответствии с графиком изменения начальной прозрачности
+        while (image.color.a < alphaColor)
         {
-            float differenceAngleMappingOnPlayerViewingRange = (differenceAngle + upperBoundOfPlayerViewingRange) / (upperBoundOfPlayerViewingRange + Mathf.Abs(lowerBoundOfPlayerViewingRange));
+            timer += Time.deltaTime;
 
-            SetCompassPosition(differenceAngleMappingOnPlayerViewingRange);
-            SetCompassTransparency(differenceAngleMappingOnPlayerViewingRange);
+            if (ChangingInitialTransparencyCurve.Evaluate(timer) > alphaColor)
+            {
+                image.color = new Color(image.color.r, image.color.g, image.color.b, alphaColor);
+            }
+            else image.color = new Color(image.color.r, image.color.g, image.color.b, ChangingInitialTransparencyCurve.Evaluate(timer));
+
+            yield return null;
         }
-        else SetDefaultCompassCharacteristics();
+
+        turnOnCompassAnimationRoutine = null;
     }
 
 
-    private void SetDefaultCompassCharacteristics()
+    private IEnumerator FlashCompassOperationEnumerator()
     {
-        compassTransform.position = defaultPosition; // По умолчанию компас находится в левом нижнем углу экрана
-        image.color = new Color(image.color.r, image.color.g, image.color.b, defaultTransparency);
+        while (!flash.IsFlashKillingZoneActive)
+        {
+            SetCompassCharacteristics();
+            yield return null;
+        }
+
+        flashCompassOperationRoutine = null;
+    }
+
+
+    private IEnumerator TurnOffCompassAnimationEnumerator()
+    {
+        float timer = 0f;
+        float scalingTime = 0.2f;
+        float scale = 1.5f;
+
+        float originalWidth = compassTransform.sizeDelta.x;
+        float originalHeight = compassTransform.sizeDelta.y;
+        float originalOyPosition = compassTransform.anchoredPosition.y;
+
+        while (timer < scalingTime)
+        {
+            timer += Time.deltaTime;
+
+            if (timer > scalingTime) timer = scalingTime;
+
+            compassTransform.sizeDelta = new Vector2(Mathf.Lerp(originalWidth, originalWidth * scale, timer / scalingTime), Mathf.Lerp(originalHeight, originalHeight * scale, timer / scalingTime));
+            compassTransform.anchoredPosition = new Vector2(compassTransform.anchoredPosition.x, Mathf.Lerp(originalOyPosition, originalOyPosition * scale, timer / scalingTime));
+            yield return null;
+        }
+
+        turnOffCompassAnimationRoutine = null;
+    }
+
+
+    private float CalculateDifferenceAngleMapping()
+    {
+        float differenceAngle = Vector2.SignedAngle(playerDirection, flash.Direction);
+        return (differenceAngle + upperBoundOfPlayerViewingRange) / (upperBoundOfPlayerViewingRange + Mathf.Abs(lowerBoundOfPlayerViewingRange));
+    }
+
+
+    private void SetCompassCharacteristics()
+    {
+        float differenceAngleMappingOnPlayerViewingRange = CalculateDifferenceAngleMapping();
+
+        SetCompassPosition(differenceAngleMappingOnPlayerViewingRange);
+        image.color = new Color(image.color.r,
+                                image.color.g,
+                                image.color.b,
+                                ChangingTransparencyCurve.Evaluate(differenceAngleMappingOnPlayerViewingRange));
     }
 
 
     private void SetCompassPosition(float differenceAngleMappingOnPlayerViewingRange)
     {
+        compassTransform.anchorMin = new Vector2(1f - differenceAngleMappingOnPlayerViewingRange, 0f);
+        compassTransform.anchorMax = new Vector2(1f - differenceAngleMappingOnPlayerViewingRange, 0f);
+
         // С эффектом "заплытия" за экран
-        compassTransform.position = new Vector2(
-            Mathf.Lerp(transformOfCompassCanvas.rect.width + compassOxOffset, -compassOxOffset, differenceAngleMappingOnPlayerViewingRange), compassOyOffset);
+        float compassOxPosition = Mathf.Lerp(compassTransform.anchorMin.x + compassOxOffset, compassTransform.anchorMin.x - compassOxOffset, differenceAngleMappingOnPlayerViewingRange);
+
+        compassTransform.anchoredPosition = new Vector2(compassOxPosition, compassTransform.anchorMin.y + compassOyOffset);
     }
 
 
-    private void SetCompassTransparency(float differenceAngleMappingOnPlayerViewingRange)
+    private float CalculateTransparency(float differenceAngleMappingOnPlayerViewingRange/*, float minTransparency, float maxTransparency*/)
     {
         float alphaColor;
 
-        // TODO: Сделать нормально
-        // Сейчас, для того , чтобы при положении компаса на середине экрана (0,5f) значении прозрачности было максимальным (1f), диапозон прозрачности ИСКУССТВЕННО увеличивается на значение разницы между максимальным и минимальным значениями прозрачности. 
-        if (differenceAngleMappingOnPlayerViewingRange <= 0.5f)
+        if (differenceAngleMappingOnPlayerViewingRange > 0.5f)
         {
-            alphaColor = Mathf.Lerp(defaultTransparency, maxTransparency + transparencyRange, differenceAngleMappingOnPlayerViewingRange);
+            alphaColor = Mathf.InverseLerp(0f, 0.5f, 1f - differenceAngleMappingOnPlayerViewingRange);
+            //GameLogic.MapValueFromOneToAnotherRange(1f - differenceAngleMappingOnPlayerViewingRange, 0f, 0.5f, minTransparency, maxTransparency);
         }
-        else alphaColor = Mathf.Lerp(maxTransparency + transparencyRange, defaultTransparency, differenceAngleMappingOnPlayerViewingRange);
+        else
+        {
+            //alphaColor = GameLogic.MapValueFromOneToAnotherRange(differenceAngleMappingOnPlayerViewingRange, 0f, 0.5f, minTransparency, maxTransparency);
+            alphaColor = Mathf.InverseLerp(0f, 0.5f, differenceAngleMappingOnPlayerViewingRange);
+        }
 
-        image.color = new Color(image.color.r, image.color.g, image.color.b, alphaColor);
+        return alphaColor;
+    }
+
+
+    private void RepairFlashCompass() => compassTransform.sizeDelta = compassInitialScale;
+
+
+    void IPooledObject.OnObjectSpawn()
+    {
+        // Нужно? Или начинать изменять с 0 позиции графика?
+        image.color = new Color(image.color.r, image.color.g, image.color.b, initialTransparency);
     }
 }

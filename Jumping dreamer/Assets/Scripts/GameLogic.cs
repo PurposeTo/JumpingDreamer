@@ -118,4 +118,11 @@ public static class GameLogic
             : 1f;
         return vector * scale;
     }
+
+
+    //// Maps a value from one arbitrary range to another arbitrary range
+    //public static float MapValueFromOneToAnotherRange(float value, float oneMin, float oneMax, float anotherMin, float anotherMax)
+    //{
+    //    return anotherMin + (value - oneMin) * (anotherMax - anotherMin) / (oneMax - oneMin);
+    //}
 }

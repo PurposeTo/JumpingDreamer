@@ -4,6 +4,7 @@ using System.Collections;
 public class Flash : MonoBehaviour, IPooledObject
 {
     public Vector2 Direction { get; private set; }
+    public bool IsFlashKillingZoneActive { get; private set; } = false;
 
 
     [SerializeField] private GameObject killingZoneObject = null;
@@ -24,6 +25,7 @@ public class Flash : MonoBehaviour, IPooledObject
     private void InitializeFlashDirection()
     {
         Direction = Random.insideUnitCircle.normalized * Centre.CentreRadius;
+        //Direction = Vector2.left * Centre.CentreRadius; // Для проверки работы добавленной логики
         transform.position = Direction;
     }
 
@@ -39,6 +41,7 @@ public class Flash : MonoBehaviour, IPooledObject
     private void RepairFlash()
     {
         killingZoneObject.SetActive(false);
+        IsFlashKillingZoneActive = false;
     }
 
 
@@ -48,7 +51,9 @@ public class Flash : MonoBehaviour, IPooledObject
         yield return new WaitForSeconds(flashStartDelay);
 
         killingZoneObject.SetActive(true); // Включение дочернего объекта
+        IsFlashKillingZoneActive = true;
         yield return new WaitForSeconds(flashOperatingTime);
+
         TurnOffFlash();
 
         lifeCycleRoutine = null;

@@ -3,8 +3,9 @@ using System.Collections;
 
 public class FlashObstacleGenerator : MonoBehaviour
 {
-    [SerializeField] private GameObject Flash = null;
+    [SerializeField] private GameObject flash = null;
     [SerializeField] private GameObject flashCompass = null;
+    [SerializeField] private RectTransform flashCompassCanvas = null;
 
     private readonly float startDelay = 20f;
     private readonly float spawnFrequency = 5f;
@@ -23,9 +24,9 @@ public class FlashObstacleGenerator : MonoBehaviour
         WaitForSeconds waitForSeconds = new WaitForSeconds(spawnFrequency);
         while (true)
         {
-            GameObject flash = ObjectPooler.Instance.SpawnFromPool(Flash, Vector2.zero, Quaternion.identity);
-            flashCompass.SetActive(true);
-            flashCompass.GetComponent<FlashCompass>().Constructor(flash.GetComponent<Flash>());
+            GameObject createdFlash = ObjectPooler.Instance.SpawnFromPool(flash, Vector2.zero, Quaternion.identity);
+            GameObject compass = ObjectPooler.Instance.SpawnFromPool(flashCompass, Vector2.zero, Quaternion.identity, flashCompassCanvas.transform);
+            compass.GetComponent<FlashCompass>().Constructor(createdFlash.GetComponent<Flash>());
 
             yield return waitForSeconds;
         }
