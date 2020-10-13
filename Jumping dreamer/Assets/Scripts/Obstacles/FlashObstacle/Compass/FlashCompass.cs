@@ -38,15 +38,13 @@ public class FlashCompass : MonoBehaviour, IPooledObject
     {
         image = gameObject.GetComponent<Image>();
         compassTransform = gameObject.GetComponent<RectTransform>();
-    }
 
-
-    private void Start()
-    {
         compassInitialScale = compassTransform.sizeDelta;
 
-        compassOxOffset = compassTransform.rect.width / 2;
-        compassOyOffset = compassTransform.rect.height / 2;
+        //compassOxOffset = compassTransform.rect.width / 2;
+        //compassOyOffset = compassTransform.rect.height / 2;
+        compassOxOffset = compassTransform.sizeDelta.x / 2;
+        compassOyOffset = compassTransform.sizeDelta.y / 2;
     }
 
 
@@ -224,6 +222,8 @@ public class FlashCompass : MonoBehaviour, IPooledObject
 
     void IPooledObject.OnObjectSpawn()
     {
+        compassTransform.localScale = Vector3.one;
+
         // Нужно? Или начинать изменять с 0 позиции графика?
         image.color = new Color(image.color.r, image.color.g, image.color.b, initialTransparency);
     }

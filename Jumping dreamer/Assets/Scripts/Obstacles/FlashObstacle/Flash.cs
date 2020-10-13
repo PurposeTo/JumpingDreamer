@@ -10,8 +10,8 @@ public class Flash : MonoBehaviour, IPooledObject
     [SerializeField] private GameObject killingZoneObject = null;
 
     //private readonly float width = 5f;
-    private readonly float flashStartDelay = 2f;
-    private readonly float flashOperatingTime = 1.5f;
+    private readonly float flashStartDelay = 4f;
+    private readonly float flashOperatingTime = 2f;
 
     private Coroutine lifeCycleRoutine;
 
