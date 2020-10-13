@@ -34,13 +34,15 @@ public class FlashCompass : MonoBehaviour, IPooledObject
     private Coroutine turnOffCompassAnimationRoutine;
 
 
-    private void Awake() => image = gameObject.GetComponent<Image>();
+    private void Awake()
+    {
+        image = gameObject.GetComponent<Image>();
+        compassTransform = gameObject.GetComponent<RectTransform>();
+    }
 
 
     private void Start()
     {
-        compassTransform = gameObject.GetComponent<RectTransform>();
-
         compassInitialScale = compassTransform.sizeDelta;
 
         compassOxOffset = compassTransform.rect.width / 2;
