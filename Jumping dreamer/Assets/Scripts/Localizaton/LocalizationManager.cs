@@ -1,8 +1,10 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using System;
 
 public delegate void LocalizationСhange();
 
@@ -27,13 +29,20 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
 
     private void SetLanguageSettings()
     {
-        if (string.IsNullOrEmpty(PlayerSettings.Language))
+        if (!Array.Exists(langArray, item => item == PlayerSettings.Language))
         {
-            if (Application.systemLanguage == SystemLanguage.Russian)
+            switch (Application.systemLanguage)
             {
-                PlayerSettings.Language = "ru_Ru";
+                case SystemLanguage.Russian:
+                    PlayerSettings.Language = "ru_Ru";
+                    break;
+                case SystemLanguage.English:
+                    PlayerSettings.Language = "en_Us";
+                    break;
+                default:
+                    PlayerSettings.Language = "en_Us";
+                    break;
             }
-            else PlayerSettings.Language = "en_Us";
         }
 
         SetRightLangIndex();

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3187975396863468467}
   - component: {fileID: 3187975396863468466}
   - component: {fileID: 5541268043846706908}
-  - component: {fileID: 5638903744722462361}
+  - component: {fileID: -3214255299744315262}
   m_Layer: 0
   m_Name: Pursuer
   m_TagString: Untagged
@@ -135,7 +135,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 1
---- !u!114 &5638903744722462361
+--- !u!114 &-3214255299744315262
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3187975396863468470}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70f06bb93acdb154d8973870bcde5951, type: 3}
+  m_Script: {fileID: 11500000, guid: f7ffe7e12d5fa244bb8cb25031d1526e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3187975397136358429
