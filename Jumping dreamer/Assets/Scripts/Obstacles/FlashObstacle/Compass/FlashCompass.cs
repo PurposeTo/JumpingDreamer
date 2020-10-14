@@ -55,10 +55,10 @@ public class FlashCompass : MonoBehaviour, IPooledObject
     }
 
 
-    //private void Update()
-    //{
-    //    if (flash != null) SetCompassCharacteristics();
-    //}
+    private void Update()
+    {
+        if (flash != null) SetCompassPosition();
+    }
 
 
     public void Constructor(Flash flash)
@@ -84,10 +84,9 @@ public class FlashCompass : MonoBehaviour, IPooledObject
             yield return turnOnCompassAnimationRoutine;
         }
 
-        // Для того, чтобы не дергалось, необходимо менять позицию в Update()
         if (flashCompassOperationRoutine == null)
         {
-            flashCompassOperationRoutine = StartCoroutine(FlashCompassOperationEnumerator());
+            flashCompassOperationRoutine = StartCoroutine(ChangingTransparencyEnumerator());
             yield return flashCompassOperationRoutine;
         }
 
@@ -130,11 +129,17 @@ public class FlashCompass : MonoBehaviour, IPooledObject
     }
 
 
-    private IEnumerator FlashCompassOperationEnumerator()
+    private IEnumerator ChangingTransparencyEnumerator()
     {
         while (!flash.IsFlashKillingZoneActive)
         {
-            SetCompassCharacteristics();
+            float differenceAngleMappingOnPlayerViewingRange = CalculateDifferenceAngleMapping();
+
+            image.color = new Color(image.color.r,
+                                    image.color.g,
+                                    image.color.b,
+                                    ChangingTransparencyCurve.Evaluate(differenceAngleMappingOnPlayerViewingRange));
+
             yield return null;
         }
 
@@ -174,20 +179,10 @@ public class FlashCompass : MonoBehaviour, IPooledObject
     }
 
 
-    private void SetCompassCharacteristics()
+    private void SetCompassPosition()
     {
         float differenceAngleMappingOnPlayerViewingRange = CalculateDifferenceAngleMapping();
 
-        SetCompassPosition(differenceAngleMappingOnPlayerViewingRange);
-        image.color = new Color(image.color.r,
-                                image.color.g,
-                                image.color.b,
-                                ChangingTransparencyCurve.Evaluate(differenceAngleMappingOnPlayerViewingRange));
-    }
-
-
-    private void SetCompassPosition(float differenceAngleMappingOnPlayerViewingRange)
-    {
         compassTransform.anchorMin = new Vector2(1f - differenceAngleMappingOnPlayerViewingRange, 0f);
         compassTransform.anchorMax = new Vector2(1f - differenceAngleMappingOnPlayerViewingRange, 0f);
 
