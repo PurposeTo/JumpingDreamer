@@ -5,7 +5,8 @@ public class LanguageButton : MonoBehaviour {
     
     private Button button;
 
-    private void Start () {
+    private void Start ()
+    {
         button = GetComponent<Button>();
         button.onClick.AddListener(LocalizationManager.Instance.SetLanguage);
     }
