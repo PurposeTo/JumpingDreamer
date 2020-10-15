@@ -6,7 +6,6 @@ public class Flash : MonoBehaviour, IPooledObject
     public Vector2 Direction { get; private set; }
     public bool IsFlashKillingZoneActive { get; private set; } = false;
 
-
     [SerializeField] private GameObject killingZoneObject = null;
 
     //private readonly float width = 5f;
