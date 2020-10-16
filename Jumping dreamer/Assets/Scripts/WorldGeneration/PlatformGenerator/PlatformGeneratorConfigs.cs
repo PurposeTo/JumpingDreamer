@@ -1,5 +1,6 @@
-﻿using Newtonsoft.Json;
-using UnityEngine;
+﻿using UnityEngine;
+using System;
+using System.Text;
 
 public enum CreatingValuesInClassMode
 {
@@ -21,7 +22,7 @@ public class PlatformGeneratorConfigs
             default:
                 break;
         }
-        
+
         Debug.Log($"Create new platformConfigs: {PlatformConfigs}");
         // todo: должно определяться в зависимости от настроек генерации
         TimePeriodForGeneratingPlatforms = GetTimePeriodForGeneratingPlatforms(PlatformConfigs);
@@ -70,9 +71,12 @@ public class PlatformConfigs
                 InitializePropertiesByRandomValues();
                 break;
             case CreatingValuesInClassMode.Default:
+                InitializePropertiesByDefaultValues();
                 break;
             default:
-                throw new System.Exception($"{creating} is unknown Creating!");
+                Debug.LogError($"{creating} is unknown Creating!");
+                InitializePropertiesByDefaultValues();
+                break;
         }
     }
 
@@ -84,13 +88,7 @@ public class PlatformConfigs
 
     public static PlatformConfigs GetDefault()
     {
-        return new PlatformConfigs(CreatingValuesInClassMode.Default)
-        {
-            PlatformMovingTypes = new PlatformConfigsData.PlatformMovingType[] { PlatformConfigsData.PlatformMovingType.VerticalMotion },
-            PlatformMovingTypeConfigs = new IPlatformMotionConfig[] { VerticalMotionConfig.GetDefault() },
-            PlatformCreatingPlace = PlatformConfigsData.PlatformCreatingPlace.InCentre,
-            PlatformCauseOfDestroy = PlatformConfigsData.PlatformCauseOfDestroy.VerticalCauseOfDeathControl
-        };
+        return new PlatformConfigs(CreatingValuesInClassMode.Default);
     }
 
     public static PlatformConfigs GetRandom()
@@ -100,7 +98,22 @@ public class PlatformConfigs
 
     public override string ToString()
     {
-        return JsonConvert.SerializeObject(this);
+        StringBuilder platformMovingTypesConfigsBuilder = new StringBuilder();
+        StringBuilder platformMovingTypesBuilder = new StringBuilder();
+
+        Array.ForEach(PlatformMovingTypes, item => platformMovingTypesBuilder.Append(item + " "));
+        Array.ForEach(PlatformMovingTypeConfigs, item => platformMovingTypesConfigsBuilder.Append(item.GetDebugEnumValue() + " "));
+
+        return string.Format($"PlatformMovingTypes: {platformMovingTypesBuilder}, PlatformMovingTypeConfigs: {platformMovingTypesConfigsBuilder}, PlatformCreatingPlace: {PlatformCreatingPlace}, PlatformCauseOfDestroy: {PlatformCauseOfDestroy}");
+    }
+
+
+    private void InitializePropertiesByDefaultValues()
+    {
+        PlatformMovingTypes = new PlatformConfigsData.PlatformMovingType[] { PlatformConfigsData.PlatformMovingType.VerticalMotion };
+        PlatformMovingTypeConfigs = new IPlatformMotionConfig[] { VerticalMotionConfig.GetDefault() };
+        PlatformCreatingPlace = PlatformConfigsData.PlatformCreatingPlace.InCentre;
+        PlatformCauseOfDestroy = PlatformConfigsData.PlatformCauseOfDestroy.VerticalCauseOfDeathControl;
     }
 
 

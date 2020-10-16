@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(PlatformGeneratorData))]
 public class PlatformGeneratorController : SingletonMonoBehaviour<PlatformGeneratorController>
 {
     private PlatformGeneratorData platformGeneratorData;

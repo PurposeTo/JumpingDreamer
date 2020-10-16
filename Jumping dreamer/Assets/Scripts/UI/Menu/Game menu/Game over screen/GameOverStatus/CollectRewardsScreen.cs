@@ -16,9 +16,10 @@ public class CollectRewardsScreen : MonoBehaviour
     public void CollectRewards()
     {
         // Показать рекламу
-
+        print("AD (collect method)");
         AdMobScript.Instance.ShowRewardVideoAd(isAdWasLoaded =>
         {
+            print("AD is loaded (invoking): " + isAdWasLoaded);
             if (isAdWasLoaded)
             {
                 AdMobScript.Instance.OnCloseAdWait(mustRewardPlayer =>

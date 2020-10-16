@@ -138,6 +138,7 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
 
     private IEnumerator WaitLoadingPlayerSettingsEnumerator()
     {
+        yield return new WaitUntil(() => PlayerSettingsStorage.Instance != null);
         yield return new WaitUntil(() => PlayerSettingsStorage.Instance.PlayerSettings != null);
         SetLanguageSettings();
         LoadLocalizedText();

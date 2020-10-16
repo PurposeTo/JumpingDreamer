@@ -17,7 +17,7 @@
 
 public interface IPlatformMotionConfig
 {
-
+    string GetDebugEnumValue();
 }
 
 
@@ -29,6 +29,13 @@ public abstract class PlatformMotionConfig<T> where T : System.Enum
     }
 
     public T MotionConfig { get; private protected set; }
+
+
+    public string GetDebugEnumValue()
+    {
+        return MotionConfig.ToString();
+    }
+
 
     private protected abstract T[] AllMotionConfigs { get; }
 }

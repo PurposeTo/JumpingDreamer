@@ -58,9 +58,16 @@ public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
     public void ShowRewardVideoAd(Action<bool> isAdLoadedCallback)
     {
         bool isAdWasLoaded = rewardBasedVideoAd.IsLoaded();
-        if (isAdWasLoaded) rewardBasedVideoAd.Show();
+        print("AD is loaded (show method): " + isAdWasLoaded);
+        if (isAdWasLoaded)
+        {
+            print("AD show ad!");
+            rewardBasedVideoAd.Show();
+        }
         else RequestRewardBasedVideo();
+        print("AD before invoke (show method)");
         isAdLoadedCallback?.Invoke(isAdWasLoaded);
+        print("AD after invoke (show method)");
     }
 
 
@@ -76,6 +83,7 @@ public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
         AdRequest request = new AdRequest.Builder().Build();
         // Load the rewarded video ad with the request.
         rewardBasedVideoAd.LoadAd(request, rewardedVideoAdForTest_ID);
+        print("krya is loaded (request): " + rewardBasedVideoAd.IsLoaded());
     }
 
 
