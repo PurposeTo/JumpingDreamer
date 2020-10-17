@@ -13,6 +13,8 @@ public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
 
     private AdShow adShow;
 
+    private readonly InternetConnectionChecker connectionChecker = new InternetConnectionChecker();
+
 
     protected override void AwakeSingleton()
     {
@@ -55,20 +57,29 @@ public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
     }
 
 
-    public void ShowRewardVideoAd(Action<bool> isAdLoadedCallback)
+    public void ShowRewardVideoAd(Action<bool> hasAdBeenShowed)
     {
         bool isAdWasLoaded = rewardBasedVideoAd.IsLoaded();
-        print("AD is loaded (show method): " + isAdWasLoaded);
         if (isAdWasLoaded)
         {
-            print("AD show ad!");
-            rewardBasedVideoAd.Show();
+            StartCoroutine(connectionChecker.PingGoogleEnumerator(isInternetAvaliable =>
+            {
+                if (isInternetAvaliable) rewardBasedVideoAd.Show();
+                hasAdBeenShowed?.Invoke(isAdWasLoaded && isInternetAvaliable);
+            }));
         }
         else RequestRewardBasedVideo();
-        print("AD before invoke (show method)");
-        isAdLoadedCallback?.Invoke(isAdWasLoaded);
-        print("AD after invoke (show method)");
     }
+    //public void ShowRewardVideoAd(Action<bool> hasAdBeenShowed)
+    //{
+    //    bool isAdWasLoaded = rewardBasedVideoAd.IsLoaded();
+    //    if (isAdWasLoaded)
+    //    {
+    //        rewardBasedVideoAd.Show();
+    //    }
+    //    else RequestRewardBasedVideo();
+    //    hasAdBeenShowed?.Invoke(isAdWasLoaded);
+    //}
 
 
     public void OnCloseAdWait(Action<bool> mustRewardPlayerCallback)
@@ -83,7 +94,6 @@ public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
         AdRequest request = new AdRequest.Builder().Build();
         // Load the rewarded video ad with the request.
         rewardBasedVideoAd.LoadAd(request, rewardedVideoAdForTest_ID);
-        print("krya is loaded (request): " + rewardBasedVideoAd.IsLoaded());
     }
 
 

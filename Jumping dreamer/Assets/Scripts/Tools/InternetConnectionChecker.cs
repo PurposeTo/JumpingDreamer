@@ -3,45 +3,20 @@ using System.Collections;
 using UnityEngine.Networking;
 using UnityEngine;
 
-[Obsolete]
-public class InternetConnectionChecker : SingletonMonoBehaviour<InternetConnectionChecker>
+public class InternetConnectionChecker
 {
-    public bool IsInternetAvaliable { get; private set; }
-
-    private UnityWebRequest request;
-
-    private Coroutine pingGoogleRoutine;
-
-
-    private void Start()
+    public IEnumerator PingGoogleEnumerator(Action<bool> isNeedToShowAd)
     {
-        request = new UnityWebRequest("http://google.com", "GET");
-        StartCoroutine(CheckInternetConnectionEnumerator());
-    }
-
-
-    private IEnumerator CheckInternetConnectionEnumerator()
-    {
-        while (true)
+        using (UnityWebRequest request = new UnityWebRequest("https://google.com", "GET"))
         {
-            if (pingGoogleRoutine == null) { pingGoogleRoutine = StartCoroutine(PingGoogleEnumerator()); }
-            yield return pingGoogleRoutine;
-            yield return new WaitForSeconds(15.0f);
+            yield return request.SendWebRequest();
+
+            if (request.error != null || request.isHttpError == true) // isHttpError - нужна проверка?
+            {
+                Debug.LogWarning(request.error);
+                isNeedToShowAd?.Invoke(false);
+            }
+            else isNeedToShowAd?.Invoke(true);
         }
-    }
-
-
-    private IEnumerator PingGoogleEnumerator()
-    {
-        yield return request.SendWebRequest();
-
-        if (request.error != null || request.isHttpError == true)
-        {
-            Debug.LogWarning(request.error);
-            IsInternetAvaliable = false;
-        }
-        else { IsInternetAvaliable = true; }
-
-        pingGoogleRoutine = null;
     }
 }
