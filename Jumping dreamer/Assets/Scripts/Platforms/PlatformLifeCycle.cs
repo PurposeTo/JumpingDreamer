@@ -129,8 +129,6 @@ public class PlatformLifeCycle : MonoBehaviour, IPooledObject
 
     private void SetAnimationConfings()
     {
-        print($"SetAnimationConfings {gameObject.GetInstanceID()}");
-
         animatorBlinkingController.SetBlinkingAnimationSpeed(blinkingAnimationSeconds);
         animatorBlinkingController.SetAnimationDuration(AnimatorBlinkingController.DurationType.Loops, 3);
         animatorBlinkingController.SetManualControl(manualControlEnableState: true, manualControlDisableState: false);

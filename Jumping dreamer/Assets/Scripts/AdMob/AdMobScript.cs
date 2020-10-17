@@ -13,6 +13,8 @@ public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
 
     private AdShow adShow;
 
+    private readonly InternetConnectionChecker connectionChecker = new InternetConnectionChecker();
+
 
     protected override void AwakeSingleton()
     {
@@ -55,13 +57,29 @@ public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
     }
 
 
-    public void ShowRewardVideoAd(Action<bool> isAdLoadedCallback)
+    public void ShowRewardVideoAd(Action<bool> hasAdBeenShowed)
     {
         bool isAdWasLoaded = rewardBasedVideoAd.IsLoaded();
-        if (isAdWasLoaded) rewardBasedVideoAd.Show();
+        if (isAdWasLoaded)
+        {
+            StartCoroutine(connectionChecker.PingGoogleEnumerator(isInternetAvaliable =>
+            {
+                if (isInternetAvaliable) rewardBasedVideoAd.Show();
+                hasAdBeenShowed?.Invoke(isAdWasLoaded && isInternetAvaliable);
+            }));
+        }
         else RequestRewardBasedVideo();
-        isAdLoadedCallback?.Invoke(isAdWasLoaded);
     }
+    //public void ShowRewardVideoAd(Action<bool> hasAdBeenShowed)
+    //{
+    //    bool isAdWasLoaded = rewardBasedVideoAd.IsLoaded();
+    //    if (isAdWasLoaded)
+    //    {
+    //        rewardBasedVideoAd.Show();
+    //    }
+    //    else RequestRewardBasedVideo();
+    //    hasAdBeenShowed?.Invoke(isAdWasLoaded);
+    //}
 
 
     public void OnCloseAdWait(Action<bool> mustRewardPlayerCallback)

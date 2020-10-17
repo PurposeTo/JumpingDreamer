@@ -6,6 +6,7 @@ public class PlatformGenerator
 {
     public PlatformGenerator(PlatformGeneratorData platformGeneratorData)
     {
+        if (platformGeneratorData == null) throw new System.ArgumentNullException("platformGeneratorData", "platformGeneratorData must not be null!");
         this.platformGeneratorData = platformGeneratorData;
         PlatformGeneratorConfigs = PlatformGeneratorConfigs.GetDefault();
     }

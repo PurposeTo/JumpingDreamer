@@ -17,8 +17,8 @@ public class EarnedScoreInGame : MonoBehaviour
     {
         earnedScore = gameObject.GetComponent<TextMeshProUGUI>();
 
-        GameManager.Instance.PlayerPresenter.ScoreCollector.OnScoreAmountChange += ShowScore;
-        GameManager.Instance.PlayerPresenter.StarCollector.OnStarAmountChange += ShowScore;
+        GameManager.Instance.PlayerPresenter.ScoreCollector.OnScoreAmountChange += UpdateResults;
+        GameManager.Instance.PlayerPresenter.StarCollector.OnStarAmountChange += UpdateResults;
         ShowScore();
 
         /*
@@ -33,8 +33,8 @@ public class EarnedScoreInGame : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameManager.Instance.PlayerPresenter.ScoreCollector.OnScoreAmountChange -= ShowScore;
-        GameManager.Instance.PlayerPresenter.StarCollector.OnStarAmountChange -= ShowScore;
+        GameManager.Instance.PlayerPresenter.ScoreCollector.OnScoreAmountChange -= UpdateResults;
+        GameManager.Instance.PlayerPresenter.StarCollector.OnStarAmountChange -= UpdateResults;
         PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.OnNewScoreRecord -= isRecordNewEvent;
     }
 
@@ -65,5 +65,12 @@ public class EarnedScoreInGame : MonoBehaviour
         }
 
         earnedScore.text += $"\n\n{recordScoreText}\n{RecordUI}";
+    }
+
+
+    private void UpdateResults()
+    {
+        ShowScore();
+        ShowScoreWithRecord();
     }
 }

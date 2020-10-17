@@ -10,6 +10,12 @@ public class GameOverMenu : MonoBehaviour
     {
         // Статистика должна сохраняться при появлении экрана GameOverMenu, но он появляется только один раз за все время существования игровой сцены. После этого сцена перезагружается => данный Awake будет вызван уже после перезагрузки.
         PlayerDataModelController.Instance.UpdatePlayerModelAndSavePlayerData();
+    }
+
+
+    // Руками не трогать - вызов метода должен происходить после инициализации скрипта EarnedScoreInGame
+    private void Start()
+    {
         EarnedScoreInGame.ShowScoreWithRecord();
     }
 

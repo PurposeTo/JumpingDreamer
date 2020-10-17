@@ -16,10 +16,9 @@ public class CollectRewardsScreen : MonoBehaviour
     public void CollectRewards()
     {
         // Показать рекламу
-
-        AdMobScript.Instance.ShowRewardVideoAd(isAdWasLoaded =>
+        AdMobScript.Instance.ShowRewardVideoAd(hasAdBeenShowed =>
         {
-            if (isAdWasLoaded)
+            if (hasAdBeenShowed)
             {
                 AdMobScript.Instance.OnCloseAdWait(mustRewardPlayer =>
                 {
@@ -38,7 +37,7 @@ public class CollectRewardsScreen : MonoBehaviour
             }
             else
             {
-                Debug.LogError("Ad was loaded, but now it isn't");
+                Debug.LogWarning("Ad was not showed cause internet connection lost.");
                 gameOverStatusScreen.ShowGameOverMenu();
             }
         });
