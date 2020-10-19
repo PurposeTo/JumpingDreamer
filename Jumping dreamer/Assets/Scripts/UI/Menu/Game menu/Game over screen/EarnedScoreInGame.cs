@@ -17,9 +17,9 @@ public class EarnedScoreInGame : MonoBehaviour
     {
         earnedScore = gameObject.GetComponent<TextMeshProUGUI>();
 
-        GameManager.Instance.PlayerPresenter.ScoreCollector.OnScoreAmountChange += UpdateResults;
-        GameManager.Instance.PlayerPresenter.StarCollector.OnStarAmountChange += UpdateResults;
-        ShowScore();
+        GameManager.Instance.PlayerPresenter.ScoreCollector.OnScoreAmountChange += ShowScoreWithRecord;
+        GameManager.Instance.PlayerPresenter.StarCollector.OnStarAmountChange += ShowScoreWithRecord;
+        earnedScore.text = GetScoreText();
 
         /*
         * 1. Сохраняются статы
@@ -33,13 +33,13 @@ public class EarnedScoreInGame : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameManager.Instance.PlayerPresenter.ScoreCollector.OnScoreAmountChange -= UpdateResults;
-        GameManager.Instance.PlayerPresenter.StarCollector.OnStarAmountChange -= UpdateResults;
+        GameManager.Instance.PlayerPresenter.ScoreCollector.OnScoreAmountChange -= ShowScoreWithRecord;
+        GameManager.Instance.PlayerPresenter.StarCollector.OnStarAmountChange -= ShowScoreWithRecord;
         PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.OnNewScoreRecord -= isRecordNewEvent;
     }
 
 
-    private void ShowScore()
+    private string GetScoreText()
     {
         int score = GameManager.Instance.PlayerPresenter.ScoreCollector.Score;
         string scoreText = $"Score\n{score}";
@@ -47,7 +47,7 @@ public class EarnedScoreInGame : MonoBehaviour
         int stars = GameManager.Instance.PlayerPresenter.StarCollector.Stars;
         string starsText = $"Stars\n{stars}";
 
-        earnedScore.text = $"{scoreText}\n{starsText}";
+        return $"{scoreText}\n{starsText}";
     }
 
 
@@ -55,22 +55,9 @@ public class EarnedScoreInGame : MonoBehaviour
     {
         string recordScoreText;
 
-        if (isRecordNew)
-        {
-            recordScoreText = $"New record!";
-        }
-        else
-        {
-            recordScoreText = $"Record";
-        }
+        if (isRecordNew) recordScoreText = $"New record!";
+        else recordScoreText = $"Record";
 
-        earnedScore.text += $"\n\n{recordScoreText}\n{RecordUI}";
-    }
-
-
-    private void UpdateResults()
-    {
-        ShowScore();
-        ShowScoreWithRecord();
+        earnedScore.text = $"{GetScoreText()}\n\n{recordScoreText}\n{RecordUI}";
     }
 }
