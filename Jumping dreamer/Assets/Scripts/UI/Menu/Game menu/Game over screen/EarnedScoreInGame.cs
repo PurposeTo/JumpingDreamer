@@ -19,7 +19,7 @@ public class EarnedScoreInGame : MonoBehaviour
 
         GameManager.Instance.PlayerPresenter.ScoreCollector.OnScoreAmountChange += ShowScoreWithRecord;
         GameManager.Instance.PlayerPresenter.StarCollector.OnStarAmountChange += ShowScoreWithRecord;
-        earnedScore.text = GetScoreText();
+        ShowScore();
 
         /*
         * 1. Сохраняются статы
@@ -39,15 +39,9 @@ public class EarnedScoreInGame : MonoBehaviour
     }
 
 
-    private string GetScoreText()
+    private void ShowScore()
     {
-        int score = GameManager.Instance.PlayerPresenter.ScoreCollector.Score;
-        string scoreText = $"Score\n{score}";
-
-        int stars = GameManager.Instance.PlayerPresenter.StarCollector.Stars;
-        string starsText = $"Stars\n{stars}";
-
-        return $"{scoreText}\n{starsText}";
+        earnedScore.text = GetScoreText();
     }
 
 
@@ -59,5 +53,17 @@ public class EarnedScoreInGame : MonoBehaviour
         else recordScoreText = $"Record";
 
         earnedScore.text = $"{GetScoreText()}\n\n{recordScoreText}\n{RecordUI}";
+    }
+
+
+    private string GetScoreText()
+    {
+        int score = GameManager.Instance.PlayerPresenter.ScoreCollector.Score;
+        string scoreText = $"Score\n{score}";
+
+        int stars = GameManager.Instance.PlayerPresenter.StarCollector.Stars;
+        string starsText = $"Stars\n{stars}";
+
+        return $"{scoreText}\n{starsText}";
     }
 }
