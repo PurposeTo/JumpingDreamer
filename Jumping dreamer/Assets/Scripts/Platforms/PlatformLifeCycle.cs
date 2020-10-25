@@ -47,7 +47,7 @@ public class PlatformLifeCycle : MonoBehaviour, IPooledObject
 
     public void SetCauseOfDestroy()
     {
-        PlatformConfigsData.PlatformCauseOfDestroy platformCauseOfDestroy = PlatformGeneratorController.Instance.PlatformGenerator.PlatformGeneratorConfigs.PlatformConfigs.PlatformCauseOfDestroy;
+        PlatformConfigsData.PlatformCauseOfDestroy platformCauseOfDestroy = WorldGeneratorController.Instance.PlatformGeneratorPresenter.PlatformGeneratorConfigs.PlatformConfigs.PlatformCauseOfDestroy;
 
         switch (platformCauseOfDestroy)
         {
@@ -56,7 +56,7 @@ public class PlatformLifeCycle : MonoBehaviour, IPooledObject
                 IsAlive = () => !(lifeTime >= lifeTimeToDestroy);
                 break;
             case PlatformConfigsData.PlatformCauseOfDestroy.NoLifeTime:
-                lifeTimeToDestroy = 2f;
+                lifeTimeToDestroy = minlifeTime / 3f;
                 IsAlive = () => !(lifeTime >= lifeTimeToDestroy);
                 break;
             case PlatformConfigsData.PlatformCauseOfDestroy.VerticalCauseOfDeathControl:
@@ -67,12 +67,12 @@ public class PlatformLifeCycle : MonoBehaviour, IPooledObject
                 {
                     case PlatformConfigsData.VerticalCauseOfDeathControl.TopBorder:
                         maxAvailableHight = UnityEngine.Random.Range(PlatformGeneratorData.PlatformAvailableHighestArea * (2f / 3f), PlatformGeneratorData.PlatformAvailableHighestArea);
-                        IsAlive = () => 
+                        IsAlive = () =>
                         !((GameManager.Instance.GetToCentreMagnitude(transform.position)) >= maxAvailableHight);
                         break;
                     case PlatformConfigsData.VerticalCauseOfDeathControl.BottomBorder:
                         float minAvailableHight = Centre.CentreRadius * 2f;
-                        IsAlive = () => 
+                        IsAlive = () =>
                         !((GameManager.Instance.CentreObject.transform.position - transform.position).magnitude <= minAvailableHight);
                         break;
                     default:
