@@ -154,7 +154,6 @@
     <Compile Include="Assets\Scripts\Localizaton\StartupManager.cs" />
     <Compile Include="Assets\Scripts\Obstacles\FlashObstacle\Compass\FlashCompass.cs" />
     <Compile Include="Assets\Scripts\Obstacles\FlashObstacle\Flash.cs" />
-    <Compile Include="Assets\Scripts\Obstacles\FlashObstacle\FlashObstacleGenerator.cs" />
     <Compile Include="Assets\Scripts\OrthoRotationToTheCentre.cs" />
     <Compile Include="Assets\Scripts\Platforms\Brokable.cs" />
     <Compile Include="Assets\Scripts\Platforms\Move\Base\IMovable.cs" />
@@ -233,13 +232,16 @@
     <Compile Include="Assets\Scripts\WorldGeneration\Color scheme generator\ColorSchemeData.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\Color scheme generator\ColorSchemeGenerator.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\Color scheme generator\ColorSchemePresenter.cs" />
+    <Compile Include="Assets\Scripts\WorldGeneration\Flash generator\FlashGenerator.cs" />
+    <Compile Include="Assets\Scripts\WorldGeneration\Flash generator\FlashGeneratorData.cs" />
+    <Compile Include="Assets\Scripts\WorldGeneration\Flash generator\FlashGeneratorPresenter.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\Platform generator\Base\PlatformGenerator.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\Platform generator\Base\PlatformGeneratorData.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\Platform generator\PlatformConfigsData.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\Platform generator\PlatformGeneratorConfigs.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\Platform generator\PlatformGeneratorPresenter.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\StarGenerator.cs" />
-    <Compile Include="Assets\Scripts\WorldGeneration\WorldGeneratorController.cs" />
+    <Compile Include="Assets\Scripts\WorldGeneration\WorldGenerationRulesController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />

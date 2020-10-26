@@ -33,4 +33,22 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     {
         return GetToCentreVector(position).magnitude;
     }
+
+
+    public Vector2 GetFromCentreVector(Vector2 position)
+    {
+        return GetToCentreVector(position) * -1f;
+    }
+
+
+    public Vector2 GetFromCentreDirection(Vector2 position)
+    {
+        return GetToCentreDirection(position) * -1f;
+    }
+
+
+    public float GetFromCentreMagnitude(Vector2 position)
+    {
+        return GetToCentreMagnitude(position) * -1f;
+    }
 }

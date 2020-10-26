@@ -47,7 +47,7 @@ public class PlatformLifeCycle : MonoBehaviour, IPooledObject
 
     public void SetCauseOfDestroy()
     {
-        PlatformConfigsData.PlatformCauseOfDestroy platformCauseOfDestroy = WorldGeneratorController.Instance.PlatformGeneratorPresenter.PlatformGeneratorConfigs.PlatformConfigs.PlatformCauseOfDestroy;
+        PlatformConfigsData.PlatformCauseOfDestroy platformCauseOfDestroy = WorldGenerationRulesController.Instance.PlatformGeneratorPresenter.PlatformGeneratorConfigs.PlatformConfigs.PlatformCauseOfDestroy;
 
         switch (platformCauseOfDestroy)
         {
@@ -56,11 +56,10 @@ public class PlatformLifeCycle : MonoBehaviour, IPooledObject
                 IsAlive = () => !(lifeTime >= lifeTimeToDestroy);
                 break;
             case PlatformConfigsData.PlatformCauseOfDestroy.NoLifeTime:
-                lifeTimeToDestroy = minlifeTime / 3f;
+                lifeTimeToDestroy = minlifeTime / 2.5f;
                 IsAlive = () => !(lifeTime >= lifeTimeToDestroy);
                 break;
             case PlatformConfigsData.PlatformCauseOfDestroy.VerticalCauseOfDeathControl:
-                // todo: определяется в зависимости от движения платформы...
                 var varticalCauseOfDead = GetCauseOfDeath(gameObject.GetComponent<VerticalMotion>().Direction);
 
                 switch (varticalCauseOfDead)

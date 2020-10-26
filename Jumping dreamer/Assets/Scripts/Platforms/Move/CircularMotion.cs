@@ -17,7 +17,7 @@ public class CircularMotion : PlatformMovable, IMovable, IPooledObject
 
     public void SetMotionConfigs()
     {
-        PlatformConfigs platformConfigs = WorldGeneratorController.Instance.PlatformGeneratorPresenter.PlatformGeneratorConfigs.PlatformConfigs;
+        PlatformConfigs platformConfigs = WorldGenerationRulesController.Instance.PlatformGeneratorPresenter.PlatformGeneratorConfigs.PlatformConfigs;
         CircularMotionConfig circularMotionConfig = (CircularMotionConfig)platformConfigs.PlatformMovingTypeConfigs
                 .ToList()
                 .Find(platformMotionConfig => platformMotionConfig is CircularMotionConfig);

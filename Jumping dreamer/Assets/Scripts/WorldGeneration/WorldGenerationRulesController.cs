@@ -1,24 +1,22 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class WorldGeneratorController : SingletonMonoBehaviour<WorldGeneratorController>
+public class WorldGenerationRulesController : SingletonMonoBehaviour<WorldGenerationRulesController>
 {
     public PlatformGeneratorPresenter PlatformGeneratorPresenter { get; private set; }
     public ColorSchemePresenter ColorSchemePresenter { get; private set; }
+    public FlashGeneratorPresenter FlashGeneratorPresenter { get; private set; }
 
-    private readonly float timePeriodForTheGenerationRules = 30f;
+    private readonly float timePeriodForTheGenerationRules = 35f;
     private Coroutine lifeCycleRoutine;
 
 
     protected override void AwakeSingleton()
     {
-        PlatformGeneratorPresenter = gameObject.GetComponent<PlatformGeneratorPresenter>();
-        ColorSchemePresenter = gameObject.GetComponent<ColorSchemePresenter>();
-    }
+        PlatformGeneratorPresenter = gameObject.GetComponentInChildren<PlatformGeneratorPresenter>();
+        ColorSchemePresenter = gameObject.GetComponentInChildren<ColorSchemePresenter>();
+        FlashGeneratorPresenter = gameObject.GetComponentInChildren<FlashGeneratorPresenter>();
 
-
-    private void Start()
-    {
         if (lifeCycleRoutine == null) lifeCycleRoutine = StartCoroutine(LifeCycleEnumerator());
     }
 
@@ -26,7 +24,6 @@ public class WorldGeneratorController : SingletonMonoBehaviour<WorldGeneratorCon
     private IEnumerator LifeCycleEnumerator()
     {
         SetDefaultGenerationRules();
-        StartWorldInitialization();
 
         while (true)
         {
@@ -40,12 +37,6 @@ public class WorldGeneratorController : SingletonMonoBehaviour<WorldGeneratorCon
     {
         PlatformGeneratorPresenter.SetDefaultPlatformGeneratorConfigs();
         ColorSchemePresenter.SetDefaultColorScheme();
-    }
-
-
-    private void StartWorldInitialization()
-    {
-        PlatformGeneratorPresenter.StartPlatformGeneratorInitialization();
     }
 
 

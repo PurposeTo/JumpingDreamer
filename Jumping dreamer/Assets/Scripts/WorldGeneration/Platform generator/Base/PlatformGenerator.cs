@@ -2,34 +2,31 @@
 using System.Linq;
 using UnityEngine;
 
-public class PlatformGenerator
+public class PlatformGenerator : MonoBehaviour
 {
-    public PlatformGenerator(PlatformGeneratorData platformGeneratorData)
-    {
-        if (platformGeneratorData == null) throw new System.ArgumentNullException("platformGeneratorData", "platformGeneratorData must not be null!");
-        this.platformGeneratorData = platformGeneratorData;
-    }
-
     public PlatformGeneratorConfigs PlatformGeneratorConfigs { get; private set; }
-    private readonly PlatformGeneratorData platformGeneratorData;
+    private PlatformGeneratorData platformGeneratorData;
 
     private float counter = 0f;
     private protected List<Vector2> directionsAroundCircle = new List<Vector2>();
 
 
-    public void Generating()
+    private void Start()
     {
-        if (counter > 0f)
-        {
-            counter -= Time.deltaTime;
-        }
-        else
-        {
-            CheckDirectionsAroundCircle();
-            GeneratePlatform();
+        GenerateRingFromVerticalMotionPlatforms();
+    }
 
-            counter = PlatformGeneratorConfigs.TimePeriodForGeneratingPlatforms;
-        }
+
+    private void Update()
+    {
+        Generating();
+    }
+
+
+    public void Constructor(PlatformGeneratorData platformGeneratorData)
+    {
+        if (platformGeneratorData == null) throw new System.ArgumentNullException("platformGeneratorData");
+        this.platformGeneratorData = platformGeneratorData;
     }
 
 
@@ -48,6 +45,22 @@ public class PlatformGenerator
     public void GenerateRingFromVerticalMotionPlatforms()
     {
         GenerateRingFromPlatforms(platformGeneratorData.VerticalMotionPlatform, 20f, 5f);
+    }
+
+
+    private void Generating()
+    {
+        if (counter > 0f)
+        {
+            counter -= Time.deltaTime;
+        }
+        else
+        {
+            CheckDirectionsAroundCircle();
+            GeneratePlatform();
+
+            counter = PlatformGeneratorConfigs.TimePeriodForGeneratingPlatforms;
+        }
     }
 
 

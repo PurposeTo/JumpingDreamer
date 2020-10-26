@@ -1,38 +1,28 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(ColorSchemeGenerator))]
 public class ColorSchemePresenter : MonoBehaviour
 {
-    [SerializeField] private Image backgroundImageToCamera;
+    [SerializeField] private Image backgroundImageToCamera = null;
     [SerializeField] private ColorSchemeData colorSchemeData = null;
     private ColorSchemeGenerator colorSchemeGenerator;
 
     private void Awake()
     {
-        colorSchemeGenerator = new ColorSchemeGenerator(colorSchemeData, backgroundImageToCamera);
+        colorSchemeGenerator = gameObject.GetComponent<ColorSchemeGenerator>();
+        colorSchemeGenerator.Constructor(colorSchemeData, backgroundImageToCamera);
     }
 
 
     public void SetDefaultColorScheme()
     {
-        ChangeColorSchemeRoutine(colorSchemeGenerator.GetDefaultColorScheme());
+        colorSchemeGenerator.SetDefaultColorScheme();
     }
 
 
     public void SetNewColorScheme()
     {
-        ChangeColorSchemeRoutine(colorSchemeGenerator.GetRandomColorSchemeExcluding());
-    }
-
-
-    private void ChangeColorSchemeRoutine(Color color)
-    {
-        if (colorSchemeGenerator.ChangeColorSchemeRoutine != null)
-        {
-            StopCoroutine(colorSchemeGenerator.ChangeColorSchemeRoutine);
-            colorSchemeGenerator.ChangeColorSchemeRoutine = null;
-        }
-
-        colorSchemeGenerator.ChangeColorSchemeRoutine = StartCoroutine(colorSchemeGenerator.ChangeColorSchemeEnumerator(color));
+        colorSchemeGenerator.SetRandomColorSchemeExcluding();
     }
 }

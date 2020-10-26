@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/ColorSchemeData")]
+//[CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/ColorSchemeData")]
 public class ColorSchemeData : ScriptableObject
 {
     [SerializeField]
