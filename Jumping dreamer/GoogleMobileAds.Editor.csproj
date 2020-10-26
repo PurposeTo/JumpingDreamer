@@ -271,20 +271,20 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Assets/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Google.IOSResolver_v1.2.159">
-      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/PackageCache/com.google.external-dependency-manager@1.2.159/ExternalDependencyManager/Editor/Google.IOSResolver_v1.2.159.dll</HintPath>
-    </Reference>
-    <Reference Include="Google.JarResolver_v1.2.159">
-      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/PackageCache/com.google.external-dependency-manager@1.2.159/ExternalDependencyManager/Editor/Google.JarResolver_v1.2.159.dll</HintPath>
-    </Reference>
-    <Reference Include="Google.PackageManagerResolver_v1.2.159">
-      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/PackageCache/com.google.external-dependency-manager@1.2.159/ExternalDependencyManager/Editor/Google.PackageManagerResolver_v1.2.159.dll</HintPath>
-    </Reference>
     <Reference Include="Google.VersionHandler">
-      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/PackageCache/com.google.external-dependency-manager@1.2.159/ExternalDependencyManager/Editor/Google.VersionHandler.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/PackageCache/com.google.external-dependency-manager@1.2.161/ExternalDependencyManager/Editor/Google.VersionHandler.dll</HintPath>
     </Reference>
-    <Reference Include="Google.VersionHandlerImpl_v1.2.159">
-      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/PackageCache/com.google.external-dependency-manager@1.2.159/ExternalDependencyManager/Editor/Google.VersionHandlerImpl_v1.2.159.dll</HintPath>
+    <Reference Include="Google.VersionHandlerImpl_v1.2.161">
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/PackageCache/com.google.external-dependency-manager@1.2.161/ExternalDependencyManager/Editor/Google.VersionHandlerImpl_v1.2.161.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.PackageManagerResolver_v1.2.161">
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/PackageCache/com.google.external-dependency-manager@1.2.161/ExternalDependencyManager/Editor/Google.PackageManagerResolver_v1.2.161.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.JarResolver_v1.2.161">
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/PackageCache/com.google.external-dependency-manager@1.2.161/ExternalDependencyManager/Editor/Google.JarResolver_v1.2.161.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.IOSResolver_v1.2.161">
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/PackageCache/com.google.external-dependency-manager@1.2.161/ExternalDependencyManager/Editor/Google.IOSResolver_v1.2.161.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>

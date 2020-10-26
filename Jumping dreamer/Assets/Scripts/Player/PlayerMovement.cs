@@ -75,8 +75,8 @@ public class PlayerMovement : MonoBehaviour
 
     public void TossUp(float direction)
     {
-            GravityProjectVector = GameManager.Instance.GetToCentreDirection(transform.position) * -1 * 
-            GravityProjectVector.magnitude * bounciness * direction;
+        GravityProjectVector = GameManager.Instance.GetFromCentreDirection(transform.position) *
+        GravityProjectVector.magnitude * bounciness * direction;
 
         GravityProjectVector = GameLogic.ClampVectorByMagnitude(GravityProjectVector, minGravityVelocity);
         SetPlayerVelocity();

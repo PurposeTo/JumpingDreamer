@@ -1,11 +1,19 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ColorSchemeGenerator
+public class ColorSchemeGenerator : MonoBehaviour
 {
-    public ColorSchemeGenerator(ColorSchemeData colorSchemeData, Image backgroundImageToCamera)
+    private readonly float timeToChangeScheme = 1f;
+    private ColorSchemeData colorSchemeData;
+    private Image backgroundImageToCamera;
+
+    private Color currentSetColorScheme;
+
+    public Coroutine ChangeColorSchemeRoutine;
+
+
+    public void Constructor(ColorSchemeData colorSchemeData, Image backgroundImageToCamera)
     {
         if (colorSchemeData == null) throw new System.ArgumentNullException("colorSchemeData");
         if (backgroundImageToCamera == null) throw new System.ArgumentNullException("backgroundImageToCamera");
@@ -14,14 +22,40 @@ public class ColorSchemeGenerator
         this.backgroundImageToCamera = backgroundImageToCamera;
     }
 
-    private readonly float timeToChangeScheme = 1f;
-    private ColorSchemeData colorSchemeData;
-    private Image backgroundImageToCamera;
 
-    public Coroutine ChangeColorSchemeRoutine;
+    public void SetDefaultColorScheme()
+    {
+        ChangeColorScheme(colorSchemeData.GetDefaultColorScheme());
+    }
 
 
-    public IEnumerator ChangeColorSchemeEnumerator(Color colorToSet)
+    public void SetRandomColorSchemeExcluding()
+    {
+        ChangeColorScheme(colorSchemeData.GetRandomColorSchemeExcluding(currentSetColorScheme));
+    }
+
+
+    private void ChangeColorScheme(Color color)
+    {
+        currentSetColorScheme = color;
+
+        if (ChangeColorSchemeRoutine != null)
+        {
+            StopCoroutine(ChangeColorSchemeRoutine);
+            ChangeColorSchemeRoutine = null;
+        }
+
+        ChangeColorSchemeRoutine = StartCoroutine(ChangeColorSchemeEnumerator(color));
+    }
+
+
+    private void ChangeColorByT(Color currentOldColor, Color newColor, float t)
+    {
+        backgroundImageToCamera.color = Color.Lerp(currentOldColor, newColor, t);
+    }
+
+
+    private IEnumerator ChangeColorSchemeEnumerator(Color colorToSet)
     {
         float counter = 0f;
         Color currentOldColor = backgroundImageToCamera.color;
@@ -30,29 +64,11 @@ public class ColorSchemeGenerator
         {
             ChangeColorByT(currentOldColor, colorToSet, counter);
             counter += Time.deltaTime;
-            return counter/ timeToChangeScheme >= 1f;
+            return counter / timeToChangeScheme >= 1f;
         }
 
         yield return new WaitUntil(isColorChanged);
 
         ChangeColorSchemeRoutine = null;
-    }
-
-
-    public Color GetDefaultColorScheme()
-    {
-        return colorSchemeData.GetDefaultColorScheme();
-    }
-
-
-    public Color GetRandomColorSchemeExcluding()
-    {
-        return colorSchemeData.GetRandomColorSchemeExcluding(backgroundImageToCamera.color);
-    }
-
-
-    private void ChangeColorByT(Color currentOldColor, Color newColor, float t)
-    {
-        backgroundImageToCamera.color = Color.Lerp(currentOldColor, newColor, t);
     }
 }

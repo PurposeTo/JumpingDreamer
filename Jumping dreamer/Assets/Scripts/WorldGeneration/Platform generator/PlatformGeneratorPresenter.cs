@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(PlatformGenerator))]
 public class PlatformGeneratorPresenter : MonoBehaviour
 {
     [SerializeField] private PlatformGeneratorData platformGeneratorData = null;
@@ -9,25 +10,14 @@ public class PlatformGeneratorPresenter : MonoBehaviour
 
     private void Awake()
     {
-        platformGenerator = new PlatformGenerator(platformGeneratorData);
-    }
-
-
-    private void Update()
-    {
-        platformGenerator.Generating();
+        platformGenerator = gameObject.GetComponent<PlatformGenerator>();
+        platformGenerator.Constructor(platformGeneratorData);
     }
 
 
     public void SetDefaultPlatformGeneratorConfigs()
     {
         platformGenerator.SetDefaultPlatformGeneratorConfigs();
-    }
-
-
-    public void StartPlatformGeneratorInitialization()
-    {
-        platformGenerator.GenerateRingFromVerticalMotionPlatforms();
     }
 
 
