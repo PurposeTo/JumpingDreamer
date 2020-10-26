@@ -23,7 +23,7 @@ public class PlayerCompass : MonoBehaviour
     {
         float currentRange = GameManager.Instance.GetToCentreMagnitude(player.transform.position);
 
-        alphaChanel = GameLogic.PercentLerp(MinHighest, MaxHighest, currentRange);
+        alphaChanel = Mathf.InverseLerp(MinHighest, MaxHighest, currentRange);
 
         transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 3f, player.transform.position.z);
         sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, alphaChanel);

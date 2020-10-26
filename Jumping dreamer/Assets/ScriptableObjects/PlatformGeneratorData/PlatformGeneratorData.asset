@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2abe4370d465574f81969936e878831, type: 3}
+  m_Name: PlatformGeneratorData
+  m_EditorClassIdentifier: 
+  VerticalMotionPlatform: {fileID: 3249365153289606194, guid: 2f68473af3538f042ab6154d89af0cff,
+    type: 3}
+  CircularMotionPlatform: {fileID: 1026947578347733229, guid: ff4d162bed8093a4f84cda29022a2780,
+    type: 3}
+  SpiralMotionPlatformPlatform: {fileID: 3571525438777159919, guid: 1690e0ca4dea36f4d9d855f755820a39,
+    type: 3}

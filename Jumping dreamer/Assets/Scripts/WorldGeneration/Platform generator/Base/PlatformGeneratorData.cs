@@ -2,7 +2,8 @@
 using UnityEngine;
 
 
-public class PlatformGeneratorData : MonoBehaviour
+//[CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/PlatformGeneratorData")]
+public class PlatformGeneratorData : ScriptableObject
 {
     public GameObject VerticalMotionPlatform;
     public GameObject CircularMotionPlatform;

@@ -26,7 +26,7 @@ public class VerticalMotion : PlatformMovable, IMovable, IPooledObject
 
     public void SetMotionConfigs()
     {
-        PlatformConfigs platformConfigs = PlatformGeneratorController.Instance.PlatformGenerator.PlatformGeneratorConfigs.PlatformConfigs;
+        PlatformConfigs platformConfigs = WorldGeneratorController.Instance.PlatformGeneratorPresenter.PlatformGeneratorConfigs.PlatformConfigs;
         VerticalMotionConfig verticalMotionConfig = (VerticalMotionConfig)platformConfigs.PlatformMovingTypeConfigs
                 .ToList()
                 .Find(platformMotionConfig => platformMotionConfig is VerticalMotionConfig);

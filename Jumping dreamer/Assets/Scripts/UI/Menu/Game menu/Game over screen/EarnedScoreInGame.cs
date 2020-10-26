@@ -17,8 +17,8 @@ public class EarnedScoreInGame : MonoBehaviour
     {
         earnedScore = gameObject.GetComponent<TextMeshProUGUI>();
 
-        GameManager.Instance.PlayerPresenter.ScoreCollector.OnScoreAmountChange += UpdateResults;
-        GameManager.Instance.PlayerPresenter.StarCollector.OnStarAmountChange += UpdateResults;
+        GameManager.Instance.PlayerPresenter.ScoreCollector.OnScoreAmountChange += ShowScoreWithRecord;
+        GameManager.Instance.PlayerPresenter.StarCollector.OnStarAmountChange += ShowScoreWithRecord;
         ShowScore();
 
         /*
@@ -33,21 +33,15 @@ public class EarnedScoreInGame : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameManager.Instance.PlayerPresenter.ScoreCollector.OnScoreAmountChange -= UpdateResults;
-        GameManager.Instance.PlayerPresenter.StarCollector.OnStarAmountChange -= UpdateResults;
+        GameManager.Instance.PlayerPresenter.ScoreCollector.OnScoreAmountChange -= ShowScoreWithRecord;
+        GameManager.Instance.PlayerPresenter.StarCollector.OnStarAmountChange -= ShowScoreWithRecord;
         PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.OnNewScoreRecord -= isRecordNewEvent;
     }
 
 
     private void ShowScore()
     {
-        int score = GameManager.Instance.PlayerPresenter.ScoreCollector.Score;
-        string scoreText = $"Score\n{score}";
-
-        int stars = GameManager.Instance.PlayerPresenter.StarCollector.Stars;
-        string starsText = $"Stars\n{stars}";
-
-        earnedScore.text = $"{scoreText}\n{starsText}";
+        earnedScore.text = GetScoreText();
     }
 
 
@@ -55,22 +49,21 @@ public class EarnedScoreInGame : MonoBehaviour
     {
         string recordScoreText;
 
-        if (isRecordNew)
-        {
-            recordScoreText = $"New record!";
-        }
-        else
-        {
-            recordScoreText = $"Record";
-        }
+        if (isRecordNew) recordScoreText = $"New record!";
+        else recordScoreText = $"Record";
 
-        earnedScore.text += $"\n\n{recordScoreText}\n{RecordUI}";
+        earnedScore.text = $"{GetScoreText()}\n\n{recordScoreText}\n{RecordUI}";
     }
 
 
-    private void UpdateResults()
+    private string GetScoreText()
     {
-        ShowScore();
-        ShowScoreWithRecord();
+        int score = GameManager.Instance.PlayerPresenter.ScoreCollector.Score;
+        string scoreText = $"Score\n{score}";
+
+        int stars = GameManager.Instance.PlayerPresenter.StarCollector.Stars;
+        string starsText = $"Stars\n{stars}";
+
+        return $"{scoreText}\n{starsText}";
     }
 }
