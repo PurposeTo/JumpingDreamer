@@ -12,17 +12,18 @@ public class PlatformGeneratorPresenter : MonoBehaviour
     {
         platformGenerator = gameObject.GetComponent<PlatformGenerator>();
         platformGenerator.Constructor(platformGeneratorData);
+        SetDefaultPlatformGenerationConfigs();
     }
 
 
-    public void SetDefaultPlatformGeneratorConfigs()
+    public void SetNewPlatformGenerationConfigs()
     {
-        platformGenerator.SetDefaultPlatformGeneratorConfigs();
+        platformGenerator.SetNewPlatformGenerationConfigs();
     }
 
 
-    public void SetNewPlatformGeneratorConfigs()
+    private void SetDefaultPlatformGenerationConfigs()
     {
-        platformGenerator.SetNewPlatformGeneratorConfigs();
+        platformGenerator.SetDefaultPlatformGenerationConfigs();
     }
 }

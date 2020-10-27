@@ -23,8 +23,6 @@ public class WorldGenerationRulesController : SingletonMonoBehaviour<WorldGenera
 
     private IEnumerator LifeCycleEnumerator()
     {
-        SetDefaultGenerationRules();
-
         while (true)
         {
             yield return new WaitForSeconds(timePeriodForTheGenerationRules);
@@ -33,16 +31,11 @@ public class WorldGenerationRulesController : SingletonMonoBehaviour<WorldGenera
     }
 
 
-    private void SetDefaultGenerationRules()
-    {
-        PlatformGeneratorPresenter.SetDefaultPlatformGeneratorConfigs();
-        ColorSchemePresenter.SetDefaultColorScheme();
-    }
-
-
+    // Сначала необходимо установить правила генерации для платформ, тк остальные правила могут быть зависимы от них
     private void SetNewGenerationRules()
     {
-        PlatformGeneratorPresenter.SetNewPlatformGeneratorConfigs();
+        PlatformGeneratorPresenter.SetNewPlatformGenerationConfigs();
         ColorSchemePresenter.SetNewColorScheme();
+        FlashGeneratorPresenter.SetRandomFlashGenerationConfigs();
     }
 }
