@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class PlayerDataSynchronizer
 {
@@ -50,10 +51,12 @@ public class PlayerDataSynchronizer
         switch(modelSelectionStatus)
         {
             case PlayerDataModelController.DataModelSelectionStatus.LocalModel:
+                if (selectedModel == null) throw new ArgumentNullException("selectedModel which in fact is the localModel");
                 GPGSPlayerDataCloudStorage.CreateSave(selectedModel);
                 break;
             case PlayerDataModelController.DataModelSelectionStatus.CloudModel:
-                localModel = selectedModel;
+                if (selectedModel == null) break;
+                else localModel = selectedModel;
                 break;
         }
     }
@@ -67,6 +70,9 @@ public class PlayerDataSynchronizer
 
     private void MixModels(ref PlayerDataModel localModel, PlayerDataModel cloudModel)
     {
+        // Локальная модель не может = null.
+        if (localModel == null) throw new ArgumentNullException("localModel");
+
         PlayerDataModel mixedPlayerDataModel = PlayerDataModel.MixPlayerModels(cloudModel, localModel);
 
         // Если произошло смешение моделей, то необходимо обновить модель на облаке И локально
