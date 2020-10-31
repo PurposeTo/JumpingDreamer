@@ -8,5 +8,5 @@
 {"key":"DialogConfirmRestoreData", "value":"Warning! You are going to restore data from the cloud. This can result in the loss of unsaved local data. To confirm, enter the word \"{0}\" in the field below and click \"OK\""},
 {"key":"ProgressWasDeleted", "value":"Progress deleted!"},
 {"key":"ProgressWasRestored", "value":"Progress restored!"},
-{"key":"OperationFail", "value":"Operation wasn't confirm!"}
+{"key":"OperationNotConfirm", "value":"Operation wasn't confirm!"}
 ]}
