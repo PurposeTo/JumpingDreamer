@@ -5,9 +5,7 @@ public class FlashGenerator : MonoBehaviour
 {
     private RectTransform flashCompassCanvas;
     private FlashGeneratorData flashGeneratorData;
-
-    private readonly float startDelay = 20f;
-    private readonly float spawnFrequency = 5f;
+    private FlashGeneratorConfig flashGeneratorConfig;
 
 
     private void Start()
@@ -18,23 +16,33 @@ public class FlashGenerator : MonoBehaviour
 
     public void Constructor(FlashGeneratorData flashGeneratorData, RectTransform flashCompassCanvas)
     {
-        if(flashGeneratorData == null) throw new System.ArgumentNullException("flashGeneratorData");
-        if(flashCompassCanvas == null) throw new System.ArgumentNullException("flashCompassCanvas");
+        if (flashGeneratorData == null) throw new System.ArgumentNullException("flashGeneratorData");
+        if (flashCompassCanvas == null) throw new System.ArgumentNullException("flashCompassCanvas");
 
         this.flashGeneratorData = flashGeneratorData;
         this.flashCompassCanvas = flashCompassCanvas;
     }
 
 
+    public void SetDefaultFlashGenerationConfigs()
+    {
+        flashGeneratorConfig = FlashGeneratorConfig.GetDefault();
+    }
+
+
+    public void SetRandomFlashGenerationConfigs()
+    {
+        flashGeneratorConfig = FlashGeneratorConfig.GetRandom();
+    }
+
+
     private IEnumerator LifeCycleEnumerator()
     {
-        yield return new WaitForSeconds(startDelay);
-
-        WaitForSeconds waitForSeconds = new WaitForSeconds(spawnFrequency);
         while (true)
         {
+            yield return new WaitUntil(() => flashGeneratorConfig.IsGenerating);
             GenerateFlash();
-            yield return waitForSeconds;
+            yield return new WaitForSeconds(flashGeneratorConfig.TimePeriodForGeneratingFlashs);
         }
     }
 

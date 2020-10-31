@@ -12,6 +12,18 @@ public class FlashGeneratorPresenter : MonoBehaviour
     {
         flashGenerator = gameObject.GetComponent<FlashGenerator>();
         flashGenerator.Constructor(flashGeneratorData, flashCompassCanvas);
+        SetDefaultFlashGenerationConfigs();
     }
 
+
+    public void SetRandomFlashGenerationConfigs()
+    {
+        flashGenerator.SetRandomFlashGenerationConfigs();
+    }
+
+
+    private void SetDefaultFlashGenerationConfigs()
+    {
+        flashGenerator.SetDefaultFlashGenerationConfigs();
+    }
 }

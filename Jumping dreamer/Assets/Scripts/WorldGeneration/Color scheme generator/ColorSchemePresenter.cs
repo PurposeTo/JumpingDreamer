@@ -12,17 +12,18 @@ public class ColorSchemePresenter : MonoBehaviour
     {
         colorSchemeGenerator = gameObject.GetComponent<ColorSchemeGenerator>();
         colorSchemeGenerator.Constructor(colorSchemeData, backgroundImageToCamera);
-    }
-
-
-    public void SetDefaultColorScheme()
-    {
-        colorSchemeGenerator.SetDefaultColorScheme();
+        SetDefaultColorScheme();
     }
 
 
     public void SetNewColorScheme()
     {
         colorSchemeGenerator.SetRandomColorSchemeExcluding();
+    }
+
+
+    private void SetDefaultColorScheme()
+    {
+        colorSchemeGenerator.SetDefaultColorScheme();
     }
 }

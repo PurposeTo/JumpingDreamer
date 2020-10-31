@@ -30,13 +30,13 @@ public class PlatformGenerator : MonoBehaviour
     }
 
 
-    public void SetDefaultPlatformGeneratorConfigs()
+    public void SetDefaultPlatformGenerationConfigs()
     {
         PlatformGeneratorConfigs = PlatformGeneratorConfigs.GetDefault();
     }
 
 
-    public void SetNewPlatformGeneratorConfigs()
+    public void SetNewPlatformGenerationConfigs()
     {
         PlatformGeneratorConfigs = PlatformGeneratorConfigs.GetRandom();
     }
