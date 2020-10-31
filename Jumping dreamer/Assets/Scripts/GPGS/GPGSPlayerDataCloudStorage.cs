@@ -48,28 +48,28 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
         }
 
 
-        if (CurrentGameMetadata == null)
+        //if (CurrentGameMetadata == null)
+        //{
+        //Debug.Log("#CreateSave: CurrentGameMetadata == null");
+
+        OpenSavedGame((gameRequestStatus, gameMetadata) =>
         {
-            Debug.Log("#CreateSave: CurrentGameMetadata == null");
-
-            OpenSavedGame((gameRequestStatus, gameMetadata) =>
+            if (gameRequestStatus == SavedGameRequestStatus.Success)
             {
-                if (gameRequestStatus == SavedGameRequestStatus.Success)
-                {
-                    // Получаем метаданные открытого файла
-                    CurrentGameMetadata = gameMetadata;
+                // Получаем метаданные открытого файла
+                CurrentGameMetadata = gameMetadata;
 
-                    SavePlayerData();
-                }
-                else { return; }
-            });
+                SavePlayerData();
+            }
+            else { return; }
+        });
 
-            return;
-        }
+        //return;
+        //}
 
-        Debug.Log("#CreateSave: CurrentGameMetadata != null");
+        //Debug.Log($"#CreateSave: CurrentGameMetadata != null\nCurrentGameMetadata = {CurrentGameMetadata}");
 
-        SavePlayerData();
+        //SavePlayerData();
     }
 
 
@@ -111,7 +111,7 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
                         // handle error
                     }
 
-                    Debug.Log($"Received from cloud model: {cloudModel}.\nCloud model as json: {JsonConverterWrapper.SerializeObject(cloudModel, null)}\nReading status: {readingCloudDataStatus}.");
+                    Debug.Log($"Received cloud model: {cloudModel}.\nCloud model as json: {JsonConverterWrapper.SerializeObject(cloudModel, null)}\nReading status: {readingCloudDataStatus}.");
                     action?.Invoke(cloudModel, readingCloudDataStatus);
                 });
             }
