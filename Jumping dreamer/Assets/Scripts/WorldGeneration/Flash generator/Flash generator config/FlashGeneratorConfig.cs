@@ -6,7 +6,7 @@ public class FlashGeneratorConfig
     public float TimePeriodForGeneratingFlashs { get; private set; }
 
     private readonly float minTimePeriodForGeneratingFlashs = 2f;
-    private readonly float maxTimePeriodForGeneratingFlashs = 12f;
+    private readonly float maxTimePeriodForGeneratingFlashs = 16f;
 
 
     private FlashGeneratorConfig(CreatingValuesInClassMode creating)

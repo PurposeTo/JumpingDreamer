@@ -8,7 +8,7 @@ public class EarnedRewardsInGame : MonoBehaviour
 
     private int RecordUI => PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.MaxEarnedScore.Value;
 
-    private bool IsRecordNew => CurrentSessionData.Instance.IsRecordNew;
+    private bool IsRecordNew => CurrentGameSessionData.Instance.IsRecordNew;
 
 
     private Action OnChangedEarnedRewardsInGame; // При изменении счета или звезд должны обновить текст используя актуальный метод отображения
@@ -18,8 +18,8 @@ public class EarnedRewardsInGame : MonoBehaviour
     {
         earnedRewardsInGame = gameObject.GetComponent<TextMeshProUGUI>();
 
-        CurrentSessionData.Instance.OnScoreOrStarsChanged += OnChangedEarnedRewardsInGameCall;
-        CurrentSessionData.Instance.OnNewRecordScore += OnChangedEarnedRewardsInGameCall;
+        CurrentGameSessionData.Instance.OnScoreOrStarsChanged += OnChangedEarnedRewardsInGameCall;
+        CurrentGameSessionData.Instance.OnNewRecordScore += OnChangedEarnedRewardsInGameCall;
 
         ShowScore();
     }
@@ -27,8 +27,8 @@ public class EarnedRewardsInGame : MonoBehaviour
 
     private void OnDestroy()
     {
-        CurrentSessionData.Instance.OnScoreOrStarsChanged -= OnChangedEarnedRewardsInGameCall;
-        CurrentSessionData.Instance.OnNewRecordScore -= OnChangedEarnedRewardsInGameCall;
+        CurrentGameSessionData.Instance.OnScoreOrStarsChanged -= OnChangedEarnedRewardsInGameCall;
+        CurrentGameSessionData.Instance.OnNewRecordScore -= OnChangedEarnedRewardsInGameCall;
     }
 
 
