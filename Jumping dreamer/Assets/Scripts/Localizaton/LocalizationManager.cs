@@ -124,7 +124,7 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
         for (int i = 0; i < loadedData.items.Length; i++)
         {
             localizedText.Add(loadedData.items[i].key, loadedData.items[i].value);
-            //Debug.Log("KEYS:" + loadedData.items[i].key);
+            Debug.Log("KEYS:" + loadedData.items[i].key);
         }
 
 
