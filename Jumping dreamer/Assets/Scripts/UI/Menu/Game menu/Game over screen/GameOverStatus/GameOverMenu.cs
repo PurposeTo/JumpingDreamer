@@ -2,7 +2,7 @@
 
 public class GameOverMenu : MonoBehaviour
 {
-    public EarnedScoreInGame EarnedScoreInGame;
+    private EarnedRewardsInGame EarnedRewardsInGame => GameMenu.Instance.GameOverScreen.EarnedRewardsInGame;
 
     private GPGSLeaderboard GPGSLeaderboard => GPGSLeaderboard.Instance;
 
@@ -10,13 +10,14 @@ public class GameOverMenu : MonoBehaviour
     {
         // Статистика должна сохраняться при появлении экрана GameOverMenu, но он появляется только один раз за все время существования игровой сцены. После этого сцена перезагружается => данный Awake будет вызван уже после перезагрузки.
         PlayerDataModelController.Instance.UpdatePlayerModelAndSavePlayerData();
+        UnityEngine.Debug.Log($"ScoreDebug: GameOverMenu awake call.");
     }
 
 
     // Руками не трогать - вызов метода должен происходить после инициализации скрипта EarnedScoreInGame
     private void Start()
     {
-        EarnedScoreInGame.ShowScoreWithRecord();
+        EarnedRewardsInGame.ShowScoreWithRecord();
     }
 
 

@@ -141,6 +141,7 @@
     <Compile Include="Assets\Scripts\Centre\Centre.cs" />
     <Compile Include="Assets\Scripts\Centre\Gravity.cs" />
     <Compile Include="Assets\Scripts\Centre\KillingZone.cs" />
+    <Compile Include="Assets\Scripts\CurrentSessionData.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyGenerator.cs" />
     <Compile Include="Assets\Scripts\Enemy\Pursuer.cs" />
     <Compile Include="Assets\Scripts\GPGS\GPGSAuthentication.cs" />
@@ -213,7 +214,7 @@
     <Compile Include="Assets\Scripts\UI\Menu\Buttons\ResetPlayerDataButton.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Buttons\RestorePlayerDataButton.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Buttons\SignInGoogleServicesButton.cs" />
-    <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\EarnedScoreInGame.cs" />
+    <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\EarnedRewardsInGame.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\GameOverScreen.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\GameOverStatus\CollectRewardsScreen.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\GameOverStatus\GameOverMenu.cs" />
