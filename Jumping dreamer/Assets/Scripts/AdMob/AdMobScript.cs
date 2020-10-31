@@ -62,11 +62,7 @@ public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
 
     public void ShowRewardVideoAd(Action<bool> hasAdBeenShowed)
     {
-        bool isAdWasLoaded = rewardBasedVideoAd.IsLoaded();
-
-        Debug.Log($"ShowRewardVideoAd call/ rewardBasedVideoAd.IsLoaded() = {isAdWasLoaded}, isAdWasLoaded  = {this.isAdWasLoaded}");
-
-        bool isAdWasReallyLoaded = isAdWasLoaded && this.isAdWasLoaded;
+        bool isAdWasReallyLoaded = IsAdWasReallyLoaded();
 
         if (isAdWasReallyLoaded)
         {
@@ -92,6 +88,13 @@ public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
         adShow.OnCloseAdWait(mustRewardPlayerCallback);
     }
 
+
+    public bool IsAdWasReallyLoaded()
+    {
+        return rewardBasedVideoAd.IsLoaded() && this.isAdWasLoaded;
+    }
+
+
     /// <summary>
     /// Перезагрузить рекламу
     /// </summary>
@@ -109,11 +112,10 @@ public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
         while (true)
         {
             yield return new WaitForSecondsRealtime(30f);
-            bool isAdWasReallyLoaded = rewardBasedVideoAd.IsLoaded() && this.isAdWasLoaded;
 
             // Не учитывает реальный доступ к сети. Учитывает только подключение.
             bool isInternetEnabled = Application.internetReachability != NetworkReachability.NotReachable; 
-            if (!isAdWasReallyLoaded && isInternetEnabled) RequestRewardBasedVideo();
+            if (!IsAdWasReallyLoaded() && isInternetEnabled) RequestRewardBasedVideo();
         }
     }
 
