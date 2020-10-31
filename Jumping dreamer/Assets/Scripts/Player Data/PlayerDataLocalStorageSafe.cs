@@ -43,9 +43,9 @@ public class PlayerDataLocalStorageSafe
             if (isSerializingSuccess)
             {
                 Debug.Log("AfterSerializingModel: " + json);
-                //string modifiedData = JsonEncryption.Encrypt(json);
-                //File.WriteAllText(FilePath, modifiedData);
-                File.WriteAllText(FilePath, json);
+                string modifiedData = JsonEncryption.Encrypt(json);
+                File.WriteAllText(FilePath, modifiedData);
+                //File.WriteAllText(FilePath, json); // без шифрования
             }
             else DialogWindowGenerator.Instance.CreateDialogWindow("Ошибка записи данных игровой статистики! Пожалуйста, обратитесь в службу поддержки.");
         }
@@ -59,8 +59,8 @@ public class PlayerDataLocalStorageSafe
         {
             Debug.Log($"File on path \"{FilePath}\" was found.");
 
-            //string dataAsJSON = JsonEncryption.Decrypt(FilePath);
-            string dataAsJSON = File.ReadAllText(FilePath);
+            string dataAsJSON = JsonEncryption.Decrypt(FilePath);
+            //string dataAsJSON = File.ReadAllText(FilePath); // без расшифрования
             return ValidateModel(dataAsJSON);
         }
         else
