@@ -133,7 +133,7 @@ public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
         Debug.Log($"HandleRewardBasedVideoFailedToLoad event received with message: {args.Message}");
 
         // Таким образом, после неудачной загрузки мы сразу пытаемся повторно загрузить рекламу и делаем это один раз
-        if (isAdWasLoaded) RequestRewardBasedVideo(); 
+        if (IsAdWasReallyLoaded()) RequestRewardBasedVideo(); 
         isAdWasLoaded = false;
     }
 
