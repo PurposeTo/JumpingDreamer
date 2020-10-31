@@ -48,11 +48,11 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
         }
 
 
-        //if (CurrentGameMetadata == null)
-        //{
-        //Debug.Log("#CreateSave: CurrentGameMetadata == null");
+        if (CurrentGameMetadata == null)
+        {
+            Debug.Log("#CreateSave: CurrentGameMetadata == null");
 
-        OpenSavedGame((gameRequestStatus, gameMetadata) =>
+            OpenSavedGame((gameRequestStatus, gameMetadata) =>
         {
             if (gameRequestStatus == SavedGameRequestStatus.Success)
             {
@@ -64,12 +64,12 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
             else { return; }
         });
 
-        //return;
-        //}
+            return;
+        }
 
-        //Debug.Log($"#CreateSave: CurrentGameMetadata != null\nCurrentGameMetadata = {CurrentGameMetadata}");
+        Debug.Log($"#CreateSave: CurrentGameMetadata != null\nCurrentGameMetadata = {CurrentGameMetadata}");
 
-        //SavePlayerData();
+        SavePlayerData();
     }
 
 
@@ -145,18 +145,10 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
             return;
         }
 
-        print("Opening!");
-        SavedGameClient.OpenWithManualConflictResolution(PlayerDataModel.FileName, DataSource.ReadCacheOrNetwork, true, new ConflictCallback((conflictResolver, originGameMetadata, originData, unmergedGameMetadata, unmergedData) =>
-        {
-            print("OpenWithManualConflictResolution");
-            print($"Origin data as string: {Encoding.UTF8.GetString(originData)}");
-            print($"Unmerged data as string: {Encoding.UTF8.GetString(unmergedData)}");
-        }), OnSavedGameOpened);
-
-        //SavedGameClient.OpenWithAutomaticConflictResolution(PlayerDataModel.FileName,
-        //    DataSource.ReadCacheOrNetwork,                                              // ?
-        //    ConflictResolutionStrategy.UseLongestPlaytime,                              // ?
-        //    OnSavedGameOpened);
+        SavedGameClient.OpenWithAutomaticConflictResolution(PlayerDataModel.FileName,
+            DataSource.ReadNetworkOnly,                                              
+            ConflictResolutionStrategy.UseLongestPlaytime,
+            OnSavedGameOpened);
     }
 
 
