@@ -173,6 +173,8 @@ public class GPGSPlayerDataCloudStorage : SingletonMonoBehaviour<GPGSPlayerDataC
         {
             Debug.Log($"###ДЕСЕРИАЛИЗАЦИЯ ДАННЫХ С ОБЛАКА ЗАВЕРШЕНА.\nReceived from cloud model: {cloudModel}.\nCloud model as json: {JsonConverterWrapper.SerializeObject(cloudModel, null)}");
 
+            // if (cloudModel == null) return;
+
             PlayerDataModelController.Instance.SynchronizePlayerDataStorages(cloudModel);
         });
     }
