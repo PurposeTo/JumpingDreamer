@@ -5,6 +5,7 @@ public class PlayerCompass : MonoBehaviour
 {
     private GameObject player;
     private SpriteRenderer sprite;
+    private readonly float offset = 4f;
 
     private float MinHighest => MaxHighest * 2f / 3f;
     private float MaxHighest => PlatformGeneratorData.PlatformAvailableHighestArea;
@@ -25,7 +26,7 @@ public class PlayerCompass : MonoBehaviour
 
         alphaChanel = Mathf.InverseLerp(MinHighest, MaxHighest, currentRange);
 
-        transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 3f, player.transform.position.z);
+        transform.position = new Vector3(player.transform.position.x, player.transform.position.y + offset, player.transform.position.z);
         sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, alphaChanel);
     }
 }
