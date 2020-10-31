@@ -21,9 +21,7 @@ public class EarnedRewardsInGame : MonoBehaviour
         CurrentSessionData.Instance.OnScoreOrStarsChanged += OnChangedEarnedRewardsInGameCall;
         CurrentSessionData.Instance.OnNewRecordScore += OnChangedEarnedRewardsInGameCall;
 
-        Debug.Log($"ScoreDebug: EarnedScoreInGame awake call. isRecordNew = {IsRecordNew}");
         ShowScore();
-
     }
 
 
@@ -43,9 +41,7 @@ public class EarnedRewardsInGame : MonoBehaviour
     private void ShowScore()
     {
         OnChangedEarnedRewardsInGame = ShowScore;
-
         earnedRewardsInGame.text = GetScoreText();
-        Debug.Log($"ScoreDebug: after ShowScore call. isRecordNew = {IsRecordNew}");
     }
 
 
@@ -59,8 +55,6 @@ public class EarnedRewardsInGame : MonoBehaviour
         else recordScoreText = $"Record";
 
         earnedRewardsInGame.text = $"{GetScoreText()}\n\n{recordScoreText}\n{RecordUI}";
-
-        Debug.Log($"ScoreDebug: after ShowScoreWithRecord call. isRecordNew = {IsRecordNew}");
     }
 
 

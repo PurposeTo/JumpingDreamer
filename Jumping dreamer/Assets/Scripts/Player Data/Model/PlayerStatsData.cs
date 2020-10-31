@@ -45,7 +45,6 @@ public class PlayerStatsData
         {
             PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.MaxEarnedScore = scoreAmount;
             OnNewScoreRecord?.Invoke();
-            UnityEngine.Debug.Log($"ScoreDebug: SaveScoreData call.");
         }
     }
 
