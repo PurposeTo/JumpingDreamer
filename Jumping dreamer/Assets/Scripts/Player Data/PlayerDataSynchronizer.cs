@@ -8,8 +8,8 @@ public class PlayerDataSynchronizer
     // Синхронизация данных модели из облака и локальной модели
     public void SynchronizePlayerDataStorages(ref PlayerDataModel localModel, PlayerDataModel cloudModel)
     {
-        Debug.Log($"SYNC: Received from cloud model: {cloudModel}.\nCloud model as json: {JsonConverterWrapper.SerializeObject(cloudModel, null)}");
-        Debug.Log($"SYNC: Received from cloud model: {localModel}.\nCloud model as json: {JsonConverterWrapper.SerializeObject(localModel, null)}");
+        Debug.Log($"SYNC: Received cloud model: {cloudModel}.\nCloud model as json: {JsonConverterWrapper.SerializeObject(cloudModel, null)}");
+        Debug.Log($"SYNC: Received local model: {localModel}.\nLocal model as json: {JsonConverterWrapper.SerializeObject(localModel, null)}");
 
         if (cloudModel == null)
         {

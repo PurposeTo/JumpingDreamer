@@ -8,7 +8,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{5955EDAF-1570-54EA-222F-0340AEA33492}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -223,9 +224,9 @@
     <Compile Include="Assets\Scripts\UI\Menu\Game menu\GameMenu.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\MainMenu.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\PauseMenu.cs" />
-    <Compile Include="Assets\Scripts\UI\Menu\Pop up Windows\ConfirmationOperationWindow.cs" />
-    <Compile Include="Assets\Scripts\UI\Menu\Pop up Windows\DialogWindow.cs" />
-    <Compile Include="Assets\Scripts\UI\Menu\Pop up Windows\MixingModelsWindow.cs" />
+    <Compile Include="Assets\Scripts\UI\Menu\Dialog Windows\ConfirmationOperationWindow.cs" />
+    <Compile Include="Assets\Scripts\UI\Menu\Dialog Windows\DialogWindow.cs" />
+    <Compile Include="Assets\Scripts\UI\Menu\Dialog Windows\MixingModelsWindow.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\SettingsMenu.cs" />
     <Compile Include="Assets\Scripts\UI\PlayerUI.cs" />
     <Compile Include="Assets\Scripts\UI\PopUpText.cs" />
