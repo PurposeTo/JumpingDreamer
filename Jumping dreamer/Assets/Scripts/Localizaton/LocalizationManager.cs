@@ -121,14 +121,15 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
         LocalizationData loadedData = JsonUtility.FromJson<LocalizationData>(dataAsJson);
         Debug.Log("Translate is done!");
 
-        for (int i = 0; i < loadedData.items.Length; i++)
+        localizedText = new Dictionary<string, string>();
+
+        Array.ForEach(loadedData.items, localizedItem =>
         {
-            localizedText.Add(loadedData.items[i].key, loadedData.items[i].value);
-            //Debug.Log("KEYS:" + loadedData.items[i].key);
-        }
+            localizedText.Add(localizedItem.key, localizedItem.value);
+            Debug.Log("KEYS:" + localizedItem.key);
+        });
 
-
-        Debug.Log("Set language: " + Instance.GetLocalizedValue("language"));
+        Debug.Log("Set language: " + Instance.GetLocalizedValue("Language"));
 
         isReady = true;
         OnLocalizationChange?.Invoke();

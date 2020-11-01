@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using GoogleMobileAds.Api;
 
 public class GameOverStatusScreen : MonoBehaviour
 {
@@ -10,14 +9,8 @@ public class GameOverStatusScreen : MonoBehaviour
 
     [HideInInspector] public bool isPlayerMustSeeAd = false;
 
-    private RewardBasedVideoAd rewardBasedVideoAd;
-
-
     private void Awake()
     {
-        // Get singleton reward based video ad reference.
-        rewardBasedVideoAd = RewardBasedVideoAd.Instance;
-
         RebornScreen.Initialize(this);
         CollectRewardsScreen.Initialize(this);
     }
@@ -26,7 +19,7 @@ public class GameOverStatusScreen : MonoBehaviour
     private void OnEnable()
     {
         // Если реклама загружена и игрок еще не использовал ее
-        if (rewardBasedVideoAd.IsLoaded())
+        if (AdMobScript.Instance.IsAdWasReallyLoaded())
         {
             // Если игрок еще не использовал возрождение
             if (!isPlayerMustSeeAd)

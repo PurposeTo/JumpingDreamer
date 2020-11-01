@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using GoogleMobileAds.Api;
+using System.Collections;
 
 [RequireComponent(typeof(AdShow))]
 public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
@@ -14,6 +15,8 @@ public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
     private AdShow adShow;
 
     private readonly InternetConnectionChecker connectionChecker = new InternetConnectionChecker();
+
+    private bool isAdWasLoaded; // Спасибо AdMob api, который не может корректно проверить загрузку рекламы
 
 
     protected override void AwakeSingleton()
@@ -40,7 +43,7 @@ public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
         rewardBasedVideoAd.OnAdLeavingApplication += HandleRewardBasedVideoLeftApplication;
 
         RequestRewardBasedVideo();
-
+        StartCoroutine(TryToLoadAdEnumerator()); ;
         adShow = gameObject.GetComponent<AdShow>();
     }
 
@@ -59,35 +62,42 @@ public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
 
     public void ShowRewardVideoAd(Action<bool> hasAdBeenShowed)
     {
-        bool isAdWasLoaded = rewardBasedVideoAd.IsLoaded();
-        if (isAdWasLoaded)
+        bool isAdWasReallyLoaded = IsAdWasReallyLoaded();
+
+        if (isAdWasReallyLoaded)
         {
             StartCoroutine(connectionChecker.PingGoogleEnumerator(isInternetAvaliable =>
             {
                 if (isInternetAvaliable) rewardBasedVideoAd.Show();
-                hasAdBeenShowed?.Invoke(isAdWasLoaded && isInternetAvaliable);
+                hasAdBeenShowed?.Invoke(isInternetAvaliable);
             }));
         }
-        else RequestRewardBasedVideo();
+        else
+        {
+            hasAdBeenShowed?.Invoke(isAdWasReallyLoaded);
+        }
+
     }
-    //public void ShowRewardVideoAd(Action<bool> hasAdBeenShowed)
-    //{
-    //    bool isAdWasLoaded = rewardBasedVideoAd.IsLoaded();
-    //    if (isAdWasLoaded)
-    //    {
-    //        rewardBasedVideoAd.Show();
-    //    }
-    //    else RequestRewardBasedVideo();
-    //    hasAdBeenShowed?.Invoke(isAdWasLoaded);
-    //}
 
-
+    /// <summary>
+    /// Подождать закрытие рекламы
+    /// </summary>
+    /// <param name="mustRewardPlayerCallback"></param>
     public void OnCloseAdWait(Action<bool> mustRewardPlayerCallback)
     {
         adShow.OnCloseAdWait(mustRewardPlayerCallback);
     }
 
 
+    public bool IsAdWasReallyLoaded()
+    {
+        return rewardBasedVideoAd.IsLoaded() && this.isAdWasLoaded;
+    }
+
+
+    /// <summary>
+    /// Перезагрузить рекламу
+    /// </summary>
     private void RequestRewardBasedVideo()
     {
         // Create an empty ad request.
@@ -97,16 +107,34 @@ public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
     }
 
 
+    private IEnumerator TryToLoadAdEnumerator()
+    {
+        while (true)
+        {
+            yield return new WaitForSecondsRealtime(30f);
+
+            // Не учитывает реальный доступ к сети. Учитывает только подключение.
+            bool isInternetEnabled = Application.internetReachability != NetworkReachability.NotReachable; 
+            if (!IsAdWasReallyLoaded() && isInternetEnabled) RequestRewardBasedVideo();
+        }
+    }
+
+
     #region event calls not from the main thread
     private void HandleRewardBasedVideoLoaded(object sender, EventArgs args)
     {
         Debug.Log("HandleRewardBasedVideoLoaded event received");
+        isAdWasLoaded = true;
     }
 
 
     private void HandleRewardBasedVideoFailedToLoad(object sender, AdFailedToLoadEventArgs args)
     {
         Debug.Log($"HandleRewardBasedVideoFailedToLoad event received with message: {args.Message}");
+
+        // Таким образом, после неудачной загрузки мы сразу пытаемся повторно загрузить рекламу и делаем это один раз
+        if (IsAdWasReallyLoaded()) RequestRewardBasedVideo(); 
+        isAdWasLoaded = false;
     }
 
 
@@ -125,7 +153,6 @@ public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
     private void HandleRewardBasedVideoClosed(object sender, EventArgs args)
     {
         Debug.Log("HandleRewardBasedVideoClosed event received");
-        // Перезагрузить рекламу
         RequestRewardBasedVideo();
     }
 

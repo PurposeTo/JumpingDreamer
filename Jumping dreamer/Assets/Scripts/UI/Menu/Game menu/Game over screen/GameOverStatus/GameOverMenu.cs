@@ -2,7 +2,7 @@
 
 public class GameOverMenu : MonoBehaviour
 {
-    public EarnedScoreInGame EarnedScoreInGame;
+    private EarnedRewardsInGame EarnedRewardsInGame => GameMenu.Instance.GameOverScreen.EarnedRewardsInGame;
 
     private GPGSLeaderboard GPGSLeaderboard => GPGSLeaderboard.Instance;
 
@@ -16,7 +16,7 @@ public class GameOverMenu : MonoBehaviour
     // Руками не трогать - вызов метода должен происходить после инициализации скрипта EarnedScoreInGame
     private void Start()
     {
-        EarnedScoreInGame.ShowScoreWithRecord();
+        EarnedRewardsInGame.ShowScoreWithRecord();
     }
 
 

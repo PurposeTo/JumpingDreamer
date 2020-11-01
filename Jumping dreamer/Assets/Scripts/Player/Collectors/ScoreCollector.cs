@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-public delegate void ScoreAmountChange();
-public class ScoreCollector : MonoBehaviour
+public class ScoreCollector : RewardCollector
 {
-    public event ScoreAmountChange OnScoreAmountChange;
+    public event Action OnScoreAmountChange;
 
     private SafeInt score = 0;
     public SafeInt Score
@@ -28,20 +28,41 @@ public class ScoreCollector : MonoBehaviour
     private Rigidbody2D rb2D;
     public static float VelocityToCollectScore { get; private set; } = 25f; // По идее, скорость должна быть такая же, как при включении хвоста
 
-    private void Start()
+
+    private void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
+    }
+
+
+    private protected override void Start()
+    {
+        base.Start();
         PlayerDataModelController.Instance.OnSavePlayerStats += SaveScoreStats;
     }
 
 
-    private void OnDestroy()
+    private protected override void OnDestroy()
     {
+        base.OnDestroy();
         PlayerDataModelController.Instance.OnSavePlayerStats -= SaveScoreStats;
     }
 
 
     private void Update()
+    {
+        if (canCollecting) CollectScore();
+    }
+
+
+    private void SaveScoreStats()
+    {
+        PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.SaveScoreData(Score);
+        PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.SaveScoreMultiplierData(currentMaxScoreMultiplierValue);
+    }
+
+
+    private void CollectScore()
     {
         if (rb2D.velocity.magnitude >= VelocityToCollectScore)
         {
@@ -60,7 +81,7 @@ public class ScoreCollector : MonoBehaviour
                     currentMaxScoreMultiplierValue = earnedPointsPerFlight;
                 }
 
-                Quaternion rotation = GameLogic.GetOrthoRotation(transform.position, GameManager.Instance.CentreObject.transform.position);
+                Quaternion rotation = GameLogic.GetOrthoRotation(transform.position, ImportantGameObjectsHolder.Instance.Centre.gameObject.transform.position);
                 VFXManager.Instance.DisplayPopupText(transform.position, rotation, $"+{earnedPointsPerFlight}", Color.white, scoreFontSize);
 
                 counterScoreEarnedDelay = scoreEarnedDelay;
@@ -71,12 +92,5 @@ public class ScoreCollector : MonoBehaviour
             earnedPointsPerFlight = 0;
             counterScoreEarnedDelay = -1f; // Счет всегда должен включаться сразу же, как только скорость будет нужной
         }
-    }
-
-
-    private void SaveScoreStats()
-    {
-        PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.SaveScoreData(Score);
-        PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.SaveScoreMultiplierData(currentMaxScoreMultiplierValue);
     }
 }

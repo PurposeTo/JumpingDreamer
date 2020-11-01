@@ -3,7 +3,6 @@
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
-    private GameObject centre;
     private Rigidbody2D rb2D;
 
     private readonly float velocityMultiplier = 18f;
@@ -20,8 +19,6 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         rb2D = gameObject.GetComponent<Rigidbody2D>();
-        centre = GameManager.Instance.CentreObject;
-
         controller = ControllerInitializer.InitializeController(Application.platform);
     }
 
@@ -42,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void MoveCharacter()
     {
-        Vector2 toCentreDirection = GameManager.Instance.GetToCentreDirection(rb2D.position);
+        Vector2 toCentreDirection = ImportantGameObjectsHolder.Instance.Centre.GetToCentreDirection(rb2D.position);
         GravityProjectVector = GetGravityProjectVector(toCentreDirection);
         InputVelocity = GetInputVelocity(toCentreDirection);
 
@@ -75,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void TossUp(float direction)
     {
-        GravityProjectVector = GameManager.Instance.GetFromCentreDirection(transform.position) *
+        GravityProjectVector = ImportantGameObjectsHolder.Instance.Centre.GetFromCentreDirection(transform.position) *
         GravityProjectVector.magnitude * bounciness * direction;
 
         GravityProjectVector = GameLogic.ClampVectorByMagnitude(GravityProjectVector, minGravityVelocity);

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -9,6 +10,10 @@ public class PlayerHealth : MonoBehaviour
 
     private readonly float maxRaiseHeight = 65f;
     private readonly float minRaiseHeight = 20f;
+
+
+    public event Action<bool> OnPlayerIsInvulnerable;
+    public event Action<bool> OnPlayerDie;
 
 
     private void Start()
@@ -30,25 +35,30 @@ public class PlayerHealth : MonoBehaviour
     // Спасибо юнити аниматору, что он не видит методы, в которые необходимо передавать аргументы
     private void SetInvulnerableTrue()
     {
-        animator.SetBool("isInvulnerable", true);
-        isInvulnerable = true;
-        GameManager.Instance.Centre.SetIsTriggerKillingZone(false);
+        SetInvulnerable(true);
     }
 
 
     private void SetInvulnerableFalse()
     {
-        animator.SetBool("isInvulnerable", false);
-        isInvulnerable = false;
-        GameManager.Instance.Centre.SetIsTriggerKillingZone(true);
+        SetInvulnerable(false);
+    }
+
+
+    private void SetInvulnerable(bool isInvulnerable)
+    {
+        animator.SetBool("isInvulnerable", isInvulnerable);
+        this.isInvulnerable = isInvulnerable;
+        OnPlayerIsInvulnerable?.Invoke(isInvulnerable);
     }
 
 
     public void RaiseTheDead()
     {
+        OnPlayerDie?.Invoke(false);
         SetInvulnerableTrue();
 
-        Vector2 toCentreVector = GameManager.Instance.GetToCentreVector(rb2D.position);
+        Vector2 toCentreVector = ImportantGameObjectsHolder.Instance.Centre.GetToCentreVector(rb2D.position);
         Vector2 toCentreDirection = toCentreVector.normalized;
         float toCentreDistance = toCentreVector.magnitude - Centre.CentreRadius;
 
@@ -63,12 +73,12 @@ public class PlayerHealth : MonoBehaviour
         float fallingTime = Mathf.Sqrt(2 * (raiseHeight + toCentreDistance) / (Gravity.GravityAcceleration * Gravity.GravityScale));
         // fallingTime учитывает только время падения; так же есть время взлёта
         Debug.Log($"Your falling time to the surface of the Centre after raise is {fallingTime}");
-
     }
 
 
     private void Die()
     {
-        GameMenu.Instance.GameOver();
+        OnPlayerDie?.Invoke(true);
+        GameManager.Instance.GameOver();
     }
 }

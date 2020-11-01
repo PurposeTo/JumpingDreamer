@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using UnityEngine;
-using GoogleMobileAds.Api;
+﻿using UnityEngine;
 
 public class CollectRewardsScreen : MonoBehaviour
 {
@@ -37,7 +34,7 @@ public class CollectRewardsScreen : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("Ad was not showed cause internet connection lost.");
+                Debug.LogWarning("Ad was not showed cause internet connection lost or got AdFailedLoad");
                 gameOverStatusScreen.ShowGameOverMenu();
             }
         });

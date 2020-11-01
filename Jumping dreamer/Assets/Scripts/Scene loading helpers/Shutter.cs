@@ -23,7 +23,7 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
         SceneManager.sceneLoaded += OnSceneLoaded;
 
         // Остановить время при старте игры и ждать выполнения метода OpenShutter()
-        Time.timeScale = 0f;
+        GameManager.Instance.SetGameReady(false);
     }
 
 
@@ -33,19 +33,11 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
     }
 
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        Debug.Log($"OnSceneLoaded: {scene.name} in mode: {mode}");
-
-        OpenShutter();
-    }
-
-
     public void CloseShutterAndLoadScene(string sceneName)
     {
         sceneToLoadName = sceneName;
 
-        Time.timeScale = 0f;
+        GameManager.Instance.SetGameReady(false);
         animator.SetBool("isOpen", false);
     }
 
@@ -58,15 +50,23 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
     }
 
 
-    public void OpenShutter()
-    {
-        animator.SetBool("isOpen", true);
-    }
-
-
     // Этот метод вызывается после конца анимации открытия заслонки
     public void RecoverTimeAfterOpeningShutter()
     {
-        Time.timeScale = 1f;
+        GameManager.Instance.SetGameReady(true);
+    }
+
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log($"OnSceneLoaded: {scene.name} in mode: {mode}");
+
+        OpenShutter();
+    }
+
+
+    public void OpenShutter()
+    {
+        animator.SetBool("isOpen", true);
     }
 }

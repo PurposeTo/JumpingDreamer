@@ -55,7 +55,7 @@ public class Pursuer : MonoBehaviour, IPooledObject
 
     private void FixedUpdate()
     {
-        GameObject target = GameManager.Instance.Player;
+        GameObject target = ImportantGameObjectsHolder.Instance.PlayerPresenter.gameObject;
 
         Vector3 toTargetDirection = (target.transform.position - (Vector3)rb2d.position).normalized;
 
@@ -83,7 +83,7 @@ public class Pursuer : MonoBehaviour, IPooledObject
 
     void IPooledObject.OnObjectSpawn()
     {
-        playerTactics = GameManager.Instance.PlayerPresenter.PlayerTactics;
+        playerTactics = ImportantGameObjectsHolder.Instance.PlayerPresenter.PlayerTactics;
         float percentageOfTimeSpentByThePlayerMoving = playerTactics.PercentageOfTimeSpentByThePlayerMoving;
         currentVelocityMultiplier = Mathf.Lerp(startVelocityMultiplier, finishVelocityMultiplier, percentageOfTimeSpentByThePlayerMoving);
         currentRotationVelocity = Mathf.Lerp(startRotationVelocity, finishRotationVelocity, percentageOfTimeSpentByThePlayerMoving);

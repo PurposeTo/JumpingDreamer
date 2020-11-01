@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-public delegate void StarAmountChange();
-public class StarCollector : MonoBehaviour
+public class StarCollector : RewardCollector
 {
-    public event StarAmountChange OnStarAmountChange;
+    public event Action OnStarAmountChange;
 
     private SafeInt stars = 0;
     public SafeInt Stars
@@ -18,21 +18,23 @@ public class StarCollector : MonoBehaviour
     }
 
 
-    private void Start()
+    private protected override void Start()
     {
+        base.Start();
         PlayerDataModelController.Instance.OnSavePlayerStats += SaveStarsStats;
     }
 
 
-    private void OnDestroy()
+    private protected override void OnDestroy()
     {
+        base.OnDestroy();
         PlayerDataModelController.Instance.OnSavePlayerStats -= SaveStarsStats;
     }
 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out Star star))
+        if (canCollecting && collision.TryGetComponent(out Star star))
         {
             Stars++;
             star.gameObject.SetActive(false);

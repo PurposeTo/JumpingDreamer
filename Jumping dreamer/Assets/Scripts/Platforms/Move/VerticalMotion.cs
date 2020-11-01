@@ -62,7 +62,7 @@ public class VerticalMotion : PlatformMovable, IMovable, IPooledObject
 
     private Vector2 GetUpdatedMoveDirection()
     {
-        Vector2 toCentreDirection = GameManager.Instance.GetToCentreDirection(transform.position);
+        Vector2 toCentreDirection = ImportantGameObjectsHolder.Instance.Centre.GetToCentreDirection(transform.position);
         return toCentreDirection * -1;
     }
 

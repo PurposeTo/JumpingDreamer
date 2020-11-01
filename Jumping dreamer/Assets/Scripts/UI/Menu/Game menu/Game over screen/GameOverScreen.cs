@@ -3,18 +3,24 @@
 public class GameOverScreen : MonoBehaviour
 {
     public GameOverStatusScreen GameOverStatusScreen;
+    public EarnedRewardsInGame EarnedRewardsInGame;
 
 
     private void OnEnable()
     {
-        GameMenu.Instance.PlayerUI.gameObject.SetActive(false);
-        GameMenu.Instance.PauseMenu.PauseButton.SetActive(false);
+        SetGameUIActive(false);
     }
 
 
     private void OnDisable()
     {
-        GameMenu.Instance.PlayerUI.gameObject.SetActive(true);
-        GameMenu.Instance.PauseMenu.PauseButton.SetActive(true);
+        SetGameUIActive(true);
+    }
+
+
+    private void SetGameUIActive(bool isActive)
+    {
+        GameMenu.Instance.PlayerUI.gameObject.SetActive(isActive);
+        GameMenu.Instance.PauseMenu.PauseButton.SetActive(isActive);
     }
 }

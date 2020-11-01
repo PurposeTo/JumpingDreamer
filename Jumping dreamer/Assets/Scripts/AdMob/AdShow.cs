@@ -29,10 +29,28 @@ public class AdShow : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Подождать закрытие рекламы
+    /// </summary>
+    /// <param name="mustRewardPlayerCallback"></param>
     public void OnCloseAdWait(Action<bool> mustRewardPlayerCallback)
     {
         if (OnCloseAdWaitCoroutine == null) OnCloseAdWaitCoroutine = StartCoroutine(OnCloseAdWaitEnumerator(mustRewardPlayerCallback));
-        else Debug.LogError("OnCloseAdWaitCoroutine is already starting!");
+        else
+        {
+            Debug.LogError("OnCloseAdWaitCoroutine is already starting!");
+            HideAdShowingError();
+        }
+    }
+
+
+    /// <summary>
+    /// Симуляция награждения игрока после просмотра рекламы - для вызова в случае ошибки отображения рекламы
+    /// </summary>
+    private void HideAdShowingError()
+    {
+        OnAdRewarded(null, null);
+        OnCloseAd(null, null); 
     }
 
 
