@@ -12,8 +12,8 @@ public class PlayerUI : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.PlayerPresenter.ScoreCollector.OnScoreAmountChange += UpdateScoreText;
-        GameManager.Instance.PlayerPresenter.StarCollector.OnStarAmountChange += UpdateStarsText;
+        ImportantGameObjectsHolder.Instance.PlayerPresenter.ScoreCollector.OnScoreAmountChange += UpdateScoreText;
+        ImportantGameObjectsHolder.Instance.PlayerPresenter.StarCollector.OnStarAmountChange += UpdateStarsText;
 
         UpdateStarsText();
         UpdateScoreText();
@@ -22,21 +22,21 @@ public class PlayerUI : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameManager.Instance.PlayerPresenter.ScoreCollector.OnScoreAmountChange -= UpdateScoreText;
-        GameManager.Instance.PlayerPresenter.StarCollector.OnStarAmountChange -= UpdateStarsText;
+        ImportantGameObjectsHolder.Instance.PlayerPresenter.ScoreCollector.OnScoreAmountChange -= UpdateScoreText;
+        ImportantGameObjectsHolder.Instance.PlayerPresenter.StarCollector.OnStarAmountChange -= UpdateStarsText;
     }
 
 
     public void UpdateStarsText()
     {
-        int value = GameManager.Instance.PlayerPresenter.StarCollector.Stars;
+        int value = ImportantGameObjectsHolder.Instance.PlayerPresenter.StarCollector.Stars;
         StarsText.text = starsDefaultText + value;
     }
 
 
     public void UpdateScoreText()
     {
-        int value = GameManager.Instance.PlayerPresenter.ScoreCollector.Score;
+        int value = ImportantGameObjectsHolder.Instance.PlayerPresenter.ScoreCollector.Score;
         ScoreText.text = scoreDefaultText + value;
     }
 }

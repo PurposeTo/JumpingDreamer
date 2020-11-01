@@ -23,7 +23,7 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
         SceneManager.sceneLoaded += OnSceneLoaded;
 
         // Остановить время при старте игры и ждать выполнения метода OpenShutter()
-        GameManager.Instance.SetPause(true);
+        GameManager.Instance.SetGameReady(false);
     }
 
 
@@ -37,7 +37,7 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
     {
         sceneToLoadName = sceneName;
 
-        GameManager.Instance.SetPause(true);
+        GameManager.Instance.SetGameReady(false);
         animator.SetBool("isOpen", false);
     }
 
@@ -53,7 +53,7 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
     // Этот метод вызывается после конца анимации открытия заслонки
     public void RecoverTimeAfterOpeningShutter()
     {
-        GameManager.Instance.SetPause(false);
+        GameManager.Instance.SetGameReady(true);
     }
 
 

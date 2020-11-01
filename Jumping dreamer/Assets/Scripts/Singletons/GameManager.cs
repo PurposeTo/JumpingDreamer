@@ -3,21 +3,11 @@ using UnityEngine;
 
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
-    public GameObject Player;
-    public PlayerPresenter PlayerPresenter { get; private set; }
-    public GameObject CentreObject;
-    public Centre Centre { get; private set; }
-
-    public GameObject CameraObject;
-
-    public event Action OnGameOver;  //{ add { } remove { } }
+    public event Action OnGameOver;
 
 
-    protected override void AwakeSingleton()
-    {
-        PlayerPresenter = Player.GetComponent<PlayerPresenter>();
-        Centre = CentreObject.GetComponent<Centre>();
-    }
+    private bool isPause = false;
+    private bool isGameReady = false;
 
 
     public void GameOver()
@@ -29,45 +19,21 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     public void SetPause(bool isPause)
     {
-        if (isPause) Time.timeScale = 0f;
+        this.isPause = isPause;
+        SetTimeScale();
+    }
+
+
+    public void SetGameReady(bool isGameReady)
+    {
+        this.isGameReady = isGameReady;
+        SetTimeScale();
+    }
+
+
+    private void SetTimeScale()
+    {
+        if (isPause || !isGameReady) Time.timeScale = 0f;
         else Time.timeScale = 1f;
-    }
-
-
-
-
-    public Vector2 GetToCentreVector(Vector2 position)
-    {
-        return (Vector2)CentreObject.transform.position - position;
-    }
-
-
-    public Vector2 GetToCentreDirection(Vector2 position)
-    {
-        return GetToCentreVector(position).normalized;
-    }
-
-
-    public float GetToCentreMagnitude(Vector2 position)
-    {
-        return GetToCentreVector(position).magnitude;
-    }
-
-
-    public Vector2 GetFromCentreVector(Vector2 position)
-    {
-        return GetToCentreVector(position) * -1f;
-    }
-
-
-    public Vector2 GetFromCentreDirection(Vector2 position)
-    {
-        return GetToCentreDirection(position) * -1f;
-    }
-
-
-    public float GetFromCentreMagnitude(Vector2 position)
-    {
-        return GetToCentreMagnitude(position) * -1f;
     }
 }

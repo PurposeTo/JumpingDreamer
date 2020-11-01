@@ -23,7 +23,7 @@ public class TrainingTutorial : MonoBehaviour
 
     private void Awake()
     {
-        playerTactics = GameManager.Instance.PlayerPresenter.PlayerTactics;
+        playerTactics = ImportantGameObjectsHolder.Instance.PlayerPresenter.PlayerTactics;
         animatorBlinkingControllers = trainingTips.Select(x => x.GetComponentInChildren<AnimatorBlinkingController>()).ToArray();
         animatorBlinkingControllers[0].OnDisableBlinking += DisableTutorialTips;
     }

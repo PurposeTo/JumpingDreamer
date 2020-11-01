@@ -7,5 +7,6 @@
     public static void LoadScene(string sceneName)
     {
         Shutter.Instance.CloseShutterAndLoadScene(sceneName);
+        GameManager.Instance.SetPause(false); // Автоматически снимать игру с паузы при перезагрузке сцены
     }
 }

@@ -7,7 +7,7 @@ public class Centre : MonoBehaviour
 
     public static readonly float CentreRadius = 9f;
 
-    private PlayerPresenter PlayerPresenter => GameManager.Instance.PlayerPresenter;
+    private PlayerPresenter PlayerPresenter => ImportantGameObjectsHolder.Instance.PlayerPresenter;
     
 
     private void Start()
@@ -21,6 +21,44 @@ public class Centre : MonoBehaviour
     {
         PlayerPresenter.PlayerHealth.OnPlayerIsInvulnerable -= DeactivateKillingZone;
     }
+
+
+    #region методы взаимодействия с игровым объектом "Центр"
+    public Vector2 GetToCentreVector(Vector2 position)
+    {
+        return (Vector2)gameObject.transform.position - position;
+    }
+
+
+    public Vector2 GetToCentreDirection(Vector2 position)
+    {
+        return GetToCentreVector(position).normalized;
+    }
+
+
+    public float GetToCentreMagnitude(Vector2 position)
+    {
+        return GetToCentreVector(position).magnitude;
+    }
+
+
+    public Vector2 GetFromCentreVector(Vector2 position)
+    {
+        return GetToCentreVector(position) * -1f;
+    }
+
+
+    public Vector2 GetFromCentreDirection(Vector2 position)
+    {
+        return GetToCentreDirection(position) * -1f;
+    }
+
+
+    public float GetFromCentreMagnitude(Vector2 position)
+    {
+        return GetToCentreMagnitude(position) * -1f;
+    }
+    #endregion
 
 
     private void DeactivateKillingZone(bool deactivate)

@@ -37,10 +37,10 @@ public class EarnedRewardsInGame : MonoBehaviour
 
     private string GetScoreText()
     {
-        int score = GameManager.Instance.PlayerPresenter.ScoreCollector.Score;
+        int score = ImportantGameObjectsHolder.Instance.PlayerPresenter.ScoreCollector.Score;
         string scoreText = $"Score\n{score}";
 
-        int stars = GameManager.Instance.PlayerPresenter.StarCollector.Stars;
+        int stars = ImportantGameObjectsHolder.Instance.PlayerPresenter.StarCollector.Stars;
         string starsText = $"Stars\n{stars}";
 
         return $"{scoreText}\n{starsText}";

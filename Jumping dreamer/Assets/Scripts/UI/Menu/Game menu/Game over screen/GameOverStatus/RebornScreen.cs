@@ -19,7 +19,7 @@ public class RebornScreen : MonoBehaviour
         GameMenu.Instance.AdRewardMessage.gameObject.SetActive(true);
 
         // Возродить
-        GameManager.Instance.PlayerPresenter.PlayerHealth.RaiseTheDead();
+        ImportantGameObjectsHolder.Instance.PlayerPresenter.PlayerHealth.RaiseTheDead();
     }
 
 

@@ -26,7 +26,7 @@ public class FlashCompass : MonoBehaviour, IPooledObject
     private float compassOxOffset;
     private float compassOyOffset;
 
-    private Vector2 playerDirection => GameManager.Instance.GetFromCentreDirection(GameManager.Instance.Player.transform.position);
+    private Vector2 PlayerDirection => ImportantGameObjectsHolder.Instance.Centre.GetFromCentreDirection(ImportantGameObjectsHolder.Instance.PlayerPresenter.gameObject.transform.position);
 
     private Coroutine lifeCycleRoutine;
     private Coroutine turnOnCompassAnimationRoutine;
@@ -174,7 +174,7 @@ public class FlashCompass : MonoBehaviour, IPooledObject
 
     private float CalculateDifferenceAngleMapping()
     {
-        float differenceAngle = Vector2.SignedAngle(playerDirection, flash.Direction);
+        float differenceAngle = Vector2.SignedAngle(PlayerDirection, flash.Direction);
         return (differenceAngle + upperBoundOfPlayerViewingRange) / (upperBoundOfPlayerViewingRange + Mathf.Abs(lowerBoundOfPlayerViewingRange));
     }
 

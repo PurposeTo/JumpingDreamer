@@ -202,6 +202,7 @@
     <Compile Include="Assets\Scripts\Singletons\Base\SingletonMonoBehaviour.cs" />
     <Compile Include="Assets\Scripts\Singletons\CurrentGameSessionData.cs" />
     <Compile Include="Assets\Scripts\Singletons\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Singletons\ImportantGameObjectsHolder.cs" />
     <Compile Include="Assets\Scripts\Singletons\Object Pooler\IPooledObject.cs" />
     <Compile Include="Assets\Scripts\Singletons\Object Pooler\ObjectPooler.cs" />
     <Compile Include="Assets\Scripts\Singletons\VFX\VFXManager.cs" />

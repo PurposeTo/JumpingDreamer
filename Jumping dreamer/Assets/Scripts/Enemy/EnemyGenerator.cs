@@ -25,7 +25,7 @@ public class EnemyGenerator : MonoBehaviour
         while (true)
         {
             yield return wait;
-            ObjectPooler.Instance.SpawnFromPool(pursuer, GameManager.Instance.Centre.gameObject.transform.position, Quaternion.identity);
+            ObjectPooler.Instance.SpawnFromPool(pursuer, ImportantGameObjectsHolder.Instance.Centre.gameObject.transform.position, Quaternion.identity);
         }
 
         //lifeCycleRoutine = null;
