@@ -4,21 +4,17 @@ public class CurrentGameSessionData : SingletonMonoBehaviour<CurrentGameSessionD
 {
     public bool IsRecordNew { get; private set; } = false;
 
-    public Action OnNewRecordScore;
-    public Action OnScoreOrStarsChanged;
+    public event Action OnNewRecordScore;
+    public event Action OnScoreOrStarsChanged;
 
     private void Start()
     {
         PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.OnNewScoreRecord += ActivateRecordNewToggle;
-        GameManager.Instance.PlayerPresenter.ScoreCollector.OnScoreAmountChange += OnScoreOrStarsChangedCall;
-        GameManager.Instance.PlayerPresenter.StarCollector.OnStarAmountChange += OnScoreOrStarsChangedCall;
     }
 
     private void OnDestroy()
     {
         PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.OnNewScoreRecord -= ActivateRecordNewToggle;
-        GameManager.Instance.PlayerPresenter.ScoreCollector.OnScoreAmountChange -= OnScoreOrStarsChangedCall;
-        GameManager.Instance.PlayerPresenter.StarCollector.OnStarAmountChange -= OnScoreOrStarsChangedCall;
     }
 
 

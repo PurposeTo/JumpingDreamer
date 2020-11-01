@@ -7,8 +7,30 @@ public class Centre : MonoBehaviour
 
     public static readonly float CentreRadius = 9f;
 
+    private PlayerPresenter PlayerPresenter => GameManager.Instance.PlayerPresenter;
+    
 
     private void Start()
+    {
+        PlayerPresenter.PlayerHealth.OnPlayerIsInvulnerable += DeactivateKillingZone;
+        SetScale();
+    }
+
+
+    private void OnDestroy()
+    {
+        PlayerPresenter.PlayerHealth.OnPlayerIsInvulnerable -= DeactivateKillingZone;
+    }
+
+
+    private void DeactivateKillingZone(bool deactivate)
+    {
+        // При выключении KillingZone необходимо поверхность сделать осязаемой
+        killingZone.SetIsTriggerZone(!deactivate);
+    }
+
+
+    private void SetScale()
     {
         float Size = CentreRadius * 2f;
 
@@ -18,11 +40,5 @@ public class Centre : MonoBehaviour
         }
 
         transform.localScale = new Vector3(Size, Size, Size);
-    }
-
-
-    public void SetIsTriggerKillingZone(bool isTrigger)
-    {
-        killingZone.SetIsTriggerZone(isTrigger);
     }
 }

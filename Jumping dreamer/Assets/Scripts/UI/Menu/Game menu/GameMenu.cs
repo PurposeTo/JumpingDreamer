@@ -8,9 +8,20 @@ public class GameMenu : SingletonMonoBehaviour<GameMenu>
     public AdRewardMessage AdRewardMessage;
 
 
-    public void GameOver()
+    protected override void AwakeSingleton()
     {
-        Time.timeScale = 0f;
+        GameManager.Instance.OnGameOver += EnableGameOverScreen;
+    }
+
+
+    private void OnDestroy()
+    {
+        GameManager.Instance.OnGameOver -= EnableGameOverScreen;
+    }
+
+
+    private void EnableGameOverScreen()
+    {
         GameOverScreen.gameObject.SetActive(true);
     }
 }

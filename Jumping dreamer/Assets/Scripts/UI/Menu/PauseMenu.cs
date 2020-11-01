@@ -7,7 +7,7 @@ public class PauseMenu : MonoBehaviour
 
     public void Pause()
     {
-        Time.timeScale = 0f;
+        GameManager.Instance.SetPause(true);
 
         PauseScreen.SetActive(true);
         PauseButton.SetActive(false);
@@ -16,7 +16,7 @@ public class PauseMenu : MonoBehaviour
 
     public void Resume()
     {
-        Time.timeScale = 1f;
+        GameManager.Instance.SetPause(false);
 
         PauseScreen.SetActive(false);
         PauseButton.SetActive(true);

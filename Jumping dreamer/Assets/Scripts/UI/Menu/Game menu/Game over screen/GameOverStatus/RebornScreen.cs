@@ -15,7 +15,7 @@ public class RebornScreen : MonoBehaviour
         gameOverStatusScreen.isPlayerMustSeeAd = true;
 
         GameMenu.Instance.GameOverScreen.gameObject.SetActive(false);
-        Time.timeScale = 1f;
+        GameManager.Instance.SetPause(false);
         GameMenu.Instance.AdRewardMessage.gameObject.SetActive(true);
 
         // Возродить

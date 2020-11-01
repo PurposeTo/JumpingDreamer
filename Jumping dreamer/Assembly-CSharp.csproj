@@ -141,7 +141,6 @@
     <Compile Include="Assets\Scripts\Centre\Centre.cs" />
     <Compile Include="Assets\Scripts\Centre\Gravity.cs" />
     <Compile Include="Assets\Scripts\Centre\KillingZone.cs" />
-    <Compile Include="Assets\Scripts\CurrentGameSessionData.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyGenerator.cs" />
     <Compile Include="Assets\Scripts\Enemy\Pursuer.cs" />
     <Compile Include="Assets\Scripts\GPGS\GPGSAuthentication.cs" />
@@ -181,6 +180,7 @@
     <Compile Include="Assets\Scripts\Player Data\PlayerDataLocalStorageSafe.cs" />
     <Compile Include="Assets\Scripts\Player Data\PlayerDataModelController.cs" />
     <Compile Include="Assets\Scripts\Player Data\PlayerDataSynchronizer.cs" />
+    <Compile Include="Assets\Scripts\Player\Collectors\Base\RewardCollector.cs" />
     <Compile Include="Assets\Scripts\Player\Collectors\ScoreCollector.cs" />
     <Compile Include="Assets\Scripts\Player\Collectors\StarCollector.cs" />
     <Compile Include="Assets\Scripts\Player\Controllers\Abstract\Controller.cs" />
@@ -200,6 +200,7 @@
     <Compile Include="Assets\Scripts\Scene loading helpers\Shutter.cs" />
     <Compile Include="Assets\Scripts\Singletons\Base\Singleton.cs" />
     <Compile Include="Assets\Scripts\Singletons\Base\SingletonMonoBehaviour.cs" />
+    <Compile Include="Assets\Scripts\Singletons\CurrentGameSessionData.cs" />
     <Compile Include="Assets\Scripts\Singletons\GameManager.cs" />
     <Compile Include="Assets\Scripts\Singletons\Object Pooler\IPooledObject.cs" />
     <Compile Include="Assets\Scripts\Singletons\Object Pooler\ObjectPooler.cs" />

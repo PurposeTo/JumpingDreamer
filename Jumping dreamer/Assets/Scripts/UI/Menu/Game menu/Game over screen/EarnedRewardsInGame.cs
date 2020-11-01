@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 
 public class EarnedRewardsInGame : MonoBehaviour
@@ -11,44 +10,22 @@ public class EarnedRewardsInGame : MonoBehaviour
     private bool IsRecordNew => CurrentGameSessionData.Instance.IsRecordNew;
 
 
-    private Action OnChangedEarnedRewardsInGame; // При изменении счета или звезд должны обновить текст используя актуальный метод отображения
-
     // Awake вызывается при включении объекта
     private void Awake()
     {
         earnedRewardsInGame = gameObject.GetComponent<TextMeshProUGUI>();
-
-        CurrentGameSessionData.Instance.OnScoreOrStarsChanged += OnChangedEarnedRewardsInGameCall;
-        CurrentGameSessionData.Instance.OnNewRecordScore += OnChangedEarnedRewardsInGameCall;
-
         ShowScore();
-    }
-
-
-    private void OnDestroy()
-    {
-        CurrentGameSessionData.Instance.OnScoreOrStarsChanged -= OnChangedEarnedRewardsInGameCall;
-        CurrentGameSessionData.Instance.OnNewRecordScore -= OnChangedEarnedRewardsInGameCall;
-    }
-
-
-    private void OnChangedEarnedRewardsInGameCall()
-    {
-        OnChangedEarnedRewardsInGame?.Invoke();
     }
 
 
     private void ShowScore()
     {
-        OnChangedEarnedRewardsInGame = ShowScore;
         earnedRewardsInGame.text = GetScoreText();
     }
 
 
     public void ShowScoreWithRecord()
     {
-        OnChangedEarnedRewardsInGame = ShowScoreWithRecord;
-
         string recordScoreText;
 
         if (IsRecordNew) recordScoreText = $"New record!";

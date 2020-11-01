@@ -14,7 +14,7 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
     private int langIndex = 1;
     private string[] langArray = { "ru_Ru", "en_US" };
 
-    private Dictionary<string, string> localizedText;
+    private Dictionary<string, string> localizedText = new Dictionary<string, string>();
     private bool isReady = false;
     private const string missingTextString = "Localized Text not found";
 

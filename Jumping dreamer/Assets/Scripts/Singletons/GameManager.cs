@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
@@ -9,12 +10,30 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     public GameObject CameraObject;
 
+    public event Action OnGameOver;  //{ add { } remove { } }
+
 
     protected override void AwakeSingleton()
     {
         PlayerPresenter = Player.GetComponent<PlayerPresenter>();
         Centre = CentreObject.GetComponent<Centre>();
     }
+
+
+    public void GameOver()
+    {
+        Time.timeScale = 0f;
+        OnGameOver?.Invoke();
+    }
+
+
+    public void SetPause(bool isPause)
+    {
+        if (isPause) Time.timeScale = 0f;
+        else Time.timeScale = 1f;
+    }
+
+
 
 
     public Vector2 GetToCentreVector(Vector2 position)
