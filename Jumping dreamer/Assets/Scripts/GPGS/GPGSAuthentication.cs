@@ -34,9 +34,24 @@ public class GPGSAuthentication : SingletonMonoBehaviour<GPGSAuthentication>
         }
 
         // Аутентификация пользователя
-        PlayGamesPlatform.Instance.Authenticate(SignInInteractivity.CanPromptOnce, (result) =>
+        Platform.Authenticate(SignInInteractivity.CanPromptOnce, (result) =>
         {
             Debug.Log($"Authenticate is completed with code: {result}");
+
+            switch (result)
+            {
+                case SignInStatus.UiSignInRequired:
+                case SignInStatus.DeveloperError:
+                case SignInStatus.NetworkError:
+                case SignInStatus.InternalError:
+                case SignInStatus.Canceled:
+                case SignInStatus.Failed:
+
+                    Debug.Log($"Sign out have performed");
+                    Platform.SignOut();
+                    break;
+            }
+
             if (AuthenticateStatus != null) AuthenticateStatus.text = $"{result}";
         });
     }
