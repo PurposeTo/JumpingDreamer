@@ -11,9 +11,10 @@ public class FPSCounter : MonoBehaviour
         FPSText = gameObject.GetComponent<TextMeshProUGUI>();
     }
 
+
     private void Update()
     {
         double fps = Math.Round((double)(1.0 / Time.unscaledDeltaTime));
-        FPSText.text = $"FPS: {fps}";
+        FPSText.text = string.Format("{0:0.} fps", fps);
     }
 }

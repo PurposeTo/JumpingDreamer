@@ -43,7 +43,7 @@ public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
         rewardBasedVideoAd.OnAdLeavingApplication += HandleRewardBasedVideoLeftApplication;
 
         RequestRewardBasedVideo();
-        StartCoroutine(TryToLoadAdEnumerator()); ;
+        StartCoroutine(TryToLoadAdEnumerator());
         adShow = gameObject.GetComponent<AdShow>();
     }
 
