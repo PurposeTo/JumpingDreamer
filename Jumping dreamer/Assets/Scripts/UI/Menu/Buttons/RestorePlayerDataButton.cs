@@ -9,11 +9,11 @@ public class RestorePlayerDataButton : OperationWithPlayerDataButton
             if (success)
             {
                 PlayerDataModelController.Instance.RestorePlayerDataFromCloud();
-                DialogWindowGenerator.Instance.CreateDialogWindow(LocalizationManager.Instance.GetLocalizedValue("ProgressWasRestored"));
+                PopUpWindowGenerator.Instance.CreateDialogWindow(LocalizationManager.Instance.GetLocalizedValue("ProgressWasRestored"));
             }
             else
             {
-                DialogWindowGenerator.Instance.CreateDialogWindow(LocalizationManager.Instance.GetLocalizedValue("OperationNotConfirm"));
+                PopUpWindowGenerator.Instance.CreateDialogWindow(LocalizationManager.Instance.GetLocalizedValue("OperationNotConfirm"));
             }
         });
 

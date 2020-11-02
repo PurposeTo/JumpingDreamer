@@ -1,10 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
-public class DialogWindowGenerator : SingletonMonoBehaviour<DialogWindowGenerator>
+public class PopUpWindowGenerator : SingletonMonoBehaviour<PopUpWindowGenerator>
 {
     [SerializeField] private GameObject dialogWindow = null;
     [SerializeField] private GameObject choosingWindow = null;
+    [SerializeField] private GameObject loadingWindow = null;
 
     public void CreateDialogWindow(string textToShow)
     {
@@ -16,4 +17,7 @@ public class DialogWindowGenerator : SingletonMonoBehaviour<DialogWindowGenerato
     {
         Instantiate(choosingWindow).GetComponent<MixingModelsWindow>().Initialize(localModel, cloudModel);
     }
+
+
+    public LoadingWindow CreateLoadingWindow() => Instantiate(loadingWindow).GetComponent<LoadingWindow>();
 }
