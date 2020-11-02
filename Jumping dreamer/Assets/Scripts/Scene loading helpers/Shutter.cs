@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Animator))]
@@ -23,7 +24,8 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
         SceneManager.sceneLoaded += OnSceneLoaded;
 
         // Остановить время при старте игры и ждать выполнения метода OpenShutter()
-        GameManager.SetAwakeCommand(() => GameManager.Instance.SetGameReady(false));
+        void stopGameTime() => GameManager.Instance.SetGameReady(false); // Кеширую для назначения имени команды
+        GameManager.SetAwakeCommand(stopGameTime);
     }
 
 

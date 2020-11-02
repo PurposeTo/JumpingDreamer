@@ -39,12 +39,12 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : Single
     /// Данный метод гарантирует, что команда, переданная в параметры, будет выполнена синглтоном в независимости от того, был тот инициализирован на момент вызова данного метода или нет.
     /// Команды выполняются сразу после метода AwakeSingleton(), если синглтон не был инициализирован.
     /// </summary>
-    public static void SetAwakeCommand(Action action)
+    public static void SetAwakeCommand(params Action[] actions)
     {
-        if (action is null) throw new ArgumentNullException(nameof(action));
+        if (actions.Length == 0 || actions is null) throw new ArgumentNullException(nameof(actions));
 
-        if (Instance != null) action?.Invoke();
-        else awakeCommands.Enqueue(action);
+        if (Instance != null) Array.ForEach(actions, action => action?.Invoke());
+        else Array.ForEach(actions, action => awakeCommands.Enqueue(action));
     }
 
 
@@ -52,7 +52,13 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : Single
     {
         if (awakeCommands != null && awakeCommands.Count != 0)
         {
-            for (int i = 0; i < awakeCommands.Count; i++) awakeCommands.Dequeue()?.Invoke();
+            for (int i = 0; i < awakeCommands.Count; i++)
+            {
+                Action action = awakeCommands.Dequeue();
+                Debug.Log($"{name} execute command \"{action?.Method.Name}\" from \"{action?.Target}\" in Awake!");
+
+                action?.Invoke();
+            }
         }
     }
 }
@@ -63,4 +69,12 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : Single
 {
 	protected override void AwakeSingleton() { }
 }
+ */
+
+
+/*Пример использования SetAwakeCommand с кешированием команды для правильного отображения метода в логах
+ * 
+ * void stopGameTime() => GameManager.Instance.SetGameReady(false); // Кеширую для назначения имени команды
+ * GameManager.SetAwakeCommand(stopGameTime)
+ * 
  */
