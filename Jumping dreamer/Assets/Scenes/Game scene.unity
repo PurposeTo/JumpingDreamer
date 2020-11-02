@@ -7357,7 +7357,7 @@ PrefabInstance:
     - target: {fileID: 6687179783305391084, guid: fad1063bb8b7b0849b166d997398b20a,
         type: 3}
       propertyPath: m_Name
-      value: Error window generator
+      value: PopUp window generator
       objectReference: {fileID: 0}
     - target: {fileID: 6687179783305391086, guid: fad1063bb8b7b0849b166d997398b20a,
         type: 3}
