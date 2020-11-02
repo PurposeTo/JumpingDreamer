@@ -47,7 +47,7 @@ public class GPGSAuthentication : SingletonMonoBehaviour<GPGSAuthentication>
                 case SignInStatus.Canceled:
                 case SignInStatus.Failed:
 
-                    Debug.Log($"Sign out have performed");
+                    Debug.Log($"GPGS Sign out have performed");
                     Platform.SignOut();
                     break;
             }
