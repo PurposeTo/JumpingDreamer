@@ -227,10 +227,10 @@
     <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\GameOverStatus\RefuseToViewAdsScreen.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\GameOverStatusScreen.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Game menu\GameMenu.cs" />
+    <Compile Include="Assets\Scripts\UI\Menu\LoadingWindow.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\MainMenu.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\PauseMenu.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\SettingsMenu.cs" />
-    <Compile Include="Assets\Scripts\UI\Menu\WaitingForAdLoadingWindow.cs" />
     <Compile Include="Assets\Scripts\UI\PlayerUI.cs" />
     <Compile Include="Assets\Scripts\UI\PopUpText.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\Color scheme generator\ColorSchemeData.cs" />

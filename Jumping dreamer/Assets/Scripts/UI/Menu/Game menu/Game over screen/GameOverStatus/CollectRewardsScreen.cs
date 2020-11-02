@@ -4,7 +4,7 @@ public class CollectRewardsScreen : MonoBehaviour
 {
     private GameOverStatusScreen gameOverStatusScreen;
 
-    [SerializeField] private WaitingForAdLoadingWindow adLoadingWindow;
+    [SerializeField] private LoadingWindow adLoadingWindow;
 
 
     public void Initialize(GameOverStatusScreen gameOverStatusScreen)

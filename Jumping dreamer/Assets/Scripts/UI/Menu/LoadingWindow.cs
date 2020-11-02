@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class WaitingForAdLoadingWindow : MonoBehaviour
+public class LoadingWindow : MonoBehaviour
 {
     public void TurnOn() => gameObject.SetActive(true);
 
