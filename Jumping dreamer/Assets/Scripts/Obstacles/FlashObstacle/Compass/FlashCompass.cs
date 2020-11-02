@@ -4,8 +4,9 @@ using System.Collections;
 
 public class FlashCompass : MonoBehaviour, IPooledObject
 {
-    public AnimationCurve ChangingInitialTransparencyCurve;
-    public AnimationCurve ChangingTransparencyCurve;
+    [SerializeField] private AnimationCurve changingInitialTransparencyCurve;
+    [SerializeField] private AnimationCurve changingTransparencyCurve;
+    [SerializeField] private AnimationCurve changingAnchorPositionCurve;
 
     private RectTransform compassTransform;
     private Image image;
@@ -16,8 +17,6 @@ public class FlashCompass : MonoBehaviour, IPooledObject
     private readonly float upperBoundOfPlayerViewingRange = 180f;
 
     private readonly float initialTransparency = 0f;
-    //private readonly float maxTransparency = 1f;
-
     private Vector2 compassInitialScale;
 
     /// <summary>
@@ -41,8 +40,6 @@ public class FlashCompass : MonoBehaviour, IPooledObject
 
         compassInitialScale = compassTransform.sizeDelta;
 
-        //compassOxOffset = compassTransform.rect.width / 2;
-        //compassOyOffset = compassTransform.rect.height / 2;
         compassOxOffset = compassTransform.sizeDelta.x / 2;
         compassOyOffset = compassTransform.sizeDelta.y / 2;
     }
@@ -90,8 +87,6 @@ public class FlashCompass : MonoBehaviour, IPooledObject
             yield return flashCompassOperationRoutine;
         }
 
-        //yield return new WaitUntil(() => flash.IsFlashKillingZoneActive);
-
         if (turnOffCompassAnimationRoutine == null)
         {
             turnOffCompassAnimationRoutine = StartCoroutine(TurnOffCompassAnimationEnumerator());
@@ -106,21 +101,21 @@ public class FlashCompass : MonoBehaviour, IPooledObject
 
     private IEnumerator TurnOnCompassAnimationEnumerator()
     {
-        float differenceAngleMappingOnPlayerViewingRange = CalculateDifferenceAngleMapping();
+        float differenceAngleMappingOnPlayerViewingRange = CalculateDifferenceAngleMappingOnPlayerViewingRange();
 
-        float alphaColor = CalculateTransparency(differenceAngleMappingOnPlayerViewingRange/*, initialTransparency, maxTransparency*/);
+        float alphaColor = CalculateTransparency(differenceAngleMappingOnPlayerViewingRange);
         float timer = 0f;
 
         // Изменение прозрачности в соответствии с графиком изменения начальной прозрачности
         while (image.color.a < alphaColor)
         {
-            timer += Time.deltaTime;
-
-            if (ChangingInitialTransparencyCurve.Evaluate(timer) > alphaColor)
+            if (changingInitialTransparencyCurve.Evaluate(timer) >= alphaColor)
             {
                 image.color = new Color(image.color.r, image.color.g, image.color.b, alphaColor);
             }
-            else image.color = new Color(image.color.r, image.color.g, image.color.b, ChangingInitialTransparencyCurve.Evaluate(timer));
+            else image.color = new Color(image.color.r, image.color.g, image.color.b, changingInitialTransparencyCurve.Evaluate(timer));
+
+            timer += Time.deltaTime;
 
             yield return null;
         }
@@ -133,12 +128,12 @@ public class FlashCompass : MonoBehaviour, IPooledObject
     {
         while (!flash.IsFlashKillingZoneActive)
         {
-            float differenceAngleMappingOnPlayerViewingRange = CalculateDifferenceAngleMapping();
+            float differenceAngleMappingOnPlayerViewingRange = CalculateDifferenceAngleMappingOnPlayerViewingRange();
 
             image.color = new Color(image.color.r,
                                     image.color.g,
                                     image.color.b,
-                                    ChangingTransparencyCurve.Evaluate(differenceAngleMappingOnPlayerViewingRange));
+                                    changingTransparencyCurve.Evaluate(differenceAngleMappingOnPlayerViewingRange));
 
             yield return null;
         }
@@ -172,7 +167,7 @@ public class FlashCompass : MonoBehaviour, IPooledObject
     }
 
 
-    private float CalculateDifferenceAngleMapping()
+    private float CalculateDifferenceAngleMappingOnPlayerViewingRange()
     {
         float differenceAngle = Vector2.SignedAngle(PlayerDirection, flash.Direction);
         return (differenceAngle + upperBoundOfPlayerViewingRange) / (upperBoundOfPlayerViewingRange + Mathf.Abs(lowerBoundOfPlayerViewingRange));
@@ -181,32 +176,30 @@ public class FlashCompass : MonoBehaviour, IPooledObject
 
     private void SetCompassPosition()
     {
-        float differenceAngleMappingOnPlayerViewingRange = CalculateDifferenceAngleMapping();
+        float differenceAngleMappingOnPlayerViewingRange = CalculateDifferenceAngleMappingOnPlayerViewingRange();
+        float anchorPosition = changingAnchorPositionCurve.Evaluate(differenceAngleMappingOnPlayerViewingRange);
 
-        compassTransform.anchorMin = new Vector2(1f - differenceAngleMappingOnPlayerViewingRange, 0f);
-        compassTransform.anchorMax = new Vector2(1f - differenceAngleMappingOnPlayerViewingRange, 0f);
+        // Движение якорей
+        compassTransform.anchorMin = new Vector2(1f - anchorPosition, 0f);
+        compassTransform.anchorMax = new Vector2(1f - anchorPosition, 0f);
 
         // С эффектом "заплытия" за экран
         float compassOxPosition = Mathf.Lerp(compassTransform.anchorMin.x + compassOxOffset, compassTransform.anchorMin.x - compassOxOffset, differenceAngleMappingOnPlayerViewingRange);
 
+        // Движения компаса относильно позиции якорей
         compassTransform.anchoredPosition = new Vector2(compassOxPosition, compassTransform.anchorMin.y + compassOyOffset);
     }
 
 
-    private float CalculateTransparency(float differenceAngleMappingOnPlayerViewingRange/*, float minTransparency, float maxTransparency*/)
+    private float CalculateTransparency(float differenceAngleMappingOnPlayerViewingRange)
     {
         float alphaColor;
 
         if (differenceAngleMappingOnPlayerViewingRange > 0.5f)
         {
             alphaColor = Mathf.InverseLerp(0f, 0.5f, 1f - differenceAngleMappingOnPlayerViewingRange);
-            //GameLogic.MapValueFromOneToAnotherRange(1f - differenceAngleMappingOnPlayerViewingRange, 0f, 0.5f, minTransparency, maxTransparency);
         }
-        else
-        {
-            //alphaColor = GameLogic.MapValueFromOneToAnotherRange(differenceAngleMappingOnPlayerViewingRange, 0f, 0.5f, minTransparency, maxTransparency);
-            alphaColor = Mathf.InverseLerp(0f, 0.5f, differenceAngleMappingOnPlayerViewingRange);
-        }
+        else alphaColor = Mathf.InverseLerp(0f, 0.5f, differenceAngleMappingOnPlayerViewingRange);
 
         return alphaColor;
     }
@@ -218,8 +211,6 @@ public class FlashCompass : MonoBehaviour, IPooledObject
     void IPooledObject.OnObjectSpawn()
     {
         compassTransform.localScale = Vector3.one;
-
-        // Нужно? Или начинать изменять с 0 позиции графика?
         image.color = new Color(image.color.r, image.color.g, image.color.b, initialTransparency);
     }
 }
