@@ -60,24 +60,34 @@ public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
     }
 
 
-    public void ShowRewardVideoAd(Action<bool> hasAdBeenShowed)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="hasAdBeenShowed">Делегат вызывается после попытки показа рекламы.</param>
+    public void ShowRewardVideoAd(Action<bool> hasAdBeenShowed) => ShowRewardVideoAd(null, hasAdBeenShowed);
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="isAdWasReallyLoadedCallback">Делегат вызывается до попытки показа рекламы.</param>
+    /// <param name="hasAdBeenShowed">Делегат вызывается после попытки показа рекламы.</param>
+    public void ShowRewardVideoAd(Action<bool> isAdWasReallyLoadedCallback, Action<bool> hasAdBeenShowed)
     {
         bool isAdWasReallyLoaded = IsAdWasReallyLoaded();
+        isAdWasReallyLoadedCallback?.Invoke(isAdWasReallyLoaded);
 
         if (isAdWasReallyLoaded)
         {
-            StartCoroutine(connectionChecker.PingGoogleEnumerator(isInternetAvaliable =>
+            StartCoroutine(connectionChecker.PingGoogleCheckerWithTimeoutEnumerator(isInternetAvaliable =>
             {
                 if (isInternetAvaliable) rewardBasedVideoAd.Show();
                 hasAdBeenShowed?.Invoke(isInternetAvaliable);
             }));
         }
-        else
-        {
-            hasAdBeenShowed?.Invoke(isAdWasReallyLoaded);
-        }
-
+        else hasAdBeenShowed?.Invoke(isAdWasReallyLoaded);
     }
+
 
     /// <summary>
     /// Подождать закрытие рекламы
