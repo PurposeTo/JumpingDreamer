@@ -83,7 +83,7 @@ public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelC
 
                     OnRestoreDataFromCloud?.Invoke();
                 }
-                else DialogWindowGenerator.Instance.CreateDialogWindow("Ошибка соединения!");
+                else PopUpWindowGenerator.Instance.CreateDialogWindow("Ошибка соединения!");
             }
         });
     }

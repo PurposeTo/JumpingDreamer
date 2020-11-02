@@ -64,7 +64,7 @@ public class PlayerDataSynchronizer
 
     private void ProvideModelSelection(PlayerDataModel localModel, PlayerDataModel cloudModel)
     {
-        DialogWindowGenerator.Instance.CreateChoosingWindow(localModel, cloudModel);
+        PopUpWindowGenerator.Instance.CreateChoosingWindow(localModel, cloudModel);
     }
 
 

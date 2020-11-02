@@ -47,7 +47,7 @@ public class PlayerDataLocalStorageSafe
                 File.WriteAllText(FilePath, modifiedData);
                 //File.WriteAllText(FilePath, json); // без шифрования
             }
-            else DialogWindowGenerator.Instance.CreateDialogWindow("Ошибка записи данных игровой статистики! Пожалуйста, обратитесь в службу поддержки.");
+            else PopUpWindowGenerator.Instance.CreateDialogWindow("Ошибка записи данных игровой статистики! Пожалуйста, обратитесь в службу поддержки.");
         }
     }
 
@@ -91,7 +91,7 @@ public class PlayerDataLocalStorageSafe
             IsDataFileLoaded = false;
 
             Debug.LogError($"Data reading from \"{PlayerDataModel.FileName}\" ERROR!\nData was edited from outside.");
-            DialogWindowGenerator.Instance.CreateDialogWindow("Ошибка загрузки данных игровой статистики!\nЗапись новых данных заблокирована!");
+            PopUpWindowGenerator.Instance.CreateDialogWindow("Ошибка загрузки данных игровой статистики!\nЗапись новых данных заблокирована!");
 
             return PlayerDataModel.CreateModelWithDefaultValues();
         }
