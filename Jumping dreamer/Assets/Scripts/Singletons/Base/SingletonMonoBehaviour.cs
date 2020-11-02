@@ -44,7 +44,15 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : Single
         if (actions.Length == 0 || actions is null) throw new ArgumentNullException(nameof(actions));
 
         if (Instance != null) Array.ForEach(actions, action => action?.Invoke());
-        else Array.ForEach(actions, action => awakeCommands.Enqueue(action));
+        else
+        {
+            Array.ForEach(actions, action =>
+            {
+                Debug.Log($"Сommand \"{action?.Method.Name}\" from \"{action?.Target}\" was added to " +
+                    $"{typeof(T).Name} awakeCommands queue!");
+                awakeCommands.Enqueue(action);
+            });
+        }
     }
 
 
