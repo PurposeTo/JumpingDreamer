@@ -48,3 +48,5 @@ MonoBehaviour:
     type: 3}
   choosingWindow: {fileID: 8232004414377089441, guid: c88b463f737b49d4f90b004bc8c5269f,
     type: 3}
+  loadingWindow: {fileID: 4778002894845840738, guid: ef0bcf2f1b916f247901596264dc1d47,
+    type: 3}
