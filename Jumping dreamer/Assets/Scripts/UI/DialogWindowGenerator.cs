@@ -12,11 +12,8 @@ public class DialogWindowGenerator : SingletonMonoBehaviour<DialogWindowGenerato
     }
 
 
-    public MixingModelsWindow CreateChoosingWindow(PlayerDataModel localModel, PlayerDataModel cloudModel)
+    public void CreateChoosingWindow(PlayerDataModel localModel, PlayerDataModel cloudModel)
     {
-        MixingModelsWindow mixingModelsWindow = Instantiate(choosingWindow).GetComponent<MixingModelsWindow>();
-        mixingModelsWindow.Initialize(localModel, cloudModel);
-
-        return mixingModelsWindow;
+        Instantiate(choosingWindow).GetComponent<MixingModelsWindow>().Initialize(localModel, cloudModel);
     }
 }
