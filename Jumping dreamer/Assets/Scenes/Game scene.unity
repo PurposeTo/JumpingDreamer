@@ -8679,7 +8679,7 @@ PrefabInstance:
     - target: {fileID: 2189002992850477798, guid: 2baa27eeff977814e897dbe08ec9118c,
         type: 3}
       propertyPath: m_Name
-      value: Important gameObjects holder
+      value: GameObjects holder
       objectReference: {fileID: 0}
     - target: {fileID: 2189002992850477799, guid: 2baa27eeff977814e897dbe08ec9118c,
         type: 3}
