@@ -21,13 +21,9 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
         base.AwakeSingleton();
         animator = gameObject.GetComponent<Animator>();
         SceneManager.sceneLoaded += OnSceneLoaded;
-    }
 
-
-    private void Start()
-    {
         // Остановить время при старте игры и ждать выполнения метода OpenShutter()
-        GameManager.Instance.SetGameReady(false);
+        GameManager.SetAwakeCommand(() => GameManager.Instance.SetGameReady(false));
     }
 
 
