@@ -25,7 +25,7 @@ public class FlashCompass : MonoBehaviour, IPooledObject
     private float compassOxOffset;
     private float compassOyOffset;
 
-    private Vector2 PlayerDirection => ImportantGameObjectsHolder.Instance.Centre.GetFromCentreDirection(ImportantGameObjectsHolder.Instance.PlayerPresenter.gameObject.transform.position);
+    private Vector2 PlayerDirection => GameObjectsHolder.Instance.Centre.GetFromCentreDirection(GameObjectsHolder.Instance.PlayerPresenter.gameObject.transform.position);
 
     private Coroutine lifeCycleRoutine;
     private Coroutine turnOnCompassAnimationRoutine;

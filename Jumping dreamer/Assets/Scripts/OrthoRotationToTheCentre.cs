@@ -6,7 +6,7 @@ public class OrthoRotationToTheCentre : MonoBehaviour
 
     private void Start()
     {
-        centre = ImportantGameObjectsHolder.Instance.Centre.gameObject;
+        centre = GameObjectsHolder.Instance.Centre.gameObject;
         SetOrthoRotation();
     }
 

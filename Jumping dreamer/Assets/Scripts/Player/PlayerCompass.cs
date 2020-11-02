@@ -15,14 +15,14 @@ public class PlayerCompass : MonoBehaviour
 
     private void Start()
     {
-        player = ImportantGameObjectsHolder.Instance.PlayerPresenter.gameObject;
+        player = GameObjectsHolder.Instance.PlayerPresenter.gameObject;
         sprite = gameObject.GetComponent<SpriteRenderer>();
     }
 
 
     private void Update()
     {
-        float currentRange = ImportantGameObjectsHolder.Instance.Centre.GetToCentreMagnitude(player.transform.position);
+        float currentRange = GameObjectsHolder.Instance.Centre.GetToCentreMagnitude(player.transform.position);
 
         alphaChanel = Mathf.InverseLerp(MinHighest, MaxHighest, currentRange);
 

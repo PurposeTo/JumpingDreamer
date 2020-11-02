@@ -67,12 +67,12 @@ public class PlatformLifeCycle : MonoBehaviour, IPooledObject
                     case PlatformConfigsData.VerticalCauseOfDeathControl.TopBorder:
                         maxAvailableHight = UnityEngine.Random.Range(PlatformGeneratorData.PlatformAvailableHighestArea * (2f / 3f), PlatformGeneratorData.PlatformAvailableHighestArea);
                         IsAlive = () =>
-                        !(ImportantGameObjectsHolder.Instance.Centre.GetToCentreMagnitude(transform.position) >= maxAvailableHight);
+                        !(GameObjectsHolder.Instance.Centre.GetToCentreMagnitude(transform.position) >= maxAvailableHight);
                         break;
                     case PlatformConfigsData.VerticalCauseOfDeathControl.BottomBorder:
                         float minAvailableHight = Centre.CentreRadius * 2f;
                         IsAlive = () =>
-                        !(ImportantGameObjectsHolder.Instance.Centre.GetToCentreMagnitude(transform.position) <= minAvailableHight);
+                        !(GameObjectsHolder.Instance.Centre.GetToCentreMagnitude(transform.position) <= minAvailableHight);
                         break;
                     default:
                         throw new System.Exception($"{varticalCauseOfDead} is unknown VerticalCauseOfDeathControl!");

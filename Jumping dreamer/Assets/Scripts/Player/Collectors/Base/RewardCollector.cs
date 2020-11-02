@@ -7,13 +7,13 @@ public abstract class RewardCollector : MonoBehaviour
 
     private protected virtual void Start()
     {
-        ImportantGameObjectsHolder.Instance.PlayerPresenter.PlayerHealth.OnPlayerDie += StopCollecting;
+        GameObjectsHolder.Instance.PlayerPresenter.PlayerHealth.OnPlayerDie += StopCollecting;
     }
 
 
     private protected virtual void OnDestroy()
     {
-        ImportantGameObjectsHolder.Instance.PlayerPresenter.PlayerHealth.OnPlayerDie -= StopCollecting;
+        GameObjectsHolder.Instance.PlayerPresenter.PlayerHealth.OnPlayerDie -= StopCollecting;
     }
 
 

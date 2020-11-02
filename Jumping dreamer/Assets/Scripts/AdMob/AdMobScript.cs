@@ -79,11 +79,11 @@ public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
 
         if (isAdWasReallyLoaded)
         {
-            StartCoroutine(connectionChecker.PingGoogleCheckerWithTimeoutEnumerator(isInternetAvaliable =>
+            StartCoroutine(connectionChecker.PingGoogleEnumerator(isInternetAvaliable =>
             {
                 if (isInternetAvaliable) rewardBasedVideoAd.Show();
                 hasAdBeenShowed?.Invoke(isInternetAvaliable);
-            }));
+            }, 4));
         }
         else hasAdBeenShowed?.Invoke(isAdWasReallyLoaded);
     }

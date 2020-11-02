@@ -15,9 +15,9 @@ public class CameraFollow : MonoBehaviour
 
     private void Start()
     {
-        playerPresenter = ImportantGameObjectsHolder.Instance.PlayerPresenter;
+        playerPresenter = GameObjectsHolder.Instance.PlayerPresenter;
         player = playerPresenter.gameObject;
-        centre = ImportantGameObjectsHolder.Instance.Centre.gameObject;
+        centre = GameObjectsHolder.Instance.Centre.gameObject;
         thisCamera = gameObject.GetComponent<Camera>();
         cameraDefaultOrthographicSize = thisCamera.orthographicSize;
 

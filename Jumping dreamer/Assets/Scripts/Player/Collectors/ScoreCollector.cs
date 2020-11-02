@@ -81,7 +81,7 @@ public class ScoreCollector : RewardCollector
                     currentMaxScoreMultiplierValue = earnedPointsPerFlight;
                 }
 
-                Quaternion rotation = GameLogic.GetOrthoRotation(transform.position, ImportantGameObjectsHolder.Instance.Centre.gameObject.transform.position);
+                Quaternion rotation = GameLogic.GetOrthoRotation(transform.position, GameObjectsHolder.Instance.Centre.gameObject.transform.position);
                 VFXManager.Instance.DisplayPopupText(transform.position, rotation, $"+{earnedPointsPerFlight}", Color.white, scoreFontSize);
 
                 counterScoreEarnedDelay = scoreEarnedDelay;

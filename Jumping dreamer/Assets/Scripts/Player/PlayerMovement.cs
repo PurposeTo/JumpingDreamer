@@ -39,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void MoveCharacter()
     {
-        Vector2 toCentreDirection = ImportantGameObjectsHolder.Instance.Centre.GetToCentreDirection(rb2D.position);
+        Vector2 toCentreDirection = GameObjectsHolder.Instance.Centre.GetToCentreDirection(rb2D.position);
         GravityProjectVector = GetGravityProjectVector(toCentreDirection);
         InputVelocity = GetInputVelocity(toCentreDirection);
 
@@ -72,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void TossUp(float direction)
     {
-        GravityProjectVector = ImportantGameObjectsHolder.Instance.Centre.GetFromCentreDirection(transform.position) *
+        GravityProjectVector = GameObjectsHolder.Instance.Centre.GetFromCentreDirection(transform.position) *
         GravityProjectVector.magnitude * bounciness * direction;
 
         GravityProjectVector = GameLogic.ClampVectorByMagnitude(GravityProjectVector, minGravityVelocity);

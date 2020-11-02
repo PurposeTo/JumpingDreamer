@@ -58,7 +58,7 @@ public class PlayerHealth : MonoBehaviour
         OnPlayerDie?.Invoke(false);
         SetInvulnerableTrue();
 
-        Vector2 toCentreVector = ImportantGameObjectsHolder.Instance.Centre.GetToCentreVector(rb2D.position);
+        Vector2 toCentreVector = GameObjectsHolder.Instance.Centre.GetToCentreVector(rb2D.position);
         Vector2 toCentreDirection = toCentreVector.normalized;
         float toCentreDistance = toCentreVector.magnitude - Centre.CentreRadius;
 

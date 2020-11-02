@@ -82,7 +82,7 @@ public class PlatformGenerator : MonoBehaviour
         PlatformConfigs platformConfigs = PlatformGeneratorConfigs.PlatformConfigs;
 
         // Позиция равна первому элементу в списке. После использования позиции, убрать из списка
-        Vector3 position = ImportantGameObjectsHolder.Instance.Centre.gameObject.transform.position + (Vector3)directionsAroundCircle[0];
+        Vector3 position = GameObjectsHolder.Instance.Centre.gameObject.transform.position + (Vector3)directionsAroundCircle[0];
         directionsAroundCircle.RemoveAt(0);
         position *= platformGeneratorData.GetCreatingRange(platformConfigs.PlatformCreatingPlace);
 

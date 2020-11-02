@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class ImportantGameObjectsHolder : SingletonMonoBehaviour<ImportantGameObjectsHolder>
+public class GameObjectsHolder : SingletonMonoBehaviour<GameObjectsHolder>
 {
     [SerializeField] private PlayerPresenter playerPresenter = null;
     [SerializeField] private Centre centre = null;

@@ -7,7 +7,7 @@ public class Centre : MonoBehaviour
 
     public static readonly float CentreRadius = 9f;
 
-    private PlayerPresenter PlayerPresenter => ImportantGameObjectsHolder.Instance.PlayerPresenter;
+    private PlayerPresenter PlayerPresenter => GameObjectsHolder.Instance.PlayerPresenter;
     
 
     private void Start()
