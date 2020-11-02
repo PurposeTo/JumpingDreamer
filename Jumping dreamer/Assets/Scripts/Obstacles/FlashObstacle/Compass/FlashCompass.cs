@@ -4,8 +4,9 @@ using System.Collections;
 
 public class FlashCompass : MonoBehaviour, IPooledObject
 {
-    public AnimationCurve ChangingInitialTransparencyCurve;
-    public AnimationCurve ChangingTransparencyCurve;
+    [SerializeField] private AnimationCurve changingInitialTransparencyCurve;
+    [SerializeField] private AnimationCurve changingTransparencyCurve;
+    [SerializeField] private AnimationCurve changingAnchorPositionCurve;
 
     private RectTransform compassTransform;
     private Image image;
@@ -100,7 +101,7 @@ public class FlashCompass : MonoBehaviour, IPooledObject
 
     private IEnumerator TurnOnCompassAnimationEnumerator()
     {
-        float differenceAngleMappingOnPlayerViewingRange = CalculateDifferenceAngleMapping();
+        float differenceAngleMappingOnPlayerViewingRange = CalculateDifferenceAngleMappingOnPlayerViewingRange();
 
         float alphaColor = CalculateTransparency(differenceAngleMappingOnPlayerViewingRange);
         float timer = 0f;
@@ -108,11 +109,11 @@ public class FlashCompass : MonoBehaviour, IPooledObject
         // Изменение прозрачности в соответствии с графиком изменения начальной прозрачности
         while (image.color.a < alphaColor)
         {
-            if (ChangingInitialTransparencyCurve.Evaluate(timer) >= alphaColor)
+            if (changingInitialTransparencyCurve.Evaluate(timer) >= alphaColor)
             {
                 image.color = new Color(image.color.r, image.color.g, image.color.b, alphaColor);
             }
-            else image.color = new Color(image.color.r, image.color.g, image.color.b, ChangingInitialTransparencyCurve.Evaluate(timer));
+            else image.color = new Color(image.color.r, image.color.g, image.color.b, changingInitialTransparencyCurve.Evaluate(timer));
 
             timer += Time.deltaTime;
 
@@ -127,12 +128,12 @@ public class FlashCompass : MonoBehaviour, IPooledObject
     {
         while (!flash.IsFlashKillingZoneActive)
         {
-            float differenceAngleMappingOnPlayerViewingRange = CalculateDifferenceAngleMapping();
+            float differenceAngleMappingOnPlayerViewingRange = CalculateDifferenceAngleMappingOnPlayerViewingRange();
 
             image.color = new Color(image.color.r,
                                     image.color.g,
                                     image.color.b,
-                                    ChangingTransparencyCurve.Evaluate(differenceAngleMappingOnPlayerViewingRange));
+                                    changingTransparencyCurve.Evaluate(differenceAngleMappingOnPlayerViewingRange));
 
             yield return null;
         }
@@ -166,7 +167,7 @@ public class FlashCompass : MonoBehaviour, IPooledObject
     }
 
 
-    private float CalculateDifferenceAngleMapping()
+    private float CalculateDifferenceAngleMappingOnPlayerViewingRange()
     {
         float differenceAngle = Vector2.SignedAngle(PlayerDirection, flash.Direction);
         return (differenceAngle + upperBoundOfPlayerViewingRange) / (upperBoundOfPlayerViewingRange + Mathf.Abs(lowerBoundOfPlayerViewingRange));
@@ -175,14 +176,17 @@ public class FlashCompass : MonoBehaviour, IPooledObject
 
     private void SetCompassPosition()
     {
-        float differenceAngleMappingOnPlayerViewingRange = CalculateDifferenceAngleMapping();
+        float differenceAngleMappingOnPlayerViewingRange = CalculateDifferenceAngleMappingOnPlayerViewingRange();
+        float anchorPosition = changingAnchorPositionCurve.Evaluate(differenceAngleMappingOnPlayerViewingRange);
 
-        compassTransform.anchorMin = new Vector2(1f - differenceAngleMappingOnPlayerViewingRange, 0f);
-        compassTransform.anchorMax = new Vector2(1f - differenceAngleMappingOnPlayerViewingRange, 0f);
+        // Движение якорей
+        compassTransform.anchorMin = new Vector2(1f - anchorPosition, 0f);
+        compassTransform.anchorMax = new Vector2(1f - anchorPosition, 0f);
 
         // С эффектом "заплытия" за экран
         float compassOxPosition = Mathf.Lerp(compassTransform.anchorMin.x + compassOxOffset, compassTransform.anchorMin.x - compassOxOffset, differenceAngleMappingOnPlayerViewingRange);
 
+        // Движения компаса относильно позиции якорей
         compassTransform.anchoredPosition = new Vector2(compassOxPosition, compassTransform.anchorMin.y + compassOyOffset);
     }
 
