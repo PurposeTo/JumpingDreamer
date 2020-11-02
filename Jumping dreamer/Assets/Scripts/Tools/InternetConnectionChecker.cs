@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class InternetConnectionChecker
 {
-    [SerializeField] private WaitingForAdLoadingWindow adLoadingWindow;
-
-
     public IEnumerator PingGoogleEnumerator(Action<bool> isInternetAvailable)
     {
         using (UnityWebRequest request = new UnityWebRequest("https://google.com", "GET"))
