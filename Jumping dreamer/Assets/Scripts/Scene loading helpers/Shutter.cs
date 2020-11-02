@@ -21,8 +21,6 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
         base.AwakeSingleton();
         animator = gameObject.GetComponent<Animator>();
         SceneManager.sceneLoaded += OnSceneLoaded;
-
-
     }
 
 

@@ -40,8 +40,8 @@ public class FlashCompass : MonoBehaviour, IPooledObject
 
         compassInitialScale = compassTransform.sizeDelta;
 
-        compassOxOffset = compassTransform.sizeDelta.x / 2;
-        compassOyOffset = compassTransform.sizeDelta.y / 2;
+        compassOxOffset = compassTransform.sizeDelta.x;
+        compassOyOffset = compassTransform.sizeDelta.y / 2f;
     }
 
 
