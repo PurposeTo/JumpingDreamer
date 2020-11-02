@@ -8997,6 +8997,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Loading window
       objectReference: {fileID: 0}
+    - target: {fileID: 4778002894845840738, guid: ef0bcf2f1b916f247901596264dc1d47,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4778002894845840739, guid: ef0bcf2f1b916f247901596264dc1d47,
         type: 3}
       propertyPath: m_LocalPosition.x
