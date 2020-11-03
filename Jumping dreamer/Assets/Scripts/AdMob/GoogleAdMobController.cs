@@ -64,7 +64,15 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
     public RewardedAd CreateAndLoadRewardedAd(string adUnitId)
     {
         RewardedAd rewardedAd = new RewardedAd(adUnitId);
+        SubscribeEvents(rewardedAd);
 
+        LoadRewardedAd(rewardedAd);
+        return rewardedAd;
+    }
+
+
+    private void SubscribeEvents(RewardedAd rewardedAd)
+    {
         // Called when an ad request has successfully loaded.
         rewardedAd.OnAdLoaded += HandleRewardedAdLoaded;
         // Called when an ad request failed to load.
@@ -77,9 +85,6 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
         rewardedAd.OnUserEarnedReward += HandleUserEarnedReward;
         // Called when the ad is closed.
         rewardedAd.OnAdClosed += HandleRewardedAdClosed;
-
-        LoadRewardedAd(rewardedAd);
-        return rewardedAd;
     }
 
 
