@@ -3,6 +3,7 @@ using UnityEngine;
 using GoogleMobileAds.Api;
 using System.Collections;
 
+[Obsolete]
 [RequireComponent(typeof(AdShow))]
 public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
 {

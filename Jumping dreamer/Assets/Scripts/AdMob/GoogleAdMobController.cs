@@ -5,6 +5,7 @@ using GoogleMobileAds.Common;
 using Debug = UnityEngine.Debug;
 using System.Collections;
 
+[RequireComponent(typeof(CommandQueueHandler))]
 public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobController>
 {
     private readonly string rewardedVideoAdForTest_ID = "ca-app-pub-3940256099942544/5224354917";
@@ -16,26 +17,37 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
     public Action OnAdOpening;
     public Action OnAdFailedToShow;
     public Action OnUserEarnedReward;
-    public Action OnAdClosed;
+    public Action<bool> OnAdClosed;
 
+    private bool mustRewardPlayer = false; // Кеширую награду, что бы можно было по событию OnAdClosed узнать, был ли награжден игрок.
+
+    private CommandQueueHandler commandQueueHandler;
     private readonly InternetConnectionChecker connectionChecker = new InternetConnectionChecker();
     private Coroutine TryToReLoadAdRoutine = null;
 
-
     protected override void AwakeSingleton()
     {
+        commandQueueHandler = gameObject.GetComponent<CommandQueueHandler>();
         rewardedAd = CreateAndLoadRewardedAd(rewardedVideoAdForTest_ID);
     }
 
 
-    public void OnDestroy()
+    private void OnDestroy()
     {
         UnsubscribeEvents(rewardedAd);
     }
 
 
-    public void ShowRewardVideoAd(Action<bool> isAdWasReallyLoadedCallback, Action<bool> hasAdBeenShowed)
+    public bool IsAdWasLoaded()
     {
+        return rewardedAd.IsLoaded();
+    }
+
+
+    public void ShowRewardVideoAd(Action<bool> isAdWasReallyLoadedCallback)
+    {
+        mustRewardPlayer = false; // Обнуляю значение награды
+
         bool isAdWasReallyLoaded = rewardedAd.IsLoaded();
         isAdWasReallyLoadedCallback?.Invoke(isAdWasReallyLoaded);
 
@@ -52,12 +64,14 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
                     Debug.Log($"rewardedAd.Show() call");
                     rewardedAd.Show();
                 }
-
-                hasAdBeenShowed?.Invoke(isInternetAvaliable);
+                else
+                {
+                    Debug.Log($"Force invoke OnAdFailedToShow because internet is not avaliable.");
+                    OnAdFailedToShow?.Invoke();
+                }
             },
             timeOut: operationTimeOut));
         }
-        else hasAdBeenShowed?.Invoke(isAdWasReallyLoaded);
     }
 
 
@@ -140,11 +154,12 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
         TryToReLoadAdRoutine = null;
     }
 
+    #region event calls not from the main thread
 
     private void HandleRewardedAdLoaded(object sender, EventArgs args)
     {
         Debug.Log("HandleRewardedAdLoaded event received");
-        OnAdLoaded?.Invoke();
+        commandQueueHandler.SetCommandToQueue(() => OnAdLoaded?.Invoke());
     }
 
     private void HandleRewardedAdFailedToLoad(object sender, AdErrorEventArgs args)
@@ -152,29 +167,42 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
         Debug.Log($"HandleRewardedAdFailedToLoad event received with message: {args.Message}. " +
             $"And now rewardedAd.IsLoaded() is {rewardedAd.IsLoaded()}");
 
-        if (TryToReLoadAdRoutine == null) TryToReLoadAdRoutine = StartCoroutine(TryToReLoadAdEnumerator());
 
-        OnAdFailedToLoad?.Invoke();
+        void TryToReLoadAd()
+        {
+            if (TryToReLoadAdRoutine == null) TryToReLoadAdRoutine = StartCoroutine(TryToReLoadAdEnumerator());
+        };
+
+        commandQueueHandler.SetCommandToQueue(TryToReLoadAd);
+
+        commandQueueHandler.SetCommandToQueue(() => OnAdFailedToLoad?.Invoke());
     }
 
     private void HandleRewardedAdOpening(object sender, EventArgs args)
     {
         Debug.Log("HandleRewardedAdOpening event received");
-        OnAdOpening?.Invoke();
+
+        commandQueueHandler.SetCommandToQueue(() => OnAdOpening?.Invoke());
     }
 
     private void HandleRewardedAdFailedToShow(object sender, AdErrorEventArgs args)
     {
         Debug.Log($"HandleRewardedAdFailedToShow event received with message: {args.Message}");
-        LoadRewardedAd(rewardedAd);
-        OnAdFailedToShow?.Invoke();
+
+        commandQueueHandler.SetCommandToQueue(() => LoadRewardedAd(rewardedAd));
+
+        commandQueueHandler.SetCommandToQueue(() => OnAdFailedToShow?.Invoke());
     }
 
     private void HandleRewardedAdClosed(object sender, EventArgs args)
     {
         Debug.Log("HandleRewardedAdClosed event received");
-        LoadRewardedAd(rewardedAd);
-        OnAdClosed?.Invoke();
+
+        commandQueueHandler.SetCommandToQueue(() => LoadRewardedAd(rewardedAd));
+
+        commandQueueHandler.SetCommandToQueue(() => OnAdClosed?.Invoke(mustRewardPlayer));
+
+        mustRewardPlayer = false; // Обнуляю значение награды.
     }
 
     private void HandleUserEarnedReward(object sender, Reward args)
@@ -182,6 +210,10 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
         string type = args.Type;
         double amount = args.Amount;
         Debug.Log($"HandleRewardedAdRewarded event received for {amount} {type}");
-        OnUserEarnedReward?.Invoke();
+
+        mustRewardPlayer = true; // Игрок был награжден!
+
+        commandQueueHandler.SetCommandToQueue(() => OnUserEarnedReward?.Invoke());
     }
+    #endregion
 }

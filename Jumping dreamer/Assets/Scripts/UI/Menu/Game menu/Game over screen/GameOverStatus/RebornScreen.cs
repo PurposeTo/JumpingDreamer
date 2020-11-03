@@ -4,7 +4,7 @@ public class RebornScreen : MonoBehaviour
 {
     private GameOverStatusScreen gameOverStatusScreen;
 
-    public void Initialize(GameOverStatusScreen gameOverStatusScreen)
+    public void Constructor(GameOverStatusScreen gameOverStatusScreen)
     {
         this.gameOverStatusScreen = gameOverStatusScreen;
     }
@@ -12,7 +12,7 @@ public class RebornScreen : MonoBehaviour
 
     public void Reborn()
     {
-        gameOverStatusScreen.isPlayerMustSeeAd = true;
+        gameOverStatusScreen.SetPlayerMustSeeAdTrue();
 
         GameMenu.Instance.GameOverScreen.gameObject.SetActive(false);
         GameManager.Instance.SetPause(false);

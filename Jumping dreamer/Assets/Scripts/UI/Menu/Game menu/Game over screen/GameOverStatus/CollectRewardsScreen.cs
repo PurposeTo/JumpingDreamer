@@ -4,8 +4,10 @@ public class CollectRewardsScreen : MonoBehaviour
 {
     private GameOverStatusScreen gameOverStatusScreen;
 
+    private LoadingWindow adLoadingWindow = null;
 
-    public void Initialize(GameOverStatusScreen gameOverStatusScreen)
+
+    public void Constructor(GameOverStatusScreen gameOverStatusScreen)
     {
         this.gameOverStatusScreen = gameOverStatusScreen;
     }
@@ -13,38 +15,15 @@ public class CollectRewardsScreen : MonoBehaviour
 
     public void CollectRewards()
     {
-        LoadingWindow adLoadingWindow = null;
-
         // Показать рекламу
-        AdMobScript.Instance.ShowRewardVideoAd(isAdWasReallyLoaded =>
+        GoogleAdMobController.Instance.ShowRewardVideoAd(isAdWasReallyLoaded =>
         {
-            if (isAdWasReallyLoaded) adLoadingWindow = PopUpWindowGenerator.Instance.CreateLoadingWindow().GetComponent<LoadingWindow>();
-        },
-        hasAdBeenShowed =>
-        {
-            adLoadingWindow.TurnOff();
+            if (isAdWasReallyLoaded)
+            {
+                // Если реклама была успешно загружена, то включить окошко ожидания показа рекламы
+                adLoadingWindow = PopUpWindowGenerator.Instance.CreateLoadingWindow();
 
-            if (hasAdBeenShowed)
-            {
-                AdMobScript.Instance.OnCloseAdWait(mustRewardPlayer =>
-                {
-                    // Стоит ли наградить игрока?
-                    if (mustRewardPlayer)
-                    {
-                        // Если должны наградить, то показать GameOverMenu
-                        gameOverStatusScreen.ShowGameOverMenu();
-                    }
-                    else
-                    {
-                        // Если нет, то показать экран с надписью: "Вы отказались от награды. Желаете возродиться? <Кнопка возродиться> <Кнопка выйти в меню>"
-                        gameOverStatusScreen.ShowRefuseToViewAdsScreen();
-                    }
-                });
-            }
-            else
-            {
-                Debug.LogWarning("Ad was not showed cause internet connection lost or got AdFailedLoad");
-                gameOverStatusScreen.ShowGameOverMenu();
+                SubscribeAdMobEvents();
             }
         });
     }
@@ -53,5 +32,54 @@ public class CollectRewardsScreen : MonoBehaviour
     public void OpenMainMenu()
     {
         SceneLoader.LoadScene(SceneLoader.MainMenuName);
+    }
+
+
+    private void SubscribeAdMobEvents()
+    {
+        GoogleAdMobController.Instance.OnAdOpening += OnAdOpening;
+        GoogleAdMobController.Instance.OnAdFailedToShow += OnAdFailedToShow;
+        GoogleAdMobController.Instance.OnAdClosed += OnAdClosed;
+    }
+
+
+    private void UnsubscribeAdMobEvents()
+    {
+        GoogleAdMobController.Instance.OnAdOpening -= OnAdOpening;
+        GoogleAdMobController.Instance.OnAdFailedToShow -= OnAdFailedToShow;
+        GoogleAdMobController.Instance.OnAdClosed -= OnAdClosed;
+    }
+
+
+    private void OnAdOpening()
+    {
+        // При открытии рекламы окошко ожидания необходимо выключить
+        adLoadingWindow.TurnOff();
+    }
+
+
+    private void OnAdFailedToShow()
+    {
+        // Если произошла ошибка показа рекламы, то окошко ожидания необходимо выключить и показать GameOverMenu
+        adLoadingWindow.TurnOff();
+        gameOverStatusScreen.ShowGameOverMenu();
+    }
+
+
+    private void OnAdClosed(bool mustRewardPlayer)
+    {
+        // Стоит ли наградить игрока?
+        if (mustRewardPlayer)
+        {
+            // Если должны наградить, то показать GameOverMenu
+            gameOverStatusScreen.ShowGameOverMenu();
+        }
+        else
+        {
+            // Если нет, то показать экран с <Кнопка возродиться> <Кнопка выйти в меню>"
+            gameOverStatusScreen.ShowRefuseToViewAdsScreen();
+        }
+
+        UnsubscribeAdMobEvents();
     }
 }

@@ -15,6 +15,8 @@ public class InternetConnectionChecker
     /// <returns></returns>
     public IEnumerator PingGoogleEnumerator(Action<bool> isInternetAvailable, int timeOut = 0)
     {
+        if(Application.internetReachability == NetworkReachability.NotReachable) isInternetAvailable?.Invoke(false);
+
         using (UnityWebRequest request = new UnityWebRequest("https://google.com", "GET"))
         {
             request.timeout = timeOut;

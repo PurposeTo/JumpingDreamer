@@ -7,19 +7,19 @@ public class GameOverStatusScreen : MonoBehaviour
     public CollectRewardsScreen CollectRewardsScreen;
     public RefuseToViewAdsScreen RefuseToViewAdsScreen;
 
-    [HideInInspector] public bool isPlayerMustSeeAd = false;
+    private bool isPlayerMustSeeAd = false;
 
     private void Awake()
     {
-        RebornScreen.Initialize(this);
-        CollectRewardsScreen.Initialize(this);
+        RebornScreen.Constructor(this);
+        CollectRewardsScreen.Constructor(this);
     }
 
 
     private void OnEnable()
     {
-        // Если реклама загружена и игрок еще не использовал ее
-        if (AdMobScript.Instance.IsAdWasReallyLoaded())
+        // Если реклама загружена
+        if (GoogleAdMobController.Instance.IsAdWasLoaded())
         {
             // Если игрок еще не использовал возрождение
             if (!isPlayerMustSeeAd)
@@ -32,13 +32,18 @@ public class GameOverStatusScreen : MonoBehaviour
                 // Показать рекламу при сборе наград
                 ShowCollectRewardsScreen();
             }
-
         }
-        else // Если реклама не загрузилась
+        else
         {
-            // Показать окончательный game over screen
+            // Показать окончательный game over
             ShowGameOverMenu();
         }
+    }
+
+
+    public void SetPlayerMustSeeAdTrue()
+    {
+        isPlayerMustSeeAd = true;
     }
 
 
