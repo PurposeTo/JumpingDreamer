@@ -10,8 +10,8 @@ public class ObjectPooler : SingletonMonoBehaviour<ObjectPooler>
         public GameObject prefab;
         public int size;
         public bool shouldExpand = true;
-        [HideInInspector] public Transform PoolParent;
-        [HideInInspector] public Queue<GameObject> objectPoolQueue;
+        public Transform PoolParent { get; set; }
+        public Queue<GameObject> ObjectPoolQueue { get; set; }
     }
 
     public List<Pool> pools;
@@ -37,7 +37,7 @@ public class ObjectPooler : SingletonMonoBehaviour<ObjectPooler>
                 objectPool.Enqueue(newGameObject);
             }
 
-            pools[i].objectPoolQueue = objectPool;
+            pools[i].ObjectPoolQueue = objectPool;
 
             poolDictionary.Add(pools[i].prefab, pools[i]);
             Debug.Log($"Pool with {pools[i].prefab.name}s has been created!");
@@ -49,13 +49,13 @@ public class ObjectPooler : SingletonMonoBehaviour<ObjectPooler>
     {
         for (int i = 0; i < pools.Count; i++)
         {
-            for (int j = 0; j < pools[i].objectPoolQueue.Count; j++)
+            for (int j = 0; j < pools[i].ObjectPoolQueue.Count; j++)
             {
-                GameObject objectToDisable = pools[i].objectPoolQueue.Dequeue();
+                GameObject objectToDisable = pools[i].ObjectPoolQueue.Dequeue();
 
                 objectToDisable.SetActive(false);
                 // Todo: Так же необходимо выключать все корутины на обьекте
-                pools[i].objectPoolQueue.Enqueue(objectToDisable);
+                pools[i].ObjectPoolQueue.Enqueue(objectToDisable);
             }
         }
     }
@@ -74,7 +74,7 @@ public class ObjectPooler : SingletonMonoBehaviour<ObjectPooler>
 
 
         // Посмотреть на первый обьект в очереди.
-        GameObject objectToSpawn = pool.objectPoolQueue.Peek();
+        GameObject objectToSpawn = pool.ObjectPoolQueue.Peek();
 
         if (objectToSpawn.activeInHierarchy)
         {
@@ -90,7 +90,7 @@ public class ObjectPooler : SingletonMonoBehaviour<ObjectPooler>
         else
         {
             // Если он выключен, то можно использовать. 
-            objectToSpawn = pool.objectPoolQueue.Dequeue();
+            objectToSpawn = pool.ObjectPoolQueue.Dequeue();
         }
 
         objectToSpawn.transform.position = position;
@@ -103,7 +103,7 @@ public class ObjectPooler : SingletonMonoBehaviour<ObjectPooler>
 
         //if (objectToSpawn.TryGetComponent(out IPooledObject pooledObject)) pooledObject.OnObjectSpawn(); Если на объекте несколько таких интерфейсов, то будет вызван лишь один
 
-        pool.objectPoolQueue.Enqueue(objectToSpawn);
+        pool.ObjectPoolQueue.Enqueue(objectToSpawn);
 
         return objectToSpawn;
     }
