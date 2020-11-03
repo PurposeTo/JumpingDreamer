@@ -21,7 +21,7 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
 
     protected override void AwakeSingleton()
     {
-        StartCoroutine(WaitLoadingPlayerSettingsEnumerator());
+        PlayerSettingsStorage.SetCommandToQueue(SetLanguageSettings, LoadLocalizedText);
     }
 
 
@@ -88,7 +88,7 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
         {
             result = localizedText[key];
         }
-        else if(localizedText.Count != 0) UnityEngine.Debug.LogError($"Localization text does not contains key {key}");
+        else if (localizedText.Count != 0) UnityEngine.Debug.LogError($"Localization text does not contains key {key}");
 
         return result;
     }
@@ -135,12 +135,4 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
         Debug.Log("Change Text event");
     }
 
-
-    private IEnumerator WaitLoadingPlayerSettingsEnumerator()
-    {
-        yield return new WaitUntil(() => PlayerSettingsStorage.Instance != null);
-        yield return new WaitUntil(() => PlayerSettingsStorage.Instance.PlayerSettings != null);
-        SetLanguageSettings();
-        LoadLocalizedText();
-    }
 }
