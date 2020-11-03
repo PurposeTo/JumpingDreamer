@@ -88,7 +88,7 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
         {
             result = localizedText[key];
         }
-        else UnityEngine.Debug.LogError($"Localization text does not contains key {key}");
+        else if(localizedText.Count != 0) UnityEngine.Debug.LogError($"Localization text does not contains key {key}");
 
         return result;
     }

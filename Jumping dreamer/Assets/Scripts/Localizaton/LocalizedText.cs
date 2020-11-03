@@ -29,8 +29,6 @@ public class LocalizedText : MonoBehaviour
 
     private void SetLanguageText()
     {
-        string localizedText = LocalizationManager.Instance.GetLocalizedValue(key);
-        if (localizedText == LocalizationManager.missingTextString) Debug.LogError($"{gameObject.name} has a missingTextString!");
-        text.text = localizedText;
+        text.text = LocalizationManager.Instance.GetLocalizedValue(key);
     }
 }
