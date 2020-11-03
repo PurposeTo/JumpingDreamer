@@ -4,6 +4,8 @@ public static class ControllerInitializer
 {
     public static Controller InitializeController(RuntimePlatform currentRuntimePlatform)
     {
+        Debug.Log($"InitializeController with {currentRuntimePlatform}!");
+
         switch (currentRuntimePlatform)
         {
             case RuntimePlatform.Android:
@@ -13,7 +15,7 @@ public static class ControllerInitializer
                 return new WindowsEditorController();
                 //break;
             default:
-                Debug.LogError("Unknown platform!");
+                Debug.LogError($"{currentRuntimePlatform} is unknown platform!");
                 return new WindowsEditorController();
                 //break;
         }
