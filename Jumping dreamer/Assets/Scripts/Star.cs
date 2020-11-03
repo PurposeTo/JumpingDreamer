@@ -23,7 +23,8 @@ public class Star : MonoBehaviour
 
     private void OnEnable()
     {
-        if (StarGenerator.Instance != null) StarGenerator.Instance.NumberOfActiveStars++;
+        void IncrementNumberOfActiveStars() => StarGenerator.Instance.NumberOfActiveStars++;
+        StarGenerator.SetAwakeCommand(IncrementNumberOfActiveStars);
 
         lifeTime = Random.Range(minLifeTime, maxLifeTime);
 
@@ -36,7 +37,8 @@ public class Star : MonoBehaviour
 
     private void OnDisable()
     {
-        if (StarGenerator.Instance != null) StarGenerator.Instance.NumberOfActiveStars--;
+        void DecrementNumberOfActiveStars() => StarGenerator.Instance.NumberOfActiveStars--;
+        StarGenerator.SetAwakeCommand(DecrementNumberOfActiveStars);
 
         if (lifeCoroutine != null)
         {
