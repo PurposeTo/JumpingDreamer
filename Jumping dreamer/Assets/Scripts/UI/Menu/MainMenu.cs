@@ -9,7 +9,7 @@ public class MainMenu : SingletonMonoBehaviour<MainMenu>
 
     public void StartGameClickHandler()
     {
-        SceneLoader.LoadScene(SceneLoader.GameSceneName);
+        SingleSceneLoader.LoadScene(SingleSceneLoader.GameSceneName);
     }
 
 

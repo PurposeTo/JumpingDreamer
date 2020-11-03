@@ -1,4 +1,4 @@
-﻿public static class SceneLoader
+﻿public static class SingleSceneLoader
 {
     public static string MainMenuName { get; } = "Main menu";
     public static string GameSceneName { get; } = "Game scene";
