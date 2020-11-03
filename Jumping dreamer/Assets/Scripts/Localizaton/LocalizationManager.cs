@@ -16,7 +16,7 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
 
     private Dictionary<string, string> localizedText = new Dictionary<string, string>();
     private bool isReady = false;
-    private const string missingTextString = "Localized Text not found";
+    public const string missingTextString = "Localized Text not found";
 
 
     protected override void AwakeSingleton()
@@ -88,6 +88,7 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
         {
             result = localizedText[key];
         }
+        else UnityEngine.Debug.LogError($"Localization text does not contains key {key}");
 
         return result;
     }

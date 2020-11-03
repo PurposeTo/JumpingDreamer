@@ -5,7 +5,8 @@ using TMPro;
 
 
 [RequireComponent(typeof(TMP_Text))]
-public class LocalizedText : MonoBehaviour {
+public class LocalizedText : MonoBehaviour
+{
 
     public string key;
 
@@ -16,7 +17,6 @@ public class LocalizedText : MonoBehaviour {
     {
         text = GetComponent<TMP_Text>();
         SetLanguageText();
-        // yield return null; // Todo - зачем это?
         LocalizationManager.Instance.OnLocalizationChange += SetLanguageText;
     }
 
@@ -29,6 +29,8 @@ public class LocalizedText : MonoBehaviour {
 
     private void SetLanguageText()
     {
-        text.text = LocalizationManager.Instance.GetLocalizedValue(key);
+        string localizedText = LocalizationManager.Instance.GetLocalizedValue(key);
+        if (localizedText == LocalizationManager.missingTextString) Debug.LogError($"{gameObject.name} has a missingTextString!");
+        text.text = localizedText;
     }
 }
