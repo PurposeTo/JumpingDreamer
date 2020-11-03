@@ -25,7 +25,7 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
 
         // Остановить время при старте игры и ждать выполнения метода OpenShutter()
         void stopGameTime() => GameManager.Instance.SetGameReady(false); // Кеширую для назначения имени команды
-        GameManager.SetAwakeCommand(stopGameTime);
+        GameManager.SetCommandToQueue(stopGameTime);
     }
 
 

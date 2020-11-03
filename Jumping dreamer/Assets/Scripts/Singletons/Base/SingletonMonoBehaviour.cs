@@ -11,8 +11,7 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : Single
 
     public static T Instance { get; private set; }
 
-    private static Queue<Action> awakeCommands = new Queue<Action>();
-
+    private static Queue<Action> commandsQueue = new Queue<Action>();
 
     private void Awake()
     {
@@ -39,7 +38,7 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : Single
     /// Данный метод гарантирует, что команда, переданная в параметры, будет выполнена синглтоном в независимости от того, был тот инициализирован на момент вызова данного метода или нет.
     /// Команды выполняются сразу после метода AwakeSingleton(), если синглтон не был инициализирован.
     /// </summary>
-    public static void SetAwakeCommand(params Action[] actions)
+    public static void SetCommandToQueue(params Action[] actions)
     {
         if (actions.Length == 0 || actions is null) throw new ArgumentNullException(nameof(actions));
 
@@ -50,7 +49,7 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : Single
             {
                 Debug.Log($"Сommand \"{action?.Method.Name}\" from \"{action?.Target}\" was added to " +
                     $"{typeof(T).Name} awakeCommands queue!");
-                awakeCommands.Enqueue(action);
+                commandsQueue.Enqueue(action);
             });
         }
     }
@@ -58,11 +57,11 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : Single
 
     private void ExecuteCommands()
     {
-        if (awakeCommands != null && awakeCommands.Count != 0)
+        if (commandsQueue != null && commandsQueue.Count != 0)
         {
-            for (int i = 0; i < awakeCommands.Count; i++)
+            for (int i = 0; i < commandsQueue.Count; i++)
             {
-                Action action = awakeCommands.Dequeue();
+                Action action = commandsQueue.Dequeue();
                 Debug.Log($"{name} execute command \"{action?.Method.Name}\" from \"{action?.Target}\" in Awake!");
 
                 action?.Invoke();
