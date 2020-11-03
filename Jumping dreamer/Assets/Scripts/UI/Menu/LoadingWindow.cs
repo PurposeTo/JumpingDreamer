@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 
-public class LoadingWindow : MonoBehaviour
+public class LoadingWindow : MonoBehaviour, IPooledObject
 {
-    public void Close() => Destroy(gameObject);
+    public void TurnOff() => gameObject.SetActive(false);
+
+
+    public void OnObjectSpawn() { }
 }

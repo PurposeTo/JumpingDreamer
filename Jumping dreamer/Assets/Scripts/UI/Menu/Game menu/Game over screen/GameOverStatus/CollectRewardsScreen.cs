@@ -4,8 +4,6 @@ public class CollectRewardsScreen : MonoBehaviour
 {
     private GameOverStatusScreen gameOverStatusScreen;
 
-    private LoadingWindow adLoadingWindow;
-
 
     public void Initialize(GameOverStatusScreen gameOverStatusScreen)
     {
@@ -15,14 +13,16 @@ public class CollectRewardsScreen : MonoBehaviour
 
     public void CollectRewards()
     {
+        LoadingWindow adLoadingWindow = null;
+
         // Показать рекламу
         AdMobScript.Instance.ShowRewardVideoAd(isAdWasReallyLoaded =>
         {
-            if (isAdWasReallyLoaded) adLoadingWindow = PopUpWindowGenerator.Instance.CreateLoadingWindow();
+            if (isAdWasReallyLoaded) adLoadingWindow = PopUpWindowGenerator.Instance.CreateLoadingWindow().GetComponent<LoadingWindow>();
         },
         hasAdBeenShowed =>
         {
-            adLoadingWindow.Close();
+            adLoadingWindow.TurnOff();
 
             if (hasAdBeenShowed)
             {

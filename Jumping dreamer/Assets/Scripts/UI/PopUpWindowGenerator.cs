@@ -19,5 +19,5 @@ public class PopUpWindowGenerator : SingletonMonoBehaviour<PopUpWindowGenerator>
     }
 
 
-    public LoadingWindow CreateLoadingWindow() => Instantiate(loadingWindow).GetComponent<LoadingWindow>();
+    public GameObject CreateLoadingWindow() => ObjectPooler.Instance.SpawnFromPool(loadingWindow, Vector3.zero, Quaternion.identity);
 }
