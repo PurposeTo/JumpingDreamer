@@ -132,6 +132,7 @@
     <Compile Include="Assets\Scripts\AdMob\AdMobScript.cs" />
     <Compile Include="Assets\Scripts\AdMob\AdShow.cs" />
     <Compile Include="Assets\Scripts\AdMob\GoogleAdMobController.cs" />
+    <Compile Include="Assets\Scripts\AdMob\RewardedAdLoader.cs" />
     <Compile Include="Assets\Scripts\AnimatorControllers\Base\AnimatorControllerWrapper.cs" />
     <Compile Include="Assets\Scripts\AnimatorControllers\Base\IAnimatorInitializerConfigs.cs" />
     <Compile Include="Assets\Scripts\AnimatorControllers\Blinking controller\AnimatorBlinkingController.cs" />

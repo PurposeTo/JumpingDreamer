@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEngine;
 
 /// <summary>
 /// Класс предоставляет интерфейс взаимодействия с очередью команд
@@ -10,11 +11,15 @@ public class CommandQueue
     private readonly Queue<Action> commandsQueue = new Queue<Action>();
 
 
-    public void SetCommandToQueue(params Action[] actions)
+    public void SetCommandToQueue(string classQueueHolder, params Action[] actions)
     {
         if (actions.Length == 0 || actions is null) throw new ArgumentNullException(nameof(actions));
 
-        Array.ForEach(actions, action => commandsQueue.Enqueue(action));
+        Array.ForEach(actions, action =>
+        {
+            //Debug.Log($"Сommand \"{action?.Method.Name}\" from \"{action?.Target}\" was added to {classQueueHolder} commandsQueue!");
+            commandsQueue.Enqueue(action);
+        });
     }
 
 

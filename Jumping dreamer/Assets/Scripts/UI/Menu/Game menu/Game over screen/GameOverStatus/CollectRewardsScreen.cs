@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class CollectRewardsScreen : MonoBehaviour
 {
@@ -53,6 +54,8 @@ public class CollectRewardsScreen : MonoBehaviour
 
     private void OnAdOpening()
     {
+        if (adLoadingWindow == null) throw new NullReferenceException("adLoadingWindow");
+
         // При открытии рекламы окошко ожидания необходимо выключить
         adLoadingWindow.TurnOff();
     }

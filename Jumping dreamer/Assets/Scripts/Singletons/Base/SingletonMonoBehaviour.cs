@@ -46,13 +46,7 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : Single
     {
         if (Instance == null)
         {
-            Array.ForEach(actions, action =>
-            {
-                Debug.Log($"Сommand \"{action?.Method.Name}\" from \"{action?.Target}\" was added to " +
-                    $"{typeof(T).Name} commands queue!");
-            });
-
-            commandQueue.SetCommandToQueue(actions);
+            commandQueue.SetCommandToQueue(typeof(T).Name, actions);
         }
         else Array.ForEach(actions, action => action?.Invoke());
     }

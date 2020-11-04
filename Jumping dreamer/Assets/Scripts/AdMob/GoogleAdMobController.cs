@@ -8,9 +8,8 @@ using System.Collections;
 [RequireComponent(typeof(CommandQueueMainThreadExecutor))]
 public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobController>
 {
-    private readonly string rewardedVideoAdForTest_ID = "ca-app-pub-3940256099942544/5224354917";
 
-    private RewardedAd rewardedAd;
+    private readonly RewardedAdLoader rewardedAdLoader = new RewardedAdLoader();
 
     public event Action OnAdLoaded;
     public event Action OnAdFailedToLoad;
@@ -28,19 +27,32 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
     protected override void AwakeSingleton()
     {
         commandQueueHandler = gameObject.GetComponent<CommandQueueMainThreadExecutor>();
-        rewardedAd = CreateAndLoadRewardedAd(rewardedVideoAdForTest_ID);
+        CreateRewardedAd();
     }
 
 
     private void OnDestroy()
     {
-        UnsubscribeEvents(rewardedAd);
+        if (rewardedAdLoader.RewardedAd != null) UnsubscribeEvents(rewardedAdLoader.RewardedAd);
+    }
+
+
+    private void CreateRewardedAd()
+    {
+        rewardedAdLoader.CreateRewardedAd(() => SubscribeEvents(rewardedAdLoader.RewardedAd));
+    }
+
+
+    private void ReCreateRewardedAd()
+    {
+        UnsubscribeEvents(rewardedAdLoader.RewardedAd);
+        CreateRewardedAd();
     }
 
 
     public bool IsAdWasLoaded()
     {
-        return rewardedAd.IsLoaded();
+        return rewardedAdLoader.IsAdWasLoaded();
     }
 
 
@@ -48,7 +60,7 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
     {
         mustRewardPlayer = false; // Обнуляю значение награды
 
-        bool isAdWasReallyLoaded = rewardedAd.IsLoaded();
+        bool isAdWasReallyLoaded = rewardedAdLoader.IsAdWasLoaded();
         isAdWasReallyLoadedCallback?.Invoke(isAdWasReallyLoaded);
 
         Debug.Log($"Try to show Ad. isAdLoaded = {isAdWasReallyLoaded}");
@@ -62,7 +74,7 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
                 if (isInternetAvaliable)
                 {
                     Debug.Log($"rewardedAd.Show() call");
-                    rewardedAd.Show();
+                    rewardedAdLoader.RewardedAd.Show();
                 }
                 else
                 {
@@ -72,16 +84,6 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
             },
             timeOut: operationTimeOut));
         }
-    }
-
-
-    public RewardedAd CreateAndLoadRewardedAd(string adUnitId)
-    {
-        RewardedAd rewardedAd = new RewardedAd(adUnitId);
-        SubscribeEvents(rewardedAd);
-
-        LoadRewardedAd(rewardedAd);
-        return rewardedAd;
     }
 
 
@@ -119,37 +121,22 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
     }
 
 
-    private void LoadRewardedAd(RewardedAd rewardedAd)
-    {
-        bool isAdLoaded = rewardedAd.IsLoaded();
-
-        string AdLoadingResultLog;
-
-        if (!isAdLoaded)
-        {
-            // Create an empty ad request.
-            AdRequest request = new AdRequest.Builder().Build();
-            // Load the rewarded ad with the request.
-            rewardedAd.LoadAd(request);
-
-            AdLoadingResultLog = "Loading Ad...";
-        }
-        else AdLoadingResultLog = "Ad is already loaded!";
-
-        Debug.Log($"You try to load Ad. isAdLoaded = {isAdLoaded}. {AdLoadingResultLog}");
-    }
-
-
     private IEnumerator TryToReLoadAdEnumerator()
     {
-        yield return new WaitForSecondsRealtime(30f);
+        Debug.Log($"TryToReLoadAdEnumerator started. rewardedAd.IsLoaded() = {rewardedAdLoader.IsAdWasLoaded()}");
 
-        // Не учитывает реальный доступ к сети. Учитывает только подключение.
-        bool isInternetEnabled = Application.internetReachability != NetworkReachability.NotReachable;
+        while (!rewardedAdLoader.IsAdWasLoaded())
+        {
+            Debug.Log($"TryToReLoadAdEnumerator before WaitForSecondsRealtime.");
+            yield return new WaitForSecondsRealtime(30f);
 
-        Debug.Log($"Try to reload Ad: isInternetEnabled = {isInternetEnabled}.");
+            // Не учитывает реальный доступ к сети. Учитывает только подключение.
+            bool isInternetEnabled = Application.internetReachability != NetworkReachability.NotReachable;
 
-        if (isInternetEnabled) LoadRewardedAd(rewardedAd);
+            Debug.Log($"Try to reload Ad: isInternetEnabled = {isInternetEnabled}.");
+
+            if (isInternetEnabled) ReCreateRewardedAd();
+        }
 
         TryToReLoadAdRoutine = null;
     }
@@ -166,7 +153,9 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
     private void HandleRewardedAdFailedToLoad(object sender, AdErrorEventArgs args)
     {
         Debug.Log($"HandleRewardedAdFailedToLoad event received with message: {args.Message}. " +
-            $"And now rewardedAd.IsLoaded() is {rewardedAd.IsLoaded()}");
+            $"And now rewardedAd.IsLoaded() is {rewardedAdLoader.IsAdWasLoaded()}");
+
+        commandQueueHandler.SetCommandToQueue(() => OnAdFailedToLoad?.Invoke());
 
 
         void TryToReLoadAd()
@@ -175,8 +164,6 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
         };
 
         commandQueueHandler.SetCommandToQueue(TryToReLoadAd);
-
-        commandQueueHandler.SetCommandToQueue(() => OnAdFailedToLoad?.Invoke());
     }
 
     private void HandleRewardedAdOpening(object sender, EventArgs args)
@@ -190,21 +177,22 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
     {
         Debug.Log($"HandleRewardedAdFailedToShow event received with message: {args.Message}");
 
-        commandQueueHandler.SetCommandToQueue(() => LoadRewardedAd(rewardedAd));
-
         commandQueueHandler.SetCommandToQueue(() => OnAdFailedToShow?.Invoke());
+
+        commandQueueHandler.SetCommandToQueue(() => ReCreateRewardedAd());
     }
 
     private void HandleRewardedAdClosed(object sender, EventArgs args)
     {
         Debug.Log($"HandleRewardedAdClosed event received. MustRewardPlayer = {mustRewardPlayer}");
 
-        commandQueueHandler.SetCommandToQueue(() => LoadRewardedAd(rewardedAd));
-
         commandQueueHandler.SetCommandToQueue(() => OnAdClosed?.Invoke(mustRewardPlayer));
 
         // Обнуляю значение награды. Т.к другой поток, помещаю команду в очередь.
         commandQueueHandler.SetCommandToQueue(() => mustRewardPlayer = false);
+
+        commandQueueHandler.SetCommandToQueue(() => ReCreateRewardedAd());
+
     }
 
     private void HandleUserEarnedReward(object sender, Reward args)
