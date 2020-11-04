@@ -71,11 +71,13 @@ public class CollectRewardsScreen : MonoBehaviour
         // Стоит ли наградить игрока?
         if (mustRewardPlayer)
         {
+            Debug.Log($"OnAdClosed call: mustRewardPlayer = {mustRewardPlayer}. Than ShowGameOverMenu!");
             // Если должны наградить, то показать GameOverMenu
             gameOverStatusScreen.ShowGameOverMenu();
         }
         else
         {
+            Debug.Log($"OnAdClosed call: mustRewardPlayer = {mustRewardPlayer}. Than ShowRefuseToViewAdsScreen!");
             // Если нет, то показать экран с <Кнопка возродиться> <Кнопка выйти в меню>"
             gameOverStatusScreen.ShowRefuseToViewAdsScreen();
         }

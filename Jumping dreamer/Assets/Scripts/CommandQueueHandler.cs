@@ -10,10 +10,9 @@ public class CommandQueueHandler : MonoBehaviour
     private Queue<Action> commandsQueue = new Queue<Action>();
 
 
-    private void Update()
-    {
-        if (commandsQueue.Count != 0) RunAllActions();
-    }
+    private void Awake() => TryToRunAllActions();
+    private void Start() => TryToRunAllActions();
+    private void Update() => TryToRunAllActions();
 
 
     public void SetCommandToQueue(params Action[] actions)
@@ -24,8 +23,14 @@ public class CommandQueueHandler : MonoBehaviour
     }
 
 
+    private void TryToRunAllActions()
+    {
+        if (commandsQueue.Count != 0) RunAllActions();
+    }
+
+
     private void RunAllActions()
     {
-        for (int i = 0; i < commandsQueue.Count; i++) commandsQueue.Dequeue()?.Invoke();
+        while (commandsQueue.Count > 0) commandsQueue.Dequeue()?.Invoke();
     }
 }

@@ -12,18 +12,18 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
 
     private RewardedAd rewardedAd;
 
-    public Action OnAdLoaded;
-    public Action OnAdFailedToLoad;
-    public Action OnAdOpening;
-    public Action OnAdFailedToShow;
-    public Action OnUserEarnedReward;
-    public Action<bool> OnAdClosed;
-
-    private bool mustRewardPlayer = false; // Кеширую награду, что бы можно было по событию OnAdClosed узнать, был ли награжден игрок.
+    public event Action OnAdLoaded;
+    public event Action OnAdFailedToLoad;
+    public event Action OnAdOpening;
+    public event Action OnAdFailedToShow;
+    public event Action OnUserEarnedReward;
+    public event Action<bool> OnAdClosed;
 
     private CommandQueueHandler commandQueueHandler;
     private readonly InternetConnectionChecker connectionChecker = new InternetConnectionChecker();
     private Coroutine TryToReLoadAdRoutine = null;
+
+    private bool mustRewardPlayer = false;
 
     protected override void AwakeSingleton()
     {
@@ -196,13 +196,14 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
 
     private void HandleRewardedAdClosed(object sender, EventArgs args)
     {
-        Debug.Log("HandleRewardedAdClosed event received");
+        Debug.Log($"HandleRewardedAdClosed event received. MustRewardPlayer = {mustRewardPlayer}");
 
         commandQueueHandler.SetCommandToQueue(() => LoadRewardedAd(rewardedAd));
 
         commandQueueHandler.SetCommandToQueue(() => OnAdClosed?.Invoke(mustRewardPlayer));
 
-        mustRewardPlayer = false; // Обнуляю значение награды.
+        // Обнуляю значение награды. Т.к другой поток, помещаю команду в очередь.
+        commandQueueHandler.SetCommandToQueue(() => mustRewardPlayer = false);
     }
 
     private void HandleUserEarnedReward(object sender, Reward args)

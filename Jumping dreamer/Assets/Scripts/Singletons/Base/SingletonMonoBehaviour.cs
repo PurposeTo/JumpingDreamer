@@ -59,7 +59,7 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : Single
     {
         if (commandsQueue != null && commandsQueue.Count != 0)
         {
-            for (int i = 0; i < commandsQueue.Count; i++)
+            while (commandsQueue.Count > 0)
             {
                 Action action = commandsQueue.Dequeue();
                 Debug.Log($"{name} execute command \"{action?.Method.Name}\" from \"{action?.Target}\" in Awake!");

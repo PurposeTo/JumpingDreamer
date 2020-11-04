@@ -20,6 +20,7 @@ public class PlayerSettingsStorage : SingletonMonoBehaviour<PlayerSettingsStorag
         if (File.Exists(filePath))
         {
             string json = File.ReadAllText(filePath);
+            Debug.Log($"PlayerSettingsModel json = {json}");
             return JsonUtility.FromJson<PlayerSettingsModel>(json);
         }
         else return new PlayerSettingsModel();
