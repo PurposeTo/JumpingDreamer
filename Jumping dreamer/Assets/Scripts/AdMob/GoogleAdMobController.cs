@@ -27,6 +27,7 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
     protected override void AwakeSingleton()
     {
         commandQueueHandler = gameObject.GetComponent<CommandQueueMainThreadExecutor>();
+        InitializeMainRewardAdActions();
         CreateRewardedAd();
     }
 
@@ -34,6 +35,15 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
     private void OnDestroy()
     {
         if (rewardedAdLoader.RewardedAd != null) UnsubscribeEvents(rewardedAdLoader.RewardedAd);
+    }
+
+
+    private void InitializeMainRewardAdActions()
+    {
+        OnAdFailedToLoad += TryToReLoadAd;
+        OnAdFailedToShow += ReCreateRewardedAd;
+        OnAdClosed += (_) => ReCreateRewardedAd();
+        OnUserEarnedReward += () => mustRewardPlayer = true; // Игрок был награжден!
     }
 
 
@@ -120,6 +130,11 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
         rewardedAd.OnAdClosed -= HandleRewardedAdClosed;
     }
 
+    private void TryToReLoadAd()
+    {
+        if (TryToReLoadAdRoutine == null) TryToReLoadAdRoutine = StartCoroutine(TryToReLoadAdEnumerator());
+    }
+
 
     private IEnumerator TryToReLoadAdEnumerator()
     {
@@ -156,14 +171,6 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
             $"And now rewardedAd.IsLoaded() is {rewardedAdLoader.IsAdWasLoaded()}");
 
         commandQueueHandler.SetCommandToQueue(() => OnAdFailedToLoad?.Invoke());
-
-
-        void TryToReLoadAd()
-        {
-            if (TryToReLoadAdRoutine == null) TryToReLoadAdRoutine = StartCoroutine(TryToReLoadAdEnumerator());
-        };
-
-        commandQueueHandler.SetCommandToQueue(TryToReLoadAd);
     }
 
     private void HandleRewardedAdOpening(object sender, EventArgs args)
@@ -178,8 +185,6 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
         Debug.Log($"HandleRewardedAdFailedToShow event received with message: {args.Message}");
 
         commandQueueHandler.SetCommandToQueue(() => OnAdFailedToShow?.Invoke());
-
-        commandQueueHandler.SetCommandToQueue(() => ReCreateRewardedAd());
     }
 
     private void HandleRewardedAdClosed(object sender, EventArgs args)
@@ -187,12 +192,6 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
         Debug.Log($"HandleRewardedAdClosed event received. MustRewardPlayer = {mustRewardPlayer}");
 
         commandQueueHandler.SetCommandToQueue(() => OnAdClosed?.Invoke(mustRewardPlayer));
-
-        // Обнуляю значение награды. Т.к другой поток, помещаю команду в очередь.
-        commandQueueHandler.SetCommandToQueue(() => mustRewardPlayer = false);
-
-        commandQueueHandler.SetCommandToQueue(() => ReCreateRewardedAd());
-
     }
 
     private void HandleUserEarnedReward(object sender, Reward args)
@@ -200,8 +199,6 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
         string type = args.Type;
         double amount = args.Amount;
         Debug.Log($"HandleRewardedAdRewarded event received for {amount} {type}");
-
-        mustRewardPlayer = true; // Игрок был награжден!
 
         commandQueueHandler.SetCommandToQueue(() => OnUserEarnedReward?.Invoke());
     }

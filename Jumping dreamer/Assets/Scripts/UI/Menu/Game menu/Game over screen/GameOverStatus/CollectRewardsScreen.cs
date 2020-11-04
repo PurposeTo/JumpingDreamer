@@ -63,6 +63,8 @@ public class CollectRewardsScreen : MonoBehaviour
 
     private void OnAdFailedToShow()
     {
+        if (adLoadingWindow == null) throw new NullReferenceException("adLoadingWindow");
+
         // Если произошла ошибка показа рекламы, то окошко ожидания необходимо выключить и показать GameOverMenu
         adLoadingWindow.TurnOff();
         gameOverStatusScreen.ShowGameOverMenu();

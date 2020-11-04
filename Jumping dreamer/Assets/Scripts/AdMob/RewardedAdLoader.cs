@@ -23,24 +23,11 @@ public class RewardedAdLoader
     /// <param name="BeforeLoadRewardedAd">Используйте этот Action для подписания на события RewardedAd</param>
     public void CreateRewardedAd(Action BeforeLoadRewardedAd)
     {
-        RewardedAd = GetAndLoadRewardedAd(BeforeLoadRewardedAd, rewardedVideoAdForTest_ID);
-    }
+        RewardedAd = new RewardedAd(rewardedVideoAdForTest_ID);
 
-
-    /// <summary>
-    /// Рекламу, которая была просмотрена, невозможно перезагрузить. 
-    /// Для этого необходимо создать новый экз. рекламы.
-    /// </summary>
-    /// <param name="BeforeLoadRewardedAd">Используйте этот Action для подписания на события RewardedAd</param>
-    /// <param name="adUnitId"></param>
-    /// <returns></returns>
-    private RewardedAd GetAndLoadRewardedAd(Action BeforeLoadRewardedAd, string adUnitId)
-    {
-        RewardedAd rewardedAd = new RewardedAd(adUnitId);
+        // Подписчики события используют this.RewardedAd, поэтому поле должно быть УЖЕ инициализированно.
         BeforeLoadRewardedAd?.Invoke();
-
-        LoadRewardedAd(rewardedAd);
-        return rewardedAd;
+        LoadRewardedAd(RewardedAd);
     }
 
 
