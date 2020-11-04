@@ -5,7 +5,7 @@ using GoogleMobileAds.Common;
 using Debug = UnityEngine.Debug;
 using System.Collections;
 
-[RequireComponent(typeof(CommandQueueHandler))]
+[RequireComponent(typeof(CommandQueueMainThreadExecutor))]
 public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobController>
 {
     private readonly string rewardedVideoAdForTest_ID = "ca-app-pub-3940256099942544/5224354917";
@@ -19,7 +19,7 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
     public event Action OnUserEarnedReward;
     public event Action<bool> OnAdClosed;
 
-    private CommandQueueHandler commandQueueHandler;
+    private CommandQueueMainThreadExecutor commandQueueHandler;
     private readonly InternetConnectionChecker connectionChecker = new InternetConnectionChecker();
     private Coroutine TryToReLoadAdRoutine = null;
 
@@ -27,7 +27,7 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
 
     protected override void AwakeSingleton()
     {
-        commandQueueHandler = gameObject.GetComponent<CommandQueueHandler>();
+        commandQueueHandler = gameObject.GetComponent<CommandQueueMainThreadExecutor>();
         rewardedAd = CreateAndLoadRewardedAd(rewardedVideoAdForTest_ID);
     }
 
@@ -153,6 +153,7 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
 
         TryToReLoadAdRoutine = null;
     }
+
 
     #region event calls not from the main thread
 

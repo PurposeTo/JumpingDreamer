@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary> 
@@ -11,7 +10,8 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : Single
 
     public static T Instance { get; private set; }
 
-    private static Queue<Action> commandsQueue = new Queue<Action>();
+    private static readonly CommandQueue commandQueue = new CommandQueue();
+
 
     private void Awake()
     {
@@ -24,7 +24,11 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : Single
                 DontDestroyOnLoad(gameObject);
             }
             AwakeSingleton();
-            ExecuteCommands();
+
+            commandQueue.TryToExecuteAllCommands((target, methodInfo) =>
+            {
+                Debug.Log($"{typeof(T).Name} execute command \"{methodInfo.Name}\" from \"{target}\"");
+            });
         }
         else
         {
@@ -40,33 +44,17 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : Single
     /// </summary>
     public static void SetCommandToQueue(params Action[] actions)
     {
-        if (actions.Length == 0 || actions is null) throw new ArgumentNullException(nameof(actions));
-
-        if (Instance != null) Array.ForEach(actions, action => action?.Invoke());
-        else
+        if (Instance == null)
         {
             Array.ForEach(actions, action =>
             {
                 Debug.Log($"Сommand \"{action?.Method.Name}\" from \"{action?.Target}\" was added to " +
-                    $"{typeof(T).Name} awakeCommands queue!");
-                commandsQueue.Enqueue(action);
+                    $"{typeof(T).Name} commands queue!");
             });
+
+            commandQueue.SetCommandToQueue(actions);
         }
-    }
-
-
-    private void ExecuteCommands()
-    {
-        if (commandsQueue != null && commandsQueue.Count != 0)
-        {
-            while (commandsQueue.Count > 0)
-            {
-                Action action = commandsQueue.Dequeue();
-                Debug.Log($"{name} execute command \"{action?.Method.Name}\" from \"{action?.Target}\" in Awake!");
-
-                action?.Invoke();
-            }
-        }
+        else Array.ForEach(actions, action => action?.Invoke());
     }
 }
 
@@ -79,9 +67,9 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : Single
  */
 
 
-/*Пример использования SetAwakeCommand с кешированием команды для правильного отображения метода в логах
+/*Пример использования SetCommandToQueue с кешированием команды для правильного отображения метода в логах
  * 
  * void stopGameTime() => GameManager.Instance.SetGameReady(false); // Кеширую для назначения имени команды
- * GameManager.SetAwakeCommand(stopGameTime)
+ * GameManager.SetCommandToQueue(stopGameTime)
  * 
  */

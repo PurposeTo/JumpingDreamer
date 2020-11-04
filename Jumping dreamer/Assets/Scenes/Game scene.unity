@@ -7533,7 +7533,6 @@ MonoBehaviour:
   RebornScreen: {fileID: 1133801442}
   CollectRewardsScreen: {fileID: 1457447806}
   RefuseToViewAdsScreen: {fileID: 956296645}
-  isPlayerMustSeeAd: 0
 --- !u!1 &2130497396
 GameObject:
   m_ObjectHideFlags: 0
@@ -8750,7 +8749,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: AdMob
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5132620082641044207, guid: eec5154f6adcbea41982c39224febfb6, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: eec5154f6adcbea41982c39224febfb6, type: 3}
 --- !u!1001 &4005192986721279401
 PrefabInstance:

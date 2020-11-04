@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3615121469247626522}
   - component: {fileID: 6947016411900155147}
-  - component: {fileID: 5132620082641044207}
   m_Layer: 0
   m_Name: AdMob
   m_TagString: Untagged
@@ -45,15 +44,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 0
---- !u!114 &5132620082641044207
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3615121469247626596}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1729ecd3d8ffefb4294f1ee623464b3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
