@@ -46,7 +46,7 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : Single
     {
         if (Instance == null)
         {
-            commandQueue.SetCommandToQueue(typeof(T).Name, actions);
+            commandQueue.SetCommandToQueue(actions);
         }
         else Array.ForEach(actions, action => action?.Invoke());
     }

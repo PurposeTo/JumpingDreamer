@@ -4,30 +4,45 @@ using System;
 
 public class RewardedAdLoader
 {
-    private readonly string rewardedVideoAdForTest_ID = "ca-app-pub-3940256099942544/5224354917";
+    private readonly CommandQueueMainThreadExecutor commandQueueHandler;
 
+    public RewardedAdLoader(CommandQueueMainThreadExecutor commandQueueHandler)
+    {
+        this.commandQueueHandler = commandQueueHandler ?? throw new ArgumentNullException(nameof(commandQueueHandler));
+    }
+
+
+    private readonly string rewardedVideoAdForTest_ID = "ca-app-pub-3940256099942544/5224354917";
 
     public RewardedAd RewardedAd { get; private set; }
 
+    public event Action OnAdLoaded;
 
-    public bool IsAdWasLoaded()
+
+
+    public bool IsAdLoaded()
     {
         if (RewardedAd != null) return RewardedAd.IsLoaded();
         else return false;
     }
 
 
-    /// <summary>
-    /// Создать новую рекламу
-    /// </summary>
-    /// <param name="BeforeLoadRewardedAd">Используйте этот Action для подписания на события RewardedAd</param>
-    public void CreateRewardedAd(Action BeforeLoadRewardedAd)
+    public void CreateRewardedAd()
     {
-        RewardedAd = new RewardedAd(rewardedVideoAdForTest_ID);
+        if (RewardedAd != null) UnsubscribeLoadingEvents(RewardedAd);
 
-        // Подписчики события используют this.RewardedAd, поэтому поле должно быть УЖЕ инициализированно.
-        BeforeLoadRewardedAd?.Invoke();
-        LoadRewardedAd(RewardedAd);
+        RewardedAd = GetAndLoadRewardedAd();
+    }
+
+
+    private RewardedAd GetAndLoadRewardedAd()
+    {
+        RewardedAd rewardedAd = new RewardedAd(rewardedVideoAdForTest_ID);
+
+        SubscribeLoadingEvents(rewardedAd); // Подписаться на эвенты загрузки необходимо до отправки запроса на загрузку рекламы
+        LoadRewardedAd(rewardedAd);
+
+        return rewardedAd;
     }
 
 
@@ -50,4 +65,28 @@ public class RewardedAdLoader
 
         Debug.Log($"You try to load Ad. isAdLoaded = {isAdLoaded}. {AdLoadingResultLog}");
     }
+
+
+    private void SubscribeLoadingEvents(RewardedAd rewardedAd)
+    {
+        // Called when an ad request has successfully loaded.
+        rewardedAd.OnAdLoaded += HandleRewardedAdLoaded;
+    }
+
+
+    private void UnsubscribeLoadingEvents(RewardedAd rewardedAd)
+    {
+        // Called when an ad request has successfully loaded.
+        rewardedAd.OnAdLoaded -= HandleRewardedAdLoaded;
+    }
+
+
+    #region event calls not from the main thread
+
+    private void HandleRewardedAdLoaded(object sender, EventArgs args)
+    {
+        Debug.Log("HandleRewardedAdLoaded event received");
+        commandQueueHandler.SetCommandToQueue(() => OnAdLoaded?.Invoke());
+    }
+    #endregion
 }

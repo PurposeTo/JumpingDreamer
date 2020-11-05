@@ -19,7 +19,7 @@ public class GameOverStatusScreen : MonoBehaviour
     private void OnEnable()
     {
         // Если реклама загружена
-        if (GoogleAdMobController.Instance.IsAdWasLoaded())
+        if (GoogleAdMobController.Instance.IsAdLoaded())
         {
             // Если игрок еще не использовал возрождение
             if (!isPlayerMustSeeAd)

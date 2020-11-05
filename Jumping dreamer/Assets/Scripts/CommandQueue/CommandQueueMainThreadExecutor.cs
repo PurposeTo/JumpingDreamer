@@ -16,7 +16,7 @@ public class CommandQueueMainThreadExecutor : MonoBehaviour
 
     public void SetCommandToQueue(params Action[] actions)
     {
-        commandQueue.SetCommandToQueue("CommandQueueMainThreadExecutor", actions);
+        commandQueue.SetCommandToQueue(actions);
     }
 
 

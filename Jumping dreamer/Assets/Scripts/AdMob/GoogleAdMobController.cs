@@ -9,9 +9,8 @@ using System.Collections;
 public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobController>
 {
 
-    private readonly RewardedAdLoader rewardedAdLoader = new RewardedAdLoader();
+    private RewardedAdLoader rewardedAdLoader;
 
-    public event Action OnAdLoaded;
     public event Action OnAdFailedToLoad;
     public event Action OnAdOpening;
     public event Action OnAdFailedToShow;
@@ -22,11 +21,15 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
     private readonly InternetConnectionChecker connectionChecker = new InternetConnectionChecker();
     private Coroutine TryToReLoadAdRoutine = null;
 
+    private Coroutine waitForRewardedAdAnsweringRoutine = null;
+    private bool isLoadAnswer = false; // Отвечает ли реклама?
+
     private bool mustRewardPlayer = false;
 
     protected override void AwakeSingleton()
     {
         commandQueueHandler = gameObject.GetComponent<CommandQueueMainThreadExecutor>();
+        rewardedAdLoader = new RewardedAdLoader(commandQueueHandler);
         InitializeMainRewardAdActions();
         CreateRewardedAd();
     }
@@ -49,7 +52,8 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
 
     private void CreateRewardedAd()
     {
-        rewardedAdLoader.CreateRewardedAd(() => SubscribeEvents(rewardedAdLoader.RewardedAd));
+        rewardedAdLoader.CreateRewardedAd();
+        SubscribeEvents(rewardedAdLoader.RewardedAd);
     }
 
 
@@ -60,9 +64,9 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
     }
 
 
-    public bool IsAdWasLoaded()
+    public bool IsAdLoaded()
     {
-        return rewardedAdLoader.IsAdWasLoaded();
+        return rewardedAdLoader.IsAdLoaded();
     }
 
 
@@ -70,13 +74,18 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
     {
         mustRewardPlayer = false; // Обнуляю значение награды
 
-        bool isAdWasReallyLoaded = rewardedAdLoader.IsAdWasLoaded();
+        bool isAdWasReallyLoaded = rewardedAdLoader.IsAdLoaded();
         isAdWasReallyLoadedCallback?.Invoke(isAdWasReallyLoaded);
 
         Debug.Log($"Try to show Ad. isAdLoaded = {isAdWasReallyLoaded}");
 
         if (isAdWasReallyLoaded)
         {
+            if(waitForRewardedAdAnsweringRoutine == null)
+            {
+                waitForRewardedAdAnsweringRoutine = StartCoroutine(WaitForRewardedAdAnsweringEnumerator());
+            }
+
             int operationTimeOut = 4;
 
             StartCoroutine(connectionChecker.PingGoogleEnumerator(isInternetAvaliable =>
@@ -99,8 +108,6 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
 
     private void SubscribeEvents(RewardedAd rewardedAd)
     {
-        // Called when an ad request has successfully loaded.
-        rewardedAd.OnAdLoaded += HandleRewardedAdLoaded;
         // Called when an ad request failed to load.
         rewardedAd.OnAdFailedToLoad += HandleRewardedAdFailedToLoad;
         // Called when an ad is shown.
@@ -116,8 +123,6 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
 
     private void UnsubscribeEvents(RewardedAd rewardedAd)
     {
-        // Called when an ad request has successfully loaded.
-        rewardedAd.OnAdLoaded -= HandleRewardedAdLoaded;
         // Called when an ad request failed to load.
         rewardedAd.OnAdFailedToLoad -= HandleRewardedAdFailedToLoad;
         // Called when an ad is shown.
@@ -136,11 +141,25 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
     }
 
 
+    private IEnumerator WaitForRewardedAdAnsweringEnumerator()
+    {
+        float timeOut = 8f;
+
+        yield return new WaitForDoneUnscaledTime(timeOut, () => isLoadAnswer);
+
+        // Дождались ли ответа от RewardedAd?
+        if (isLoadAnswer) isLoadAnswer = false;
+        else OnAdFailedToShow?.Invoke();
+
+        waitForRewardedAdAnsweringRoutine = null;
+    }
+
+
     private IEnumerator TryToReLoadAdEnumerator()
     {
-        Debug.Log($"TryToReLoadAdEnumerator started. rewardedAd.IsLoaded() = {rewardedAdLoader.IsAdWasLoaded()}");
+        Debug.Log($"TryToReLoadAdEnumerator started. rewardedAd.IsLoaded() = {rewardedAdLoader.IsAdLoaded()}");
 
-        while (!rewardedAdLoader.IsAdWasLoaded())
+        while (!rewardedAdLoader.IsAdLoaded())
         {
             Debug.Log($"TryToReLoadAdEnumerator before WaitForSecondsRealtime.");
             yield return new WaitForSecondsRealtime(30f);
@@ -159,16 +178,10 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
 
     #region event calls not from the main thread
 
-    private void HandleRewardedAdLoaded(object sender, EventArgs args)
-    {
-        Debug.Log("HandleRewardedAdLoaded event received");
-        commandQueueHandler.SetCommandToQueue(() => OnAdLoaded?.Invoke());
-    }
-
     private void HandleRewardedAdFailedToLoad(object sender, AdErrorEventArgs args)
     {
         Debug.Log($"HandleRewardedAdFailedToLoad event received with message: {args.Message}. " +
-            $"And now rewardedAd.IsLoaded() is {rewardedAdLoader.IsAdWasLoaded()}");
+            $"And now rewardedAd.IsLoaded() is {rewardedAdLoader.IsAdLoaded()}");
 
         commandQueueHandler.SetCommandToQueue(() => OnAdFailedToLoad?.Invoke());
     }
