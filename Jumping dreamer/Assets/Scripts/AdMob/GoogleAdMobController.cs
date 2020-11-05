@@ -22,7 +22,9 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
     private Coroutine TryToReLoadAdRoutine = null;
 
     private Coroutine waitForRewardedAdAnsweringRoutine = null;
-    private bool isLoadAnswer = false; // Отвечает ли реклама?
+    private bool IsLoadAnswer => isLoadOpen || isLoadFailedToShow; // Отвечает ли реклама?
+    private bool isLoadOpen = false; // Открылась ли реклама?
+    private bool isLoadFailedToShow = false; // Произошла ли ошибка показа рекламы?
 
     private bool mustRewardPlayer = false;
 
@@ -44,7 +46,12 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
     private void InitializeMainRewardAdActions()
     {
         OnAdFailedToLoad += TryToReLoadAd;
-        OnAdFailedToShow += ReCreateRewardedAd;
+        OnAdOpening += () => isLoadOpen = true;
+        OnAdFailedToShow += () =>
+        {
+            isLoadFailedToShow = true;
+            ReCreateRewardedAd();
+        };
         OnAdClosed += (_) => ReCreateRewardedAd();
         OnUserEarnedReward += () => mustRewardPlayer = true; // Игрок был награжден!
     }
@@ -81,17 +88,13 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
 
         if (isAdWasReallyLoaded)
         {
-            if(waitForRewardedAdAnsweringRoutine == null)
-            {
-                waitForRewardedAdAnsweringRoutine = StartCoroutine(WaitForRewardedAdAnsweringEnumerator());
-            }
-
             int operationTimeOut = 4;
 
             StartCoroutine(connectionChecker.PingGoogleEnumerator(isInternetAvaliable =>
             {
                 if (isInternetAvaliable)
                 {
+                    StartWaitForRewardedAdAnswering();
                     Debug.Log($"rewardedAd.Show() call");
                     rewardedAdLoader.RewardedAd.Show();
                 }
@@ -135,9 +138,23 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
         rewardedAd.OnAdClosed -= HandleRewardedAdClosed;
     }
 
-    private void TryToReLoadAd()
+
+    private void StartWaitForRewardedAdAnswering()
     {
-        if (TryToReLoadAdRoutine == null) TryToReLoadAdRoutine = StartCoroutine(TryToReLoadAdEnumerator());
+        if (waitForRewardedAdAnsweringRoutine == null)
+        {
+            waitForRewardedAdAnsweringRoutine = StartCoroutine(WaitForRewardedAdAnsweringEnumerator());
+        }
+    }
+
+
+    private void BreakWaitForRewardedAdAnswering()
+    {
+        if (waitForRewardedAdAnsweringRoutine != null)
+        {
+            StopCoroutine(WaitForRewardedAdAnsweringEnumerator());
+            waitForRewardedAdAnsweringRoutine = null;
+        }
     }
 
 
@@ -145,13 +162,25 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
     {
         float timeOut = 8f;
 
-        yield return new WaitForDoneUnscaledTime(timeOut, () => isLoadAnswer);
+        yield return new WaitForDoneUnscaledTime(timeOut, () => IsLoadAnswer);
 
-        // Дождались ли ответа от RewardedAd?
-        if (isLoadAnswer) isLoadAnswer = false;
-        else OnAdFailedToShow?.Invoke();
+        // Если не дождались ответа от рекламы
+        if (!IsLoadAnswer)
+        {
+            Debug.Log($"Force invoke OnAdFailedToShow because RewardedAd is not answering.");
+            OnAdFailedToShow?.Invoke();
+        }
+
+        isLoadOpen = false;
+        isLoadFailedToShow = false;
 
         waitForRewardedAdAnsweringRoutine = null;
+    }
+
+
+    private void TryToReLoadAd()
+    {
+        if (TryToReLoadAdRoutine == null) TryToReLoadAdRoutine = StartCoroutine(TryToReLoadAdEnumerator());
     }
 
 
