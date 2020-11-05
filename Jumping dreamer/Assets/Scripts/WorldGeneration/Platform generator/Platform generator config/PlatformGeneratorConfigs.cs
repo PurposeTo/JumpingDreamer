@@ -9,7 +9,7 @@ public enum CreatingValuesInClassMode
 }
 public class PlatformGeneratorConfigs
 {
-    private readonly float generationDelay = 0.4f;
+    private readonly float generationDelay = 0.425f;
 
     private PlatformGeneratorConfigs(CreatingValuesInClassMode creating)
     {
@@ -55,8 +55,8 @@ public class PlatformGeneratorConfigs
     {
         float delay = generationDelay;
 
-        if (platformConfigs.PlatformCreatingPlace == PlatformConfigsData.PlatformCreatingPlace.InRandomArea) delay -= 0.09f;
-        if (platformConfigs.PlatformCauseOfDestroy == PlatformConfigsData.PlatformCauseOfDestroy.NoLifeTime) delay -= 0.17f;
+        if (platformConfigs.PlatformCreatingPlace == PlatformConfigsData.PlatformCreatingPlace.InRandomArea) delay -= 0.115f;
+        if (platformConfigs.PlatformCauseOfDestroy == PlatformConfigsData.PlatformCauseOfDestroy.NoLifeTime) delay -= 0.195f;
 
         return delay;
     }
