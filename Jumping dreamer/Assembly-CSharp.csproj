@@ -211,6 +211,8 @@
     <Compile Include="Assets\Scripts\Singletons\Object Pooler\ObjectPooler.cs" />
     <Compile Include="Assets\Scripts\Singletons\VFX\VFXManager.cs" />
     <Compile Include="Assets\Scripts\Star.cs" />
+    <Compile Include="Assets\Scripts\Tools\CoroutineExecutor\CoroutineExecutor.cs" />
+    <Compile Include="Assets\Scripts\Tools\CoroutineExecutor\ICoroutineInfo.cs" />
     <Compile Include="Assets\Scripts\Tools\InternetConnectionChecker.cs" />
     <Compile Include="Assets\Scripts\Tools\WaitForDone\Base\WaitForDone.cs" />
     <Compile Include="Assets\Scripts\Tools\WaitForDone\WaitForDoneScaledTime.cs" />

@@ -8,7 +8,8 @@ public class RewardedAdLoader
 
     public RewardedAdLoader(CommandQueueMainThreadExecutor commandQueueHandler)
     {
-        this.commandQueueHandler = commandQueueHandler ?? throw new ArgumentNullException(nameof(commandQueueHandler));
+        // UNT0007 C# Unity objects should not use null coalescing.
+        this.commandQueueHandler = commandQueueHandler != null ? commandQueueHandler : throw new ArgumentNullException(nameof(commandQueueHandler));
     }
 
 

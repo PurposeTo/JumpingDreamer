@@ -5,6 +5,7 @@ using GoogleMobileAds.Common;
 using Debug = UnityEngine.Debug;
 using System.Collections;
 
+[RequireComponent(typeof(CoroutineExecutor))]
 [RequireComponent(typeof(CommandQueueMainThreadExecutor))]
 public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobController>
 {
@@ -17,11 +18,14 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
     public event Action OnUserEarnedReward;
     public event Action<bool> OnAdClosed;
 
+    private CoroutineExecutor coroutineExecutor;
     private CommandQueueMainThreadExecutor commandQueueHandler;
     private readonly InternetConnectionChecker connectionChecker = new InternetConnectionChecker();
-    private Coroutine TryToReLoadAdRoutine = null;
 
-    private Coroutine waitForRewardedAdAnsweringRoutine = null;
+
+    private ICoroutineInfo waitForRewardedAdAnsweringInfo;
+    private ICoroutineInfo tryToReLoadAdInfo;
+    private ICoroutineInfo checkInternetConnectionAndShowAdInfo;
     private bool IsLoadAnswer => isLoadOpen || isLoadFailedToShow; // Отвечает ли реклама?
     private bool isLoadOpen = false; // Открылась ли реклама?
     private bool isLoadFailedToShow = false; // Произошла ли ошибка показа рекламы?
@@ -30,30 +34,60 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
 
     protected override void AwakeSingleton()
     {
+        coroutineExecutor = gameObject.GetComponent<CoroutineExecutor>();
         commandQueueHandler = gameObject.GetComponent<CommandQueueMainThreadExecutor>();
+
+        waitForRewardedAdAnsweringInfo = coroutineExecutor.CreateCoroutineInfo(WaitForRewardedAdAnsweringEnumerator());
+        tryToReLoadAdInfo = coroutineExecutor.CreateCoroutineInfo(TryToReLoadAdEnumerator());
+        checkInternetConnectionAndShowAdInfo = coroutineExecutor.CreateCoroutineInfo(CheckInternetConnectionAndShowAd());
+
         rewardedAdLoader = new RewardedAdLoader(commandQueueHandler);
         InitializeMainRewardAdActions();
         CreateRewardedAd();
     }
 
 
-    private void OnDestroy()
-    {
-        if (rewardedAdLoader.RewardedAd != null) UnsubscribeEvents(rewardedAdLoader.RewardedAd);
-    }
+    //private void OnDestroy()
+    //{
+    //    /* Это синглтон dontDestroyOnLoad, разрушаться (Сам синглтон-объект) он не будет. 
+    //     * У объекта-дубликата с новой сцены теряется ссылка на объект RewardedAd и отписка происходить не будет, 
+    //     * тк AwakeSingleton в новом объекте, который разрушается, не будет выполнен.
+    //     */
+    //    //if (rewardedAdLoader.RewardedAd != null) UnsubscribeEvents(rewardedAdLoader.RewardedAd);
+    //}
 
 
     private void InitializeMainRewardAdActions()
     {
-        OnAdFailedToLoad += TryToReLoadAd;
-        OnAdOpening += () => isLoadOpen = true;
+        OnAdFailedToLoad += () =>
+        {
+            Debug.Log($"OnAdFailedToLoad event received.");
+            TryToReLoadAd();
+        };
+
+        OnAdOpening += () =>
+        {
+            Debug.Log($"OnAdOpening event received.");
+            isLoadOpen = true;
+        };
+
         OnAdFailedToShow += () =>
         {
+            Debug.Log($"OnAdFailedToShow event received.");
             isLoadFailedToShow = true;
             ReCreateRewardedAd();
         };
-        OnAdClosed += (_) => ReCreateRewardedAd();
-        OnUserEarnedReward += () => mustRewardPlayer = true; // Игрок был награжден!
+        OnAdClosed += (_) =>
+        {
+            Debug.Log($"OnAdFailedToShow event received. MustRewardPlayer = {mustRewardPlayer}");
+            ReCreateRewardedAd();
+        };
+
+        OnUserEarnedReward += () =>
+        {
+            Debug.Log($"OnUserEarnedReward event received.");
+            mustRewardPlayer = true; // Игрок был награжден!
+        };
     }
 
 
@@ -88,23 +122,8 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
 
         if (isAdWasReallyLoaded)
         {
-            int operationTimeOut = 4;
 
-            StartCoroutine(connectionChecker.PingGoogleEnumerator(isInternetAvaliable =>
-            {
-                if (isInternetAvaliable)
-                {
-                    StartWaitForRewardedAdAnswering();
-                    Debug.Log($"rewardedAd.Show() call");
-                    rewardedAdLoader.RewardedAd.Show();
-                }
-                else
-                {
-                    Debug.Log($"Force invoke OnAdFailedToShow because internet is not avaliable.");
-                    OnAdFailedToShow?.Invoke();
-                }
-            },
-            timeOut: operationTimeOut));
+            coroutineExecutor.StartCoroutineExecution(checkInternetConnectionAndShowAdInfo);
         }
     }
 
@@ -139,22 +158,26 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
     }
 
 
-    private void StartWaitForRewardedAdAnswering()
+    private IEnumerator CheckInternetConnectionAndShowAd()
     {
-        if (waitForRewardedAdAnsweringRoutine == null)
-        {
-            waitForRewardedAdAnsweringRoutine = StartCoroutine(WaitForRewardedAdAnsweringEnumerator());
-        }
-    }
+        int operationTimeOut = 4;
 
-
-    private void BreakWaitForRewardedAdAnswering()
-    {
-        if (waitForRewardedAdAnsweringRoutine != null)
+        yield return connectionChecker.PingGoogleEnumerator(isInternetAvaliable =>
         {
-            StopCoroutine(WaitForRewardedAdAnsweringEnumerator());
-            waitForRewardedAdAnsweringRoutine = null;
-        }
+
+            if (isInternetAvaliable)
+            {
+                coroutineExecutor.StartCoroutineExecution(waitForRewardedAdAnsweringInfo);
+                Debug.Log($"rewardedAd.Show() call");
+                rewardedAdLoader.RewardedAd.Show();
+            }
+            else
+            {
+                Debug.Log($"Force invoke OnAdFailedToShow because internet is not avaliable.");
+                OnAdFailedToShow?.Invoke();
+            }
+        },
+        timeOut: operationTimeOut);
     }
 
 
@@ -173,15 +196,10 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
 
         isLoadOpen = false;
         isLoadFailedToShow = false;
-
-        waitForRewardedAdAnsweringRoutine = null;
     }
 
 
-    private void TryToReLoadAd()
-    {
-        if (TryToReLoadAdRoutine == null) TryToReLoadAdRoutine = StartCoroutine(TryToReLoadAdEnumerator());
-    }
+    private void TryToReLoadAd() => coroutineExecutor.StartCoroutineExecution(tryToReLoadAdInfo);
 
 
     private IEnumerator TryToReLoadAdEnumerator()
@@ -200,8 +218,6 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
 
             if (isInternetEnabled) ReCreateRewardedAd();
         }
-
-        TryToReLoadAdRoutine = null;
     }
 
 

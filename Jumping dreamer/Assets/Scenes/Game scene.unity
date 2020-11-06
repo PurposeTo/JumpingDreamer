@@ -8749,8 +8749,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: AdMob
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5132620082641044207, guid: eec5154f6adcbea41982c39224febfb6, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eec5154f6adcbea41982c39224febfb6, type: 3}
 --- !u!1001 &4005192986721279401
 PrefabInstance:
