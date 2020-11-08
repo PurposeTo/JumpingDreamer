@@ -204,7 +204,7 @@
     <Compile Include="Assets\Scripts\Scene loading helpers\Shutter.cs" />
     <Compile Include="Assets\Scripts\Scene loading helpers\SingleSceneLoader.cs" />
     <Compile Include="Assets\Scripts\Singletons\Base\Singleton.cs" />
-    <Compile Include="Assets\Scripts\Singletons\Base\SingletonMonoBehaviour.cs" />
+    <Compile Include="Assets\Scripts\Singletons\Base\SingletonSuperMonoBehaviour.cs" />
     <Compile Include="Assets\Scripts\Singletons\CurrentGameSessionData.cs" />
     <Compile Include="Assets\Scripts\Singletons\GameManager.cs" />
     <Compile Include="Assets\Scripts\Singletons\GameObjectsHolder.cs" />
@@ -212,12 +212,13 @@
     <Compile Include="Assets\Scripts\Singletons\Object Pooler\ObjectPooler.cs" />
     <Compile Include="Assets\Scripts\Singletons\VFX\VFXManager.cs" />
     <Compile Include="Assets\Scripts\Star.cs" />
+    <Compile Include="Assets\Scripts\SuperMonoBehaviour.cs" />
     <Compile Include="Assets\Scripts\Tools\CoroutineExecutor\CoroutineExecutor.cs" />
     <Compile Include="Assets\Scripts\Tools\CoroutineExecutor\ICoroutineInfo.cs" />
     <Compile Include="Assets\Scripts\Tools\InternetConnectionChecker.cs" />
-    <Compile Include="Assets\Scripts\Tools\WaitForDone\Base\WaitForDone.cs" />
-    <Compile Include="Assets\Scripts\Tools\WaitForDone\WaitForDoneScaledTime.cs" />
-    <Compile Include="Assets\Scripts\Tools\WaitForDone\WaitForDoneUnscaledTime.cs" />
+    <Compile Include="Assets\Scripts\Tools\WaitForDone\Base\WaitForDoneBase.cs" />
+    <Compile Include="Assets\Scripts\Tools\WaitForDone\WaitForDone.cs" />
+    <Compile Include="Assets\Scripts\Tools\WaitForDone\WaitForDoneRealtime.cs" />
     <Compile Include="Assets\Scripts\TrainingTutorial.cs" />
     <Compile Include="Assets\Scripts\UI\FPSCounter.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\AdRewardMessage.cs" />

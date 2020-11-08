@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPooler : SingletonMonoBehaviour<ObjectPooler>
+public class ObjectPooler : SingletonSuperMonoBehaviour<ObjectPooler>
 {
     [System.Serializable]
     public class Pool

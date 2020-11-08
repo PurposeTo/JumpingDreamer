@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
-public abstract class AnimatorControllerWrapper : MonoBehaviour
+public abstract class AnimatorControllerWrapper : SuperMonoBehaviour
 {
     private protected Animator animator;
     private protected virtual IAnimatorInitializerConfigs AnimatorInitializerConfigs { get; set; }
 
 
-    private protected virtual void Awake()
+    protected override void AwakeSuper()
     {
         animator = gameObject.GetComponent<Animator>();
         AnimatorInitializerConfigs.SetAnimator(animator);

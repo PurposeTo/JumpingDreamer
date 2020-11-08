@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-public class VFXManager : SingletonMonoBehaviour<VFXManager>
+public class VFXManager : SingletonSuperMonoBehaviour<VFXManager>
 {
     [SerializeField] private GameObject PopupTextPrefab = null;
 

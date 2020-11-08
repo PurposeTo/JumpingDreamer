@@ -2,12 +2,25 @@
 using System.Collections;
 using UnityEngine;
 
-public class CoroutineExecutor : SingletonMonoBehaviour<CoroutineExecutor>
+/*
+ * ICoroutineInfo, в методах, запускающих корутину, всегда идут с ref параметром потому, что
+ * таким образом будет гарантия того, что ТОЧНО будет переназначена ссылка на объект ICoroutineInfo
+ */
+public class CoroutineExecutor
 {
+    private readonly MonoBehaviour monoBehaviour;
+
+    public CoroutineExecutor(MonoBehaviour monoBehaviour)
+    {
+        this.monoBehaviour = monoBehaviour ?? throw new ArgumentNullException(nameof(monoBehaviour));
+    }
+
+
     public ICoroutineInfo CreateCoroutineInfo()
     {
         return CreateCoroutineInfo(null);
     }
+
 
     public ICoroutineInfo CreateCoroutineInfo(IEnumerator enumerator)
     {
@@ -19,10 +32,9 @@ public class CoroutineExecutor : SingletonMonoBehaviour<CoroutineExecutor>
     /// <summary>
     /// Запускает корутину в том случае, если она НЕ выполняется в данный момент.
     /// </summary>
-    /// <param name="coroutineInfo"></param>
     /// <param name="enumerator">Позволяет запустить другой IEnumerator</param>
     /// <returns></returns>
-    public ICoroutineInfo ContiniousCoroutineExecution(ICoroutineInfo coroutineInfo, IEnumerator enumerator)
+    public void ContiniousCoroutineExecution(ref ICoroutineInfo coroutineInfo, IEnumerator enumerator)
     {
         if (coroutineInfo is null) throw new ArgumentNullException(nameof(coroutineInfo));
         if (enumerator is null) throw new ArgumentNullException(nameof(enumerator));
@@ -30,16 +42,15 @@ public class CoroutineExecutor : SingletonMonoBehaviour<CoroutineExecutor>
         CoroutineWithData coroutineWithData = (CoroutineWithData)coroutineInfo;
         coroutineWithData.SetEnumerator(enumerator);
 
-        return ContiniousCoroutineExecution(coroutineInfo);
+        ContiniousCoroutineExecution(ref coroutineInfo);
     }
 
 
     /// <summary>
     /// Запускает корутину в том случае, если она НЕ выполняется в данный момент.
     /// </summary>
-    /// <param name="coroutineInfo"></param>
     /// <returns></returns>
-    public ICoroutineInfo ContiniousCoroutineExecution(ICoroutineInfo coroutineInfo)
+    public void ContiniousCoroutineExecution(ref ICoroutineInfo coroutineInfo)
     {
         if (coroutineInfo is null) throw new ArgumentNullException(nameof(coroutineInfo));
 
@@ -50,45 +61,36 @@ public class CoroutineExecutor : SingletonMonoBehaviour<CoroutineExecutor>
             StartNewCoroutine(coroutineWithData);
         }
         else coroutineWithData.OnCoroutineAlredyStarted?.Invoke();
-
-
-        return coroutineWithData;
     }
 
 
     /// <summary>
     /// Перед запуском корутины останавливает её, если она выполнялась на данный момент.
     /// </summary>
-    /// <param name="coroutineInfo"></param>
     /// <param name="enumerator">Позволяет запустить другой IEnumerator</param>
     /// <returns></returns>
-    public ICoroutineInfo ReStartCoroutineExecution(ICoroutineInfo coroutineInfo, IEnumerator enumerator)
+    public void ReStartCoroutineExecution(ref ICoroutineInfo coroutineInfo, IEnumerator enumerator)
     {
         if (enumerator is null) throw new ArgumentNullException(nameof(enumerator));
 
         CoroutineWithData coroutineWithData = (CoroutineWithData)coroutineInfo;
         coroutineWithData.SetEnumerator(enumerator);
 
-        return ReStartCoroutineExecution(coroutineInfo);
+        ReStartCoroutineExecution(ref coroutineInfo);
     }
 
 
     /// <summary>
     /// Перед запуском корутины останавливает её, если она выполнялась на данный момент.
     /// </summary>
-    /// <param name="coroutineInfo"></param>
     /// <returns></returns>
-    public ICoroutineInfo ReStartCoroutineExecution(ICoroutineInfo coroutineInfo)
+    public void ReStartCoroutineExecution(ref ICoroutineInfo coroutineInfo)
     {
         if (coroutineInfo is null) throw new ArgumentNullException(nameof(coroutineInfo));
 
-        CoroutineWithData coroutineWithData = (CoroutineWithData)coroutineInfo;
+        if (coroutineInfo.IsExecuting) BreakCoroutine(ref coroutineInfo);
 
-        if (coroutineWithData.IsExecuting) BreakCoroutine(coroutineWithData);
-
-        StartNewCoroutine(coroutineWithData);
-
-        return coroutineWithData;
+        StartNewCoroutine((CoroutineWithData)coroutineInfo);
     }
 
 
@@ -96,7 +98,7 @@ public class CoroutineExecutor : SingletonMonoBehaviour<CoroutineExecutor>
     /// Останавливает корутину.
     /// </summary>
     /// <param name="coroutineInfo"></param>
-    public void BreakCoroutine(ICoroutineInfo coroutineInfo)
+    public void BreakCoroutine(ref ICoroutineInfo coroutineInfo)
     {
         if (coroutineInfo is null) throw new ArgumentNullException(nameof(coroutineInfo));
 
@@ -104,7 +106,7 @@ public class CoroutineExecutor : SingletonMonoBehaviour<CoroutineExecutor>
 
         if (coroutineWithData.IsExecuting)
         {
-            StopCoroutine(coroutineWithData.Coroutine);
+            monoBehaviour.StopCoroutine(coroutineWithData.Coroutine);
 
             coroutineWithData.SetNullToCoroutine();
         }
@@ -116,7 +118,7 @@ public class CoroutineExecutor : SingletonMonoBehaviour<CoroutineExecutor>
 
     private void StartNewCoroutine(CoroutineWithData coroutineWithData)
     {
-        coroutineWithData.SetNewCoroutine(StartCoroutine(WrapperEnumerator(coroutineWithData)));
+        coroutineWithData.SetNewCoroutine(monoBehaviour.StartCoroutine(WrapperEnumerator(coroutineWithData)));
     }
 
 

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Animator))]
-public class Shutter : SingletonMonoBehaviour<Shutter>
+public class Shutter : SingletonSuperMonoBehaviour<Shutter>
 {
     private Animator animator;
 

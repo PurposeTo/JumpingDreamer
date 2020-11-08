@@ -3,7 +3,7 @@ using GooglePlayGames.BasicApi.SavedGame;
 using UnityEngine; // Не удалять, т.к. используется для платформозависимой компиляции
 
 
-public class PlayerDataModelController : SingletonMonoBehaviour<PlayerDataModelController>
+public class PlayerDataModelController : SingletonSuperMonoBehaviour<PlayerDataModelController>
 {
     private PlayerDataModel playerDataLocalModel;
 

@@ -5,7 +5,7 @@ using System.Collections;
 
 [Obsolete]
 [RequireComponent(typeof(AdShow))]
-public class AdMobScript : SingletonMonoBehaviour<AdMobScript>
+public class AdMobScript : SingletonSuperMonoBehaviour<AdMobScript>
 {
     private const string ADS_ID = "ca-app-pub-8365272256827287~9135876659";
     private const string rewardedVideoAd_ID = "ca-app-pub-8365272256827287/5171106131";

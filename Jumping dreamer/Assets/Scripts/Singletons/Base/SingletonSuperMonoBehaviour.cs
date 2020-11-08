@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary> 
 /// To access the heir by a static field "Instance".
 /// </summary>
-public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : SingletonMonoBehaviour<T>
+public abstract class SingletonSuperMonoBehaviour<T> : SuperMonoBehaviour where T : SingletonSuperMonoBehaviour<T>
 {
     [SerializeField] private bool dontDestroyOnLoad = false;
 
@@ -32,11 +32,11 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : Single
     private static Action<T> OnInstanceInitialize;
 
 
-    private void Awake()
+    protected override void AwakeSuper()
     {
         if (Instance == null)
         {
-            Debug.Log($"Initialize singletonMonoBehaviour {this}");
+            Debug.Log($"Initialize SingletonSuperMonoBehaviour {this}");
             Instance = this as T;
             if (dontDestroyOnLoad)
             {

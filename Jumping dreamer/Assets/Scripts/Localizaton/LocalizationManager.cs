@@ -7,7 +7,7 @@ using System;
 using Debug = UnityEngine.Debug;
 
 
-public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
+public class LocalizationManager : SingletonSuperMonoBehaviour<LocalizationManager>
 {
     public event Action OnLocalizationChange;
 
@@ -18,49 +18,39 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
     private bool isReady = false;
     public const string missingTextString = "Localized Text not found";
 
-    private CoroutineExecutor CoroutineExecutor => CoroutineExecutor.Instance;
     private ICoroutineInfo loadLocalizedTextInfo;
 
 
     protected override void AwakeSingleton()
     {
-        PlayerSettingsStorage.InitializedInstance += PlayerSettingsStorage_InitializedInstance;
+        PlayerSettingsStorage.InitializedInstance += (Instance) =>
+        {
+            SetLanguageSettings(Instance.PlayerSettings);
+            loadLocalizedTextInfo = CreateCoroutineInfo(LoadLocalizedTextEnumerator());
+            LoadLocalizedText();
+        };
     }
 
 
-    private void PlayerSettingsStorage_InitializedInstance(PlayerSettingsStorage Instance)
+    private void SetLanguageSettings(PlayerSettingsModel playerSettings)
     {
-        SetLanguageSettings();
-        CoroutineExecutor.InitializedInstance += CoroutineExecutor_InitializedInstance;
-    }
-
-
-    private void CoroutineExecutor_InitializedInstance(CoroutineExecutor Instance)
-    {
-        loadLocalizedTextInfo = CoroutineExecutor.CreateCoroutineInfo(LoadLocalizedTextEnumerator());
-        LoadLocalizedText();
-    }
-
-
-    private void SetLanguageSettings()
-    {
-        if (!Array.Exists(langArray, item => item == PlayerSettingsStorage.Instance.PlayerSettings.Language))
+        if (!Array.Exists(langArray, item => item == playerSettings.Language))
         {
             switch (Application.systemLanguage)
             {
                 case SystemLanguage.Russian:
-                    PlayerSettingsStorage.Instance.PlayerSettings.Language = "ru_Ru";
+                    playerSettings.Language = "ru_Ru";
                     break;
                 case SystemLanguage.English:
-                    PlayerSettingsStorage.Instance.PlayerSettings.Language = "en_Us";
+                    playerSettings.Language = "en_Us";
                     break;
                 default:
-                    PlayerSettingsStorage.Instance.PlayerSettings.Language = "en_Us";
+                    playerSettings.Language = "en_Us";
                     break;
             }
         }
 
-        Debug.Log($"LanguageSettings is now {PlayerSettingsStorage.Instance.PlayerSettings.Language}!");
+        Debug.Log($"LanguageSettings is now {playerSettings.Language}!");
         SetRightLangIndex();
     }
 
@@ -95,7 +85,7 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
 
     public void LoadLocalizedText()
     {
-        CoroutineExecutor.ContiniousCoroutineExecution(loadLocalizedTextInfo);
+        ContiniousCoroutineExecution(ref loadLocalizedTextInfo);
     }
 
 

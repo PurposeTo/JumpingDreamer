@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class CurrentGameSessionData : SingletonMonoBehaviour<CurrentGameSessionData>
+public class CurrentGameSessionData : SingletonSuperMonoBehaviour<CurrentGameSessionData>
 {
     public bool IsRecordNew { get; private set; } = false;
 

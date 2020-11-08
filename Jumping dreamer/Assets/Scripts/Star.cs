@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(Animator))]
-public class Star : MonoBehaviour
+public class Star : SuperMonoBehaviour
 {
     private protected Animator animator;
 
@@ -12,11 +12,10 @@ public class Star : MonoBehaviour
     private readonly float minLifeTime = 10f;
     private readonly float maxLifeTime = 30f;
 
-    private CoroutineExecutor CoroutineExecutor => CoroutineExecutor.Instance;
     private ICoroutineInfo lifeCoroutineInfo;
 
 
-    private void Awake()
+    protected override void AwakeSuper()
     {
         animator = GetComponent<Animator>();
     }
@@ -26,11 +25,8 @@ public class Star : MonoBehaviour
     {
         StarGenerator.InitializedInstance += (Instance) => Instance.NumberOfActiveStars++;
 
-        CoroutineExecutor.InitializedInstance += (Instance) =>
-        {
-            lifeCoroutineInfo = CoroutineExecutor.CreateCoroutineInfo(LifeEnumerator());
-            lifeCoroutineInfo = CoroutineExecutor.ContiniousCoroutineExecution(lifeCoroutineInfo);
-        };
+        lifeCoroutineInfo = CreateCoroutineInfo(LifeEnumerator());
+        ContiniousCoroutineExecution(ref lifeCoroutineInfo);
 
         lifeTime = Random.Range(minLifeTime, maxLifeTime);
     }
@@ -40,10 +36,7 @@ public class Star : MonoBehaviour
     {
         StarGenerator.InitializedInstance += (Instance) => Instance.NumberOfActiveStars--;
 
-        CoroutineExecutor.InitializedInstance += (Instance) =>
-        {
-            CoroutineExecutor.BreakCoroutine(lifeCoroutineInfo);
-        };
+        BreakCoroutine(ref lifeCoroutineInfo);
     }
 
 

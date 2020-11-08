@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class GameMenu : SingletonMonoBehaviour<GameMenu>
+public class GameMenu : SingletonSuperMonoBehaviour<GameMenu>
 {
     public GameOverScreen GameOverScreen;
     public PlayerUI PlayerUI;

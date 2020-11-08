@@ -1,12 +1,12 @@
 ﻿using System;
 using UnityEngine;
 
-public abstract class WaitForDone : CustomYieldInstruction
+public abstract class WaitForDoneBase : CustomYieldInstruction
 {
     private readonly Func<bool> predicate;
     private float timeout;
 
-    public WaitForDone(float timeout, Func<bool> predicate)
+    public WaitForDoneBase(float timeout, Func<bool> predicate)
     {
         this.predicate = predicate;
         this.timeout = timeout;

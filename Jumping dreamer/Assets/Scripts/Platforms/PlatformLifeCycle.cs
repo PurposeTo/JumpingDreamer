@@ -2,12 +2,11 @@
 using System.Collections;
 using UnityEngine;
 
-public class PlatformLifeCycle : MonoBehaviour, IPooledObject
+public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
 {
     private protected AnimatorBlinkingController animatorBlinkingController;
     private readonly float blinkingAnimationSeconds = 1.25f;
 
-    private CoroutineExecutor CoroutineExecutor => CoroutineExecutor.Instance;
     private ICoroutineInfo lifeCycleRoutineInfo;
     private Predicate<float> IsAlive;
 
@@ -17,13 +16,9 @@ public class PlatformLifeCycle : MonoBehaviour, IPooledObject
     private float checkingParameter = 0f; // Проверяться будет либо от времени, либо от высоты... Задать значение. 
 
 
-    private void Awake()
+    protected override void AwakeSuper()
     {
-        CoroutineExecutor.InitializedInstance += (Instance) =>
-        {
-            lifeCycleRoutineInfo = CoroutineExecutor.CreateCoroutineInfo(LifeCycleEnumerator());
-        };
-
+        lifeCycleRoutineInfo = CreateCoroutineInfo(LifeCycleEnumerator());
         animatorBlinkingController = GetComponent<AnimatorBlinkingController>();
         SetAnimationConfings();
         animatorBlinkingController.OnDisableBlinking += DisableObject;
@@ -37,10 +32,7 @@ public class PlatformLifeCycle : MonoBehaviour, IPooledObject
 
         animatorBlinkingController.EnableAlphaColor();
 
-        CoroutineExecutor.InitializedInstance += (Instance) =>
-        {
-            lifeCycleRoutineInfo = CoroutineExecutor.ContiniousCoroutineExecution(lifeCycleRoutineInfo);
-        };
+        ContiniousCoroutineExecution(ref lifeCycleRoutineInfo);
     }
 
 

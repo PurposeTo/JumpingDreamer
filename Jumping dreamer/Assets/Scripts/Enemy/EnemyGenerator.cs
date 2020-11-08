@@ -1,18 +1,18 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class EnemyGenerator : MonoBehaviour
+public class EnemyGenerator : SuperMonoBehaviour
 {
     [SerializeField] private GameObject pursuer = null;
-    private readonly float delay = 20f;
+    private readonly float delay = 30f;
 
-    private CoroutineExecutor CoroutineExecutor => CoroutineExecutor.Instance;
     private ICoroutineInfo lifeCycleInfo;
+
 
     private void Start()
     {
-        lifeCycleInfo = CoroutineExecutor.CreateCoroutineInfo(LifeCycleEnumerator());
-        CoroutineExecutor.ContiniousCoroutineExecution(lifeCycleInfo);
+        lifeCycleInfo = CreateCoroutineInfo(LifeCycleEnumerator());
+        ContiniousCoroutineExecution(ref lifeCycleInfo);
     }
 
 

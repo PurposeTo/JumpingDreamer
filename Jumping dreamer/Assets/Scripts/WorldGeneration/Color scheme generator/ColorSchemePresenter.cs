@@ -1,17 +1,15 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(ColorSchemeGenerator))]
-public class ColorSchemePresenter : MonoBehaviour
+public class ColorSchemePresenter : SuperMonoBehaviour
 {
     [SerializeField] private Image backgroundImageToCamera = null;
     [SerializeField] private ColorSchemeData colorSchemeData = null;
     private ColorSchemeGenerator colorSchemeGenerator;
 
-    private void Awake()
+    protected override void AwakeSuper()
     {
-        colorSchemeGenerator = gameObject.GetComponent<ColorSchemeGenerator>();
-        colorSchemeGenerator.Constructor(colorSchemeData, backgroundImageToCamera);
+        colorSchemeGenerator = new ColorSchemeGenerator(this, colorSchemeData, backgroundImageToCamera);
         SetDefaultColorScheme();
     }
 

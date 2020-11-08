@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using UnityEngine;
 
-public class PlayerSettingsStorage : SingletonMonoBehaviour<PlayerSettingsStorage>
+public class PlayerSettingsStorage : SingletonSuperMonoBehaviour<PlayerSettingsStorage>
 {
     public PlayerSettingsModel PlayerSettings { get; private set; }
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class StarGenerator : SingletonMonoBehaviour<StarGenerator>
+public class StarGenerator : SingletonSuperMonoBehaviour<StarGenerator>
 {
     public GameObject Star;
     private float centreRadius;

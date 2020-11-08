@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
 
-public class MainMenu : SingletonMonoBehaviour<MainMenu>
+public class MainMenu : SingletonSuperMonoBehaviour<MainMenu>
 {
     public SettingsMenu SettingsMenu;
 

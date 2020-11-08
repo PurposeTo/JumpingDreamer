@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class PopUpWindowGenerator : SingletonMonoBehaviour<PopUpWindowGenerator>
+public class PopUpWindowGenerator : SingletonSuperMonoBehaviour<PopUpWindowGenerator>
 {
     [SerializeField] private GameObject dialogWindow = null;
     [SerializeField] private GameObject choosingWindow = null;

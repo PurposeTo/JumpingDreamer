@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class GameManager : SingletonMonoBehaviour<GameManager>
+public class GameManager : SingletonSuperMonoBehaviour<GameManager>
 {
     public event Action OnGameOver;
 

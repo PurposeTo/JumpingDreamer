@@ -2,28 +2,27 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ColorSchemeGenerator : MonoBehaviour
+public class ColorSchemeGenerator
 {
+    private readonly SuperMonoBehaviour superMonoBehaviour;
+    private readonly ColorSchemeData colorSchemeData;
+    private readonly Image backgroundImageToCamera;
+
+    public ColorSchemeGenerator(SuperMonoBehaviour superMonoBehaviour, ColorSchemeData colorSchemeData, Image backgroundImageToCamera)
+    {
+        this.superMonoBehaviour = superMonoBehaviour ?? throw new System.ArgumentNullException(nameof(superMonoBehaviour));
+        this.colorSchemeData = colorSchemeData ?? throw new System.ArgumentNullException(nameof(colorSchemeData));
+        this.backgroundImageToCamera = backgroundImageToCamera ?? throw new System.ArgumentNullException(nameof(backgroundImageToCamera));
+
+        changeColorSchemeInfo = superMonoBehaviour.CreateCoroutineInfo();
+    }
+
+
     private readonly float timeToChangeScheme = 1f;
-    private ColorSchemeData colorSchemeData;
-    private Image backgroundImageToCamera;
 
     private Color currentSetColorScheme;
 
-    private CoroutineExecutor CoroutineExecutor => CoroutineExecutor.Instance;
     private ICoroutineInfo changeColorSchemeInfo;
-
-
-    public void Constructor(ColorSchemeData colorSchemeData, Image backgroundImageToCamera)
-    {
-        if (colorSchemeData == null) throw new System.ArgumentNullException("colorSchemeData");
-        if (backgroundImageToCamera == null) throw new System.ArgumentNullException("backgroundImageToCamera");
-
-        this.colorSchemeData = colorSchemeData;
-        this.backgroundImageToCamera = backgroundImageToCamera;
-
-        CoroutineExecutor.InitializedInstance += (Instance) => changeColorSchemeInfo = CoroutineExecutor.CreateCoroutineInfo();
-    }
 
 
     public void SetDefaultColorScheme()
@@ -42,7 +41,7 @@ public class ColorSchemeGenerator : MonoBehaviour
     {
         currentSetColorScheme = color;
 
-        CoroutineExecutor.ReStartCoroutineExecution(changeColorSchemeInfo, ChangeColorSchemeEnumerator(color));
+        superMonoBehaviour.ReStartCoroutineExecution(ref changeColorSchemeInfo, ChangeColorSchemeEnumerator(color));
     }
 
 

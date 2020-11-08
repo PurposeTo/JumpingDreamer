@@ -15,17 +15,13 @@ public class AnimatorBlinkingController : AnimatorControllerWrapper
 
     public event Action OnDisableBlinking;
 
-    private CoroutineExecutor CoroutineExecutor => CoroutineExecutor.Instance;
     private ICoroutineInfo stopBlinkingInfo;
 
 
-    private protected override void Awake()
+    protected override void AwakeSuper()
     {
-        base.Awake();
-        CoroutineExecutor.InitializedInstance += (Instance) =>
-        {
-            stopBlinkingInfo = CoroutineExecutor.CreateCoroutineInfo(StopBlinkingEnumerator());
-        };
+        base.AwakeSuper();
+        stopBlinkingInfo = CreateCoroutineInfo(StopBlinkingEnumerator());
     }
 
 
@@ -53,7 +49,7 @@ public class AnimatorBlinkingController : AnimatorControllerWrapper
 
     public void StopBlinking()
     {
-        CoroutineExecutor.ContiniousCoroutineExecution(stopBlinkingInfo);
+        ContiniousCoroutineExecution(ref stopBlinkingInfo);
     }
 
 

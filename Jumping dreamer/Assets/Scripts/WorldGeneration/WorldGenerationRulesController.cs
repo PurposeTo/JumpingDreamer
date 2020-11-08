@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class WorldGenerationRulesController : SingletonMonoBehaviour<WorldGenerationRulesController>
+public class WorldGenerationRulesController : SingletonSuperMonoBehaviour<WorldGenerationRulesController>
 {
     public PlatformGeneratorPresenter PlatformGeneratorPresenter { get; private set; }
     public ColorSchemePresenter ColorSchemePresenter { get; private set; }
