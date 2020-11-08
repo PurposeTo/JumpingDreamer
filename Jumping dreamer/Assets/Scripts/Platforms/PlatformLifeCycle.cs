@@ -19,8 +19,10 @@ public class PlatformLifeCycle : MonoBehaviour, IPooledObject
 
     private void Awake()
     {
-        CoroutineExecutor.SetCommandToQueue(
-            () => lifeCycleRoutineInfo = CoroutineExecutor.CreateCoroutineInfo(LifeCycleEnumerator()));
+        CoroutineExecutor.InitializedInstance += (Instance) =>
+        {
+            lifeCycleRoutineInfo = CoroutineExecutor.CreateCoroutineInfo(LifeCycleEnumerator());
+        };
 
         animatorBlinkingController = GetComponent<AnimatorBlinkingController>();
         SetAnimationConfings();
@@ -35,8 +37,10 @@ public class PlatformLifeCycle : MonoBehaviour, IPooledObject
 
         animatorBlinkingController.EnableAlphaColor();
 
-        CoroutineExecutor.SetCommandToQueue(
-            () => lifeCycleRoutineInfo = CoroutineExecutor.ContiniousCoroutineExecution(lifeCycleRoutineInfo));
+        CoroutineExecutor.InitializedInstance += (Instance) =>
+        {
+            lifeCycleRoutineInfo = CoroutineExecutor.ContiniousCoroutineExecution(lifeCycleRoutineInfo);
+        };
     }
 
 

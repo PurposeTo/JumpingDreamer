@@ -32,19 +32,20 @@ public class GoogleAdMobController : SingletonMonoBehaviour<GoogleAdMobControlle
 
     protected override void AwakeSingleton()
     {
-        CoroutineExecutor.SetCommandToQueue(
-            () =>
-            waitForRewardedAdAnsweringInfo = CoroutineExecutor.CreateCoroutineInfo(WaitForRewardedAdAnsweringEnumerator()),
-            () =>
-            tryToReLoadAdInfo = CoroutineExecutor.CreateCoroutineInfo(TryToReLoadAdEnumerator()),
-            () =>
-            checkInternetConnectionAndShowAdInfo = CoroutineExecutor.CreateCoroutineInfo(CheckInternetConnectionAndShowAd())
-        );
+        CoroutineExecutor.InitializedInstance += CoroutineExecutor_InitializedInstance;
 
         commandQueueHandler = gameObject.GetComponent<CommandQueueMainThreadExecutor>();
         rewardedAdLoader = new RewardedAdLoader(commandQueueHandler);
         InitializeMainRewardAdActions();
         CreateRewardedAd();
+    }
+
+
+    private void CoroutineExecutor_InitializedInstance(CoroutineExecutor Instance)
+    {
+        waitForRewardedAdAnsweringInfo = CoroutineExecutor.CreateCoroutineInfo(WaitForRewardedAdAnsweringEnumerator());
+        tryToReLoadAdInfo = CoroutineExecutor.CreateCoroutineInfo(TryToReLoadAdEnumerator());
+        checkInternetConnectionAndShowAdInfo = CoroutineExecutor.CreateCoroutineInfo(CheckInternetConnectionAndShowAd());
     }
 
 

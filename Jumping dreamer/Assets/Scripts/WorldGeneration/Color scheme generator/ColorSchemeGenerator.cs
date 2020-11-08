@@ -22,8 +22,7 @@ public class ColorSchemeGenerator : MonoBehaviour
         this.colorSchemeData = colorSchemeData;
         this.backgroundImageToCamera = backgroundImageToCamera;
 
-        CoroutineExecutor.SetCommandToQueue(() =>
-       changeColorSchemeInfo = CoroutineExecutor.CreateCoroutineInfo());
+        CoroutineExecutor.InitializedInstance += (Instance) => changeColorSchemeInfo = CoroutineExecutor.CreateCoroutineInfo();
     }
 
 

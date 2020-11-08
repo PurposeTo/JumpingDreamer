@@ -22,8 +22,10 @@ public class AnimatorBlinkingController : AnimatorControllerWrapper
     private protected override void Awake()
     {
         base.Awake();
-        CoroutineExecutor.SetCommandToQueue(() =>
-       stopBlinkingInfo = CoroutineExecutor.CreateCoroutineInfo(StopBlinkingEnumerator()));
+        CoroutineExecutor.InitializedInstance += (Instance) =>
+        {
+            stopBlinkingInfo = CoroutineExecutor.CreateCoroutineInfo(StopBlinkingEnumerator());
+        };
     }
 
 

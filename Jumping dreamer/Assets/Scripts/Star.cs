@@ -12,7 +12,8 @@ public class Star : MonoBehaviour
     private readonly float minLifeTime = 10f;
     private readonly float maxLifeTime = 30f;
 
-    private Coroutine lifeCoroutine = null;
+    private CoroutineExecutor CoroutineExecutor => CoroutineExecutor.Instance;
+    private ICoroutineInfo lifeCoroutineInfo;
 
 
     private void Awake()
@@ -23,28 +24,26 @@ public class Star : MonoBehaviour
 
     private void OnEnable()
     {
-        void IncrementNumberOfActiveStars() => StarGenerator.Instance.NumberOfActiveStars++;
-        StarGenerator.SetCommandToQueue(IncrementNumberOfActiveStars);
+        StarGenerator.InitializedInstance += (Instance) => Instance.NumberOfActiveStars++;
+
+        CoroutineExecutor.InitializedInstance += (Instance) =>
+        {
+            lifeCoroutineInfo = CoroutineExecutor.CreateCoroutineInfo(LifeEnumerator());
+            lifeCoroutineInfo = CoroutineExecutor.ContiniousCoroutineExecution(lifeCoroutineInfo);
+        };
 
         lifeTime = Random.Range(minLifeTime, maxLifeTime);
-
-        if (lifeCoroutine == null)
-        {
-            lifeCoroutine = StartCoroutine(LifeEnumerator());
-        }
     }
 
 
     private void OnDisable()
     {
-        void DecrementNumberOfActiveStars() => StarGenerator.Instance.NumberOfActiveStars--;
-        StarGenerator.SetCommandToQueue(DecrementNumberOfActiveStars);
+        StarGenerator.InitializedInstance += (Instance) => Instance.NumberOfActiveStars--;
 
-        if (lifeCoroutine != null)
+        CoroutineExecutor.InitializedInstance += (Instance) =>
         {
-            StopCoroutine(lifeCoroutine);
-            lifeCoroutine = null;
-        }
+            CoroutineExecutor.BreakCoroutine(lifeCoroutineInfo);
+        };
     }
 
 
@@ -52,8 +51,6 @@ public class Star : MonoBehaviour
     {
         yield return new WaitForSeconds(lifeTime);
         animator.SetBool("isBlinding", true);
-
-        lifeCoroutine = null;
     }
 
 

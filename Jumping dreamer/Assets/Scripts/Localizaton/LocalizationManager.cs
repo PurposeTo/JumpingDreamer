@@ -14,21 +14,31 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
     private int langIndex = 1;
     private string[] langArray = { "ru_Ru", "en_US" };
 
-    private Dictionary<string, string> localizedText = new Dictionary<string, string>();
+    private readonly Dictionary<string, string> localizedText = new Dictionary<string, string>();
     private bool isReady = false;
     public const string missingTextString = "Localized Text not found";
 
     private CoroutineExecutor CoroutineExecutor => CoroutineExecutor.Instance;
     private ICoroutineInfo loadLocalizedTextInfo;
 
+
     protected override void AwakeSingleton()
     {
-        PlayerSettingsStorage.SetCommandToQueue(SetLanguageSettings, 
-            () =>
-            CoroutineExecutor.SetCommandToQueue(
-                () =>
-                loadLocalizedTextInfo = CoroutineExecutor.CreateCoroutineInfo(LoadLocalizedTextEnumerator()),
-                LoadLocalizedText));
+        PlayerSettingsStorage.InitializedInstance += PlayerSettingsStorage_InitializedInstance;
+    }
+
+
+    private void PlayerSettingsStorage_InitializedInstance(PlayerSettingsStorage Instance)
+    {
+        SetLanguageSettings();
+        CoroutineExecutor.InitializedInstance += CoroutineExecutor_InitializedInstance;
+    }
+
+
+    private void CoroutineExecutor_InitializedInstance(CoroutineExecutor Instance)
+    {
+        loadLocalizedTextInfo = CoroutineExecutor.CreateCoroutineInfo(LoadLocalizedTextEnumerator());
+        LoadLocalizedText();
     }
 
 

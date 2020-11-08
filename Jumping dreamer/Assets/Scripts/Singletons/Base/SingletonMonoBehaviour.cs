@@ -10,7 +10,26 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : Single
 
     public static T Instance { get; private set; }
 
-    private static readonly CommandQueue commandQueue = new CommandQueue();
+
+    /// <summary>
+    /// Данное событие выполнится тогда, когда Instance будет инициализирован.
+    /// Команды выполняются сразу в Awake() после метода AwakeSingleton(), если синглтон не был инициализирован.
+    /// </summary>
+    public static event Action<T> InitializedInstance
+    {
+        add
+        {
+            OnInstanceInitialize += value;
+
+            if (Instance != null) Instance.ExecuteCommandsAndClear();
+        }
+        remove
+        {
+            OnInstanceInitialize -= value;
+        }
+    }
+
+    private static Action<T> OnInstanceInitialize;
 
 
     private void Awake()
@@ -25,10 +44,7 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : Single
             }
             AwakeSingleton();
 
-            commandQueue.TryToExecuteAllCommands((target, methodInfo) =>
-            {
-                Debug.Log($"{typeof(T).Name} execute command \"{methodInfo.Name}\" from \"{target}\"");
-            });
+            ExecuteCommandsAndClear();
         }
         else
         {
@@ -38,17 +54,10 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : Single
     protected virtual void AwakeSingleton() { }
 
 
-    /// <summary>
-    /// Данный метод гарантирует, что команда, переданная в параметры, будет выполнена синглтоном в независимости от того, был тот инициализирован на момент вызова данного метода или нет.
-    /// Команды выполняются сразу после метода AwakeSingleton(), если синглтон не был инициализирован.
-    /// </summary>
-    public static void SetCommandToQueue(params Action[] actions)
+    private void ExecuteCommandsAndClear()
     {
-        if (Instance == null)
-        {
-            commandQueue.SetCommandToQueue(actions);
-        }
-        else Array.ForEach(actions, action => action?.Invoke());
+        OnInstanceInitialize?.Invoke(Instance);
+        OnInstanceInitialize = null;
     }
 }
 
@@ -58,12 +67,4 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : Single
 {
 	protected override void AwakeSingleton() { }
 }
- */
-
-
-/*Пример использования SetCommandToQueue с кешированием команды для правильного отображения метода в логах
- * 
- * void stopGameTime() => GameManager.Instance.SetGameReady(false); // Кеширую для назначения имени команды
- * GameManager.SetCommandToQueue(stopGameTime)
- * 
  */

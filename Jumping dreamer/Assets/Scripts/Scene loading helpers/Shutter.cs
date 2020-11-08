@@ -24,8 +24,7 @@ public class Shutter : SingletonMonoBehaviour<Shutter>
         SceneManager.sceneLoaded += OnSceneLoaded;
 
         // Остановить время при старте игры и ждать выполнения метода OpenShutter()
-        void stopGameTime() => GameManager.Instance.SetGameReady(false); // Кеширую для назначения имени команды
-        GameManager.SetCommandToQueue(stopGameTime);
+        GameManager.InitializedInstance += (Instance) => Instance.SetGameReady(false);
     }
 
 
