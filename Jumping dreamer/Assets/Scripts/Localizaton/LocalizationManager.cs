@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using System;
+using Debug = UnityEngine.Debug;
 
 
 public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
@@ -17,10 +18,17 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
     private bool isReady = false;
     public const string missingTextString = "Localized Text not found";
 
+    private CoroutineExecutor CoroutineExecutor => CoroutineExecutor.Instance;
+    private ICoroutineInfo loadLocalizedTextInfo;
 
     protected override void AwakeSingleton()
     {
-        PlayerSettingsStorage.SetCommandToQueue(SetLanguageSettings, LoadLocalizedText);
+        PlayerSettingsStorage.SetCommandToQueue(SetLanguageSettings, 
+            () =>
+            CoroutineExecutor.SetCommandToQueue(
+                () =>
+                loadLocalizedTextInfo = CoroutineExecutor.CreateCoroutineInfo(LoadLocalizedTextEnumerator()),
+                LoadLocalizedText));
     }
 
 
@@ -77,7 +85,7 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
 
     public void LoadLocalizedText()
     {
-        StartCoroutine(LoadLocalizedTextEnumerator());
+        CoroutineExecutor.ContiniousCoroutineExecution(loadLocalizedTextInfo);
     }
 
 
@@ -90,8 +98,8 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
         }
         else
         {
-            if (localizedText.Count != 0) UnityEngine.Debug.LogError($"Localization text does not contains key {key}");
-            else UnityEngine.Debug.LogWarning($"Localization text does not contains key because localizedText dictionary does not initialize!");
+            if (localizedText.Count != 0) Debug.LogError($"Localization text does not contains key {key}");
+            else Debug.LogWarning($"Localization text does not contains key because localizedText dictionary does not initialize!");
         }
 
         return result;
@@ -116,8 +124,7 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
             // Не делать return! reader может каким то чудным образом найти файл!
         }
 
-        var reader = new UnityWebRequest(filePath);
-        reader.downloadHandler = new DownloadHandlerBuffer();
+        UnityWebRequest reader = new UnityWebRequest(filePath) { downloadHandler = new DownloadHandlerBuffer() };
 
         yield return reader.SendWebRequest();
 
@@ -137,7 +144,7 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
         Array.ForEach(loadedData.items, localizedItem =>
         {
             localizedText[localizedItem.key] = localizedItem.value;
-            Debug.Log("KEYS:" + localizedItem.key);
+            //Debug.Log("KEYS:" + localizedItem.key);
         });
 
         Debug.Log("Set language: " + Instance.GetLocalizedValue("Language"));

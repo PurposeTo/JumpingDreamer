@@ -18,10 +18,10 @@ public class PlatformConfigsData
     {
         AsTimePasses,
         NoLifeTime,
-        VerticalCauseOfDeathControl
+        VerticalCauseOfDestroy
     }
 
-    public enum VerticalCauseOfDeathControl
+    public enum PlatformVerticalCauseOfDestroy
     {
         TopBorder,
         BottomBorder
@@ -100,7 +100,7 @@ public class PlatformConfigsData
         bool isPlatformVerticalMotion = platformMovingTypes.Contains(PlatformMovingType.VerticalMotion);
         bool isPlatformCircularMotion = platformMovingTypes.Contains(PlatformMovingType.CircularMotion);
 
-        if (isPlatformVerticalMotion) platformCauseOfDestroys.Add(PlatformCauseOfDestroy.VerticalCauseOfDeathControl);
+        if (isPlatformVerticalMotion) platformCauseOfDestroys.Add(PlatformCauseOfDestroy.VerticalCauseOfDestroy);
         else if (!isPlatformVerticalMotion && isPlatformCircularMotion) platformCauseOfDestroys.Add(PlatformCauseOfDestroy.AsTimePasses);
 
         return GameLogic.GetRandomItem(platformCauseOfDestroys.ToArray());

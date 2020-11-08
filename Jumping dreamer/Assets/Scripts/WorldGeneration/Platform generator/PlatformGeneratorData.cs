@@ -9,7 +9,9 @@ public class PlatformGeneratorData : ScriptableObject
     public GameObject CircularMotionPlatform;
     public GameObject SpiralMotionPlatformPlatform;
 
-    public const float PlatformAvailableHighestArea = 80f;
+    public const float AvailableHighestArea = 80f;
+    public const float MinlifeTime = 10f;
+    public const float MaxlifeTime = 30f;
 
     public GameObject GetPlatform(PlatformConfigsData.PlatformMovingType[] platformMovingTypes)
     {
@@ -42,12 +44,12 @@ public class PlatformGeneratorData : ScriptableObject
         switch (platformCreatingPlace)
         {
             case PlatformConfigsData.PlatformCreatingPlace.InRandomArea:
-                return Random.Range(Centre.CentreRadius + 1f, PlatformAvailableHighestArea);
+                return Random.Range(Centre.CentreRadius + 1f, AvailableHighestArea);
             case PlatformConfigsData.PlatformCreatingPlace.InCentre:
                 return 1f; // Один, потому что мы умножем на возвращаемое значение вектор создания.
             case PlatformConfigsData.PlatformCreatingPlace.InHighestArea:
-                float halfWay = (PlatformAvailableHighestArea - Centre.CentreRadius) / 2f;
-                return Random.Range(halfWay, PlatformAvailableHighestArea);
+                float halfWay = (AvailableHighestArea - Centre.CentreRadius) / 2f;
+                return Random.Range(halfWay, AvailableHighestArea);
             default:
                 throw new System.Exception($"{platformCreatingPlace} is unknown PlatformCreatingPlace!");
         }

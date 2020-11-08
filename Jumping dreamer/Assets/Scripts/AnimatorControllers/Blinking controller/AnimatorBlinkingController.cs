@@ -15,7 +15,16 @@ public class AnimatorBlinkingController : AnimatorControllerWrapper
 
     public event Action OnDisableBlinking;
 
-    private Coroutine stopBlinkingCoroutine;
+    private CoroutineExecutor CoroutineExecutor => CoroutineExecutor.Instance;
+    private ICoroutineInfo stopBlinkingInfo;
+
+
+    private protected override void Awake()
+    {
+        base.Awake();
+        CoroutineExecutor.SetCommandToQueue(() =>
+       stopBlinkingInfo = CoroutineExecutor.CreateCoroutineInfo(StopBlinkingEnumerator()));
+    }
 
 
     public enum DurationType
@@ -36,14 +45,13 @@ public class AnimatorBlinkingController : AnimatorControllerWrapper
         if (unscaledTime) animator.updateMode = AnimatorUpdateMode.UnscaledTime;
         else animator.updateMode = AnimatorUpdateMode.Normal;
 
-
         animator.SetBool(AnimatorBlinkingData.isBlinking, true);
     }
 
 
     public void StopBlinking()
     {
-        if (stopBlinkingCoroutine == null) stopBlinkingCoroutine = StartCoroutine(StopBlinkingEnumerator());
+        CoroutineExecutor.ContiniousCoroutineExecution(stopBlinkingInfo);
     }
 
 
@@ -130,7 +138,5 @@ public class AnimatorBlinkingController : AnimatorControllerWrapper
 
         yield return new WaitWhile(() => stateInfo.IsName(AnimatorBlinkingData.enableAlphaColorState));
         animator.SetBool(AnimatorBlinkingData.isBlinking, false);
-
-        stopBlinkingCoroutine = null;
     }
 }

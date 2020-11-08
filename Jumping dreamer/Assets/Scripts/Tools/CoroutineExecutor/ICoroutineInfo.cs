@@ -8,7 +8,6 @@ public interface ICoroutineInfo
     bool IsExecuting { get; }
 
     Action OnCoroutineAlredyStarted { get; set; }
-    Action OnStopCoroutineBefore { get; set; }
-    Action OnStopCoroutineAfter { get; set; }
+    Action OnStopCoroutine { get; set; }
     Action OnCoroutineIsAlredyStopped { get; set; }
 }

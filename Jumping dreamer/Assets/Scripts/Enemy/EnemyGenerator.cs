@@ -1,20 +1,18 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyGenerator : MonoBehaviour
 {
     [SerializeField] private GameObject pursuer = null;
     private readonly float delay = 20f;
-    private Coroutine lifeCycleRoutine = null;
 
-    // Start is called before the first frame update
-    void Start()
+    private CoroutineExecutor CoroutineExecutor => CoroutineExecutor.Instance;
+    private ICoroutineInfo lifeCycleInfo;
+
+    private void Start()
     {
-        if (lifeCycleRoutine == null)
-        {
-            lifeCycleRoutine = StartCoroutine(LifeCycleEnumerator());
-        }
+        lifeCycleInfo = CoroutineExecutor.CreateCoroutineInfo(LifeCycleEnumerator());
+        CoroutineExecutor.ContiniousCoroutineExecution(lifeCycleInfo);
     }
 
 
@@ -27,7 +25,5 @@ public class EnemyGenerator : MonoBehaviour
             yield return wait;
             ObjectPooler.Instance.SpawnFromPool(pursuer, GameObjectsHolder.Instance.Centre.gameObject.transform.position, Quaternion.identity);
         }
-
-        //lifeCycleRoutine = null;
     }
 }

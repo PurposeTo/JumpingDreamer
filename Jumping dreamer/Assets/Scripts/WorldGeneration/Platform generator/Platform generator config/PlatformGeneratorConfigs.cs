@@ -115,7 +115,7 @@ public class PlatformConfigs
         PlatformMovingTypes = new PlatformConfigsData.PlatformMovingType[] { PlatformConfigsData.PlatformMovingType.VerticalMotion };
         PlatformMovingTypeConfigs = new IPlatformMotionConfig[] { VerticalMotionConfig.GetDefault() };
         PlatformCreatingPlace = PlatformConfigsData.PlatformCreatingPlace.InCentre;
-        PlatformCauseOfDestroy = PlatformConfigsData.PlatformCauseOfDestroy.VerticalCauseOfDeathControl;
+        PlatformCauseOfDestroy = PlatformConfigsData.PlatformCauseOfDestroy.VerticalCauseOfDestroy;
     }
 
 

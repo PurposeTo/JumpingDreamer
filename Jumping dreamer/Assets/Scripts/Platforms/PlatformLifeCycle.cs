@@ -7,29 +7,36 @@ public class PlatformLifeCycle : MonoBehaviour, IPooledObject
     private protected AnimatorBlinkingController animatorBlinkingController;
     private readonly float blinkingAnimationSeconds = 1.25f;
 
-    private float maxAvailableHight;
+    private CoroutineExecutor CoroutineExecutor => CoroutineExecutor.Instance;
+    private ICoroutineInfo lifeCycleRoutineInfo;
+    private Predicate<float> IsAlive;
 
-    private float lifeTimeToDestroy;
-    private readonly float minlifeTime = 10f;
-    private readonly float maxlifeTime = 30f;
-
-    private Coroutine lifeCycleRoutine;
-
-    private Func<bool> IsAlive;
+    private PlatformCauseOfDestroyCreator platformCauseOfDestroyCreator;
     private float lifeTime = 0f;
 
+    private float checkingParameter = 0f; // Проверяться будет либо от времени, либо от высоты... Задать значение. 
 
-    private protected virtual void Awake()
+
+    private void Awake()
     {
+        CoroutineExecutor.SetCommandToQueue(
+            () => lifeCycleRoutineInfo = CoroutineExecutor.CreateCoroutineInfo(LifeCycleEnumerator()));
+
         animatorBlinkingController = GetComponent<AnimatorBlinkingController>();
         SetAnimationConfings();
         animatorBlinkingController.OnDisableBlinking += DisableObject;
     }
 
 
-    private void OnDisable()
+    void IPooledObject.OnObjectSpawn()
     {
-        RepairValues();
+        lifeTime = 0f;
+        platformCauseOfDestroyCreator = new PlatformCauseOfDestroyCreator();
+
+        animatorBlinkingController.EnableAlphaColor();
+
+        CoroutineExecutor.SetCommandToQueue(
+            () => lifeCycleRoutineInfo = CoroutineExecutor.ContiniousCoroutineExecution(lifeCycleRoutineInfo));
     }
 
 
@@ -45,83 +52,46 @@ public class PlatformLifeCycle : MonoBehaviour, IPooledObject
     }
 
 
-    public void SetCauseOfDestroy()
+    private IEnumerator LifeCycleEnumerator()
     {
+        // Проблемы с инициализацией!
         PlatformConfigsData.PlatformCauseOfDestroy platformCauseOfDestroy = WorldGenerationRulesController.Instance.PlatformGeneratorPresenter.PlatformGeneratorConfigs.PlatformConfigs.PlatformCauseOfDestroy;
 
+        yield return SetCauseOfDestroy(platformCauseOfDestroy);
+
+        yield return new WaitWhile(() => IsAlive(checkingParameter));
+
+        animatorBlinkingController.StartBlinking(false);
+    }
+
+
+    private IEnumerator SetCauseOfDestroy(PlatformConfigsData.PlatformCauseOfDestroy platformCauseOfDestroy)
+    {
         switch (platformCauseOfDestroy)
         {
             case PlatformConfigsData.PlatformCauseOfDestroy.AsTimePasses:
-                lifeTimeToDestroy = UnityEngine.Random.Range(minlifeTime, maxlifeTime);
-                IsAlive = () => !(lifeTime >= lifeTimeToDestroy);
-                break;
             case PlatformConfigsData.PlatformCauseOfDestroy.NoLifeTime:
-                lifeTimeToDestroy = minlifeTime / 2.5f;
-                IsAlive = () => !(lifeTime >= lifeTimeToDestroy);
-                break;
-            case PlatformConfigsData.PlatformCauseOfDestroy.VerticalCauseOfDeathControl:
-                var varticalCauseOfDead = GetCauseOfDeath(gameObject.GetComponent<VerticalMotion>().Direction);
+                checkingParameter = lifeTime;
 
-                switch (varticalCauseOfDead)
+                IsAlive = platformCauseOfDestroyCreator.GetCauseOfDestroyByTime(platformCauseOfDestroy);
+
+                break;
+            case PlatformConfigsData.PlatformCauseOfDestroy.VerticalCauseOfDestroy:
+                // Проблемы с инициализацией!
+                checkingParameter = GameObjectsHolder.Instance.Centre.GetToCentreMagnitude(transform.position);
+
+                if (gameObject.TryGetComponent(out VerticalMotion verticalMotion))
                 {
-                    case PlatformConfigsData.VerticalCauseOfDeathControl.TopBorder:
-                        maxAvailableHight = UnityEngine.Random.Range(PlatformGeneratorData.PlatformAvailableHighestArea * (2f / 3f), PlatformGeneratorData.PlatformAvailableHighestArea);
-                        IsAlive = () =>
-                        !(GameObjectsHolder.Instance.Centre.GetToCentreMagnitude(transform.position) >= maxAvailableHight);
-                        break;
-                    case PlatformConfigsData.VerticalCauseOfDeathControl.BottomBorder:
-                        float minAvailableHight = Centre.CentreRadius * 2f;
-                        IsAlive = () =>
-                        !(GameObjectsHolder.Instance.Centre.GetToCentreMagnitude(transform.position) <= minAvailableHight);
-                        break;
-                    default:
-                        throw new System.Exception($"{varticalCauseOfDead} is unknown VerticalCauseOfDeathControl!");
+                    // Эту штуку тожно нужно ожидать
+                    yield return new WaitUntil(() => verticalMotion.IsInitialized);
+
+                    // Должно выполняться после VerticalMotion.SetMotionConfigs, тк как будет зависеть от него
+                    IsAlive = platformCauseOfDestroyCreator.GetCauseOfDestroyByHight(verticalMotion.GetVerticalCauseOfDestroy());
                 }
+
                 break;
             default:
                 break;
-        }
-    }
-
-
-    void IPooledObject.OnObjectSpawn()
-    {
-        animatorBlinkingController.EnableAlphaColor();
-        if (lifeCycleRoutine == null) StartCoroutine(LifeCycleEnumerator());
-    }
-
-
-    private void RepairValues()
-    {
-        lifeTime = 0f;
-        maxAvailableHight = PlatformGeneratorData.PlatformAvailableHighestArea;
-        IsAlive = null;
-    }
-
-
-    private IEnumerator LifeCycleEnumerator()
-    {
-        if (gameObject.TryGetComponent(out VerticalMotion verticalMotion)) yield return new WaitUntil(() => verticalMotion.Direction != 0);
-
-        // Должно выполняться после SetMotionConfigs, тк как может зависеть от него
-        SetCauseOfDestroy();
-        yield return new WaitWhile(() => IsAlive());
-        animatorBlinkingController.StartBlinking(false);
-
-        lifeCycleRoutine = null;
-    }
-
-
-    public PlatformConfigsData.VerticalCauseOfDeathControl GetCauseOfDeath(int direction)
-    {
-        switch (direction)
-        {
-            case 1:
-                return PlatformConfigsData.VerticalCauseOfDeathControl.TopBorder;
-            case -1:
-                return PlatformConfigsData.VerticalCauseOfDeathControl.BottomBorder;
-            default:
-                throw new System.Exception($"{direction} is unknown direction!");
         }
     }
 
@@ -136,6 +106,7 @@ public class PlatformLifeCycle : MonoBehaviour, IPooledObject
 
     private void DisableObject()
     {
+        Debug.Log($"Кря! {gameObject.transform.GetInstanceID()} Disable");
         gameObject.SetActive(false);
     }
 }

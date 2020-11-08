@@ -8,7 +8,7 @@ public class PlayerCompass : MonoBehaviour
     private readonly float offset = 4f;
 
     private float MinHighest => MaxHighest * 2f / 3f;
-    private float MaxHighest => PlatformGeneratorData.PlatformAvailableHighestArea;
+    private float MaxHighest => PlatformGeneratorData.AvailableHighestArea;
 
     private float alphaChanel;
 

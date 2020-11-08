@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using GoogleMobileAds.Api;
 
-
+[Obsolete]
 public class AdShow : MonoBehaviour
 {
     public bool IsAdAlreadyShowing => OnCloseAdWaitCoroutine != null;

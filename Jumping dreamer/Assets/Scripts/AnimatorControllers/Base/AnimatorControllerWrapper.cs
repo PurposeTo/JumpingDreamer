@@ -6,7 +6,7 @@ public abstract class AnimatorControllerWrapper : MonoBehaviour
     private protected virtual IAnimatorInitializerConfigs AnimatorInitializerConfigs { get; set; }
 
 
-    private void Awake()
+    private protected virtual void Awake()
     {
         animator = gameObject.GetComponent<Animator>();
         AnimatorInitializerConfigs.SetAnimator(animator);

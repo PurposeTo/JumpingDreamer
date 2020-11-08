@@ -10,7 +10,8 @@ public class ColorSchemeGenerator : MonoBehaviour
 
     private Color currentSetColorScheme;
 
-    public Coroutine ChangeColorSchemeRoutine;
+    private CoroutineExecutor CoroutineExecutor => CoroutineExecutor.Instance;
+    private ICoroutineInfo changeColorSchemeInfo;
 
 
     public void Constructor(ColorSchemeData colorSchemeData, Image backgroundImageToCamera)
@@ -20,6 +21,9 @@ public class ColorSchemeGenerator : MonoBehaviour
 
         this.colorSchemeData = colorSchemeData;
         this.backgroundImageToCamera = backgroundImageToCamera;
+
+        CoroutineExecutor.SetCommandToQueue(() =>
+       changeColorSchemeInfo = CoroutineExecutor.CreateCoroutineInfo());
     }
 
 
@@ -39,13 +43,7 @@ public class ColorSchemeGenerator : MonoBehaviour
     {
         currentSetColorScheme = color;
 
-        if (ChangeColorSchemeRoutine != null)
-        {
-            StopCoroutine(ChangeColorSchemeRoutine);
-            ChangeColorSchemeRoutine = null;
-        }
-
-        ChangeColorSchemeRoutine = StartCoroutine(ChangeColorSchemeEnumerator(color));
+        CoroutineExecutor.ReStartCoroutineExecution(changeColorSchemeInfo, ChangeColorSchemeEnumerator(color));
     }
 
 
@@ -68,7 +66,5 @@ public class ColorSchemeGenerator : MonoBehaviour
         }
 
         yield return new WaitUntil(isColorChanged);
-
-        ChangeColorSchemeRoutine = null;
     }
 }
