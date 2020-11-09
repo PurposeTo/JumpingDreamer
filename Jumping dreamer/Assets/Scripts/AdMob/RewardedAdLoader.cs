@@ -1,38 +1,87 @@
 ﻿using UnityEngine;
 using GoogleMobileAds.Api;
 using System;
+using System.Collections;
 
-public class RewardedAdLoader
+public class RewardedAdLoader : IRewardedAdLoader
 {
+    private readonly SuperMonoBehaviour superMonoBehaviour;
     private readonly CommandQueueMainThreadExecutor commandQueueHandler;
 
-    public RewardedAdLoader(CommandQueueMainThreadExecutor commandQueueHandler)
+    public RewardedAdLoader(SuperMonoBehaviour superMonoBehaviour, CommandQueueMainThreadExecutor commandQueueHandler)
     {
-        // UNT0007 C# Unity objects should not use null coalescing.
-        this.commandQueueHandler = commandQueueHandler != null ? commandQueueHandler : throw new ArgumentNullException(nameof(commandQueueHandler));
+        this.commandQueueHandler = commandQueueHandler ?? throw new ArgumentNullException(nameof(commandQueueHandler));
+        this.superMonoBehaviour = superMonoBehaviour ?? throw new ArgumentNullException(nameof(superMonoBehaviour));
+
+        tryToReLoadAdInfo = superMonoBehaviour.CreateCoroutineInfo(TryToReLoadAdEnumerator());
+        CreateNewRewardedAd();
     }
 
 
     private readonly string rewardedVideoAdForTest_ID = "ca-app-pub-3940256099942544/5224354917";
 
-    public RewardedAd RewardedAd { get; private set; }
+    private RewardedAd rewardedAd;
 
-    public event Action OnAdLoaded;
+    private ICoroutineInfo tryToReLoadAdInfo;
 
-
+    public event Action OnAdOpening;
+    public event Action OnAdFailedToShow;
+    public event Action OnUserEarnedReward;
+    public event Action OnAdClosed;
 
     public bool IsAdLoaded()
     {
-        if (RewardedAd != null) return RewardedAd.IsLoaded();
+        if (rewardedAd != null) return rewardedAd.IsLoaded();
         else return false;
     }
 
 
-    public void CreateRewardedAd()
+    public void CreateNewRewardedAd()
     {
-        if (RewardedAd != null) UnsubscribeLoadingEvents(RewardedAd);
+        if (rewardedAd != null) UnsubscribeRewardedAdEvents(rewardedAd);
 
-        RewardedAd = GetAndLoadRewardedAd();
+        rewardedAd = GetAndLoadRewardedAd();
+    }
+
+
+    public void Show()
+    {
+        Debug.Log($"rewardedAd.Show() call");
+        rewardedAd.Show();
+    }
+
+
+    private void SubscribeRewardedAdEvents(RewardedAd rewardedAd)
+    {
+        // Called when an ad request failed to load.
+        rewardedAd.OnAdFailedToLoad += HandleRewardedAdFailedToLoad;
+        // Called when an ad request has successfully loaded.
+        rewardedAd.OnAdLoaded += HandleRewardedAdLoaded;
+        // Called when an ad is shown.
+        rewardedAd.OnAdOpening += HandleRewardedAdOpening;
+        // Called when an ad request failed to show.
+        rewardedAd.OnAdFailedToShow += HandleRewardedAdFailedToShow;
+        // Called when the user should be rewarded for interacting with the ad.
+        rewardedAd.OnUserEarnedReward += HandleUserEarnedReward;
+        // Called when the ad is closed.
+        rewardedAd.OnAdClosed += HandleRewardedAdClosed;
+    }
+
+
+    private void UnsubscribeRewardedAdEvents(RewardedAd rewardedAd)
+    {
+        // Called when an ad request failed to load.
+        rewardedAd.OnAdFailedToLoad -= HandleRewardedAdFailedToLoad;
+        // Called when an ad request has successfully loaded.
+        rewardedAd.OnAdLoaded -= HandleRewardedAdLoaded;
+        // Called when an ad is shown.
+        rewardedAd.OnAdOpening -= HandleRewardedAdOpening;
+        // Called when an ad request failed to show.
+        rewardedAd.OnAdFailedToShow -= HandleRewardedAdFailedToShow;
+        // Called when the user should be rewarded for interacting with the ad.
+        rewardedAd.OnUserEarnedReward -= HandleUserEarnedReward;
+        // Called when the ad is closed.
+        rewardedAd.OnAdClosed -= HandleRewardedAdClosed;
     }
 
 
@@ -40,7 +89,7 @@ public class RewardedAdLoader
     {
         RewardedAd rewardedAd = new RewardedAd(rewardedVideoAdForTest_ID);
 
-        SubscribeLoadingEvents(rewardedAd); // Подписаться на эвенты загрузки необходимо до отправки запроса на загрузку рекламы
+        SubscribeRewardedAdEvents(rewardedAd); // Подписаться на эвенты загрузки необходимо до отправки запроса на загрузку рекламы
         LoadRewardedAd(rewardedAd);
 
         return rewardedAd;
@@ -68,17 +117,25 @@ public class RewardedAdLoader
     }
 
 
-    private void SubscribeLoadingEvents(RewardedAd rewardedAd)
-    {
-        // Called when an ad request has successfully loaded.
-        rewardedAd.OnAdLoaded += HandleRewardedAdLoaded;
-    }
+    private void TryToReLoadAd() => superMonoBehaviour.ContiniousCoroutineExecution(ref tryToReLoadAdInfo);
 
 
-    private void UnsubscribeLoadingEvents(RewardedAd rewardedAd)
+    private IEnumerator TryToReLoadAdEnumerator()
     {
-        // Called when an ad request has successfully loaded.
-        rewardedAd.OnAdLoaded -= HandleRewardedAdLoaded;
+        Debug.Log($"TryToReLoadAdEnumerator started. rewardedAd.IsLoaded() = {IsAdLoaded()}");
+
+        while (!IsAdLoaded())
+        {
+            Debug.Log($"TryToReLoadAdEnumerator before WaitForSecondsRealtime.");
+            yield return new WaitForSecondsRealtime(30f);
+
+            // Не учитывает реальный доступ к сети. Учитывает только подключение.
+            bool isInternetEnabled = Application.internetReachability != NetworkReachability.NotReachable;
+
+            Debug.Log($"Try to reload Ad: isInternetEnabled = {isInternetEnabled}.");
+
+            if (isInternetEnabled) CreateNewRewardedAd();
+        }
     }
 
 
@@ -87,7 +144,64 @@ public class RewardedAdLoader
     private void HandleRewardedAdLoaded(object sender, EventArgs args)
     {
         Debug.Log("HandleRewardedAdLoaded event received");
-        commandQueueHandler.SetCommandToQueue(() => OnAdLoaded?.Invoke());
     }
+
+
+    private void HandleRewardedAdFailedToLoad(object sender, AdErrorEventArgs args)
+    {
+        Debug.Log($"HandleRewardedAdFailedToLoad event received with message: {args.Message}. " +
+            $"And now rewardedAd.IsLoaded() is {IsAdLoaded()}");
+
+        commandQueueHandler.SetCommandToQueue(() => TryToReLoadAd());
+    }
+
+
+    private void HandleRewardedAdOpening(object sender, EventArgs args)
+    {
+        Debug.Log("HandleRewardedAdOpening event received");
+
+        commandQueueHandler.SetCommandToQueue(() => OnAdOpening?.Invoke());
+    }
+
+    private void HandleRewardedAdFailedToShow(object sender, AdErrorEventArgs args)
+    {
+        Debug.Log($"HandleRewardedAdFailedToShow event received with message: {args.Message}");
+
+        commandQueueHandler.SetCommandToQueue(() => OnAdFailedToShow?.Invoke());
+
+        commandQueueHandler.SetCommandToQueue(() => CreateNewRewardedAd());
+    }
+
+    private void HandleRewardedAdClosed(object sender, EventArgs args)
+    {
+        Debug.Log($"HandleRewardedAdClosed event received.");
+
+        commandQueueHandler.SetCommandToQueue(() => OnAdClosed?.Invoke());
+
+        commandQueueHandler.SetCommandToQueue(() => CreateNewRewardedAd());
+    }
+
+    private void HandleUserEarnedReward(object sender, Reward args)
+    {
+        string type = args.Type;
+        double amount = args.Amount;
+        Debug.Log($"HandleRewardedAdRewarded event received for {amount} {type}");
+
+        commandQueueHandler.SetCommandToQueue(() => OnUserEarnedReward?.Invoke());
+    }
+
     #endregion
+}
+
+
+public interface IRewardedAdLoader
+{
+    event Action OnAdOpening;
+    event Action OnAdFailedToShow;
+    event Action OnUserEarnedReward;
+    event Action OnAdClosed;
+
+    bool IsAdLoaded();
+
+    void Show();
 }
