@@ -1,5 +1,6 @@
 ﻿using System;
 
+[Obsolete]
 public class PooledObject : SuperMonoBehaviour, IPooledObject
 {
     // Метод для подписания ИЗВНЕ
