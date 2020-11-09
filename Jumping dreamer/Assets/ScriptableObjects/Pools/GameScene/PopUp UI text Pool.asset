@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c82dae466b403e41b8c9ee04e215d12, type: 3}
+  m_Name: PopUp UI text Pool
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 7973565382321959831, guid: 918b05e77fdfcfe4f93ef93e1356dd56, type: 3}
+  size: 10
+  shouldExpand: 1

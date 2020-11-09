@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5874052791602533363}
   - component: {fileID: 5874052791602533364}
   m_Layer: 0
-  m_Name: Compass
+  m_Name: Flash compass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -212,8 +212,10 @@
     <Compile Include="Assets\Scripts\Singletons\CurrentGameSessionData.cs" />
     <Compile Include="Assets\Scripts\Singletons\GameManager.cs" />
     <Compile Include="Assets\Scripts\Singletons\GameObjectsHolder.cs" />
-    <Compile Include="Assets\Scripts\Singletons\Object Pooler\IPooledObject.cs" />
-    <Compile Include="Assets\Scripts\Singletons\Object Pooler\ObjectPooler.cs" />
+    <Compile Include="Assets\Scripts\Singletons\Object Pooler Asset\Object Pooler\ObjectPooler.cs" />
+    <Compile Include="Assets\Scripts\Singletons\Object Pooler Asset\Object Pooler\PoolData.cs" />
+    <Compile Include="Assets\Scripts\Singletons\Object Pooler Asset\Pooled Object\IPooledObject.cs" />
+    <Compile Include="Assets\Scripts\Singletons\Object Pooler Asset\Pooled Object\PooledObject.cs" />
     <Compile Include="Assets\Scripts\Singletons\VFX\VFXManager.cs" />
     <Compile Include="Assets\Scripts\Star.cs" />
     <Compile Include="Assets\Scripts\Tools\InternetConnectionChecker.cs" />

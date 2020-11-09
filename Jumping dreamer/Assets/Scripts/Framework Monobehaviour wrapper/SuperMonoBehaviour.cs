@@ -44,6 +44,16 @@ public class SuperMonoBehaviour : MonoBehaviour
     private CoroutineExecutor coroutineExecutor;
 
 
+    /// <summary>
+    /// Необходимо использовать данный метод взамен Awake()
+    /// </summary>
+    protected virtual void AwakeWrapped() { }
+    /// <summary>
+    /// Необходимо использовать данный метод взамен Start()
+    /// </summary>
+    protected virtual void StartWrapped() { }
+
+
     private void Awake()
     {
         AwakeSuper();
@@ -72,16 +82,6 @@ public class SuperMonoBehaviour : MonoBehaviour
     }
 
 
-    /// <summary>
-    /// Необходимо использовать данный метод взамен Awake()
-    /// </summary>
-    protected virtual void AwakeWrapped() { }
-    /// <summary>
-    /// Необходимо использовать данный метод взамен Start()
-    /// </summary>
-    protected virtual void StartWrapped() { }
-
-
     private void InitializingCreatedObject()
     {
         coroutineExecutor = new CoroutineExecutor(this);
@@ -102,7 +102,7 @@ public class SuperMonoBehaviour : MonoBehaviour
     }
 
 
-    private void ExecuteCommandsAndClear(ref Action action)
+    protected void ExecuteCommandsAndClear(ref Action action)
     {
         action?.Invoke();
         action = null;
@@ -181,5 +181,15 @@ public class SuperMonoBehaviour : MonoBehaviour
         coroutineExecutor.BreakCoroutine(ref coroutineInfo);
     }
 
+    #endregion
+
+    //TODO: доделать, когда будет инициализатор вызовов
+    #region ObjectPooler
+
+    private GameObject SpawnFromPool(GameObject prefabKey, Vector3 position, Quaternion rotation, Transform parent = null)
+    {
+        //TODO: Что бы этот метод корректно работал, необходимо отдельным классом, который будет контролировать все вызовы, инициализировать ObjectPooler раньше всех...
+        return ObjectPooler.Instance.SpawnFromPool(prefabKey, position, rotation, parent);
+    }
     #endregion
 }

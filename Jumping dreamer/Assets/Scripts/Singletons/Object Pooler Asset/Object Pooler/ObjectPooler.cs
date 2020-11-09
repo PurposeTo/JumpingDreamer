@@ -4,60 +4,30 @@ using UnityEngine;
 
 public class ObjectPooler : SingletonSuperMonoBehaviour<ObjectPooler>
 {
-    [System.Serializable]
-    public class Pool
+    private class Pool
     {
-        public GameObject prefab;
-        public int size;
-        public bool shouldExpand = true;
-        public Transform PoolParent { get; set; }
-        public Queue<GameObject> ObjectPoolQueue { get; set; }
+        public PoolData PoolData { get; }
+        public Queue<GameObject> ObjectPoolQueue { get; }
+        public Transform PoolParent { get; }
+
+        public Pool(PoolData poolData, Queue<GameObject> objectPoolQueue, Transform poolParent)
+        {
+            PoolData = poolData ?? throw new ArgumentNullException(nameof(poolData));
+            ObjectPoolQueue = objectPoolQueue ?? throw new ArgumentNullException(nameof(objectPoolQueue));
+            PoolParent = poolParent ?? throw new ArgumentNullException(nameof(poolParent));
+        }
+
+        public bool ShouldExpand => PoolData.shouldExpand;
     }
 
-    public List<Pool> pools;
+    public List<PoolData> PoolDatas; // Сетим через инспектор
 
-    public Dictionary<GameObject, Pool> poolDictionary = new Dictionary<GameObject, Pool>();
+    private Dictionary<GameObject, Pool> poolDictionary = new Dictionary<GameObject, Pool>();
 
 
     protected override void AwakeSingleton()
     {
-        for (int i = 0; i < pools.Count; i++)
-        {
-            GameObject parent = new GameObject(pools[i].prefab.name + " Pool");
-
-            pools[i].PoolParent = parent.transform;
-            pools[i].PoolParent.SetParent(gameObject.transform);
-
-
-            Queue<GameObject> objectPool = new Queue<GameObject>();
-
-            for (int j = 0; j < pools[i].size; j++)
-            {
-                GameObject newGameObject = CreateNewObjectToPool(pools[i].prefab, pools[i].PoolParent);
-                objectPool.Enqueue(newGameObject);
-            }
-
-            pools[i].ObjectPoolQueue = objectPool;
-
-            poolDictionary.Add(pools[i].prefab, pools[i]);
-            Debug.Log($"Pool with {pools[i].prefab.name}s has been created!");
-        }
-    }
-
-
-    public void DisableAllObjects()
-    {
-        for (int i = 0; i < pools.Count; i++)
-        {
-            for (int j = 0; j < pools[i].ObjectPoolQueue.Count; j++)
-            {
-                GameObject objectToDisable = pools[i].ObjectPoolQueue.Dequeue();
-
-                objectToDisable.SetActive(false);
-                // Todo: Так же необходимо выключать все корутины на обьекте
-                pools[i].ObjectPoolQueue.Enqueue(objectToDisable);
-            }
-        }
+        CreateAndInitializePools();
     }
 
 
@@ -72,7 +42,6 @@ public class ObjectPooler : SingletonSuperMonoBehaviour<ObjectPooler>
         Pool pool = poolDictionary[prefabKey];
 
 
-
         // Посмотреть на первый обьект в очереди.
         GameObject objectToSpawn = pool.ObjectPoolQueue.Peek();
 
@@ -80,12 +49,11 @@ public class ObjectPooler : SingletonSuperMonoBehaviour<ObjectPooler>
         {
             // Если включен
             // И можно расширить пул
-            if (pool.shouldExpand)
+            if (pool.ShouldExpand)
             {
                 //То сделать новый объект
                 objectToSpawn = CreateNewObjectToPool(prefabKey, pool.PoolParent);
             }
-
         }
         else
         {
@@ -109,6 +77,19 @@ public class ObjectPooler : SingletonSuperMonoBehaviour<ObjectPooler>
     }
 
 
+    private void CreateAndInitializePools()
+    {
+        foreach (var poolData in PoolDatas)
+        {
+            GameObject parent = CreateNewPoolParent(poolData.prefab.name);
+            Queue<GameObject> objectPool = CreateNewPoolQueue(poolData, parent.transform);
+
+            poolDictionary.Add(poolData.prefab, new Pool(poolData, objectPool, parent.transform));
+            Debug.Log($"Pool with {poolData.prefab.name}s has been created!");
+        }
+    }
+
+
     private GameObject CreateNewObjectToPool(GameObject newGameObject, Transform poolParent)
     {
         newGameObject = Instantiate(newGameObject);
@@ -116,5 +97,26 @@ public class ObjectPooler : SingletonSuperMonoBehaviour<ObjectPooler>
         newGameObject.SetActive(false);
 
         return newGameObject;
+    }
+
+
+    private GameObject CreateNewPoolParent(string PrefabName)
+    {
+        GameObject parent = new GameObject(PrefabName + " Pool");
+        parent.transform.SetParent(gameObject.transform);
+        return parent;
+    }
+
+
+    private Queue<GameObject> CreateNewPoolQueue(PoolData poolData, Transform parentTransform)
+    {
+        Queue<GameObject> objectPool = new Queue<GameObject>();
+        for (int i = 0; i < poolData.size; i++)
+        {
+            GameObject NewObjectToPool = CreateNewObjectToPool(poolData.prefab, parentTransform);
+            objectPool.Enqueue(NewObjectToPool);
+        }
+
+        return objectPool;
     }
 }

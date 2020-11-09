@@ -2113,17 +2113,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2024437486911971761, guid: 97d55d6e73264b64b97f822e8db8f566,
         type: 3}
-      propertyPath: pools.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2024437486911971761, guid: 97d55d6e73264b64b97f822e8db8f566,
-        type: 3}
-      propertyPath: pools.Array.data[0].size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2024437486911971761, guid: 97d55d6e73264b64b97f822e8db8f566,
-        type: 3}
-      propertyPath: pools.Array.data[0].shouldExpand
+      propertyPath: PoolDatas.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2024437486911971762, guid: 97d55d6e73264b64b97f822e8db8f566,
