@@ -18,9 +18,9 @@ public class AnimatorBlinkingController : AnimatorControllerWrapper
     private ICoroutineInfo stopBlinkingInfo;
 
 
-    protected override void AwakeSuper()
+    protected override void AwakeWrapped()
     {
-        base.AwakeSuper();
+        base.AwakeWrapped();
         stopBlinkingInfo = CreateCoroutineInfo(StopBlinkingEnumerator());
     }
 

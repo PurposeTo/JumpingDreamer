@@ -6,7 +6,7 @@ public abstract class AnimatorControllerWrapper : SuperMonoBehaviour
     private protected virtual IAnimatorInitializerConfigs AnimatorInitializerConfigs { get; set; }
 
 
-    protected override void AwakeSuper()
+    protected override void AwakeWrapped()
     {
         animator = gameObject.GetComponent<Animator>();
         AnimatorInitializerConfigs.SetAnimator(animator);

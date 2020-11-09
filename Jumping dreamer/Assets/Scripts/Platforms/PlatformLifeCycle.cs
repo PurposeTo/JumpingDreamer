@@ -16,7 +16,7 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
     private float checkingParameter = 0f; // Проверяться будет либо от времени, либо от высоты... Задать значение. 
 
 
-    protected override void AwakeSuper()
+    protected override void AwakeWrapped()
     {
         lifeCycleRoutineInfo = CreateCoroutineInfo(LifeCycleEnumerator());
         animatorBlinkingController = GetComponent<AnimatorBlinkingController>();

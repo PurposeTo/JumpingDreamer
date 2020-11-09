@@ -15,7 +15,7 @@ public class Star : SuperMonoBehaviour
     private ICoroutineInfo lifeCoroutineInfo;
 
 
-    protected override void AwakeSuper()
+    protected override void AwakeWrapped()
     {
         animator = GetComponent<Animator>();
     }

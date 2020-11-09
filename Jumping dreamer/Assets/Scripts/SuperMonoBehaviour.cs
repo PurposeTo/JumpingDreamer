@@ -1,18 +1,85 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 /*
- * Если кидает NRE на coroutineExecutor, то скорее всего, к данному классу произошло обращение до выполнения метода Awake()
+ * Если кидает NRE на coroutineExecutor, то скорее всего, к данному классу произошло обращение до выполнения метода AwakeSuper()
  */
 public class SuperMonoBehaviour : MonoBehaviour
 {
+    public event Action AwakeInititialized
+    {
+        add
+        {
+            OnAwakeInititialize += value;
+
+            if (IsAwakeInitialized) ExecuteCommandsAndClear(ref OnAwakeInititialize);
+        }
+        remove
+        {
+            OnAwakeInititialize -= value;
+        }
+    }
+
+    public event Action StartInititialized
+    {
+        add
+        {
+            OnStartInititialize += value;
+
+            if (IsStartInitialized) ExecuteCommandsAndClear(ref OnStartInititialize);
+        }
+        remove
+        {
+            OnStartInititialize -= value;
+        }
+    }
+
+    private Action OnAwakeInititialize;
+    private bool IsAwakeInitialized = false;
+
+    private Action OnStartInititialize;
+    private bool IsStartInitialized = false;
+
     private CoroutineExecutor coroutineExecutor;
+
 
     private void Awake()
     {
-        InitializingCreatedObject();
         AwakeSuper();
     }
+
+
+    private void Start()
+    {
+        StartSuper();
+    }
+
+
+    // Необходимо отдельным классом, который будет контролировать все вызовы, собирать все AwakeSuper() только если был переопределен AwakeWrapped() и вызывать в Awake().
+    private void AwakeSuper()
+    {
+        InitializingCreatedObject();
+        AwakeWrapped();
+        EndAwakeExecution();
+    }
+
+    // Необходимо отдельным классом, который будет контролировать все вызовы, собирать все StartSuper() только если был переопределен StartWrapped() и вызывать в Start().
+    private void StartSuper()
+    {
+        StartWrapped();
+        EndStartExecution();
+    }
+
+
+    /// <summary>
+    /// Необходимо использовать данный метод взамен Awake()
+    /// </summary>
+    protected virtual void AwakeWrapped() { }
+    /// <summary>
+    /// Необходимо использовать данный метод взамен Start()
+    /// </summary>
+    protected virtual void StartWrapped() { }
 
 
     private void InitializingCreatedObject()
@@ -21,8 +88,27 @@ public class SuperMonoBehaviour : MonoBehaviour
     }
 
 
-    protected virtual void AwakeSuper() { }
+    private void EndAwakeExecution()
+    {
+        IsAwakeInitialized = true;
+        ExecuteCommandsAndClear(ref OnAwakeInititialize);
+    }
 
+
+    private void EndStartExecution()
+    {
+        IsStartInitialized = true;
+        ExecuteCommandsAndClear(ref OnStartInititialize);
+    }
+
+
+    private void ExecuteCommandsAndClear(ref Action action)
+    {
+        action?.Invoke();
+        action = null;
+    }
+
+    #region CoroutineExecutor
 
     /// <summary>
     /// Создаёт "Holder" объект для конкретной корутины
@@ -94,4 +180,6 @@ public class SuperMonoBehaviour : MonoBehaviour
     {
         coroutineExecutor.BreakCoroutine(ref coroutineInfo);
     }
+
+    #endregion
 }

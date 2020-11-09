@@ -129,8 +129,6 @@
     <Compile Include="Assets\GooglePlayGames\Platforms\PlayGamesClientFactory.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\TokenClient.cs" />
     <Compile Include="Assets\GooglePlayGames\PluginVersion.cs" />
-    <Compile Include="Assets\Scripts\AdMob\AdMobScript.cs" />
-    <Compile Include="Assets\Scripts\AdMob\AdShow.cs" />
     <Compile Include="Assets\Scripts\AdMob\GoogleAdMobController.cs" />
     <Compile Include="Assets\Scripts\AdMob\RewardedAdLoader.cs" />
     <Compile Include="Assets\Scripts\AnimatorControllers\Base\AnimatorControllerWrapper.cs" />
@@ -145,6 +143,11 @@
     <Compile Include="Assets\Scripts\Centre\KillingZone.cs" />
     <Compile Include="Assets\Scripts\CommandQueue\CommandQueueMainThreadExecutor.cs" />
     <Compile Include="Assets\Scripts\CommandQueue\Realization\CommandQueue.cs" />
+    <Compile Include="Assets\Scripts\Coroutines\CoroutineExecutor\CoroutineExecutor.cs" />
+    <Compile Include="Assets\Scripts\Coroutines\CoroutineExecutor\ICoroutineInfo.cs" />
+    <Compile Include="Assets\Scripts\Coroutines\WaitForDone\Base\WaitForDoneBase.cs" />
+    <Compile Include="Assets\Scripts\Coroutines\WaitForDone\WaitForDone.cs" />
+    <Compile Include="Assets\Scripts\Coroutines\WaitForDone\WaitForDoneRealtime.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyGenerator.cs" />
     <Compile Include="Assets\Scripts\Enemy\Pursuer.cs" />
     <Compile Include="Assets\Scripts\GPGS\GPGSAuthentication.cs" />
@@ -213,12 +216,7 @@
     <Compile Include="Assets\Scripts\Singletons\VFX\VFXManager.cs" />
     <Compile Include="Assets\Scripts\Star.cs" />
     <Compile Include="Assets\Scripts\SuperMonoBehaviour.cs" />
-    <Compile Include="Assets\Scripts\Tools\CoroutineExecutor\CoroutineExecutor.cs" />
-    <Compile Include="Assets\Scripts\Tools\CoroutineExecutor\ICoroutineInfo.cs" />
     <Compile Include="Assets\Scripts\Tools\InternetConnectionChecker.cs" />
-    <Compile Include="Assets\Scripts\Tools\WaitForDone\Base\WaitForDoneBase.cs" />
-    <Compile Include="Assets\Scripts\Tools\WaitForDone\WaitForDone.cs" />
-    <Compile Include="Assets\Scripts\Tools\WaitForDone\WaitForDoneRealtime.cs" />
     <Compile Include="Assets\Scripts\TrainingTutorial.cs" />
     <Compile Include="Assets\Scripts\UI\FPSCounter.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\AdRewardMessage.cs" />

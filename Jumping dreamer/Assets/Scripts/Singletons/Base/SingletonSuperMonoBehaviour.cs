@@ -32,7 +32,7 @@ public abstract class SingletonSuperMonoBehaviour<T> : SuperMonoBehaviour where 
     private static Action<T> OnInstanceInitialize;
 
 
-    protected override void AwakeSuper()
+    protected override void AwakeWrapped()
     {
         if (Instance == null)
         {

@@ -7,7 +7,7 @@ public class ColorSchemePresenter : SuperMonoBehaviour
     [SerializeField] private ColorSchemeData colorSchemeData = null;
     private ColorSchemeGenerator colorSchemeGenerator;
 
-    protected override void AwakeSuper()
+    protected override void AwakeWrapped()
     {
         colorSchemeGenerator = new ColorSchemeGenerator(this, colorSchemeData, backgroundImageToCamera);
         SetDefaultColorScheme();

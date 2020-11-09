@@ -158,7 +158,6 @@ public class GoogleAdMobController : SingletonSuperMonoBehaviour<GoogleAdMobCont
 
         yield return connectionChecker.PingGoogleEnumerator(isInternetAvaliable =>
         {
-
             if (isInternetAvaliable)
             {
                 ContiniousCoroutineExecution(ref waitForRewardedAdAnsweringInfo);
