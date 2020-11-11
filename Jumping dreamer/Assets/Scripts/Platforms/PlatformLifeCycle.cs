@@ -10,7 +10,7 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
     private ICoroutineInfo lifeCycleRoutineInfo;
     private Predicate<float> IsAlive;
 
-    private PlatformCauseOfDestroyCreator platformCauseOfDestroyCreator;
+    private PlatformCauseOfDestroyDeterminator platformCauseOfDestroyCreator;
     private float lifeTime = 0f;
 
     private float checkingParameter = 0f; // Проверяться будет либо от времени, либо от высоты... Задать значение. 
@@ -28,7 +28,7 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
     void IPooledObject.OnObjectSpawn()
     {
         lifeTime = 0f;
-        platformCauseOfDestroyCreator = new PlatformCauseOfDestroyCreator();
+        platformCauseOfDestroyCreator = new PlatformCauseOfDestroyDeterminator();
 
         animatorBlinkingController.EnableAlphaColor();
 
@@ -51,7 +51,7 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
     private IEnumerator LifeCycleEnumerator()
     {
         // Проблемы с инициализацией!
-        PlatformConfigsData.PlatformCauseOfDestroy platformCauseOfDestroy = WorldGenerationRulesController.Instance.PlatformGeneratorPresenter.PlatformGeneratorConfigs.PlatformConfigs.PlatformCauseOfDestroy;
+        IPlatformCauseOfDestroyConfigs platformCauseOfDestroy = WorldGenerationRulesController.Instance.PlatformGeneratorPresenter.PlatformGeneratorConfigs.PlatformConfigs.CauseOfDestroy;
 
         yield return SetCauseOfDestroy(platformCauseOfDestroy);
 
@@ -61,18 +61,19 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
     }
 
 
-    private IEnumerator SetCauseOfDestroy(PlatformConfigsData.PlatformCauseOfDestroy platformCauseOfDestroy)
+    private IEnumerator SetCauseOfDestroy(IPlatformCauseOfDestroyConfigs platformCauseOfDestroy)
     {
-        switch (platformCauseOfDestroy)
+        switch (platformCauseOfDestroy.ParentTier.Value)
         {
-            case PlatformConfigsData.PlatformCauseOfDestroy.AsTimePasses:
-            case PlatformConfigsData.PlatformCauseOfDestroy.NoLifeTime:
+            case PlatformCausesOfDestroy.ByTime:
                 checkingParameter = lifeTime;
 
-                IsAlive = platformCauseOfDestroyCreator.GetCauseOfDestroyByTime(platformCauseOfDestroy);
+                var causeOfDestroyByTime = ((PlatformCauseOfDestroyConfigsByTime)platformCauseOfDestroy).Value;
+
+                IsAlive = platformCauseOfDestroyCreator.GetCauseOfDestroyByTime(causeOfDestroyByTime);
 
                 break;
-            case PlatformConfigsData.PlatformCauseOfDestroy.VerticalCauseOfDestroy:
+            case PlatformCausesOfDestroy.ByHight:
                 // Проблемы с инициализацией!
                 checkingParameter = GameObjectsHolder.Instance.Centre.GetToCentreMagnitude(transform.position);
 
@@ -82,7 +83,7 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
                     yield return new WaitUntil(() => verticalMotion.IsInitialized);
 
                     // Должно выполняться после VerticalMotion.SetMotionConfigs, тк как будет зависеть от него
-                    IsAlive = platformCauseOfDestroyCreator.GetCauseOfDestroyByHight(verticalMotion.GetVerticalCauseOfDestroy());
+                    IsAlive = platformCauseOfDestroyCreator.GetCauseOfDestroyByHight(verticalMotion.GetPlatformCauseOfDestroyByHight().Value);
                 }
 
                 break;

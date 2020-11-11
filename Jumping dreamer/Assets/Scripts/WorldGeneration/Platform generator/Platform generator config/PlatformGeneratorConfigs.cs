@@ -2,29 +2,14 @@
 using System;
 using System.Text;
 
-public enum CreatingValuesInClassMode
-{
-    Random,
-    Default
-}
+
 public class PlatformGeneratorConfigs
 {
     private readonly float generationDelay = 0.425f;
 
-    private PlatformGeneratorConfigs(CreatingValuesInClassMode creating)
+    private PlatformGeneratorConfigs(PlatformConfigs platformConfigs)
     {
-        switch (creating)
-        {
-            case CreatingValuesInClassMode.Random:
-                PlatformConfigs = PlatformConfigs.GetRandom();
-                break;
-            case CreatingValuesInClassMode.Default:
-                PlatformConfigs = PlatformConfigs.GetDefault();
-                break;
-            default:
-                break;
-        }
-
+        PlatformConfigs = platformConfigs;
         Debug.Log($"Create new platformConfigs: {PlatformConfigs}");
         // todo: должно определяться в зависимости от настроек генерации
         TimePeriodForGeneratingPlatforms = GetTimePeriodForGeneratingPlatforms(PlatformConfigs);
@@ -33,13 +18,13 @@ public class PlatformGeneratorConfigs
 
     public static PlatformGeneratorConfigs GetDefault()
     {
-        return new PlatformGeneratorConfigs(CreatingValuesInClassMode.Default);
+        return new PlatformGeneratorConfigs(PlatformConfigs.GetDefault());
     }
 
 
     public static PlatformGeneratorConfigs GetRandom()
     {
-        return new PlatformGeneratorConfigs(CreatingValuesInClassMode.Random);
+        return new PlatformGeneratorConfigs(PlatformConfigs.GetRandom());
     }
 
 
@@ -55,8 +40,12 @@ public class PlatformGeneratorConfigs
     {
         float delay = generationDelay;
 
-        if (platformConfigs.PlatformCreatingPlace == PlatformConfigsData.PlatformCreatingPlace.InRandomArea) delay -= 0.115f;
-        if (platformConfigs.PlatformCauseOfDestroy == PlatformConfigsData.PlatformCauseOfDestroy.NoLifeTime) delay -= 0.195f;
+        if (platformConfigs.CreatingPlace == PlatformConfigsData.PlatformCreatingPlace.InRandomArea) delay -= 0.115f;
+
+        if (platformConfigs.CauseOfDestroy is PlatformCauseOfDestroyConfigsByTime platformCauseOfDestroyConfigsByTime && platformCauseOfDestroyConfigsByTime.Value == PlatformCauseOfDestroyConfigsByTime.PlatformCausesOfDestroyByTime.NoLifeTime)
+        {
+            delay -= 0.195f;
+        }
 
         return delay;
     }
@@ -65,37 +54,39 @@ public class PlatformGeneratorConfigs
 
 public class PlatformConfigs
 {
-    private PlatformConfigs(CreatingValuesInClassMode creating)
-    {
-        switch (creating)
-        {
-            case CreatingValuesInClassMode.Random:
-                InitializePropertiesByRandomValues();
-                break;
-            case CreatingValuesInClassMode.Default:
-                InitializePropertiesByDefaultValues();
-                break;
-            default:
-                Debug.LogError($"{creating} is unknown Creating!");
-                InitializePropertiesByDefaultValues();
-                break;
-        }
-    }
+    public PlatformMovingTypes[] MovingTypes { get; private set; }
+    public IPlatformMotionConfig[] MovingTypeConfigs { get; private set; }
+    public PlatformConfigsData.PlatformCreatingPlace CreatingPlace { get; private set; }
+    public IPlatformCauseOfDestroyConfigs CauseOfDestroy { get; private set; }
 
-    public PlatformConfigsData.PlatformMovingType[] PlatformMovingTypes { get; private set; }
-    public IPlatformMotionConfig[] PlatformMovingTypeConfigs { get; private set; }
-    public PlatformConfigsData.PlatformCreatingPlace PlatformCreatingPlace { get; private set; }
-    public PlatformConfigsData.PlatformCauseOfDestroy PlatformCauseOfDestroy { get; private set; }
-
+    private PlatformConfigs() { }
 
     public static PlatformConfigs GetDefault()
     {
-        return new PlatformConfigs(CreatingValuesInClassMode.Default);
+        return new PlatformConfigs()
+        {
+            MovingTypes = new PlatformMovingTypes[] { global::PlatformMovingTypes.VerticalMotion},
+            MovingTypeConfigs = new IPlatformMotionConfig[] { new VerticalMotionConfig(VerticalMotionConfig.VerticalMotionConfigs.Up) },
+            CreatingPlace = PlatformConfigsData.PlatformCreatingPlace.InCentre,
+            CauseOfDestroy = new PlatformCauseOfDestroyConfigsByHight(PlatformCauseOfDestroyConfigsByHight.PlatformCausesOfDestroyByHight.TopBorder)
+        };
     }
 
     public static PlatformConfigs GetRandom()
     {
-        return new PlatformConfigs(CreatingValuesInClassMode.Random);
+        PlatformConfigsData platformConfigsData = new PlatformConfigsData();
+        var platformMovingTypes = GameLogic.GetAllEnumValues<PlatformMovingTypes>();
+        var platformMovingTypeConfigs = platformConfigsData.GetRandomPlatformMovingConfigs(platformMovingTypes);
+        var platformCreatingPlace = platformConfigsData.GetRandomPlatformCreatingPlace(platformMovingTypes, platformMovingTypeConfigs);
+        var platformCauseOfDestroy = platformConfigsData.GetRandomPlatformCauseOfDestroy(platformMovingTypes, platformCreatingPlace);
+
+        return new PlatformConfigs()
+        {
+            MovingTypes = platformMovingTypes,
+            MovingTypeConfigs = platformMovingTypeConfigs,
+            CreatingPlace = platformCreatingPlace,
+            CauseOfDestroy = platformCauseOfDestroy
+        };
     }
 
     public override string ToString()
@@ -103,28 +94,9 @@ public class PlatformConfigs
         StringBuilder platformMovingTypesConfigsBuilder = new StringBuilder();
         StringBuilder platformMovingTypesBuilder = new StringBuilder();
 
-        Array.ForEach(PlatformMovingTypes, item => platformMovingTypesBuilder.Append(item + " "));
-        Array.ForEach(PlatformMovingTypeConfigs, item => platformMovingTypesConfigsBuilder.Append(item.GetDebugEnumValue() + " "));
+        Array.ForEach(MovingTypes, item => platformMovingTypesBuilder.Append(item + " "));
+        Array.ForEach(MovingTypeConfigs, item => platformMovingTypesConfigsBuilder.Append(item.ToString() + " "));
 
-        return string.Format($"PlatformMovingTypes: {platformMovingTypesBuilder}, PlatformMovingTypeConfigs: {platformMovingTypesConfigsBuilder}, PlatformCreatingPlace: {PlatformCreatingPlace}, PlatformCauseOfDestroy: {PlatformCauseOfDestroy}");
-    }
-
-
-    private void InitializePropertiesByDefaultValues()
-    {
-        PlatformMovingTypes = new PlatformConfigsData.PlatformMovingType[] { PlatformConfigsData.PlatformMovingType.VerticalMotion };
-        PlatformMovingTypeConfigs = new IPlatformMotionConfig[] { VerticalMotionConfig.GetDefault() };
-        PlatformCreatingPlace = PlatformConfigsData.PlatformCreatingPlace.InCentre;
-        PlatformCauseOfDestroy = PlatformConfigsData.PlatformCauseOfDestroy.VerticalCauseOfDestroy;
-    }
-
-
-    private void InitializePropertiesByRandomValues()
-    {
-        PlatformConfigsData platformConfigsData = new PlatformConfigsData();
-        PlatformMovingTypes = platformConfigsData.GetRandomPlatformMovingTypes();
-        PlatformMovingTypeConfigs = platformConfigsData.GetPlatformMovingConfigs(PlatformMovingTypes);
-        PlatformCreatingPlace = platformConfigsData.GetPlatformCreatingPlace(PlatformMovingTypes, PlatformMovingTypeConfigs);
-        PlatformCauseOfDestroy = platformConfigsData.GetPlatformCauseOfDestroy(PlatformMovingTypes, PlatformCreatingPlace);
+        return string.Format($"PlatformMovingTypes: {platformMovingTypesBuilder}, PlatformMovingTypeConfigs: {platformMovingTypesConfigsBuilder}, PlatformCreatingPlace: {CreatingPlace}, PlatformCauseOfDestroy: {CauseOfDestroy}");
     }
 }

@@ -13,12 +13,12 @@ public class PlatformGeneratorData : ScriptableObject
     public const float MinlifeTime = 10f;
     public const float MaxlifeTime = 30f;
 
-    public GameObject GetPlatform(PlatformConfigsData.PlatformMovingType[] platformMovingTypes)
+    public GameObject GetPlatform(PlatformMovingTypes[] platformMovingTypes)
     {
         if (platformMovingTypes == null || platformMovingTypes.Length == 0) throw new System.Exception("PlatformMovingTypes can't being empty!");
 
-        bool isPlatformVerticalMotion = platformMovingTypes.Contains(PlatformConfigsData.PlatformMovingType.VerticalMotion);
-        bool isPlatformCircularMotion = platformMovingTypes.Contains(PlatformConfigsData.PlatformMovingType.CircularMotion);
+        bool isPlatformVerticalMotion = platformMovingTypes.Contains(PlatformMovingTypes.VerticalMotion);
+        bool isPlatformCircularMotion = platformMovingTypes.Contains(PlatformMovingTypes.CircularMotion);
 
         if (isPlatformVerticalMotion && isPlatformCircularMotion)
         {

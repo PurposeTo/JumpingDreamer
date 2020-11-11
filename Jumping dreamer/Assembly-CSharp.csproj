@@ -155,6 +155,12 @@
     <Compile Include="Assets\Scripts\GPGS\GPGSLeaderboard.cs" />
     <Compile Include="Assets\Scripts\GPGS\GPGSPlayerDataCloudStorage.cs" />
     <Compile Include="Assets\Scripts\GameLogic.cs" />
+    <Compile Include="Assets\Scripts\GrouperTier\Enum grouping\GrouperEnumDefaultTier.cs" />
+    <Compile Include="Assets\Scripts\GrouperTier\Enum grouping\GrouperEnumHigherTier.cs" />
+    <Compile Include="Assets\Scripts\GrouperTier\Enum grouping\GrouperEnumLowerTier.cs" />
+    <Compile Include="Assets\Scripts\GrouperTier\GrouperDefaultTier.cs" />
+    <Compile Include="Assets\Scripts\GrouperTier\GrouperHigherTier.cs" />
+    <Compile Include="Assets\Scripts\GrouperTier\GrouperLowerTier.cs" />
     <Compile Include="Assets\Scripts\Localizaton\LanguageButton.cs" />
     <Compile Include="Assets\Scripts\Localizaton\LocalizationData.cs" />
     <Compile Include="Assets\Scripts\Localizaton\LocalizationManager.cs" />
@@ -165,12 +171,11 @@
     <Compile Include="Assets\Scripts\OrthoRotationToTheCentre.cs" />
     <Compile Include="Assets\Scripts\Platforms\Brokable.cs" />
     <Compile Include="Assets\Scripts\Platforms\Move\Base\IMovable.cs" />
-    <Compile Include="Assets\Scripts\Platforms\Move\Base\MovingConfigs\PlatformMotionConfig.cs" />
     <Compile Include="Assets\Scripts\Platforms\Move\Base\PlatformMovable.cs" />
     <Compile Include="Assets\Scripts\Platforms\Move\Base\PlatformMovement.cs" />
     <Compile Include="Assets\Scripts\Platforms\Move\CircularMotion.cs" />
     <Compile Include="Assets\Scripts\Platforms\Move\VerticalMotion.cs" />
-    <Compile Include="Assets\Scripts\Platforms\PlatformCauseOfDestroyCreator.cs" />
+    <Compile Include="Assets\Scripts\Platforms\PlatformCauseOfDestroyDeterminator.cs" />
     <Compile Include="Assets\Scripts\Platforms\PlatformLifeCycle.cs" />
     <Compile Include="Assets\Scripts\Platforms\Toss\Base\Toss.cs" />
     <Compile Include="Assets\Scripts\Platforms\Toss\TossDown.cs" />
@@ -251,7 +256,9 @@
     <Compile Include="Assets\Scripts\WorldGeneration\Flash generator\FlashGenerator.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\Flash generator\FlashGeneratorData.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\Flash generator\FlashGeneratorPresenter.cs" />
-    <Compile Include="Assets\Scripts\WorldGeneration\Platform generator\Platform generator config\PlatformConfigsData.cs" />
+    <Compile Include="Assets\Scripts\WorldGeneration\Platform generator\Platform configs\Cause of destroy configs\PlatformCauseOfDestroyConfigs.cs" />
+    <Compile Include="Assets\Scripts\WorldGeneration\Platform generator\Platform configs\Moving configs\PlatformMotionConfig.cs" />
+    <Compile Include="Assets\Scripts\WorldGeneration\Platform generator\Platform configs\PlatformConfigsData.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\Platform generator\Platform generator config\PlatformGeneratorConfigs.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\Platform generator\PlatformGenerator.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\Platform generator\PlatformGeneratorData.cs" />

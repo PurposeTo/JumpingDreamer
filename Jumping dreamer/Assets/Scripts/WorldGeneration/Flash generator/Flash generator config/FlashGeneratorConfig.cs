@@ -9,21 +9,12 @@ public class FlashGeneratorConfig
     private readonly float maxTimePeriodForGeneratingFlashs = 16f;
 
 
-    private FlashGeneratorConfig(CreatingValuesInClassMode creating)
+    private FlashGeneratorConfig(bool isGenerating)
     {
-        switch (creating)
-        {
-            case CreatingValuesInClassMode.Random:
-                InitializePropertiesByRandomValues();
-                break;
-            case CreatingValuesInClassMode.Default:
-                InitializePropertiesByDefaultValues();
-                break;
-            default:
-                Debug.LogError($"{creating} is unknown Creating!");
-                InitializePropertiesByDefaultValues();
-                break;
-        }
+        IsGenerating = isGenerating;
+
+        if (isGenerating) TimePeriodForGeneratingFlashs = Random.Range(minTimePeriodForGeneratingFlashs, maxTimePeriodForGeneratingFlashs);
+        else TimePeriodForGeneratingFlashs = 0f;
 
         Debug.Log($"Create new FlashGeneratorConfig: {this}");
     }
@@ -31,27 +22,13 @@ public class FlashGeneratorConfig
 
     public static FlashGeneratorConfig GetDefault()
     {
-        return new FlashGeneratorConfig(CreatingValuesInClassMode.Default);
+        return new FlashGeneratorConfig(isGenerating: false);
     }
 
 
     public static FlashGeneratorConfig GetRandom()
     {
-        return new FlashGeneratorConfig(CreatingValuesInClassMode.Random);
-    }
-
-
-    private void InitializePropertiesByDefaultValues()
-    {
-        IsGenerating = false;
-        TimePeriodForGeneratingFlashs = 0f;
-    }
-
-
-    private void InitializePropertiesByRandomValues()
-    {
-        IsGenerating = true;
-        TimePeriodForGeneratingFlashs = Random.Range(minTimePeriodForGeneratingFlashs, maxTimePeriodForGeneratingFlashs);
+        return new FlashGeneratorConfig(isGenerating: true);
     }
 
 

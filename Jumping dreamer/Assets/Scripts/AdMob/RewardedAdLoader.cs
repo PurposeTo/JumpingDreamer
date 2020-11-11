@@ -10,8 +10,8 @@ public class RewardedAdLoader : IRewardedAdLoader
 
     public RewardedAdLoader(SuperMonoBehaviour superMonoBehaviour, CommandQueueMainThreadExecutor commandQueueHandler)
     {
-        this.commandQueueHandler = commandQueueHandler ?? throw new ArgumentNullException(nameof(commandQueueHandler));
-        this.superMonoBehaviour = superMonoBehaviour ?? throw new ArgumentNullException(nameof(superMonoBehaviour));
+        this.commandQueueHandler = commandQueueHandler != null ? commandQueueHandler : throw new ArgumentNullException(nameof(commandQueueHandler));
+        this.superMonoBehaviour = superMonoBehaviour != null ? superMonoBehaviour : throw new ArgumentNullException(nameof(superMonoBehaviour));
 
         tryToReLoadAdInfo = superMonoBehaviour.CreateCoroutineInfo(TryToReLoadAdEnumerator());
         CreateNewRewardedAd();

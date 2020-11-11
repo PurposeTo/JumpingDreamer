@@ -40,8 +40,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 2024437486911971762}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffc641f4db648ea409113e345baccd1f, type: 3}
+  m_Script: {fileID: 11500000, guid: 2ed97e398f47dd44aa35d3c8758bdfc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 0
-  pools: []
+  PoolDatas: []

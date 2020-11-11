@@ -105,6 +105,18 @@ public static class GameLogic
     }
 
 
+    public static T[] GetAllEnumValues<T>() where T: System.Enum
+    {
+        return (T[])System.Enum.GetValues(typeof(T));
+    }
+
+
+    public static T GetRandomEnumItem<T>() where T : System.Enum
+    {
+        return GetRandomItem(GetAllEnumValues<T>());
+    }
+
+
     public static float ClampValueByAnotherValue(float valueToClamp, float valueWhichClamping, float howManyTimes)
     {
         return (valueToClamp + (valueWhichClamping * howManyTimes)) / howManyTimes;

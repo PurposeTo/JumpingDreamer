@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CircularMotion : PlatformMovable, IMovable, IPooledObject
 {
@@ -9,22 +11,29 @@ public class CircularMotion : PlatformMovable, IMovable, IPooledObject
     private int direction;
 
 
+    void IPooledObject.OnObjectSpawn()
+    {
+        SetMotionConfigs(WorldGenerationRulesController.Instance.PlatformGeneratorPresenter.PlatformGeneratorConfigs.PlatformConfigs);
+    }
+
+
     private void FixedUpdate()
     {
         MoveAround();
     }
 
 
-    public void SetMotionConfigs()
+    public void SetMotionConfigs(PlatformConfigs platformConfigs)
     {
-        PlatformConfigs platformConfigs = WorldGenerationRulesController.Instance.PlatformGeneratorPresenter.PlatformGeneratorConfigs.PlatformConfigs;
-        CircularMotionConfig circularMotionConfig = (CircularMotionConfig)platformConfigs.PlatformMovingTypeConfigs
-                .ToList()
-                .Find(platformMotionConfig => platformMotionConfig is CircularMotionConfig);
+        if (!(platformConfigs.MovingTypeConfigs
+            .ToList()
+            .Find(platformMotionConfig => platformMotionConfig.ParentTier.Value == PlatformMovingTypes.CircularMotion)
+            is CircularMotionConfig circularMotionConfig))
+        {
+            throw new NullReferenceException($"{nameof(circularMotionConfig)} can't be null! Check PlatformConfigs!");
+        }
 
-        if (circularMotionConfig == null) throw new System.NullReferenceException("platformMotionConfig can't be null!");
-
-        switch (circularMotionConfig.MotionConfig)
+        switch (circularMotionConfig.Value)
         {
             case CircularMotionConfig.CircularMotionConfigs.Left:
                 direction = 1;
@@ -36,7 +45,7 @@ public class CircularMotion : PlatformMovable, IMovable, IPooledObject
                 direction = directionsToChoice[Random.Range(0, directionsToChoice.Length)];
                 break;
             default:
-                throw new System.Exception($"{circularMotionConfig.MotionConfig:D} is unknown motionConfig!");
+                throw new Exception($"{circularMotionConfig.Value:D} is unknown motionConfig!");
         }
 
         velocityMultiplier = Random.Range(minVelocityMultiplier, maxVelocityMultiplier);
@@ -48,11 +57,5 @@ public class CircularMotion : PlatformMovable, IMovable, IPooledObject
         Vector2 toCentreDirection = GameObjectsHolder.Instance.Centre.GetToCentreDirection(transform.position);
         moveDirection = GameLogic.GetOrthoNormalizedVector2(toCentreDirection) * direction;
         SetVelocity(moveDirection * velocityMultiplier);
-    }
-
-
-    void IPooledObject.OnObjectSpawn()
-    {
-        SetMotionConfigs();
     }
 }

@@ -12,9 +12,9 @@ public class ObjectPooler : SingletonSuperMonoBehaviour<ObjectPooler>
 
         public Pool(PoolData poolData, Queue<GameObject> objectPoolQueue, Transform poolParent)
         {
-            PoolData = poolData ?? throw new ArgumentNullException(nameof(poolData));
+            PoolData = poolData != null ? poolData : throw new ArgumentNullException(nameof(poolData));
             ObjectPoolQueue = objectPoolQueue ?? throw new ArgumentNullException(nameof(objectPoolQueue));
-            PoolParent = poolParent ?? throw new ArgumentNullException(nameof(poolParent));
+            PoolParent = poolParent != null ? poolParent : throw new ArgumentNullException(nameof(poolParent));
         }
 
         public bool ShouldExpand => PoolData.shouldExpand;
@@ -22,7 +22,7 @@ public class ObjectPooler : SingletonSuperMonoBehaviour<ObjectPooler>
 
     public List<PoolData> PoolDatas; // Сетим через инспектор
 
-    private Dictionary<GameObject, Pool> poolDictionary = new Dictionary<GameObject, Pool>();
+    private readonly Dictionary<GameObject, Pool> poolDictionary = new Dictionary<GameObject, Pool>();
 
 
     protected override void AwakeSingleton()

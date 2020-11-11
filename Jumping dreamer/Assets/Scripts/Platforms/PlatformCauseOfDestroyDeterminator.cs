@@ -1,41 +1,37 @@
 ﻿using System;
 using Debug = UnityEngine.Debug;
 
-public class PlatformCauseOfDestroyCreator
+public class PlatformCauseOfDestroyDeterminator
 {
 
     private float destroyHight;
     private float lifeTimeToDestroy;
 
 
-    public Predicate<float> GetCauseOfDestroyByTime(PlatformConfigsData.PlatformCauseOfDestroy platformCauseOfDestroy)
+    public Predicate<float> GetCauseOfDestroyByTime(PlatformCauseOfDestroyConfigsByTime.PlatformCausesOfDestroyByTime platformCausesOfDestroyByTime)
     {
-
-        switch (platformCauseOfDestroy)
+        switch (platformCausesOfDestroyByTime)
         {
-            case PlatformConfigsData.PlatformCauseOfDestroy.AsTimePasses:
+            case PlatformCauseOfDestroyConfigsByTime.PlatformCausesOfDestroyByTime.AsTimePasses:
                 return GetAsTimePassesCauseOfDestroy();
-            case PlatformConfigsData.PlatformCauseOfDestroy.NoLifeTime:
+            case PlatformCauseOfDestroyConfigsByTime.PlatformCausesOfDestroyByTime.NoLifeTime:
                 return GetNoLifeTimeCauseOfDestroy();
-            case PlatformConfigsData.PlatformCauseOfDestroy.VerticalCauseOfDestroy:
-                throw new Exception($"For VerticalCauseOfDeathControl use GetCauseOfDestroyByHight!");
-
             default:
-                throw new Exception($"{platformCauseOfDestroy} is unknown PlatformCauseOfDestroy!");
+                throw new Exception($"{platformCausesOfDestroyByTime} is unknown PlatformCauseOfDestroy!");
         }
     }
 
 
-    public Predicate<float> GetCauseOfDestroyByHight(PlatformConfigsData.PlatformVerticalCauseOfDestroy varticalCauseOfDead)
+    public Predicate<float> GetCauseOfDestroyByHight(PlatformCauseOfDestroyConfigsByHight.PlatformCausesOfDestroyByHight platformCausesOfDestroyByHight)
     {
-        switch (varticalCauseOfDead)
+        switch (platformCausesOfDestroyByHight)
         {
-            case PlatformConfigsData.PlatformVerticalCauseOfDestroy.TopBorder:
+            case PlatformCauseOfDestroyConfigsByHight.PlatformCausesOfDestroyByHight.TopBorder:
                 return GetTopBorderCauseOfDestroy();
-            case PlatformConfigsData.PlatformVerticalCauseOfDestroy.BottomBorder:
+            case PlatformCauseOfDestroyConfigsByHight.PlatformCausesOfDestroyByHight.BottomBorder:
                 return GetBottomBorderCauseOfDestroy();
             default:
-                throw new Exception($"{varticalCauseOfDead} is unknown VerticalCauseOfDeathControl!");
+                throw new Exception($"{platformCausesOfDestroyByHight} is unknown VerticalCauseOfDeathControl!");
         }
     }
 

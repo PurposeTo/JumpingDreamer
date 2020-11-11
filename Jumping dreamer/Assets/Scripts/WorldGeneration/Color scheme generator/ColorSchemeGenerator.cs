@@ -10,9 +10,9 @@ public class ColorSchemeGenerator
 
     public ColorSchemeGenerator(SuperMonoBehaviour superMonoBehaviour, ColorSchemeData colorSchemeData, Image backgroundImageToCamera)
     {
-        this.superMonoBehaviour = superMonoBehaviour ?? throw new System.ArgumentNullException(nameof(superMonoBehaviour));
-        this.colorSchemeData = colorSchemeData ?? throw new System.ArgumentNullException(nameof(colorSchemeData));
-        this.backgroundImageToCamera = backgroundImageToCamera ?? throw new System.ArgumentNullException(nameof(backgroundImageToCamera));
+        this.superMonoBehaviour = superMonoBehaviour != null ? superMonoBehaviour : throw new System.ArgumentNullException(nameof(superMonoBehaviour));
+        this.colorSchemeData = colorSchemeData != null ? colorSchemeData : throw new System.ArgumentNullException(nameof(colorSchemeData));
+        this.backgroundImageToCamera = backgroundImageToCamera != null ? backgroundImageToCamera : throw new System.ArgumentNullException(nameof(backgroundImageToCamera));
 
         changeColorSchemeInfo = superMonoBehaviour.CreateCoroutineInfo();
     }

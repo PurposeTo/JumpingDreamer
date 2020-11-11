@@ -12,7 +12,7 @@ public class CoroutineExecutor
 
     public CoroutineExecutor(MonoBehaviour monoBehaviour)
     {
-        this.monoBehaviour = monoBehaviour ?? throw new ArgumentNullException(nameof(monoBehaviour));
+        this.monoBehaviour = monoBehaviour != null ? monoBehaviour : throw new ArgumentNullException(nameof(monoBehaviour));
     }
 
 
