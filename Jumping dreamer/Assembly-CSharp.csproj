@@ -155,12 +155,12 @@
     <Compile Include="Assets\Scripts\GPGS\GPGSLeaderboard.cs" />
     <Compile Include="Assets\Scripts\GPGS\GPGSPlayerDataCloudStorage.cs" />
     <Compile Include="Assets\Scripts\GameLogic.cs" />
-    <Compile Include="Assets\Scripts\GrouperTier\Enum grouping\GrouperEnumDefaultTier.cs" />
+    <Compile Include="Assets\Scripts\GrouperTier\Base realization\GrouperDefaultTier.cs" />
+    <Compile Include="Assets\Scripts\GrouperTier\Base realization\GrouperHigherTier.cs" />
+    <Compile Include="Assets\Scripts\GrouperTier\Base realization\GrouperLowerTier.cs" />
+    <Compile Include="Assets\Scripts\GrouperTier\Enum grouping\Base\GrouperEnumDefaultTier.cs" />
     <Compile Include="Assets\Scripts\GrouperTier\Enum grouping\GrouperEnumHigherTier.cs" />
     <Compile Include="Assets\Scripts\GrouperTier\Enum grouping\GrouperEnumLowerTier.cs" />
-    <Compile Include="Assets\Scripts\GrouperTier\GrouperDefaultTier.cs" />
-    <Compile Include="Assets\Scripts\GrouperTier\GrouperHigherTier.cs" />
-    <Compile Include="Assets\Scripts\GrouperTier\GrouperLowerTier.cs" />
     <Compile Include="Assets\Scripts\Localizaton\LanguageButton.cs" />
     <Compile Include="Assets\Scripts\Localizaton\LocalizationData.cs" />
     <Compile Include="Assets\Scripts\Localizaton\LocalizationManager.cs" />
