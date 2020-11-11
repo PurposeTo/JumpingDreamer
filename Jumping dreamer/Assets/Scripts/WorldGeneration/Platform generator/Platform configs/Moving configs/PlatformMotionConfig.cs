@@ -25,7 +25,7 @@ public class PlatformMotionConfigFactory
 }
 
 
-public class PlatformMotionConfig : GrouperEnumHigherTier<PlatformMovingTypes>
+public class PlatformMotionConfig : GrouperEnumHigherTier<PlatformMovingTypes, PlatformMotionConfig>
 {
     public PlatformMotionConfig(PlatformMovingTypes platformMovingType) : base(platformMovingType) { }
 }
@@ -33,7 +33,7 @@ public class PlatformMotionConfig : GrouperEnumHigherTier<PlatformMovingTypes>
 
 
 public class VerticalMotionConfig
-    : GrouperEnumLowerTierRandomable<VerticalMotionConfig.VerticalMotionConfigs, PlatformMovingTypes>,
+    : GrouperEnumLowerTierRandomable<VerticalMotionConfig.VerticalMotionConfigs, VerticalMotionConfig, PlatformMovingTypes>,
     IPlatformMotionConfig
 {
     public enum VerticalMotionConfigs
@@ -53,7 +53,7 @@ public class VerticalMotionConfig
 
 
 public class CircularMotionConfig :
-    GrouperEnumLowerTierRandomable<CircularMotionConfig.CircularMotionConfigs, PlatformMovingTypes>, IPlatformMotionConfig
+    GrouperEnumLowerTierRandomable<CircularMotionConfig.CircularMotionConfigs, CircularMotionConfig, PlatformMovingTypes>, IPlatformMotionConfig
 {
     public enum CircularMotionConfigs
     {

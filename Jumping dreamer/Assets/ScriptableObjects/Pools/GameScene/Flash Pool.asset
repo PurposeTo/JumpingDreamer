@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86a357340fd73ef439d1ea2e16f411a2, type: 3}
   m_Name: Flash Pool
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
-  size: 0
+  prefab: {fileID: 2313998528000746802, guid: 091cea180da60764bacf3ca27c491f6f, type: 3}
+  size: 3
   shouldExpand: 1

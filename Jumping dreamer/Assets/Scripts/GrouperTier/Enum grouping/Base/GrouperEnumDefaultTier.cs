@@ -1,6 +1,8 @@
 ﻿/// <typeparam name="T">Данный хранимый enum</typeparam>
-public abstract class GrouperEnumDefaultTier<T> : GrouperDefaultTier<T>, IGrouperEnumDefaultTier<T>
+/// <typeparam name="U">Класс, который хранит enum</typeparam>
+public abstract class GrouperEnumDefaultTier<T, U> : GrouperDefaultTier<T, U>, IGrouperEnumDefaultTier<T>
     where T : System.Enum
+    where U : GrouperEnumDefaultTier<T, U>
 {
     public T[] AllEnumValues { get; }
 
@@ -15,5 +17,7 @@ public abstract class GrouperEnumDefaultTier<T> : GrouperDefaultTier<T>, IGroupe
 public interface IGrouperEnumDefaultTier<T> : IGrouperDefaultTier<T>
     where T : System.Enum
 {
+    new T Value { get; }
+
     T[] AllEnumValues { get; }
 }

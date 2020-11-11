@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86a357340fd73ef439d1ea2e16f411a2, type: 3}
   m_Name: FlashCompass Pool
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
-  size: 0
+  prefab: {fileID: 5874052791602533366, guid: 08226039984d9dc42a5aa8e081c3b296, type: 3}
+  size: 3
   shouldExpand: 1

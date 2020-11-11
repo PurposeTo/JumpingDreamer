@@ -42,7 +42,7 @@ public class PlatformGeneratorConfigs
 
         if (platformConfigs.CreatingPlace == PlatformConfigsData.PlatformCreatingPlace.InRandomArea) delay -= 0.115f;
 
-        if (platformConfigs.CauseOfDestroy is PlatformCauseOfDestroyConfigsByTime platformCauseOfDestroyConfigsByTime && platformCauseOfDestroyConfigsByTime.Value == PlatformCauseOfDestroyConfigsByTime.PlatformCausesOfDestroyByTime.NoLifeTime)
+        if (platformConfigs.CauseOfDestroy is PlatformCauseOfDestroyByTime platformCauseOfDestroyConfigsByTime && platformCauseOfDestroyConfigsByTime.Value == PlatformCauseOfDestroyByTime.PlatformCausesOfDestroyByTime.NoLifeTime)
         {
             delay -= 0.195f;
         }
@@ -68,7 +68,7 @@ public class PlatformConfigs
             MovingTypes = new PlatformMovingTypes[] { global::PlatformMovingTypes.VerticalMotion},
             MovingTypeConfigs = new IPlatformMotionConfig[] { new VerticalMotionConfig(VerticalMotionConfig.VerticalMotionConfigs.Up) },
             CreatingPlace = PlatformConfigsData.PlatformCreatingPlace.InCentre,
-            CauseOfDestroy = new PlatformCauseOfDestroyConfigsByHight(PlatformCauseOfDestroyConfigsByHight.PlatformCausesOfDestroyByHight.TopBorder)
+            CauseOfDestroy = new PlatformCauseOfDestroyByHight(PlatformCauseOfDestroyByHight.PlatformCausesOfDestroyByHight.TopBorder)
         };
     }
 

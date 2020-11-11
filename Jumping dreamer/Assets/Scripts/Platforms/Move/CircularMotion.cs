@@ -13,7 +13,7 @@ public class CircularMotion : PlatformMovable, IMovable, IPooledObject
 
     void IPooledObject.OnObjectSpawn()
     {
-        SetMotionConfigs(WorldGenerationRulesController.Instance.PlatformGeneratorPresenter.PlatformGeneratorConfigs.PlatformConfigs);
+        FindAndSetMotionConfigs(WorldGenerationRulesController.Instance.PlatformGeneratorPresenter.PlatformGeneratorConfigs.PlatformConfigs);
     }
 
 
@@ -23,17 +23,18 @@ public class CircularMotion : PlatformMovable, IMovable, IPooledObject
     }
 
 
-    public void SetMotionConfigs(PlatformConfigs platformConfigs)
+    public void FindAndSetMotionConfigs(PlatformConfigs platformConfigs)
     {
-        if (!(platformConfigs.MovingTypeConfigs
+        SetMotionConfigs(platformConfigs.MovingTypeConfigs
             .ToList()
-            .Find(platformMotionConfig => platformMotionConfig.ParentTier.Value == PlatformMovingTypes.CircularMotion)
-            is CircularMotionConfig circularMotionConfig))
-        {
-            throw new NullReferenceException($"{nameof(circularMotionConfig)} can't be null! Check PlatformConfigs!");
-        }
+            .Find(platformMotionConfig => platformMotionConfig.TryToDownCastTier(out CircularMotionConfig _))
+            .DownCastTier<CircularMotionConfig>().Value);
+    }
 
-        switch (circularMotionConfig.Value)
+
+    private void SetMotionConfigs(CircularMotionConfig.CircularMotionConfigs circularMotionConfigs)
+    {
+        switch (circularMotionConfigs)
         {
             case CircularMotionConfig.CircularMotionConfigs.Left:
                 direction = 1;
@@ -45,7 +46,7 @@ public class CircularMotion : PlatformMovable, IMovable, IPooledObject
                 direction = directionsToChoice[Random.Range(0, directionsToChoice.Length)];
                 break;
             default:
-                throw new Exception($"{circularMotionConfig.Value:D} is unknown motionConfig!");
+                throw new Exception($"{circularMotionConfigs} is unknown motionConfig!");
         }
 
         velocityMultiplier = Random.Range(minVelocityMultiplier, maxVelocityMultiplier);

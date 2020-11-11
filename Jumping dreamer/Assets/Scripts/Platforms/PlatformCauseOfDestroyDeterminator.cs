@@ -8,13 +8,13 @@ public class PlatformCauseOfDestroyDeterminator
     private float lifeTimeToDestroy;
 
 
-    public Predicate<float> GetCauseOfDestroyByTime(PlatformCauseOfDestroyConfigsByTime.PlatformCausesOfDestroyByTime platformCausesOfDestroyByTime)
+    public Predicate<float> GetCauseOfDestroyByTime(PlatformCauseOfDestroyByTime.PlatformCausesOfDestroyByTime platformCausesOfDestroyByTime)
     {
         switch (platformCausesOfDestroyByTime)
         {
-            case PlatformCauseOfDestroyConfigsByTime.PlatformCausesOfDestroyByTime.AsTimePasses:
+            case PlatformCauseOfDestroyByTime.PlatformCausesOfDestroyByTime.AsTimePasses:
                 return GetAsTimePassesCauseOfDestroy();
-            case PlatformCauseOfDestroyConfigsByTime.PlatformCausesOfDestroyByTime.NoLifeTime:
+            case PlatformCauseOfDestroyByTime.PlatformCausesOfDestroyByTime.NoLifeTime:
                 return GetNoLifeTimeCauseOfDestroy();
             default:
                 throw new Exception($"{platformCausesOfDestroyByTime} is unknown PlatformCauseOfDestroy!");
@@ -22,13 +22,13 @@ public class PlatformCauseOfDestroyDeterminator
     }
 
 
-    public Predicate<float> GetCauseOfDestroyByHight(PlatformCauseOfDestroyConfigsByHight.PlatformCausesOfDestroyByHight platformCausesOfDestroyByHight)
+    public Predicate<float> GetCauseOfDestroyByHight(PlatformCauseOfDestroyByHight.PlatformCausesOfDestroyByHight platformCausesOfDestroyByHight)
     {
         switch (platformCausesOfDestroyByHight)
         {
-            case PlatformCauseOfDestroyConfigsByHight.PlatformCausesOfDestroyByHight.TopBorder:
+            case PlatformCauseOfDestroyByHight.PlatformCausesOfDestroyByHight.TopBorder:
                 return GetTopBorderCauseOfDestroy();
-            case PlatformCauseOfDestroyConfigsByHight.PlatformCausesOfDestroyByHight.BottomBorder:
+            case PlatformCauseOfDestroyByHight.PlatformCausesOfDestroyByHight.BottomBorder:
                 return GetBottomBorderCauseOfDestroy();
             default:
                 throw new Exception($"{platformCausesOfDestroyByHight} is unknown VerticalCauseOfDeathControl!");

@@ -68,7 +68,7 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
             case PlatformCausesOfDestroy.ByTime:
                 checkingParameter = lifeTime;
 
-                var causeOfDestroyByTime = ((PlatformCauseOfDestroyConfigsByTime)platformCauseOfDestroy).Value;
+                var causeOfDestroyByTime = ((PlatformCauseOfDestroyByTime)platformCauseOfDestroy).Value;
 
                 IsAlive = platformCauseOfDestroyCreator.GetCauseOfDestroyByTime(causeOfDestroyByTime);
 
@@ -103,7 +103,6 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
 
     private void DisableObject()
     {
-        Debug.Log($"Кря! {gameObject.transform.GetInstanceID()} Disable");
         gameObject.SetActive(false);
     }
 }

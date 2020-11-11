@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86a357340fd73ef439d1ea2e16f411a2, type: 3}
   m_Name: Vertical motion platform Pool
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
-  size: 0
+  prefab: {fileID: 3249365153289606194, guid: 2f68473af3538f042ab6154d89af0cff, type: 3}
+  size: 20
   shouldExpand: 1

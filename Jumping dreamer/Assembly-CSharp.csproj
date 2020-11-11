@@ -256,7 +256,7 @@
     <Compile Include="Assets\Scripts\WorldGeneration\Flash generator\FlashGenerator.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\Flash generator\FlashGeneratorData.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\Flash generator\FlashGeneratorPresenter.cs" />
-    <Compile Include="Assets\Scripts\WorldGeneration\Platform generator\Platform configs\Cause of destroy configs\PlatformCauseOfDestroyConfigs.cs" />
+    <Compile Include="Assets\Scripts\WorldGeneration\Platform generator\Platform configs\Cause of destroy configs\PlatformCauseOfDestroy.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\Platform generator\Platform configs\Moving configs\PlatformMotionConfig.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\Platform generator\Platform configs\PlatformConfigsData.cs" />
     <Compile Include="Assets\Scripts\WorldGeneration\Platform generator\Platform generator config\PlatformGeneratorConfigs.cs" />

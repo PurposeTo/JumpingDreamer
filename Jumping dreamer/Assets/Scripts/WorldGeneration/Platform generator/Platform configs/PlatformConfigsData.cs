@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 public class PlatformConfigsData
@@ -36,11 +37,12 @@ public class PlatformConfigsData
 
         if (platformMovingTypes.Contains(PlatformMovingTypes.VerticalMotion))
         {
-            VerticalMotionConfig verticalMotionConfig = (VerticalMotionConfig)platformMovingTypeConfigs
+            VerticalMotionConfig.VerticalMotionConfigs verticalMotionConfigs = platformMovingTypeConfigs
                 .ToList()
-                .Find(platformMotionConfig => platformMotionConfig is VerticalMotionConfig);
+                .Find(platformMotionConfig => platformMotionConfig.TryToDownCastTier(out VerticalMotionConfig _))
+                .DownCastTier<VerticalMotionConfig>().Value;
 
-            switch (verticalMotionConfig.Value)
+            switch (verticalMotionConfigs)
             {
                 case VerticalMotionConfig.VerticalMotionConfigs.Up:
                     availablePlatformCreatingPlaces.Add(PlatformCreatingPlace.InCentre);
@@ -52,8 +54,9 @@ public class PlatformConfigsData
                     availablePlatformCreatingPlaces.Add(PlatformCreatingPlace.InRandomArea);
                     break;
                 default:
-                    throw new System.Exception($"{verticalMotionConfig.Value} is unknown MotionConfig!");
+                    throw new System.Exception($"{verticalMotionConfigs} is unknown MotionConfig!");
             }
+
         }
 
         return GameLogic.GetRandomItem(availablePlatformCreatingPlaces.ToArray());
@@ -66,7 +69,7 @@ public class PlatformConfigsData
 
         if (platformCreatingPlace == PlatformCreatingPlace.InRandomArea)
         {
-            platformCauseOfDestroys.Add(new PlatformCauseOfDestroyConfigsByTime(PlatformCauseOfDestroyConfigsByTime.PlatformCausesOfDestroyByTime.NoLifeTime));
+            platformCauseOfDestroys.Add(new PlatformCauseOfDestroyByTime(PlatformCauseOfDestroyByTime.PlatformCausesOfDestroyByTime.NoLifeTime));
         }
 
         bool isPlatformVerticalMotion = platformMovingTypes.Contains(PlatformMovingTypes.VerticalMotion);
@@ -74,11 +77,11 @@ public class PlatformConfigsData
 
         if (isPlatformVerticalMotion)
         {
-            platformCauseOfDestroys.Add(new PlatformCauseOfDestroyConfigsByHight(PlatformCauseOfDestroyConfigsByHight.PlatformCausesOfDestroyByHight.WaitingForInitializate));
+            platformCauseOfDestroys.Add(new PlatformCauseOfDestroyByHight(PlatformCauseOfDestroyByHight.PlatformCausesOfDestroyByHight.WaitingForInitializate));
         }
         else if (!isPlatformVerticalMotion && isPlatformCircularMotion)
         {
-            platformCauseOfDestroys.Add(new PlatformCauseOfDestroyConfigsByTime(PlatformCauseOfDestroyConfigsByTime.PlatformCausesOfDestroyByTime.AsTimePasses));
+            platformCauseOfDestroys.Add(new PlatformCauseOfDestroyByTime(PlatformCauseOfDestroyByTime.PlatformCausesOfDestroyByTime.AsTimePasses));
         }
 
         return GameLogic.GetRandomItem(platformCauseOfDestroys.ToArray());

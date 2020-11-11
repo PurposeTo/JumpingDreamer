@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86a357340fd73ef439d1ea2e16f411a2, type: 3}
   m_Name: Pursuer Pool
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
-  size: 0
+  prefab: {fileID: 3187975396863468470, guid: 0bc72d1f9f0250c4db8c2304bece4037, type: 3}
+  size: 4
   shouldExpand: 1

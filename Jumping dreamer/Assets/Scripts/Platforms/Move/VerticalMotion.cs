@@ -21,7 +21,7 @@ public class VerticalMotion : PlatformMovable, IMovable, IPooledObject
 
     void IPooledObject.OnObjectSpawn()
     {
-        SetMotionConfigs(WorldGenerationRulesController.Instance.PlatformGeneratorPresenter.PlatformGeneratorConfigs.PlatformConfigs);
+        FindAndSetMotionConfigs(WorldGenerationRulesController.Instance.PlatformGeneratorPresenter.PlatformGeneratorConfigs.PlatformConfigs);
         IsInitialized = true;
     }
 
@@ -42,34 +42,34 @@ public class VerticalMotion : PlatformMovable, IMovable, IPooledObject
     }
 
 
-    public PlatformCauseOfDestroyConfigsByHight GetPlatformCauseOfDestroyByHight()
+    public PlatformCauseOfDestroyByHight GetPlatformCauseOfDestroyByHight()
     {
         switch (direction)
         {
             case 1:
-                return 
-                    new PlatformCauseOfDestroyConfigsByHight(PlatformCauseOfDestroyConfigsByHight.PlatformCausesOfDestroyByHight.TopBorder);
+                return
+                    new PlatformCauseOfDestroyByHight(PlatformCauseOfDestroyByHight.PlatformCausesOfDestroyByHight.TopBorder);
             case -1:
-                return 
-                    new PlatformCauseOfDestroyConfigsByHight(PlatformCauseOfDestroyConfigsByHight.PlatformCausesOfDestroyByHight.BottomBorder);
+                return
+                    new PlatformCauseOfDestroyByHight(PlatformCauseOfDestroyByHight.PlatformCausesOfDestroyByHight.BottomBorder);
             default:
                 throw new Exception($"{direction} is unknown direction!");
         }
     }
 
 
-    private void SetMotionConfigs(PlatformConfigs platformConfigs)
+    private void FindAndSetMotionConfigs(PlatformConfigs platformConfigs)
     {
-        if (!(platformConfigs.MovingTypeConfigs
+        SetMotionConfigs(platformConfigs.MovingTypeConfigs
             .ToList()
-            .Find(platformMotionConfig => platformMotionConfig.ParentTier.Value == PlatformMovingTypes.VerticalMotion)
-            is VerticalMotionConfig verticalMotionConfig))
-        {
-            throw new NullReferenceException($"{nameof(verticalMotionConfig)} can't be null! Check PlatformConfigs!");
-        }
+            .Find(platformMotionConfig => platformMotionConfig.TryToDownCastTier(out VerticalMotionConfig _))
+            .DownCastTier<VerticalMotionConfig>().Value);
+    }
 
 
-        switch (verticalMotionConfig.Value)
+    private void SetMotionConfigs(VerticalMotionConfig.VerticalMotionConfigs verticalMotionConfigs)
+    {
+        switch (verticalMotionConfigs)
         {
             case VerticalMotionConfig.VerticalMotionConfigs.Up:
                 direction = 1;
@@ -81,7 +81,7 @@ public class VerticalMotion : PlatformMovable, IMovable, IPooledObject
                 direction = directionsToChoice[Random.Range(0, directionsToChoice.Length)];
                 break;
             default:
-                throw new Exception($"{verticalMotionConfig.Value:D} is unknown motionConfig!");
+                throw new Exception($"{verticalMotionConfigs} is unknown motionConfig!");
         }
 
         velocityMultiplier = Random.Range(minVelocityMultiplier, maxVelocityMultiplier);
