@@ -21,13 +21,7 @@ public class PooledObject : SuperMonoBehaviour, IPooledObject
     private Action OnObjectSpawnInitialize;
     private bool IsObjectSpawnInitialized = false;
 
-
     public virtual void OnObjectSpawn() { }
-
-    /// <summary>
-    /// Необходимо использовать данный метод взамен OnDisable()
-    /// </summary>
-    protected virtual void OnDisableWrapped() { }
 
     // Метод для ObjectPooler-а.
     public virtual void OnObjectSpawnSuper()
@@ -38,16 +32,8 @@ public class PooledObject : SuperMonoBehaviour, IPooledObject
     }
 
 
-    private void OnDisable()
+    protected override void OnDisableWrapped()
     {
-        OnDisableSuper();
-    }
-
-
-    // Необходимо отдельным классом, который будет контролировать все вызовы, собирать все OnDisableSuper() только если был переопределен OnDisableWrapped() и вызывать в OnDisable().
-    private void OnDisableSuper()
-    {
-        OnDisableWrapped();
         EndOnDisableExecution();
     }
 
