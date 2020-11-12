@@ -69,7 +69,7 @@ public class SuperMonoBehaviour : MonoBehaviour
     // Необходимо отдельным классом, который будет контролировать все вызовы, собирать все AwakeSuper() только если был переопределен AwakeWrapped() и вызывать в Awake().
     private void AwakeSuper()
     {
-        InitializingCreatedObject();
+        InitializingSuperMonoBehaviour();
         AwakeWrapped();
         EndAwakeExecution();
     }
@@ -82,7 +82,7 @@ public class SuperMonoBehaviour : MonoBehaviour
     }
 
 
-    private void InitializingCreatedObject()
+    private void InitializingSuperMonoBehaviour()
     {
         coroutineExecutor = new CoroutineExecutor(this);
     }

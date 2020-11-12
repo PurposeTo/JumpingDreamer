@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+//Должен быть SuperMonoBehaviour, так как аниматор не работает с выключеным объектом! (Можно ошибиться при работе с аниматором извне)
+
+[RequireComponent(typeof(Animator))]
 public abstract class AnimatorControllerWrapper : SuperMonoBehaviour
 {
     private protected Animator animator;

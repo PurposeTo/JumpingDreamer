@@ -3,7 +3,6 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
 public class AnimatorBlinkingController : AnimatorControllerWrapper
 {
     private readonly AnimatorBlinkingInitializingConfigs animatorBlinkingInitializingConfigs = new AnimatorBlinkingInitializingConfigs();
@@ -40,10 +39,17 @@ public class AnimatorBlinkingController : AnimatorControllerWrapper
 
     public void StartBlinking(bool unscaledTime)
     {
-        if (unscaledTime) animator.updateMode = AnimatorUpdateMode.UnscaledTime;
-        else animator.updateMode = AnimatorUpdateMode.Normal;
+        if (unscaledTime)
+        {
+            animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+        }
+        else
+        {
+            animator.updateMode = AnimatorUpdateMode.Normal;
+        }
 
         animator.SetBool(AnimatorBlinkingData.isBlinking, true);
+
     }
 
 
@@ -61,7 +67,7 @@ public class AnimatorBlinkingController : AnimatorControllerWrapper
 
     public void DisableAlphaColor()
     {
-        animator.SetBool(AnimatorBlinkingData.enableAlphaColor, true);
+        animator.SetBool(AnimatorBlinkingData.enableAlphaColor, false);
     }
 
 

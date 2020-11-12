@@ -3,7 +3,7 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 
-public class TrainingTutorial : MonoBehaviour
+public class TrainingTutorial : SuperMonoBehaviour
 {
     public GameObject[] trainingTips;
     private AnimatorBlinkingController[] animatorBlinkingControllers;
@@ -17,15 +17,14 @@ public class TrainingTutorial : MonoBehaviour
 
     private readonly float blinkingAnimationSpeed = 1.25f;
 
-    private Coroutine ShowTutorialRoutine = null;
-    private Coroutine CheckingIfTutorialNeedsToBeShownRoutine = null;
+    private ICoroutineInfo CheckingIfTutorialNeedsToBeShownRoutineInfo;
 
-
-    private void Awake()
+    protected override void AwakeWrapped()
     {
         playerTactics = GameObjectsHolder.Instance.PlayerPresenter.PlayerTactics;
         animatorBlinkingControllers = trainingTips.Select(x => x.GetComponentInChildren<AnimatorBlinkingController>()).ToArray();
         animatorBlinkingControllers[0].OnDisableBlinking += DisableTutorialTips;
+        CheckingIfTutorialNeedsToBeShownRoutineInfo = CreateCoroutineInfo();
     }
 
 
@@ -33,11 +32,11 @@ public class TrainingTutorial : MonoBehaviour
     {
         bool shouldStartByShowingTheTutorial = PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.TotalLifeTime < minTotalLifeTimeToShowTutorial;
 
-        if (CheckingIfTutorialNeedsToBeShownRoutine == null && IsTutorialNeedsToBeShown())
+        if (IsTutorialNeedsToBeShown())
         {
-            CheckingIfTutorialNeedsToBeShownRoutine = StartCoroutine(CheckingIfTutorialNeedsToBeShownEnumerator(shouldStartByShowingTheTutorial));
+            ContiniousCoroutineExecution(ref CheckingIfTutorialNeedsToBeShownRoutineInfo,
+                CheckingIfTutorialNeedsToBeShownEnumerator(shouldStartByShowingTheTutorial));
         }
-
     }
 
 
@@ -50,10 +49,7 @@ public class TrainingTutorial : MonoBehaviour
     private void OnDisable()
     {
         DisableTutorialTips();
-        StopAllCoroutines();
         isTutorialTipsEnable = false;
-        ShowTutorialRoutine = null;
-        CheckingIfTutorialNeedsToBeShownRoutine = null;
     }
 
 
@@ -68,8 +64,11 @@ public class TrainingTutorial : MonoBehaviour
         Array.ForEach(trainingTips, gameObject => gameObject.SetActive(true));
         Array.ForEach(animatorBlinkingControllers, (x) =>
         {
-            x.SetBlinkingAnimationSpeed(blinkingAnimationSpeed);
-            x.StartBlinking(false);
+            x.AwakeInititialized += () =>
+            {
+                x.SetBlinkingAnimationSpeed(blinkingAnimationSpeed);
+                x.StartBlinking(false);
+            };
         });
 
         isTutorialTipsEnable = true;
@@ -78,7 +77,13 @@ public class TrainingTutorial : MonoBehaviour
 
     private void DisableTutorialBlinking()
     {
-        Array.ForEach(animatorBlinkingControllers, (x) => x.StopBlinking());
+        Array.ForEach(animatorBlinkingControllers, (x) =>
+        {
+            x.AwakeInititialized += () =>
+            {
+                x.StopBlinking();
+            };
+        });
     }
 
 
@@ -98,23 +103,11 @@ public class TrainingTutorial : MonoBehaviour
         return absAverageHorizontalInput <= minHorizontalInputToShowTutorial;
     }
 
-
-    private Coroutine StartToShowTutorial()
-    {
-        if (ShowTutorialRoutine == null)
-        {
-            ShowTutorialRoutine = StartCoroutine(ShowTrainingEnumerator());
-            return ShowTutorialRoutine;
-        }
-        else return null;
-    }
-
-
     private IEnumerator CheckingIfTutorialNeedsToBeShownEnumerator(bool shouldStartByShowingTheTutorial)
     {
         if (shouldStartByShowingTheTutorial)
         {
-            yield return StartToShowTutorial();
+            yield return ShowTrainingEnumerator();
         }
 
         WaitForSeconds wait = new WaitForSeconds(delay);
@@ -125,7 +118,7 @@ public class TrainingTutorial : MonoBehaviour
 
             if (IsTutorialNeedsToBeShown())
             {
-                yield return StartToShowTutorial();
+                yield return ShowTrainingEnumerator();
             }
         }
     }
@@ -138,7 +131,5 @@ public class TrainingTutorial : MonoBehaviour
         DisableTutorialBlinking();
 
         yield return new WaitWhile(() => isTutorialTipsEnable);
-
-        ShowTutorialRoutine = null;
     }
 }
