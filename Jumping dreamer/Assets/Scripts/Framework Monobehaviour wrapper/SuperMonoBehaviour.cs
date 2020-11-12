@@ -7,6 +7,20 @@ using UnityEngine;
  */
 public class SuperMonoBehaviour : MonoBehaviour
 {
+    #region SuperMonoBehaviour tools
+
+    private CoroutineExecutor coroutineExecutor;
+
+    private void InitializingSuperMonoBehaviour()
+    {
+        coroutineExecutor = new CoroutineExecutor(this);
+    }
+
+    #endregion
+
+
+    #region Awake realization
+
     public event Action AwakeInititialized
     {
         add
@@ -20,6 +34,66 @@ public class SuperMonoBehaviour : MonoBehaviour
             OnAwakeInititialize -= value;
         }
     }
+
+    private Action OnAwakeInititialize;
+    private bool IsAwakeInitialized = false;
+
+
+    /// <summary>
+    /// Необходимо использовать данный метод взамен Awake()
+    /// </summary>
+    protected virtual void AwakeWrapped() { }
+
+    private void EndAwakeExecution()
+    {
+        IsAwakeInitialized = true;
+        ExecuteCommandsAndClear(ref OnAwakeInititialize);
+    }
+
+    private void AwakeSuper()
+    {
+        InitializingSuperMonoBehaviour();
+        AwakeWrapped();
+        EndAwakeExecution();
+    }
+
+    private void Awake()
+    {
+        AwakeSuper();
+    }
+
+    #endregion
+
+
+    #region OnEnable realization
+
+    /// <summary>
+    /// Необходимо использовать данный метод взамен OnEnable()
+    /// </summary>
+    protected virtual void OnEnableWrapped() { }
+
+    private void EndOnEnableExecution()
+    {
+        UpdateManager.AllUpdatesSuper.Add(UpdateSuper);
+        UpdateManager.AllFixedUpdatesSuper.Add(FixedUpdateSuper);
+        UpdateManager.AllUpdatesSuper.Add(LateUpdateSuper);
+    }
+
+    private void OnEnableSuper()
+    {
+        OnEnableWrapped();
+        EndOnEnableExecution();
+    }
+
+    private void OnEnable()
+    {
+        OnEnableSuper();
+    }
+
+    #endregion
+
+
+    #region Start realization
 
     public event Action StartInititialized
     {
@@ -35,71 +109,106 @@ public class SuperMonoBehaviour : MonoBehaviour
         }
     }
 
-    private Action OnAwakeInititialize;
-    private bool IsAwakeInitialized = false;
-
     private Action OnStartInititialize;
     private bool IsStartInitialized = false;
 
-    private CoroutineExecutor coroutineExecutor;
 
-
-    /// <summary>
-    /// Необходимо использовать данный метод взамен Awake()
-    /// </summary>
-    protected virtual void AwakeWrapped() { }
     /// <summary>
     /// Необходимо использовать данный метод взамен Start()
     /// </summary>
     protected virtual void StartWrapped() { }
-
-
-    private void Awake()
-    {
-        AwakeSuper();
-    }
-
-
-    private void Start()
-    {
-        StartSuper();
-    }
-
-
-    // Необходимо отдельным классом, который будет контролировать все вызовы, собирать все AwakeSuper() только если был переопределен AwakeWrapped() и вызывать в Awake().
-    private void AwakeSuper()
-    {
-        InitializingSuperMonoBehaviour();
-        AwakeWrapped();
-        EndAwakeExecution();
-    }
-
-    // Необходимо отдельным классом, который будет контролировать все вызовы, собирать все StartSuper() только если был переопределен StartWrapped() и вызывать в Start().
-    private void StartSuper()
-    {
-        StartWrapped();
-        EndStartExecution();
-    }
-
-
-    private void InitializingSuperMonoBehaviour()
-    {
-        coroutineExecutor = new CoroutineExecutor(this);
-    }
-
-
-    private void EndAwakeExecution()
-    {
-        IsAwakeInitialized = true;
-        ExecuteCommandsAndClear(ref OnAwakeInititialize);
-    }
-
 
     private void EndStartExecution()
     {
         IsStartInitialized = true;
         ExecuteCommandsAndClear(ref OnStartInititialize);
     }
+
+    private void StartSuper()
+    {
+        StartWrapped();
+        EndStartExecution();
+    }
+
+    private void Start()
+    {
+        StartSuper();
+    }
+
+    #endregion
+
+
+    #region OnDisable realization
+
+    /// <summary>
+    /// Необходимо использовать данный метод взамен OnEnable()
+    /// </summary>
+    protected virtual void OnDisableWrapped() { }
+
+    private void EndOnDisableExecution()
+    {
+        UpdateManager.AllUpdatesSuper.Remove(UpdateSuper);
+        UpdateManager.AllFixedUpdatesSuper.Remove(FixedUpdateSuper);
+        UpdateManager.AllUpdatesSuper.Remove(LateUpdateSuper);
+    }
+
+    private void OnDisableSuper()
+    {
+        OnDisableWrapped();
+        EndOnDisableExecution();
+    }
+
+    private void OnDisable()
+    {
+        OnDisableSuper();
+    }
+
+    #endregion
+
+
+    #region Update realization
+
+    /// <summary>
+    /// Необходимо использовать данный метод взамен Update()
+    /// </summary>
+    protected virtual void UpdateWrapped() { }
+
+    private void UpdateSuper()
+    {
+        UpdateWrapped();
+    }
+
+    #endregion
+
+
+    #region FixedUpdate realization
+
+    /// <summary>
+    /// Необходимо использовать данный метод взамен FixedUpdate()
+    /// </summary>
+    protected virtual void FixedUpdateWrapped() { }
+
+    private void FixedUpdateSuper()
+    {
+        FixedUpdateWrapped();
+    }
+
+    #endregion
+
+
+    #region LateUpdate realization
+
+    /// <summary>
+    /// Необходимо использовать данный метод взамен LateUpdate()
+    /// </summary>
+    protected virtual void LateUpdateWrapped() { }
+
+    private void LateUpdateSuper()
+    {
+        LateUpdateWrapped();
+    }
+
+    #endregion
 
 
     protected void ExecuteCommandsAndClear(ref Action action)

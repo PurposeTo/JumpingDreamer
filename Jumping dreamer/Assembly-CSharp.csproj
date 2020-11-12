@@ -151,6 +151,7 @@
     <Compile Include="Assets\Scripts\Framework Monobehaviour wrapper\Coroutines\WaitForDone\WaitForDone.cs" />
     <Compile Include="Assets\Scripts\Framework Monobehaviour wrapper\Coroutines\WaitForDone\WaitForDoneRealtime.cs" />
     <Compile Include="Assets\Scripts\Framework Monobehaviour wrapper\SuperMonoBehaviour.cs" />
+    <Compile Include="Assets\Scripts\Framework Monobehaviour wrapper\UpdateManager.cs" />
     <Compile Include="Assets\Scripts\GPGS\GPGSAuthentication.cs" />
     <Compile Include="Assets\Scripts\GPGS\GPGSLeaderboard.cs" />
     <Compile Include="Assets\Scripts\GPGS\GPGSPlayerDataCloudStorage.cs" />
