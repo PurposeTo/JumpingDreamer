@@ -677,6 +677,9 @@
     <Reference Include="Unity.Rider.Editor">
       <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Mobile.AndroidLogcat.Editor">
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.Mobile.AndroidLogcat.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
