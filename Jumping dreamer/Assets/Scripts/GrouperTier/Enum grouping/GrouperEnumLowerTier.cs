@@ -21,11 +21,11 @@ public abstract class GrouperEnumLowerTier<T, U, V> : GrouperEnumDefaultTier<T, 
     }
 
 
-    public bool TryToDownCastTier<U1>(out U1 downcastedTier) where U1 : IGrouperEnumLowerTier<V>
+    public bool TryToDownCastTier<D>(out D downcastedTier) where D : IGrouperEnumLowerTier<V>
     {
         downcastedTier = default;
 
-        if (this is U && this is U1 _downcastableTier)
+        if (this is U && this is D _downcastableTier)
         {
             if (IsBelongToHigherNode(_downcastableTier.ParentTier.Value))
             {
