@@ -26,7 +26,7 @@ public class VerticalMotion : PlatformMovable, IMovable, IPooledObject
     }
 
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         IsInitialized = false;
         direction = 0;
@@ -42,16 +42,14 @@ public class VerticalMotion : PlatformMovable, IMovable, IPooledObject
     }
 
 
-    public PlatformCauseOfDestroyByHight GetPlatformCauseOfDestroyByHight()
+    public PlatformCauseOfDestroyByHight.PlatformCausesOfDestroyByHight GetPlatformCauseOfDestroyByHight()
     {
         switch (direction)
         {
             case 1:
-                return
-                    new PlatformCauseOfDestroyByHight(PlatformCauseOfDestroyByHight.PlatformCausesOfDestroyByHight.TopBorder);
+                return PlatformCauseOfDestroyByHight.PlatformCausesOfDestroyByHight.TopBorder;
             case -1:
-                return
-                    new PlatformCauseOfDestroyByHight(PlatformCauseOfDestroyByHight.PlatformCausesOfDestroyByHight.BottomBorder);
+                return PlatformCauseOfDestroyByHight.PlatformCausesOfDestroyByHight.BottomBorder;
             default:
                 throw new Exception($"{direction} is unknown direction!");
         }

@@ -8,13 +8,10 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
     private readonly float blinkingAnimationSeconds = 1.25f;
 
     private ICoroutineInfo lifeCycleRoutineInfo;
-    private Predicate<float> IsAlive;
+    private Func<bool> IsAliveState;
 
     private PlatformCauseOfDestroyDeterminator platformCauseOfDestroyCreator;
     private float lifeTime = 0f;
-
-    private float checkingParameter = 0f; // Проверяться будет либо от времени, либо от высоты... Задать значение. 
-
 
     protected override void AwakeWrapped()
     {
@@ -55,7 +52,7 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
 
         yield return SetCauseOfDestroy(platformCauseOfDestroy);
 
-        yield return new WaitWhile(() => IsAlive(checkingParameter));
+        yield return new WaitWhile(IsAliveState);
 
         animatorBlinkingController.StartBlinking(false);
     }
@@ -63,28 +60,31 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
 
     private IEnumerator SetCauseOfDestroy(IPlatformCauseOfDestroyConfigs platformCauseOfDestroy)
     {
+        Predicate<float> IsAlive;
+
         switch (platformCauseOfDestroy.ParentTier.Value)
         {
             case PlatformCausesOfDestroy.ByTime:
-                checkingParameter = lifeTime;
 
                 var causeOfDestroyByTime = ((PlatformCauseOfDestroyByTime)platformCauseOfDestroy).Value;
 
                 IsAlive = platformCauseOfDestroyCreator.GetCauseOfDestroyByTime(causeOfDestroyByTime);
+                IsAliveState = () => IsAlive(lifeTime);
 
                 break;
+
+
             case PlatformCausesOfDestroy.ByHight:
+
                 // Проблемы с инициализацией!
-                checkingParameter = GameObjectsHolder.Instance.Centre.GetToCentreMagnitude(transform.position);
+                VerticalMotion verticalMotion = gameObject.GetComponent<VerticalMotion>();
+                // Эту штуку нужно ожидать
+                yield return new WaitUntil(() => verticalMotion.IsInitialized);
 
-                if (gameObject.TryGetComponent(out VerticalMotion verticalMotion))
-                {
-                    // Эту штуку тожно нужно ожидать
-                    yield return new WaitUntil(() => verticalMotion.IsInitialized);
+                // Должно выполняться после VerticalMotion.SetMotionConfigs, тк как будет зависеть от него
+                IsAlive = platformCauseOfDestroyCreator.GetCauseOfDestroyByHight(verticalMotion.GetPlatformCauseOfDestroyByHight());
+                IsAliveState = () => IsAlive(GameObjectsHolder.Instance.Centre.GetToCentreMagnitude(transform.position));
 
-                    // Должно выполняться после VerticalMotion.SetMotionConfigs, тк как будет зависеть от него
-                    IsAlive = platformCauseOfDestroyCreator.GetCauseOfDestroyByHight(verticalMotion.GetPlatformCauseOfDestroyByHight().Value);
-                }
 
                 break;
             default:
