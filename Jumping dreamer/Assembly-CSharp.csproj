@@ -136,6 +136,8 @@
     <Compile Include="Assets\Scripts\AnimatorControllers\Blinking controller\AnimatorBlinkingController.cs" />
     <Compile Include="Assets\Scripts\AnimatorControllers\Blinking controller\AnimatorBlinkingData.cs" />
     <Compile Include="Assets\Scripts\AnimatorControllers\Blinking controller\AnimatorBlinkingInitializingConfigs.cs" />
+    <Compile Include="Assets\Scripts\AnimatorControllers\BlinkingLoop.cs" />
+    <Compile Include="Assets\Scripts\AnimatorControllers\TestAnimationCurve.cs" />
     <Compile Include="Assets\Scripts\Camera\CameraFollow.cs" />
     <Compile Include="Assets\Scripts\Camera\CameraSizeChecker.cs" />
     <Compile Include="Assets\Scripts\Centre\Centre.cs" />

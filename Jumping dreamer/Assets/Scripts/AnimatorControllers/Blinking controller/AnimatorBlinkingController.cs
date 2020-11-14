@@ -67,7 +67,7 @@ public class AnimatorBlinkingController : AnimatorControllerWrapper
 
     public void DisableAlphaColor()
     {
-        animator.SetBool(AnimatorBlinkingData.enableAlphaColor, true);
+        animator.SetBool(AnimatorBlinkingData.disableAlphaColor, true);
     }
 
 

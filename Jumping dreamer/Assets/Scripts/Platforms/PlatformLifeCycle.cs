@@ -11,7 +11,12 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
     private Func<bool> IsAliveState;
 
     private PlatformCauseOfDestroyDeterminator platformCauseOfDestroyCreator;
+
+    // Debug values
     private float lifeTime = 0f;
+    private float hight = 0f;
+    private PlatformCausesOfDestroy causeOfDestroyDebug;
+    private bool isDestroying = false;
 
     protected override void AwakeWrapped()
     {
@@ -25,6 +30,7 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
     void IPooledObject.OnObjectSpawn()
     {
         lifeTime = 0f;
+        hight = 0f;
         platformCauseOfDestroyCreator = new PlatformCauseOfDestroyDeterminator();
 
         animatorBlinkingController.EnableAlphaColor();
@@ -42,6 +48,7 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
     private void Update()
     {
         lifeTime += Time.deltaTime;
+        hight = GameObjectsHolder.Instance.Centre.GetToCentreMagnitude(transform.position);
     }
 
 
@@ -54,13 +61,15 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
 
         yield return new WaitWhile(IsAliveState);
 
-        animatorBlinkingController.StartBlinking(false);
+        animatorBlinkingController.StartBlinking(unscaledTime: false);
     }
 
 
     private IEnumerator SetCauseOfDestroy(IPlatformCauseOfDestroyConfigs platformCauseOfDestroy)
     {
         Predicate<float> IsAlive;
+
+        causeOfDestroyDebug = platformCauseOfDestroy.ParentTier.Value;
 
         switch (platformCauseOfDestroy.ParentTier.Value)
         {
@@ -83,7 +92,7 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
 
                 // Должно выполняться после VerticalMotion.SetMotionConfigs, тк как будет зависеть от него
                 IsAlive = platformCauseOfDestroyCreator.GetCauseOfDestroyByHight(verticalMotion.GetPlatformCauseOfDestroyByHight());
-                IsAliveState = () => IsAlive(GameObjectsHolder.Instance.Centre.GetToCentreMagnitude(transform.position));
+                IsAliveState = () => IsAlive(hight);
 
 
                 break;
@@ -104,5 +113,6 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
     private void DisableObject()
     {
         gameObject.SetActive(false);
+        isDestroying = true;
     }
 }
