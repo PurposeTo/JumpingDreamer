@@ -6,17 +6,16 @@ using UnityEngine;
  * 1. Данный скрипт должен останавливать анимацию и сбрасывать все настройки при выключении объекта.
  * 2. Если объект выключается до того, как анимация закончилась, необходимо кинуть варнинг, что так делать нельзя
  */
-public class BlinkingLoop
+public class BlinkingLoop : AnimationByScript
 {
-    private readonly SuperMonoBehaviour superMonoBehaviour;
+    private readonly ComponentWithColor componentWithColor;
 
-    public BlinkingLoop(SuperMonoBehaviour superMonoBehaviour, SpriteRenderer spriteToBlinking)
+    public BlinkingLoop(SuperMonoBehaviour superMonoBehaviour, ComponentWithColor componentWithColor) : base(superMonoBehaviour)
     {
-        this.superMonoBehaviour = superMonoBehaviour != null ? superMonoBehaviour : throw new System.ArgumentNullException(nameof(superMonoBehaviour));
-        this.spriteToBlinking = spriteToBlinking;
+        this.componentWithColor = componentWithColor != null ? componentWithColor : throw new ArgumentNullException(nameof(componentWithColor));
 
         blinkingLoopInfo = superMonoBehaviour.CreateCoroutineInfo(BlinkingLoopEnumerator());
-        SetAnimationConfigs();
+        SetDefaultAnimationConfigs();
     }
 
     public event Action OnAnimationEnd;
@@ -25,39 +24,19 @@ public class BlinkingLoop
     private AnimationCurve animationCurve;
 
 
-    private SpriteRenderer spriteToBlinking; // Позже заменить, т.к. необходима универсальность как для SpriteRenderer, так и для image/text
 
     #region Настройки данной анимации
     private bool isHasALimitedDuration = false; // Есть ли ограниченная длительность у анимации
-    private float animationDuration = 2f; // Какая длительность у анимации
     private int amountOfLoopsToExit = 1; // Количество повторений анимации
 
     private float lowerAlphaValue = 0.25f; // Нижнее значение альфа-канала при мигании
 
-    private bool unscaledTime = false;
-    private float deltaTime;
-
     #endregion
 
     
-    public void StartAnimation()
+    public override void StartAnimation()
     {
         superMonoBehaviour.ContiniousCoroutineExecution(ref blinkingLoopInfo);
-    }
-
-
-    private void SetAnimationConfigs()
-    {
-        SetDeltaTime(unscaledTime);
-        SetBlinkingAnimationCurve();
-    }
-
-
-    private void SetDeltaTime(bool unscaledTime)
-    {
-        deltaTime = unscaledTime
-            ? Time.unscaledDeltaTime
-            : Time.deltaTime;
     }
 
 
@@ -84,21 +63,14 @@ public class BlinkingLoop
     private bool NeedAnimating(ref float counter)
     {
         float alphaChannel = animationCurve.Evaluate(counter);
-        spriteToBlinking.color = GetColorWithChangedAlphaChannel(spriteToBlinking.color, alphaChannel);
+        componentWithColor.SetChangedAlphaChannelToColor(alphaChannel);
 
-        counter += deltaTime / animationDuration;
+        counter += deltaTime / AnimationDuration;
         return counter < 1f;  // counter от 0 до 1: начало -> конец -> начало кривой   
     }
 
 
-    private Color GetColorWithChangedAlphaChannel(Color color, float newAlphaChannel)
-    {
-        color.a = newAlphaChannel;
-        return color;
-    }
-
-
-    private void SetBlinkingAnimationCurve()
+    private protected override void SetAnimationCurve()
     {
         animationCurve = GetBlinkingAnimationCurve(lowerAlphaValue);
     }
@@ -110,10 +82,14 @@ public class BlinkingLoop
     /// <param name="lowerAlphaValue">Нижнее значение альфа-канала при мигании. От 0 до 1.</param>
     private AnimationCurve GetBlinkingAnimationCurve(float lowerAlphaValue)
     {
-        AnimationCurve curve = new AnimationCurve(new Keyframe(0, 1), new Keyframe(0.5f, lowerAlphaValue))
+        Keyframe firstFrame = new Keyframe(0, 1); // Объект не прозрачный
+        Keyframe secondFrame = new Keyframe(0.5f, lowerAlphaValue); // Объект прозрачный
+        Keyframe thirdFrame = new Keyframe(1, 1); // Объект не прозрачный
+
+        AnimationCurve curve = new AnimationCurve(firstFrame, secondFrame, thirdFrame)
         {
-            preWrapMode = WrapMode.PingPong,
-            postWrapMode = WrapMode.PingPong
+            preWrapMode = WrapMode.Clamp,
+            postWrapMode = WrapMode.Clamp
         };
         return curve;
     }

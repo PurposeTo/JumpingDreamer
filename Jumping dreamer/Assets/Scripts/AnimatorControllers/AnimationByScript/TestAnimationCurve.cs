@@ -11,6 +11,6 @@ public class TestAnimationCurve : SuperMonoBehaviour
     
     protected override void StartWrapped()
     {
-        BlinkingLoop blinkingLoop = new BlinkingLoop(this, gameObject.GetComponent<SpriteRenderer>());
+        //BlinkingLoop blinkingLoop = new BlinkingLoop(this, gameObject.GetComponent<SpriteRenderer>());
     }
 }
