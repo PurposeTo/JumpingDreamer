@@ -9,10 +9,10 @@ public class EnemyGenerator : SuperMonoBehaviour
     private ICoroutineInfo lifeCycleInfo;
 
 
-    private void Start()
+    protected override void StartWrapped()
     {
-        lifeCycleInfo = CreateCoroutineInfo(LifeCycleEnumerator());
-        ContiniousCoroutineExecution(ref lifeCycleInfo);
+        lifeCycleInfo = CreateCoroutineInfo();
+        ContiniousCoroutineExecution(ref lifeCycleInfo, LifeCycleEnumerator());
     }
 
 

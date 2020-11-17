@@ -3,7 +3,8 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 
-public class AnimatorBlinkingController : AnimatorControllerWrapper
+[Obsolete]
+public class AnimatorBlinkingControllerOld : AnimatorControllerWrapperOld
 {
     private readonly AnimatorBlinkingInitializingConfigs animatorBlinkingInitializingConfigs = new AnimatorBlinkingInitializingConfigs();
     private protected override IAnimatorInitializerConfigs AnimatorInitializerConfigs => animatorBlinkingInitializingConfigs;
@@ -20,7 +21,7 @@ public class AnimatorBlinkingController : AnimatorControllerWrapper
     protected override void AwakeWrapped()
     {
         base.AwakeWrapped();
-        stopBlinkingInfo = CreateCoroutineInfo(StopBlinkingEnumerator());
+        stopBlinkingInfo = CreateCoroutineInfo();
     }
 
 
@@ -55,7 +56,7 @@ public class AnimatorBlinkingController : AnimatorControllerWrapper
 
     public void StopBlinking()
     {
-        ContiniousCoroutineExecution(ref stopBlinkingInfo);
+        ContiniousCoroutineExecution(ref stopBlinkingInfo, StopBlinkingEnumerator());
     }
 
 

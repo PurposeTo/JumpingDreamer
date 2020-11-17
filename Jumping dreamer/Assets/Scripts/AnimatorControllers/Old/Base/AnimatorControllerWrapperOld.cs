@@ -3,7 +3,7 @@
 //Должен быть SuperMonoBehaviour, так как аниматор не работает с выключеным объектом! (Можно ошибиться при работе с аниматором извне)
 
 [RequireComponent(typeof(Animator))]
-public abstract class AnimatorControllerWrapper : SuperMonoBehaviour
+public abstract class AnimatorControllerWrapperOld : SuperMonoBehaviour
 {
     private protected Animator animator;
     private protected virtual IAnimatorInitializerConfigs AnimatorInitializerConfigs { get; set; }

@@ -2,10 +2,11 @@
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
 public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
 {
-    private protected AnimatorBlinkingController animatorBlinkingController;
-    private readonly float blinkingAnimationSeconds = 1.25f;
+    private FadeAnimator fadeAnimator;
+    private BlinkingLoopAnimator blinkingLoopAnimator;
 
     private ICoroutineInfo lifeCycleRoutineInfo;
     private Func<bool> IsAliveState;
@@ -15,33 +16,20 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
     // Debug values
     private float lifeTime = 0f;
     private float hight = 0f;
-    private PlatformCausesOfDestroy causeOfDestroyDebug;
-    private bool isDestroying = false;
 
     protected override void AwakeWrapped()
     {
-        lifeCycleRoutineInfo = CreateCoroutineInfo(LifeCycleEnumerator());
-        animatorBlinkingController = GetComponent<AnimatorBlinkingController>();
-        SetAnimationConfings();
-        animatorBlinkingController.OnDisableBlinking += DisableObject;
+        fadeAnimator = new FadeAnimator(this, gameObject.GetComponent<SpriteRendererContainer>());
+        blinkingLoopAnimator = new BlinkingLoopAnimator(this, gameObject.GetComponent<SpriteRendererContainer>());
+
+        lifeCycleRoutineInfo = CreateCoroutineInfo();
     }
 
 
     void IPooledObject.OnObjectSpawn()
     {
-        lifeTime = 0f;
-        hight = 0f;
         platformCauseOfDestroyCreator = new PlatformCauseOfDestroyDeterminator();
-
-        animatorBlinkingController.EnableAlphaColor();
-
-        ContiniousCoroutineExecution(ref lifeCycleRoutineInfo);
-    }
-
-
-    private void OnDestroy()
-    {
-        animatorBlinkingController.OnDisableBlinking -= DisableObject;
+        ContiniousCoroutineExecution(ref lifeCycleRoutineInfo, LifeCycleEnumerator());
     }
 
 
@@ -54,6 +42,10 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
 
     private IEnumerator LifeCycleEnumerator()
     {
+        fadeAnimator.SetFadeState(FadeAnimator.FadeState.fadeIn);
+        fadeAnimator.StartAnimation();
+        yield return new WaitWhile(() => fadeAnimator.IsExecuting);
+
         // Проблемы с инициализацией!
         IPlatformCauseOfDestroyConfigs platformCauseOfDestroy = WorldGenerationRulesController.Instance.PlatformGeneratorPresenter.PlatformGeneratorConfigs.PlatformConfigs.CauseOfDestroy;
 
@@ -61,15 +53,24 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
 
         yield return new WaitWhile(IsAliveState);
 
-        animatorBlinkingController.StartBlinking(unscaledTime: false);
+        // Todo: внести в blinkingLoopAnimator -> параметры по умолчанию.
+        blinkingLoopAnimator.SetAnimationDuration(1f);
+        blinkingLoopAnimator.SetLowerAlphaValue(0.25f);
+        blinkingLoopAnimator.SetLoopsCount(3);
+        blinkingLoopAnimator.StartAnimation();
+        yield return new WaitWhile(() => blinkingLoopAnimator.IsExecuting);
+
+        fadeAnimator.SetFadeState(FadeAnimator.FadeState.fadeOut);
+        fadeAnimator.StartAnimation();
+        yield return new WaitWhile(() => fadeAnimator.IsExecuting);
+
+        DisableObject();
     }
 
 
     private IEnumerator SetCauseOfDestroy(IPlatformCauseOfDestroyConfigs platformCauseOfDestroy)
     {
         Predicate<float> IsAlive;
-
-        causeOfDestroyDebug = platformCauseOfDestroy.ParentTier.Value;
 
         switch (platformCauseOfDestroy.ParentTier.Value)
         {
@@ -102,17 +103,8 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
     }
 
 
-    private void SetAnimationConfings()
-    {
-        animatorBlinkingController.SetBlinkingAnimationSpeed(blinkingAnimationSeconds);
-        animatorBlinkingController.SetAnimationDuration(AnimatorBlinkingController.DurationType.Loops, 3);
-        animatorBlinkingController.SetManualControl(manualControlEnableState: true, manualControlDisableState: false);
-    }
-
-
     private void DisableObject()
     {
         gameObject.SetActive(false);
-        isDestroying = true;
     }
 }

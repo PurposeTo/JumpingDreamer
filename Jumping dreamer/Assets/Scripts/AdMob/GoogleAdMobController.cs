@@ -28,8 +28,8 @@ public class GoogleAdMobController : SingletonSuperMonoBehaviour<GoogleAdMobCont
 
     protected override void AwakeSingleton()
     {
-        waitForRewardedAdAnsweringInfo = CreateCoroutineInfo(WaitForRewardedAdAnsweringEnumerator());
-        checkInternetConnectionAndShowAdInfo = CreateCoroutineInfo(CheckInternetConnectionAndShowAd());
+        waitForRewardedAdAnsweringInfo = CreateCoroutineInfo();
+        checkInternetConnectionAndShowAdInfo = CreateCoroutineInfo();
 
         commandQueueHandler = gameObject.GetComponent<CommandQueueMainThreadExecutor>();
         rewardedAdLoader = new RewardedAdLoader(this, commandQueueHandler);
@@ -95,7 +95,7 @@ public class GoogleAdMobController : SingletonSuperMonoBehaviour<GoogleAdMobCont
 
         if (isAdWasReallyLoaded)
         {
-            ContiniousCoroutineExecution(ref checkInternetConnectionAndShowAdInfo);
+            ContiniousCoroutineExecution(ref checkInternetConnectionAndShowAdInfo, CheckInternetConnectionAndShowAd());
         }
     }
 
@@ -108,7 +108,7 @@ public class GoogleAdMobController : SingletonSuperMonoBehaviour<GoogleAdMobCont
         {
             if (isInternetAvaliable)
             {
-                ContiniousCoroutineExecution(ref waitForRewardedAdAnsweringInfo);
+                ContiniousCoroutineExecution(ref waitForRewardedAdAnsweringInfo, WaitForRewardedAdAnsweringEnumerator());
                 rewardedAdLoader.Show();
             }
             else

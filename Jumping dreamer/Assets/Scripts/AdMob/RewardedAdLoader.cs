@@ -13,7 +13,7 @@ public class RewardedAdLoader : IRewardedAdLoader
         this.commandQueueHandler = commandQueueHandler != null ? commandQueueHandler : throw new ArgumentNullException(nameof(commandQueueHandler));
         this.superMonoBehaviour = superMonoBehaviour != null ? superMonoBehaviour : throw new ArgumentNullException(nameof(superMonoBehaviour));
 
-        tryToReLoadAdInfo = superMonoBehaviour.CreateCoroutineInfo(TryToReLoadAdEnumerator());
+        tryToReLoadAdInfo = superMonoBehaviour.CreateCoroutineInfo();
         CreateNewRewardedAd();
     }
 
@@ -117,7 +117,7 @@ public class RewardedAdLoader : IRewardedAdLoader
     }
 
 
-    private void TryToReLoadAd() => superMonoBehaviour.ContiniousCoroutineExecution(ref tryToReLoadAdInfo);
+    private void TryToReLoadAd() => superMonoBehaviour.ContiniousCoroutineExecution(ref tryToReLoadAdInfo, TryToReLoadAdEnumerator());
 
 
     private IEnumerator TryToReLoadAdEnumerator()

@@ -44,7 +44,7 @@ public class PlatformGeneratorConfigs
 
         if (platformConfigs.CauseOfDestroy is PlatformCauseOfDestroyByTime platformCauseOfDestroyConfigsByTime && platformCauseOfDestroyConfigsByTime.Value == PlatformCauseOfDestroyByTime.PlatformCausesOfDestroyByTime.NoLifeTime)
         {
-            delay -= 0.195f;
+            delay -= 0.21f;
         }
 
         return delay;

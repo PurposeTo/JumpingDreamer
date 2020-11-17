@@ -26,7 +26,7 @@ public class LocalizationManager : SingletonSuperMonoBehaviour<LocalizationManag
         PlayerSettingsStorage.InitializedInstance += (Instance) =>
         {
             SetLanguageSettings(Instance.PlayerSettings);
-            loadLocalizedTextInfo = CreateCoroutineInfo(LoadLocalizedTextEnumerator());
+            loadLocalizedTextInfo = CreateCoroutineInfo();
             LoadLocalizedText();
         };
     }
@@ -85,7 +85,7 @@ public class LocalizationManager : SingletonSuperMonoBehaviour<LocalizationManag
 
     public void LoadLocalizedText()
     {
-        ContiniousCoroutineExecution(ref loadLocalizedTextInfo);
+        ContiniousCoroutineExecution(ref loadLocalizedTextInfo, LoadLocalizedTextEnumerator());
     }
 
 

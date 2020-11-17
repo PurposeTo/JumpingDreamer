@@ -7,7 +7,7 @@ public interface ICoroutineInfo
     IEnumerator Enumerator { get; }
     bool IsExecuting { get; }
 
-    Action OnCoroutineAlredyStarted { get; set; }
+    Action OnCoroutineAlreadyStarted { get; set; }
     Action OnStopCoroutine { get; set; }
-    Action OnCoroutineIsAlredyStopped { get; set; }
+    Action OnCoroutineIsAlreadyStopped { get; set; }
 }

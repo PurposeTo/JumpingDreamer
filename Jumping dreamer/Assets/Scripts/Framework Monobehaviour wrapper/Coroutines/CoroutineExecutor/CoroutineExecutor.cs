@@ -18,23 +18,16 @@ public class CoroutineExecutor
 
     public ICoroutineInfo CreateCoroutineInfo()
     {
-        return CreateCoroutineInfo(null);
+        return new CoroutineWithData();
     }
 
-
-    public ICoroutineInfo CreateCoroutineInfo(IEnumerator enumerator)
-    {
-        CoroutineWithData coroutineWithData = new CoroutineWithData(enumerator);
-
-        return coroutineWithData;
-    }
 
     /// <summary>
     /// Запускает корутину в том случае, если она НЕ выполняется в данный момент.
     /// </summary>
     /// <param name="enumerator">Позволяет запустить другой IEnumerator</param>
     /// <returns></returns>
-    public void ContiniousCoroutineExecution(ref ICoroutineInfo coroutineInfo, IEnumerator enumerator)
+    public void ExecuteCoroutineContinuously(ref ICoroutineInfo coroutineInfo, IEnumerator enumerator)
     {
         if (coroutineInfo is null) throw new ArgumentNullException(nameof(coroutineInfo));
         if (enumerator is null) throw new ArgumentNullException(nameof(enumerator));
@@ -42,25 +35,11 @@ public class CoroutineExecutor
         CoroutineWithData coroutineWithData = (CoroutineWithData)coroutineInfo;
         coroutineWithData.SetEnumerator(enumerator);
 
-        ContiniousCoroutineExecution(ref coroutineInfo);
-    }
-
-
-    /// <summary>
-    /// Запускает корутину в том случае, если она НЕ выполняется в данный момент.
-    /// </summary>
-    /// <returns></returns>
-    public void ContiniousCoroutineExecution(ref ICoroutineInfo coroutineInfo)
-    {
-        if (coroutineInfo is null) throw new ArgumentNullException(nameof(coroutineInfo));
-
-        CoroutineWithData coroutineWithData = (CoroutineWithData)coroutineInfo;
-
         if (!coroutineWithData.IsExecuting)
         {
             StartNewCoroutine(coroutineWithData);
         }
-        else coroutineWithData.OnCoroutineAlredyStarted?.Invoke();
+        else coroutineWithData.OnCoroutineAlreadyStarted?.Invoke();
     }
 
 
@@ -75,18 +54,6 @@ public class CoroutineExecutor
 
         CoroutineWithData coroutineWithData = (CoroutineWithData)coroutineInfo;
         coroutineWithData.SetEnumerator(enumerator);
-
-        ReStartCoroutineExecution(ref coroutineInfo);
-    }
-
-
-    /// <summary>
-    /// Перед запуском корутины останавливает её, если она выполнялась на данный момент.
-    /// </summary>
-    /// <returns></returns>
-    public void ReStartCoroutineExecution(ref ICoroutineInfo coroutineInfo)
-    {
-        if (coroutineInfo is null) throw new ArgumentNullException(nameof(coroutineInfo));
 
         if (coroutineInfo.IsExecuting) BreakCoroutine(ref coroutineInfo);
 
@@ -110,7 +77,7 @@ public class CoroutineExecutor
 
             coroutineWithData.SetNullToCoroutine();
         }
-        else coroutineWithData.OnCoroutineIsAlredyStopped?.Invoke();
+        else coroutineWithData.OnCoroutineIsAlreadyStopped?.Invoke();
 
         coroutineWithData.OnStopCoroutine?.Invoke();
     }
@@ -131,17 +98,11 @@ public class CoroutineExecutor
 
     private class CoroutineWithData : ICoroutineInfo
     {
+        public CoroutineWithData() { }
+
         public IEnumerator Enumerator { get; private set; } = null;
         public Coroutine Coroutine { get; private set; } = null;
         public bool IsExecuting => Coroutine != null;
-
-
-        public CoroutineWithData() : this(null) { }
-
-        public CoroutineWithData(IEnumerator enumerator)
-        {
-            Enumerator = enumerator;
-        }
 
 
         public void SetNewCoroutine(Coroutine coroutine)
@@ -157,10 +118,10 @@ public class CoroutineExecutor
 
 
         /// <summary>
-        /// Выполняется во время выполнении метода ContiniousCoroutineExecution, 
+        /// Выполняется во время выполнении метода ExecuteCoroutineContinuously, 
         /// в случае, если корутина уже была запущена.
         /// </summary>
-        public Action OnCoroutineAlredyStarted { get; set; } = null;
+        public Action OnCoroutineAlreadyStarted { get; set; } = null;
         /// <summary>
         /// Выполняется во время выполнении метода BreakCoroutine,
         /// после остановки корутины.
@@ -170,7 +131,7 @@ public class CoroutineExecutor
         /// Выполняется во время выполнении метода BreakCoroutine,
         /// в случае, если корутина УЖЕ была остановлена.
         /// </summary>
-        public Action OnCoroutineIsAlredyStopped { get; set; } = null;
+        public Action OnCoroutineIsAlreadyStopped { get; set; } = null;
 
 
         public void SetNullToCoroutine() => Coroutine = null;
