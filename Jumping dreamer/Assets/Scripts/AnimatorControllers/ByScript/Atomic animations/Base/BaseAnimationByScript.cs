@@ -70,14 +70,8 @@ public abstract class BaseAnimationByScript : SuperMonoBehaviourContainer
     /// </summary>
     private void CheckForGameObjectActive(Action onGameObjectActive)
     {
-        if (superMonoBehaviour.gameObject.activeInHierarchy)
-        {
-            onGameObjectActive?.Invoke();
-        }
-        else
-        {
-            Debug.LogWarning($"You can't change animation creating parameters in inactive gameObject!");
-        }
+        if (superMonoBehaviour.gameObject.activeInHierarchy) onGameObjectActive?.Invoke();
+        else Debug.LogWarning($"You can't change animation creating parameters in inactive gameObject!");
     }
 
 

@@ -50,15 +50,21 @@ public class TrainingTutorial : SuperMonoBehaviour
         {
             return new AnimatorByScript<FadeAnimation>[]
             {
-                new AnimatorByScript<FadeAnimation>(new FadeAnimation(this, trainingTip.GetTrainingTipObject().GetComponent<ImageRendererContainer>()), this),
-                new AnimatorByScript<FadeAnimation>(new FadeAnimation(this, trainingTip.GetTrainingTextObject().GetComponent<TMProRendererContainer>()), this),
+                new AnimatorByScript<FadeAnimation>(
+                    new FadeAnimation(this, trainingTip.GetTrainingTipObject().GetComponent<ImageRendererContainer>()),
+                    this),
 
+                new AnimatorByScript<FadeAnimation>(
+                    new FadeAnimation(this, trainingTip.GetTrainingTextObject().GetComponent<TMProRendererContainer>()),
+                    this),
             };
         }).ToArray();
 
         blinkingLoopAnimators = trainingTips.Select(trainingTip =>
         {
-            return new AnimatorByScript<BlinkingLoopAnimation>(new BlinkingLoopAnimation(this, trainingTip.GetTrainingTipObject().GetComponent<ImageRendererContainer>()), this);
+            return new AnimatorByScript<BlinkingLoopAnimation>(
+                new BlinkingLoopAnimation(this, trainingTip.GetTrainingTipObject().GetComponent<ImageRendererContainer>()),
+                this);
         }).ToArray();
     }
 
