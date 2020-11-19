@@ -3,8 +3,14 @@ using System.Collections;
 using UnityEngine;
 
 /*
- * 1. Данный скрипт должен останавливать анимацию и сбрасывать все настройки при выключении объекта.
- * 2. Если объект выключается до того, как анимация закончилась, необходимо кинуть варнинг, что так делать нельзя
+ * Анимация имеет:
+ * Настройки
+ *  - это...
+ * Параметры выполнения
+ *  - это поля, используемые во время выполнения анимации.
+ * Параметры создания
+ *  - это поля, используемые для создания анимации / анимационной кривой
+ * 
  */
 
 /// <summary>
@@ -12,12 +18,11 @@ using UnityEngine;
 /// </summary>
 public abstract class AnimationByScript : SuperMonoBehaviourContainer, IAnimationExecutable
 {
-    protected AnimationByScript(SuperMonoBehaviour superMonoBehaviour)
-        : base(superMonoBehaviour)
+    protected AnimationByScript(SuperMonoBehaviour superMonoBehaviour) : base(superMonoBehaviour)
     {
         animationInfo = superMonoBehaviour.CreateCoroutineInfo();
-        SetDefaultAnimationConfigs();
-        SetDefaultAnimationParameters();
+        SetBaseDefaultAnimationCreatingParameters();
+        SetBaseDefaultAnimationExecutionParameters();
         SetCommandsOnSwitchingActiveStateGameObject();
     }
 
@@ -31,25 +36,21 @@ public abstract class AnimationByScript : SuperMonoBehaviourContainer, IAnimatio
     /// </summary>
     public bool IsExecuting => animationInfo.IsExecuting;
 
-    #region Настройки анимации
+    #region Параметры выполнения анимации
     protected bool unscaledTime = false;
-    protected float deltaTime;
-
-    #endregion
-
-
-    #region Параметры анимации
+    protected Func<float> GetDeltaTime;
     protected virtual float AnimationDuration { get; set; } = 1f; // Какая длительность у анимации? По умолчанию 1 сек?..
 
     #endregion
 
-    protected AnimationCurve animationCurve;
+    protected AnimationCurve AnimationCurve { get; private set; }
 
     private ICoroutineInfo animationInfo;
 
+
     public void StartAnimation()
     {
-        superMonoBehaviour.ContiniousCoroutineExecution(ref animationInfo, AnimationEnumeratorSuper());
+        superMonoBehaviour.ExecuteCoroutineContinuously(ref animationInfo, AnimationEnumeratorSuper());
     }
 
 
@@ -58,41 +59,121 @@ public abstract class AnimationByScript : SuperMonoBehaviourContainer, IAnimatio
         superMonoBehaviour.BreakCoroutine(ref animationInfo);
     }
 
-    public virtual void SetDefaultAnimationConfigs()
+
+    public void SetAnimationDuration(float animationDuration)
     {
-        SetTimeScaled(unscaledTime);
-        SetAnimationCurve();
+        ChangeAnimationExecutionParameters(() => AnimationDuration = animationDuration);
     }
-
-    public abstract void SetDefaultAnimationParameters();
-
-
-    public void SetAnimationDuration(float animationDuration) => AnimationDuration = animationDuration;
 
 
     public void SetTimeScaled(bool unscaledTime)
     {
-        this.unscaledTime = unscaledTime;
+        ChangeAnimationExecutionParameters(() =>
+        {
+            this.unscaledTime = unscaledTime;
+            if (unscaledTime) GetDeltaTime = () => Time.unscaledDeltaTime;
+            else GetDeltaTime = () => Time.deltaTime;
+        });
+    }
 
-        deltaTime = unscaledTime
-            ? Time.unscaledDeltaTime
-            : Time.deltaTime;
+
+    /// <summary>
+    /// Вызывается при создании объекта.
+    /// Метод для установки параметров создания анимации по умолчанию.
+    /// После выполнения данного метода произойдет инициализация анимационной кривой, поэтому параметры можно задавать напрямую, 
+    /// без использования ChangeAnimationCreatingParameters.
+    /// </summary>
+    protected virtual void SetDefaultAnimationCreatingParameters() { }
+
+    /// <summary>
+    /// Вызывается при создании объекта.
+    /// Метод для установки параметров выполнения анимации по умолчанию.
+    /// Вместе с данным методом произойдет инициализация DeltaTime (unscaled or not)
+    /// </summary>
+    protected virtual void SetDefaultAnimationExecutionParameters() { }
+
+
+    /// <summary>
+    /// Метод для изменения параметров выполнения анимации
+    /// Использует проверку на активность игрового объекта.
+    /// </summary>
+    /// <param name="changeAnimationExecutionParameters"></param>
+    protected void ChangeAnimationExecutionParameters(Action changeAnimationExecutionParameters)
+    {
+        CheckForGameObjectActive(() =>
+        {
+            changeAnimationExecutionParameters?.Invoke();
+        });
+    }
+
+    /// <summary>
+    /// Метод для изменения параметров создания анимации. В конце выполнения заново проинициализирует анимационную кривую.
+    /// Использует проверку на активность игрового объекта.
+    /// </summary>
+    /// <param name="changeAnimationCreatingParameters">Методы, изменяющие параметры создания анимации.</param>
+    protected void ChangeAnimationCreatingParameters(Action changeAnimationCreatingParameters)
+    {
+        CheckForGameObjectActive(() =>
+        {
+            changeAnimationCreatingParameters?.Invoke();
+            SetAnimationCurve(GetAnimationCurve);
+        });
+    }
+
+
+    protected abstract AnimationCurve GetAnimationCurve();
+
+
+    protected abstract IEnumerator AnimationEnumerator();
+
+
+    private void SetBaseDefaultAnimationCreatingParameters()
+    {
+        SetDefaultAnimationCreatingParameters();
+        SetAnimationCurve(GetAnimationCurve);
+    }
+
+
+    private void SetBaseDefaultAnimationExecutionParameters()
+    {
+        SetTimeScaled(unscaledTime);
+        SetDefaultAnimationExecutionParameters();
+    }
+
+
+    /// <summary>
+    /// Метод для проверки - активен ли игровой объект.
+    /// Идея такова, что на неактивном игровом объекте нельзя изменить параметры анимации, так как они сменятся на дефолтные при включении.
+    /// </summary>
+    private void CheckForGameObjectActive(Action onGameObjectActive)
+    {
+        if (superMonoBehaviour.gameObject.activeInHierarchy)
+        {
+            onGameObjectActive?.Invoke();
+        }
+        else
+        {
+            Debug.LogWarning($"You can't change animation creating parameters in inactive gameObject!");
+        }
     }
 
 
     private void SetCommandsOnSwitchingActiveStateGameObject()
     {
         // При включении необходимо установить параметры анимации по умолчанию, которые были созданы при создании данного объекта.
-        //superMonoBehaviour.OnEnabling += () => SetDefaultAnimationParameters();
+        // Так же, необходимо установить в значения по умолчанию те параметры, которые анимация изменяла...
+        superMonoBehaviour.OnEnabling += SetBaseDefaultAnimationExecutionParameters;
 
 
-        // При выключении необходимо проверить, работает ли анимация. Если да, то кинуть варнинг.
-        //superMonoBehaviour.OnDisabling += () => 
-        //if (animationInfo.IsExecuting)
-        //{
-        //    superMonoBehaviour.BreakCoroutine(ref animationInfo);
-        //    Debug.LogWarning($"{nameof(superMonoBehaviour)} is disabling, but {this.GetType()} is executing! Breaking the animation...");
-        //}
+        //При выключении необходимо проверить, работает ли анимация. Если да, то кинуть варнинг.
+        superMonoBehaviour.OnDisabling += () =>
+        {
+            if (animationInfo.IsExecuting)
+            {
+                superMonoBehaviour.BreakCoroutine(ref animationInfo);
+                Debug.Log($"{superMonoBehaviour} is disabling, but {GetType()} is executing! Breaking the animation...");
+            }
+        };
     }
 
 
@@ -102,9 +183,11 @@ public abstract class AnimationByScript : SuperMonoBehaviourContainer, IAnimatio
         OnAnimationEnd?.Invoke();
     }
 
-    protected abstract IEnumerator AnimationEnumerator();
 
-    protected abstract void SetAnimationCurve();
+    private void SetAnimationCurve(Func<AnimationCurve> GetAnimationCurve)
+    {
+        AnimationCurve = GetAnimationCurve();
+    }
 }
 
 

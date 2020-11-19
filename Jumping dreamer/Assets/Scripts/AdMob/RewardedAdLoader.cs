@@ -117,7 +117,7 @@ public class RewardedAdLoader : IRewardedAdLoader
     }
 
 
-    private void TryToReLoadAd() => superMonoBehaviour.ContiniousCoroutineExecution(ref tryToReLoadAdInfo, TryToReLoadAdEnumerator());
+    private void TryToReLoadAd() => superMonoBehaviour.ExecuteCoroutineContinuously(ref tryToReLoadAdInfo, TryToReLoadAdEnumerator());
 
 
     private IEnumerator TryToReLoadAdEnumerator()

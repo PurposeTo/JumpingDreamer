@@ -21,12 +21,18 @@ public class BlinkingLoopAnimator : AnimationByScript
 
     #endregion
 
-    public override void SetDefaultAnimationParameters()
+
+    protected override void SetDefaultAnimationCreatingParameters()
+    {
+        lowerAlphaValue = 0.25f;
+    }
+
+
+    protected override void SetDefaultAnimationExecutionParameters()
     {
         isHasALimitedDuration = false;
         amountOfLoopsToExit = 1;
         AnimationDuration = 2f;
-        SetLowerAlphaValue(0.25f);
     }
 
 
@@ -35,14 +41,20 @@ public class BlinkingLoopAnimator : AnimationByScript
     /// </summary>
     public void SetLoopsCount(int loopsCount)
     {
-        isHasALimitedDuration = true;
-        amountOfLoopsToExit = loopsCount;
+        ChangeAnimationExecutionParameters(() =>
+        {
+            isHasALimitedDuration = true;
+            amountOfLoopsToExit = loopsCount;
+        });
     }
 
     public void SetInfiniteNumberOfLoops()
     {
-        isHasALimitedDuration = false;
-        amountOfLoopsToExit = 1;
+        ChangeAnimationExecutionParameters(() =>
+        {
+            isHasALimitedDuration = false;
+            amountOfLoopsToExit = 1;
+        });
     }
 
 
@@ -52,9 +64,12 @@ public class BlinkingLoopAnimator : AnimationByScript
     /// <param name="lowerAlphaValue"></param>
     public void SetLowerAlphaValue(float lowerAlphaValue)
     {
-        this.lowerAlphaValue = lowerAlphaValue;
-        SetAnimationCurve();
+        ChangeAnimationCreatingParameters(() => this.lowerAlphaValue = lowerAlphaValue);
     }
+
+
+    protected override AnimationCurve GetAnimationCurve() => GetBlinkingAnimationCurve(lowerAlphaValue);
+
 
     protected override IEnumerator AnimationEnumerator()
     {
@@ -76,17 +91,12 @@ public class BlinkingLoopAnimator : AnimationByScript
     /// <returns></returns>
     private bool NeedAnimating(ref float counter)
     {
-        float alphaChannel = animationCurve.Evaluate(counter);
+        float alphaChannel = AnimationCurve.Evaluate(counter);
         componentWithColor.SetChangedAlphaChannelToColor(alphaChannel);
 
-        counter += deltaTime / AnimationDuration;
+        counter += GetDeltaTime() / AnimationDuration;
+
         return counter < 1f;  // counter от 0 до 1: начало -> конец -> начало кривой   
-    }
-
-
-    protected override void SetAnimationCurve()
-    {
-        animationCurve = GetBlinkingAnimationCurve(lowerAlphaValue);
     }
 
 

@@ -95,7 +95,7 @@ public class GoogleAdMobController : SingletonSuperMonoBehaviour<GoogleAdMobCont
 
         if (isAdWasReallyLoaded)
         {
-            ContiniousCoroutineExecution(ref checkInternetConnectionAndShowAdInfo, CheckInternetConnectionAndShowAd());
+            ExecuteCoroutineContinuously(ref checkInternetConnectionAndShowAdInfo, CheckInternetConnectionAndShowAd());
         }
     }
 
@@ -108,7 +108,7 @@ public class GoogleAdMobController : SingletonSuperMonoBehaviour<GoogleAdMobCont
         {
             if (isInternetAvaliable)
             {
-                ContiniousCoroutineExecution(ref waitForRewardedAdAnsweringInfo, WaitForRewardedAdAnsweringEnumerator());
+                ExecuteCoroutineContinuously(ref waitForRewardedAdAnsweringInfo, WaitForRewardedAdAnsweringEnumerator());
                 rewardedAdLoader.Show();
             }
             else

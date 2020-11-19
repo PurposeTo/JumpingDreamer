@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-public abstract class ComponentWithColor : MonoBehaviour
+public abstract class ComponentWithColor : SuperMonoBehaviour
 {
-    public abstract void ChangeColor(Color color);
+    public abstract void SetColor(Color color);
 
     public abstract Color GetColor();
 
@@ -11,6 +12,6 @@ public abstract class ComponentWithColor : MonoBehaviour
     {
         Color cashedColor = GetColor();
         cashedColor.a = newAlphaChannel;
-        ChangeColor(cashedColor);
+        SetColor(cashedColor);
     }
 }

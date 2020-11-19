@@ -12,7 +12,7 @@ public class ImageRendererContainer : ComponentWithColor
     }
 
 
-    public override void ChangeColor(Color color)
+    public override void SetColor(Color color)
     {
         image.color = color;
     }

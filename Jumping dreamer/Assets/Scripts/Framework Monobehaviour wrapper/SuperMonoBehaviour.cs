@@ -67,6 +67,8 @@ public class SuperMonoBehaviour : MonoBehaviour
 
     #region OnEnable realization
 
+    public event Action OnEnabling;
+
     /// <summary>
     /// Необходимо использовать данный метод взамен OnEnable()
     /// </summary>
@@ -77,6 +79,7 @@ public class SuperMonoBehaviour : MonoBehaviour
         UpdateManager.AllUpdatesSuper.Add(UpdateSuper);
         UpdateManager.AllFixedUpdatesSuper.Add(FixedUpdateSuper);
         UpdateManager.AllUpdatesSuper.Add(LateUpdateSuper);
+        OnEnabling?.Invoke();
     }
 
     private void OnEnableSuper()
@@ -140,6 +143,8 @@ public class SuperMonoBehaviour : MonoBehaviour
 
     #region OnDisable realization
 
+    public event Action OnDisabling;
+
     /// <summary>
     /// Необходимо использовать данный метод взамен OnEnable()
     /// </summary>
@@ -150,6 +155,7 @@ public class SuperMonoBehaviour : MonoBehaviour
         UpdateManager.AllUpdatesSuper.Remove(UpdateSuper);
         UpdateManager.AllFixedUpdatesSuper.Remove(FixedUpdateSuper);
         UpdateManager.AllUpdatesSuper.Remove(LateUpdateSuper);
+        OnDisabling?.Invoke();
     }
 
     private void OnDisableSuper()
@@ -234,9 +240,21 @@ public class SuperMonoBehaviour : MonoBehaviour
     /// </summary>
     /// <param name="enumerator">Позволяет запустить другой IEnumerator</param>
     /// <returns></returns>
-    public void ContiniousCoroutineExecution(ref ICoroutineInfo coroutineInfo, IEnumerator enumerator)
+    public void ExecuteCoroutineContinuously(ref ICoroutineInfo coroutineInfo, IEnumerator enumerator)
     {
         coroutineExecutor.ExecuteCoroutineContinuously(ref coroutineInfo, enumerator);
+    }
+
+
+    /// <summary>
+    /// Запускает корутину в том случае, если она НЕ выполняется в данный момент.
+    /// В конце выполнения выключит игровой объект, из которого данная корутина была запущена.
+    /// </summary>
+    /// <param name="enumerator">IEnumerator для выполнения</param>
+    /// <returns></returns>
+    public void ExecuteCoroutineContinuouslyDisablingGameObject(ref ICoroutineInfo coroutineInfo, IEnumerator enumerator)
+    {
+        coroutineExecutor.ExecuteCoroutineContinuouslyDisablingGameObject(ref coroutineInfo, enumerator);
     }
 
 
@@ -248,6 +266,18 @@ public class SuperMonoBehaviour : MonoBehaviour
     public void ReStartCoroutineExecution(ref ICoroutineInfo coroutineInfo, IEnumerator enumerator)
     {
         coroutineExecutor.ReStartCoroutineExecution(ref coroutineInfo, enumerator);
+    }
+
+
+    /// <summary>
+    /// Перед запуском корутины останавливает её, если она выполнялась на данный момент.
+    /// В конце выполнения выключит игровой объект, из которого данная корутина была запущена.
+    /// </summary>
+    /// <param name="enumerator">IEnumerator для выполнения</param>
+    /// <returns></returns>
+    public void ReStartCoroutineExecutionDisablingGameObject(ref ICoroutineInfo coroutineInfo, IEnumerator enumerator)
+    {
+        coroutineExecutor.ReStartCoroutineExecutionDisablingGameObject(ref coroutineInfo, enumerator);
     }
 
 

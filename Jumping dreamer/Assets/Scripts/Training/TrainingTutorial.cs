@@ -32,7 +32,7 @@ public class TrainingTutorial : SuperMonoBehaviour
 
         if (IsTutorialNeedsToBeShown())
         {
-            ContiniousCoroutineExecution(ref CheckingIfTutorialNeedsToBeShownRoutineInfo,
+            ExecuteCoroutineContinuously(ref CheckingIfTutorialNeedsToBeShownRoutineInfo,
                 CheckingIfTutorialNeedsToBeShownEnumerator(shouldStartByShowingTheTutorial));
         }
     }

@@ -85,7 +85,7 @@ public class LocalizationManager : SingletonSuperMonoBehaviour<LocalizationManag
 
     public void LoadLocalizedText()
     {
-        ContiniousCoroutineExecution(ref loadLocalizedTextInfo, LoadLocalizedTextEnumerator());
+        ExecuteCoroutineContinuously(ref loadLocalizedTextInfo, LoadLocalizedTextEnumerator());
     }
 
 

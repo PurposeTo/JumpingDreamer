@@ -12,7 +12,7 @@ public class EnemyGenerator : SuperMonoBehaviour
     protected override void StartWrapped()
     {
         lifeCycleInfo = CreateCoroutineInfo();
-        ContiniousCoroutineExecution(ref lifeCycleInfo, LifeCycleEnumerator());
+        ExecuteCoroutineContinuously(ref lifeCycleInfo, LifeCycleEnumerator());
     }
 
 

@@ -24,17 +24,21 @@ public class FadeAnimator : AnimationByScript
 
     #endregion
 
-    public override void SetDefaultAnimationParameters()
+
+    protected override void SetDefaultAnimationCreatingParameters()
     {
-        SetFadeState(FadeState.fadeIn);
+        ChangeAnimationExecutionParameters(() => fadeState = FadeState.fadeIn);
     }
 
 
     public void SetFadeState(FadeState fadeState)
     {
-        this.fadeState = fadeState;
-        SetAnimationCurve();
+        ChangeAnimationCreatingParameters(() => this.fadeState = fadeState);
     }
+
+
+    protected override AnimationCurve GetAnimationCurve() => GetBlinkingAnimationCurve();
+
 
     protected override IEnumerator AnimationEnumerator()
     {
@@ -50,17 +54,11 @@ public class FadeAnimator : AnimationByScript
     /// <returns></returns>
     private bool NeedAnimating(ref float counter)
     {
-        float alphaChannel = animationCurve.Evaluate(counter);
+        float alphaChannel = AnimationCurve.Evaluate(counter);
         componentWithColor.SetChangedAlphaChannelToColor(alphaChannel);
+        counter += GetDeltaTime() / AnimationDuration;
 
-        counter += deltaTime / AnimationDuration;
         return counter < 1f;  // counter от 0 до 1: начало -> конец -> начало кривой   
-    }
-
-
-    protected override void SetAnimationCurve()
-    {
-        animationCurve = GetBlinkingAnimationCurve();
     }
 
 

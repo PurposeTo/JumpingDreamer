@@ -12,7 +12,7 @@ public class TMProRendererContainer : ComponentWithColor
     }
 
 
-    public override void ChangeColor(Color color)
+    public override void SetColor(Color color)
     {
         textMeshPro.color = color;
     }

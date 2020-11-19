@@ -1,19 +1,19 @@
 ﻿using UnityEngine;
 
-public class Brokable : MonoBehaviour
+public class Brokable : SuperMonoBehaviour
 {
     private int touchesToBroke = 6;
 
     private int touchCount;
 
 
-    private void OnEnable()
+    protected override void OnEnableWrapped()
     {
         touchCount = 0;
     }
 
 
-    private void OnDisable()
+    protected override void OnDisableWrapped()
     {
         MakeItMoreBreakable();
     }

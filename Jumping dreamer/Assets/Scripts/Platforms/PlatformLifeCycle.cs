@@ -17,11 +17,11 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
     private float lifeTime = 0f;
     private float hight = 0f;
 
+
     protected override void AwakeWrapped()
     {
         fadeAnimator = new FadeAnimator(this, gameObject.GetComponent<SpriteRendererContainer>());
         blinkingLoopAnimator = new BlinkingLoopAnimator(this, gameObject.GetComponent<SpriteRendererContainer>());
-
         lifeCycleRoutineInfo = CreateCoroutineInfo();
     }
 
@@ -29,11 +29,13 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
     void IPooledObject.OnObjectSpawn()
     {
         platformCauseOfDestroyCreator = new PlatformCauseOfDestroyDeterminator();
-        ContiniousCoroutineExecution(ref lifeCycleRoutineInfo, LifeCycleEnumerator());
+
+        // Рестарт потому, что кроме данного скрипта, платформу также может выключить Broakable
+        ReStartCoroutineExecutionDisablingGameObject(ref lifeCycleRoutineInfo, LifeCycleEnumerator());
     }
 
 
-    private void Update()
+    protected override void UpdateWrapped()
     {
         lifeTime += Time.deltaTime;
         hight = GameObjectsHolder.Instance.Centre.GetToCentreMagnitude(transform.position);
@@ -42,6 +44,7 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
 
     private IEnumerator LifeCycleEnumerator()
     {
+        //fadeAnimator.SetAnimationDuration(10f);
         fadeAnimator.SetFadeState(FadeAnimator.FadeState.fadeIn);
         fadeAnimator.StartAnimation();
         yield return new WaitWhile(() => fadeAnimator.IsExecuting);
@@ -63,8 +66,6 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
         fadeAnimator.SetFadeState(FadeAnimator.FadeState.fadeOut);
         fadeAnimator.StartAnimation();
         yield return new WaitWhile(() => fadeAnimator.IsExecuting);
-
-        DisableObject();
     }
 
 
@@ -100,11 +101,5 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
             default:
                 break;
         }
-    }
-
-
-    private void DisableObject()
-    {
-        gameObject.SetActive(false);
     }
 }

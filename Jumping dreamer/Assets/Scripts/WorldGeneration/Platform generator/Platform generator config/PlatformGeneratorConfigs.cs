@@ -40,11 +40,11 @@ public class PlatformGeneratorConfigs
     {
         float delay = generationDelay;
 
-        if (platformConfigs.CreatingPlace == PlatformConfigsData.PlatformCreatingPlace.InRandomArea) delay -= 0.115f;
+        if (platformConfigs.CreatingPlace == PlatformConfigsData.PlatformCreatingPlace.InRandomArea) delay -= 0.1f;
 
         if (platformConfigs.CauseOfDestroy is PlatformCauseOfDestroyByTime platformCauseOfDestroyConfigsByTime && platformCauseOfDestroyConfigsByTime.Value == PlatformCauseOfDestroyByTime.PlatformCausesOfDestroyByTime.NoLifeTime)
         {
-            delay -= 0.21f;
+            delay -= 0.2f;
         }
 
         return delay;

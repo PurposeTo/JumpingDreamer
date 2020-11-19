@@ -26,7 +26,7 @@ public class Star : SuperMonoBehaviour
         StarGenerator.InitializedInstance += (Instance) => Instance.NumberOfActiveStars++;
 
         lifeCoroutineInfo = CreateCoroutineInfo();
-        ContiniousCoroutineExecution(ref lifeCoroutineInfo, LifeEnumerator());
+        ExecuteCoroutineContinuously(ref lifeCoroutineInfo, LifeEnumerator());
 
         lifeTime = Random.Range(minLifeTime, maxLifeTime);
     }
