@@ -6,8 +6,8 @@ using UnityEngine;
 public class TrainingTutorial : SuperMonoBehaviour
 {
     public TrainingTipContainer[] trainingTips;
-    private FadeAnimator[] fadeAnimators;
-    private BlinkingLoopAnimator[] blinkingLoopAnimators;
+    private AnimatorByScript<FadeAnimation>[] fadeAnimators;
+    private AnimatorByScript<BlinkingLoopAnimation>[] blinkingLoopAnimators;
 
     private PlayerTactics playerTactics;
     private float absAverageHorizontalInput;
@@ -48,15 +48,18 @@ public class TrainingTutorial : SuperMonoBehaviour
     {
         fadeAnimators = trainingTips.SelectMany(trainingTip =>
         {
-            return new FadeAnimator[]
+            return new AnimatorByScript<FadeAnimation>[]
             {
-                new FadeAnimator(this, trainingTip.GetTrainingTipObject().GetComponent<ImageRendererContainer>()),
-                new FadeAnimator(this, trainingTip.GetTrainingTextObject().GetComponent<TMProRendererContainer>())
+                new AnimatorByScript<FadeAnimation>(new FadeAnimation(this, trainingTip.GetTrainingTipObject().GetComponent<ImageRendererContainer>()), this),
+                new AnimatorByScript<FadeAnimation>(new FadeAnimation(this, trainingTip.GetTrainingTextObject().GetComponent<TMProRendererContainer>()), this),
+
             };
         }).ToArray();
 
         blinkingLoopAnimators = trainingTips.Select(trainingTip =>
-        new BlinkingLoopAnimator(this, trainingTip.GetTrainingTipObject().GetComponent<ImageRendererContainer>())).ToArray();
+        {
+            return new AnimatorByScript<BlinkingLoopAnimation>(new BlinkingLoopAnimation(this, trainingTip.GetTrainingTipObject().GetComponent<ImageRendererContainer>()), this);
+        }).ToArray();
     }
 
 
@@ -99,15 +102,15 @@ public class TrainingTutorial : SuperMonoBehaviour
         Array.ForEach(trainingTips, trainingTip => trainingTip.gameObject.SetActive(true));
         Array.ForEach(fadeAnimators, (fadeAnimator) =>
         {
-            fadeAnimator.SetFadeState(FadeAnimator.FadeState.fadeIn);
+            fadeAnimator.Animation.SetFadeState(FadeAnimation.FadeState.fadeIn);
             fadeAnimator.StartAnimation();
         });
         yield return new WaitWhile(() => fadeAnimators.Any(fadeAnimator => fadeAnimator.IsExecuting));
 
         Array.ForEach(blinkingLoopAnimators, (blinkingLoopAnimator) =>
         {
-            blinkingLoopAnimator.SetLowerAlphaValue(0f);
-            blinkingLoopAnimator.SetInfiniteNumberOfLoops();
+            blinkingLoopAnimator.Animation.SetLowerAlphaValue(0f);
+            blinkingLoopAnimator.Animation.SetInfiniteNumberOfLoops();
             blinkingLoopAnimator.StartAnimation();
         });
     }
@@ -117,17 +120,17 @@ public class TrainingTutorial : SuperMonoBehaviour
     {
         Array.ForEach(blinkingLoopAnimators, (blinkingLoopAnimator) =>
         {
-            blinkingLoopAnimator.SetLoopsCount(0);
+            blinkingLoopAnimator.Animation.SetLoopsCount(0);
         });
         yield return new WaitWhile(() => blinkingLoopAnimators.Any(blinkingLoopAnimator => blinkingLoopAnimator.IsExecuting));
 
 
         Array.ForEach(fadeAnimators, (fadeAnimator) =>
         {
-            fadeAnimator.SetFadeState(FadeAnimator.FadeState.fadeOut);
+            fadeAnimator.Animation.SetFadeState(FadeAnimation.FadeState.fadeOut);
             fadeAnimator.StartAnimation();
         });
-        yield return new WaitWhile(() =>  fadeAnimators.Any(fadeAnimator => fadeAnimator.IsExecuting));
+        yield return new WaitWhile(() => fadeAnimators.Any(fadeAnimator => fadeAnimator.IsExecuting));
         Array.ForEach(trainingTips, trainingTip => trainingTip.gameObject.SetActive(false));
     }
 }

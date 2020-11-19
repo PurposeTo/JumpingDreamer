@@ -3,11 +3,11 @@ using System.Collections;
 using UnityEngine;
 
 
-public class BlinkingLoopAnimator : AnimationByScript
+public class BlinkingLoopAnimation : AnimationByScript
 {
     private readonly ComponentWithColor componentWithColor;
 
-    public BlinkingLoopAnimator(SuperMonoBehaviour superMonoBehaviour, ComponentWithColor componentWithColor) : base(superMonoBehaviour)
+    public BlinkingLoopAnimation(SuperMonoBehaviour superMonoBehaviour, ComponentWithColor componentWithColor) : base(superMonoBehaviour)
     {
         this.componentWithColor = componentWithColor != null ? componentWithColor : throw new ArgumentNullException(nameof(componentWithColor));
     }
@@ -68,10 +68,7 @@ public class BlinkingLoopAnimator : AnimationByScript
     }
 
 
-    protected override AnimationCurve GetAnimationCurve() => GetBlinkingAnimationCurve(lowerAlphaValue);
-
-
-    protected override IEnumerator AnimationEnumerator()
+    public override IEnumerator AnimationEnumerator()
     {
         int loopCounter = 0;
 
@@ -82,6 +79,11 @@ public class BlinkingLoopAnimator : AnimationByScript
             loopCounter++;
         }
     }
+
+
+    protected override AnimationCurve GetAnimationCurve() => GetBlinkingAnimationCurve(lowerAlphaValue);
+
+
 
 
     /// <summary>

@@ -5,8 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
 {
-    private FadeAnimator fadeAnimator;
-    private BlinkingLoopAnimator blinkingLoopAnimator;
+    private AnimatorByScript<FadeAnimation> fadeAnimator;
+    private AnimatorByScript<BlinkingLoopAnimation> blinkingLoopAnimator;
 
     private ICoroutineInfo lifeCycleRoutineInfo;
     private Func<bool> IsAliveState;
@@ -20,8 +20,8 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
 
     protected override void AwakeWrapped()
     {
-        fadeAnimator = new FadeAnimator(this, gameObject.GetComponent<SpriteRendererContainer>());
-        blinkingLoopAnimator = new BlinkingLoopAnimator(this, gameObject.GetComponent<SpriteRendererContainer>());
+        fadeAnimator = new AnimatorByScript<FadeAnimation>(new FadeAnimation(this, gameObject.GetComponent<SpriteRendererContainer>()), this);
+        blinkingLoopAnimator = new AnimatorByScript<BlinkingLoopAnimation>(new BlinkingLoopAnimation(this, gameObject.GetComponent<SpriteRendererContainer>()), this);
         lifeCycleRoutineInfo = CreateCoroutineInfo();
     }
 
@@ -45,7 +45,7 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
     private IEnumerator LifeCycleEnumerator()
     {
         //fadeAnimator.SetAnimationDuration(10f);
-        fadeAnimator.SetFadeState(FadeAnimator.FadeState.fadeIn);
+        fadeAnimator.Animation.SetFadeState(FadeAnimation.FadeState.fadeIn);
         fadeAnimator.StartAnimation();
         yield return new WaitWhile(() => fadeAnimator.IsExecuting);
 
@@ -57,13 +57,13 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
         yield return new WaitWhile(IsAliveState);
 
         // Todo: внести в blinkingLoopAnimator -> параметры по умолчанию.
-        blinkingLoopAnimator.SetAnimationDuration(1f);
-        blinkingLoopAnimator.SetLowerAlphaValue(0.25f);
-        blinkingLoopAnimator.SetLoopsCount(3);
+        blinkingLoopAnimator.Animation.SetAnimationDuration(1f);
+        blinkingLoopAnimator.Animation.SetLowerAlphaValue(0.25f);
+        blinkingLoopAnimator.Animation.SetLoopsCount(3);
         blinkingLoopAnimator.StartAnimation();
         yield return new WaitWhile(() => blinkingLoopAnimator.IsExecuting);
 
-        fadeAnimator.SetFadeState(FadeAnimator.FadeState.fadeOut);
+        fadeAnimator.Animation.SetFadeState(FadeAnimation.FadeState.fadeOut);
         fadeAnimator.StartAnimation();
         yield return new WaitWhile(() => fadeAnimator.IsExecuting);
     }

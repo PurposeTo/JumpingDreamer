@@ -3,11 +3,11 @@ using System.Collections;
 using UnityEngine;
 
 
-public class FadeAnimator : AnimationByScript
+public class FadeAnimation : AnimationByScript
 {
     private readonly ComponentWithColor componentWithColor;
 
-    public FadeAnimator(SuperMonoBehaviour superMonoBehaviour, ComponentWithColor componentWithColor) : base(superMonoBehaviour)
+    public FadeAnimation(SuperMonoBehaviour superMonoBehaviour, ComponentWithColor componentWithColor) : base(superMonoBehaviour)
     {
         this.componentWithColor = componentWithColor != null ? componentWithColor : throw new ArgumentNullException(nameof(componentWithColor));
     }
@@ -37,14 +37,14 @@ public class FadeAnimator : AnimationByScript
     }
 
 
-    protected override AnimationCurve GetAnimationCurve() => GetBlinkingAnimationCurve();
-
-
-    protected override IEnumerator AnimationEnumerator()
+    public override IEnumerator AnimationEnumerator()
     {
         float counter = 0f;
         yield return new WaitWhile(() => NeedAnimating(ref counter));
     }
+
+
+    protected override AnimationCurve GetAnimationCurve() => GetBlinkingAnimationCurve();
 
 
     /// <summary>
