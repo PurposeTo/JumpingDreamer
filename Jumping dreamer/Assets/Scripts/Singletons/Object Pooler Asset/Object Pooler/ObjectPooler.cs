@@ -65,15 +65,29 @@ public class ObjectPooler : SingletonSuperMonoBehaviour<ObjectPooler>
         objectToSpawn.transform.rotation = rotation;
         if (parent != null) { objectToSpawn.transform.SetParent(parent); }
         objectToSpawn.SetActive(true);
-
-        IPooledObject[] pooledComponents = objectToSpawn.GetComponents<IPooledObject>();
-        Array.ForEach(pooledComponents, pooledComponent => pooledComponent.OnObjectSpawn());
-
-        //if (objectToSpawn.TryGetComponent(out IPooledObject pooledObject)) pooledObject.OnObjectSpawn(); Если на объекте несколько таких интерфейсов, то будет вызван лишь один
+        OnObjectSpawn(objectToSpawn);
 
         pool.ObjectPoolQueue.Enqueue(objectToSpawn);
 
         return objectToSpawn;
+    }
+
+
+    private void OnObjectSpawn(GameObject objectToSpawn)
+    {
+        IPooledObject[] pooledComponents = objectToSpawn.GetComponents<IPooledObject>();
+
+        for (int i = 0; i < pooledComponents.Length; i++)
+        {
+            if (pooledComponents[i] is SuperMonoBehaviour superMonoBehaviour)
+            {
+                superMonoBehaviour.BreakAllCoroutines();
+            }
+
+            pooledComponents[i].OnObjectSpawn();
+        }
+
+        //if (objectToSpawn.TryGetComponent(out IPooledObject pooledObject)) pooledObject.OnObjectSpawn(); Если на объекте несколько таких интерфейсов, то будет вызван лишь один
     }
 
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /*
@@ -16,7 +17,10 @@ public class CoroutineExecutor
     }
 
 
-    public ICoroutineInfo CreateCoroutineInfo()
+    private List<ICoroutineContainer> allCoroutineContainers = new List<ICoroutineContainer>();
+
+
+    public ICoroutineContainer CreateCoroutineContainer()
     {
         return new CoroutineWithData();
     }
@@ -27,71 +31,7 @@ public class CoroutineExecutor
     /// </summary>
     /// <param name="enumerator">IEnumerator для выполнения</param>
     /// <returns></returns>
-    public void ExecuteCoroutineContinuously(ref ICoroutineInfo coroutineInfo, IEnumerator enumerator)
-    {
-        InitializeContinuouslyExecutingCoroutine(ref coroutineInfo, enumerator, StartNewCoroutine);
-    }
-
-
-    /// <summary>
-    /// Запускает корутину в том случае, если она НЕ выполняется в данный момент.
-    /// В конце выполнения выключит игровой объект, из которого данная корутина была запущена.
-    /// </summary>
-    /// <param name="enumerator">IEnumerator для выполнения</param>
-    /// <returns></returns>
-    public void ExecuteCoroutineContinuouslyDisablingGameObject(ref ICoroutineInfo coroutineInfo, IEnumerator enumerator)
-    {
-        InitializeContinuouslyExecutingCoroutine(ref coroutineInfo, enumerator, StartNewCoroutineDisablingGameObject);
-    }
-
-
-    /// <summary>
-    /// Перед запуском корутины останавливает её, если она выполнялась на данный момент.
-    /// </summary>
-    /// <param name="enumerator">IEnumerator для выполнения</param>
-    /// <returns></returns>
-    public void ReStartCoroutineExecution(ref ICoroutineInfo coroutineInfo, IEnumerator enumerator)
-    {
-        InitializeRestartingCoroutine(ref coroutineInfo, enumerator, StartNewCoroutine);
-    }
-
-
-    /// <summary>
-    /// Перед запуском корутины останавливает её, если она выполнялась на данный момент.
-    /// В конце выполнения выключит игровой объект, из которого данная корутина была запущена.
-    /// </summary>
-    /// <param name="enumerator">IEnumerator для выполнения</param>
-    /// <returns></returns>
-    public void ReStartCoroutineExecutionDisablingGameObject(ref ICoroutineInfo coroutineInfo, IEnumerator enumerator)
-    {
-        InitializeRestartingCoroutine(ref coroutineInfo, enumerator, StartNewCoroutineDisablingGameObject);
-    }
-
-
-    /// <summary>
-    /// Останавливает корутину.
-    /// </summary>
-    /// <param name="coroutineInfo"></param>
-    public void BreakCoroutine(ref ICoroutineInfo coroutineInfo)
-    {
-        if (coroutineInfo is null) throw new ArgumentNullException(nameof(coroutineInfo));
-
-        CoroutineWithData coroutineWithData = (CoroutineWithData)coroutineInfo;
-
-        if (coroutineWithData.IsExecuting)
-        {
-            monoBehaviour.StopCoroutine(coroutineWithData.Coroutine);
-
-            coroutineWithData.SetNullToCoroutine();
-        }
-        else coroutineWithData.OnCoroutineIsAlreadyStopped?.Invoke();
-
-        coroutineWithData.OnStopCoroutine?.Invoke();
-    }
-
-
-    private void InitializeContinuouslyExecutingCoroutine(ref ICoroutineInfo coroutineInfo, IEnumerator enumerator,
-        Action<CoroutineWithData> startCoroutine)
+    public void ExecuteCoroutineContinuously(ref ICoroutineContainer coroutineInfo, IEnumerator enumerator)
     {
         if (coroutineInfo is null) throw new ArgumentNullException(nameof(coroutineInfo));
         if (enumerator is null) throw new ArgumentNullException(nameof(enumerator));
@@ -101,14 +41,18 @@ public class CoroutineExecutor
 
         if (!coroutineWithData.IsExecuting)
         {
-            startCoroutine?.Invoke(coroutineWithData);
+            StartNewCoroutine(coroutineWithData);
         }
         else coroutineWithData.OnCoroutineAlreadyStarted?.Invoke();
     }
 
 
-    private void InitializeRestartingCoroutine(ref ICoroutineInfo coroutineInfo, IEnumerator enumerator,
-        Action<CoroutineWithData> startCoroutine)
+    /// <summary>
+    /// Перед запуском корутины останавливает её, если она выполнялась на данный момент.
+    /// </summary>
+    /// <param name="enumerator">IEnumerator для выполнения</param>
+    /// <returns></returns>
+    public void ReStartCoroutineExecution(ref ICoroutineContainer coroutineInfo, IEnumerator enumerator)
     {
         if (enumerator is null) throw new ArgumentNullException(nameof(enumerator));
 
@@ -117,41 +61,69 @@ public class CoroutineExecutor
 
         if (coroutineInfo.IsExecuting) BreakCoroutine(ref coroutineInfo);
 
-        startCoroutine?.Invoke(coroutineWithData);
+        StartNewCoroutine(coroutineWithData);
     }
 
 
-    private void StartNewCoroutineDisablingGameObject(CoroutineWithData coroutineWithData)
+    /// <summary>
+    /// Останавливает корутину.
+    /// </summary>
+    /// <param name="coroutineInfo"></param>
+    public void BreakCoroutine(ref ICoroutineContainer coroutineInfo)
     {
-        coroutineWithData.SetCoroutine(monoBehaviour.StartCoroutine(WrappedEnumeratorDisablingGameObject(coroutineWithData)));
+        if (coroutineInfo is null) throw new ArgumentNullException(nameof(coroutineInfo));
+
+        CoroutineWithData coroutineWithData = (CoroutineWithData)coroutineInfo;
+
+        if (coroutineWithData.IsExecuting)
+        {
+            monoBehaviour.StopCoroutine(coroutineWithData.Coroutine);
+
+            SetNullToCoroutine(coroutineWithData);
+        }
+        else coroutineWithData.OnCoroutineIsAlreadyStopped?.Invoke();
+
+        coroutineWithData.OnStopCoroutine?.Invoke();
+    }
+
+
+    /// <summary>
+    /// Останавливает все корутины на объекте.
+    /// </summary>
+    /// <param name="coroutineInfo"></param>
+    public void BreakAllCoroutines()
+    {
+        for (int i = 0; i < allCoroutineContainers.Count; i++)
+        {
+            ICoroutineContainer coroutineContainer = allCoroutineContainers[i];
+
+            BreakCoroutine(ref coroutineContainer);
+        }
     }
 
 
     private void StartNewCoroutine(CoroutineWithData coroutineWithData)
     {
         coroutineWithData.SetCoroutine(monoBehaviour.StartCoroutine(WrappedEnumerator(coroutineWithData)));
-    }
-
-    /// <summary>
-    /// Выключать объект необходимо после остановки корутины, иначе ObjectPooler может начать использовать объект до того, как корутина фактически будет остановленна.
-    /// </summary>
-    /// <param name="coroutineWithData"></param>
-    /// <returns></returns>
-    private IEnumerator WrappedEnumeratorDisablingGameObject(CoroutineWithData coroutineWithData)
-    {
-        yield return WrappedEnumerator(coroutineWithData);
-        monoBehaviour.gameObject.SetActive(false);
+        allCoroutineContainers.Add(coroutineWithData);
     }
 
 
     private IEnumerator WrappedEnumerator(CoroutineWithData coroutineWithData)
     {
         yield return coroutineWithData.Enumerator;
-        coroutineWithData.SetNullToCoroutine();
+        SetNullToCoroutine(coroutineWithData);
     }
 
 
-    private class CoroutineWithData : ICoroutineInfo
+    private void SetNullToCoroutine(CoroutineWithData coroutineWithData)
+    {
+        coroutineWithData.SetNullToCoroutine();
+        allCoroutineContainers.Remove(coroutineWithData);
+    }
+
+
+    private class CoroutineWithData : ICoroutineContainer
     {
         public IEnumerator Enumerator { get; private set; } = null;
         public Coroutine Coroutine { get; private set; } = null;

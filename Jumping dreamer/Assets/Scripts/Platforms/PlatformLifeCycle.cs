@@ -8,7 +8,7 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
     private AnimatorByScript<FadeAnimation> fadeAnimator;
     private AnimatorByScript<BlinkingLoopAnimation> blinkingLoopAnimator;
 
-    private ICoroutineInfo lifeCycleRoutineInfo;
+    private ICoroutineContainer lifeCycleRoutineInfo;
     private Func<bool> IsAliveState;
 
     private PlatformCauseOfDestroyDeterminator platformCauseOfDestroyCreator;
@@ -22,7 +22,8 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
     {
         fadeAnimator = new AnimatorByScript<FadeAnimation>(new FadeAnimation(this, gameObject.GetComponent<SpriteRendererContainer>()), this);
         blinkingLoopAnimator = new AnimatorByScript<BlinkingLoopAnimation>(new BlinkingLoopAnimation(this, gameObject.GetComponent<SpriteRendererContainer>()), this);
-        lifeCycleRoutineInfo = CreateCoroutineInfo();
+        lifeCycleRoutineInfo = CreateCoroutineContainer();
+        lifeCycleRoutineInfo.OnCoroutineAlreadyStarted += () => Debug.LogWarning("Уже запущена!");
     }
 
 
@@ -31,7 +32,7 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
         platformCauseOfDestroyCreator = new PlatformCauseOfDestroyDeterminator();
 
         // Рестарт потому, что кроме данного скрипта, платформу также может выключить Broakable
-        ReStartCoroutineExecutionDisablingGameObject(ref lifeCycleRoutineInfo, LifeCycleEnumerator());
+        ExecuteCoroutineContinuously(ref lifeCycleRoutineInfo, LifeCycleEnumerator());
     }
 
 
@@ -66,6 +67,8 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
         fadeAnimator.Animation.SetFadeState(FadeAnimation.FadeState.fadeOut);
         fadeAnimator.StartAnimation();
         yield return new WaitWhile(() => fadeAnimator.IsExecuting);
+
+        gameObject.SetActive(false);
     }
 
 

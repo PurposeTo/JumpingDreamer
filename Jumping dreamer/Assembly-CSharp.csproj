@@ -157,7 +157,7 @@
     <Compile Include="Assets\Scripts\Enemy\EnemyGenerator.cs" />
     <Compile Include="Assets\Scripts\Enemy\Pursuer.cs" />
     <Compile Include="Assets\Scripts\Framework Monobehaviour wrapper\Coroutines\CoroutineExecutor\CoroutineExecutor.cs" />
-    <Compile Include="Assets\Scripts\Framework Monobehaviour wrapper\Coroutines\CoroutineExecutor\ICoroutineInfo.cs" />
+    <Compile Include="Assets\Scripts\Framework Monobehaviour wrapper\Coroutines\CoroutineExecutor\ICoroutineContainer.cs" />
     <Compile Include="Assets\Scripts\Framework Monobehaviour wrapper\Coroutines\WaitForDone\Base\WaitForDoneBase.cs" />
     <Compile Include="Assets\Scripts\Framework Monobehaviour wrapper\Coroutines\WaitForDone\WaitForDone.cs" />
     <Compile Include="Assets\Scripts\Framework Monobehaviour wrapper\Coroutines\WaitForDone\WaitForDoneRealtime.cs" />

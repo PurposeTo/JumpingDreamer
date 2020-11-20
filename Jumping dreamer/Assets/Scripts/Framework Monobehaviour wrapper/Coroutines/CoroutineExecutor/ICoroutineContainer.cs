@@ -2,7 +2,7 @@
 using System.Collections;
 
 
-public interface ICoroutineInfo
+public interface ICoroutineContainer
 {
     IEnumerator Enumerator { get; }
     bool IsExecuting { get; }

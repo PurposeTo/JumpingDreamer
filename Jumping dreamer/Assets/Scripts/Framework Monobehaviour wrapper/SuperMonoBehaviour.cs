@@ -226,12 +226,12 @@ public class SuperMonoBehaviour : MonoBehaviour
     #region CoroutineExecutor
 
     /// <summary>
-    /// Создаёт "Holder" объект для конкретной корутины
+    /// Создаёт "Container" объект для конкретной корутины
     /// </summary>
     /// <returns></returns>
-    public ICoroutineInfo CreateCoroutineInfo()
+    public ICoroutineContainer CreateCoroutineContainer()
     {
-        return coroutineExecutor.CreateCoroutineInfo();
+        return coroutineExecutor.CreateCoroutineContainer();
     }
 
 
@@ -240,44 +240,20 @@ public class SuperMonoBehaviour : MonoBehaviour
     /// </summary>
     /// <param name="enumerator">Позволяет запустить другой IEnumerator</param>
     /// <returns></returns>
-    public void ExecuteCoroutineContinuously(ref ICoroutineInfo coroutineInfo, IEnumerator enumerator)
+    public void ExecuteCoroutineContinuously(ref ICoroutineContainer coroutineInfo, IEnumerator enumerator)
     {
         coroutineExecutor.ExecuteCoroutineContinuously(ref coroutineInfo, enumerator);
     }
 
 
     /// <summary>
-    /// Запускает корутину в том случае, если она НЕ выполняется в данный момент.
-    /// В конце выполнения выключит игровой объект, из которого данная корутина была запущена.
-    /// </summary>
-    /// <param name="enumerator">IEnumerator для выполнения</param>
-    /// <returns></returns>
-    public void ExecuteCoroutineContinuouslyDisablingGameObject(ref ICoroutineInfo coroutineInfo, IEnumerator enumerator)
-    {
-        coroutineExecutor.ExecuteCoroutineContinuouslyDisablingGameObject(ref coroutineInfo, enumerator);
-    }
-
-
-    /// <summary>
     /// Перед запуском корутины останавливает её, если она выполнялась на данный момент.
     /// </summary>
     /// <param name="enumerator">Позволяет запустить другой IEnumerator</param>
     /// <returns></returns>
-    public void ReStartCoroutineExecution(ref ICoroutineInfo coroutineInfo, IEnumerator enumerator)
+    public void ReStartCoroutineExecution(ref ICoroutineContainer coroutineInfo, IEnumerator enumerator)
     {
         coroutineExecutor.ReStartCoroutineExecution(ref coroutineInfo, enumerator);
-    }
-
-
-    /// <summary>
-    /// Перед запуском корутины останавливает её, если она выполнялась на данный момент.
-    /// В конце выполнения выключит игровой объект, из которого данная корутина была запущена.
-    /// </summary>
-    /// <param name="enumerator">IEnumerator для выполнения</param>
-    /// <returns></returns>
-    public void ReStartCoroutineExecutionDisablingGameObject(ref ICoroutineInfo coroutineInfo, IEnumerator enumerator)
-    {
-        coroutineExecutor.ReStartCoroutineExecutionDisablingGameObject(ref coroutineInfo, enumerator);
     }
 
 
@@ -285,10 +261,20 @@ public class SuperMonoBehaviour : MonoBehaviour
     /// Останавливает корутину.
     /// </summary>
     /// <param name="coroutineInfo"></param>
-    public void BreakCoroutine(ref ICoroutineInfo coroutineInfo)
+    public void BreakCoroutine(ref ICoroutineContainer coroutineInfo)
     {
         coroutineExecutor.BreakCoroutine(ref coroutineInfo);
     }
+
+
+    /// <summary>
+    /// Останавливает все корутины на объекте
+    /// </summary>
+    public void BreakAllCoroutines()
+    {
+        coroutineExecutor.BreakAllCoroutines();
+    }
+
 
     #endregion
 

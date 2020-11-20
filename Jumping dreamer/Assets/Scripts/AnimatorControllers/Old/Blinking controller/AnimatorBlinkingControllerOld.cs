@@ -15,13 +15,13 @@ public class AnimatorBlinkingControllerOld : AnimatorControllerWrapperOld
 
     public event Action OnDisableBlinking;
 
-    private ICoroutineInfo stopBlinkingInfo;
+    private ICoroutineContainer stopBlinkingInfo;
 
 
     protected override void AwakeWrapped()
     {
         base.AwakeWrapped();
-        stopBlinkingInfo = CreateCoroutineInfo();
+        stopBlinkingInfo = CreateCoroutineContainer();
     }
 
 

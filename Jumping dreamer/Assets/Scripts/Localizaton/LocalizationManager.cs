@@ -18,7 +18,7 @@ public class LocalizationManager : SingletonSuperMonoBehaviour<LocalizationManag
     private bool isReady = false;
     public const string missingTextString = "Localized Text not found";
 
-    private ICoroutineInfo loadLocalizedTextInfo;
+    private ICoroutineContainer loadLocalizedTextInfo;
 
 
     protected override void AwakeSingleton()
@@ -26,7 +26,7 @@ public class LocalizationManager : SingletonSuperMonoBehaviour<LocalizationManag
         PlayerSettingsStorage.InitializedInstance += (Instance) =>
         {
             SetLanguageSettings(Instance.PlayerSettings);
-            loadLocalizedTextInfo = CreateCoroutineInfo();
+            loadLocalizedTextInfo = CreateCoroutineContainer();
             LoadLocalizedText();
         };
     }

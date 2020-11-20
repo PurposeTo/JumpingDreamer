@@ -15,14 +15,14 @@ public class TrainingTutorial : SuperMonoBehaviour
     private readonly int minTotalLifeTimeToShowTutorial = 60;
     private readonly float delay = 30f;
 
-    private ICoroutineInfo CheckingIfTutorialNeedsToBeShownRoutineInfo;
+    private ICoroutineContainer CheckingIfTutorialNeedsToBeShownRoutineInfo;
 
 
     protected override void AwakeWrapped()
     {
         InitializeAnimations();
         playerTactics = GameObjectsHolder.Instance.PlayerPresenter.PlayerTactics;
-        CheckingIfTutorialNeedsToBeShownRoutineInfo = CreateCoroutineInfo();
+        CheckingIfTutorialNeedsToBeShownRoutineInfo = CreateCoroutineContainer();
     }
 
 

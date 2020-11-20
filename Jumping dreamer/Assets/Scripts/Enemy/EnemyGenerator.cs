@@ -6,12 +6,12 @@ public class EnemyGenerator : SuperMonoBehaviour
     [SerializeField] private GameObject pursuer = null;
     private readonly float delay = 30f;
 
-    private ICoroutineInfo lifeCycleInfo;
+    private ICoroutineContainer lifeCycleInfo;
 
 
     protected override void StartWrapped()
     {
-        lifeCycleInfo = CreateCoroutineInfo();
+        lifeCycleInfo = CreateCoroutineContainer();
         ExecuteCoroutineContinuously(ref lifeCycleInfo, LifeCycleEnumerator());
     }
 

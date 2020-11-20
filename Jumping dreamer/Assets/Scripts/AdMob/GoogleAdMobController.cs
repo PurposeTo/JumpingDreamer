@@ -18,8 +18,8 @@ public class GoogleAdMobController : SingletonSuperMonoBehaviour<GoogleAdMobCont
     private CommandQueueMainThreadExecutor commandQueueHandler;
     private readonly InternetConnectionChecker connectionChecker = new InternetConnectionChecker();
 
-    private ICoroutineInfo waitForRewardedAdAnsweringInfo;
-    private ICoroutineInfo checkInternetConnectionAndShowAdInfo;
+    private ICoroutineContainer waitForRewardedAdAnsweringInfo;
+    private ICoroutineContainer checkInternetConnectionAndShowAdInfo;
     private bool IsLoadAnswer => isLoadOpen || isLoadFailedToShow; // Отвечает ли реклама?
     private bool isLoadOpen = false; // Открылась ли реклама?
     private bool isLoadFailedToShow = false; // Произошла ли ошибка показа рекламы?
@@ -28,8 +28,8 @@ public class GoogleAdMobController : SingletonSuperMonoBehaviour<GoogleAdMobCont
 
     protected override void AwakeSingleton()
     {
-        waitForRewardedAdAnsweringInfo = CreateCoroutineInfo();
-        checkInternetConnectionAndShowAdInfo = CreateCoroutineInfo();
+        waitForRewardedAdAnsweringInfo = CreateCoroutineContainer();
+        checkInternetConnectionAndShowAdInfo = CreateCoroutineContainer();
 
         commandQueueHandler = gameObject.GetComponent<CommandQueueMainThreadExecutor>();
         rewardedAdLoader = new RewardedAdLoader(this, commandQueueHandler);

@@ -12,7 +12,7 @@ public class Star : SuperMonoBehaviour
     private readonly float minLifeTime = 10f;
     private readonly float maxLifeTime = 30f;
 
-    private ICoroutineInfo lifeCoroutineInfo;
+    private ICoroutineContainer lifeCoroutineInfo;
 
 
     protected override void AwakeWrapped()
@@ -25,7 +25,7 @@ public class Star : SuperMonoBehaviour
     {
         StarGenerator.InitializedInstance += (Instance) => Instance.NumberOfActiveStars++;
 
-        lifeCoroutineInfo = CreateCoroutineInfo();
+        lifeCoroutineInfo = CreateCoroutineContainer();
         ExecuteCoroutineContinuously(ref lifeCoroutineInfo, LifeEnumerator());
 
         lifeTime = Random.Range(minLifeTime, maxLifeTime);

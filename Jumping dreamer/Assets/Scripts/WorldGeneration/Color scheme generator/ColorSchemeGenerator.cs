@@ -14,7 +14,7 @@ public class ColorSchemeGenerator
         this.colorSchemeData = colorSchemeData != null ? colorSchemeData : throw new System.ArgumentNullException(nameof(colorSchemeData));
         this.backgroundImageToCamera = backgroundImageToCamera != null ? backgroundImageToCamera : throw new System.ArgumentNullException(nameof(backgroundImageToCamera));
 
-        changeColorSchemeInfo = superMonoBehaviour.CreateCoroutineInfo();
+        changeColorSchemeInfo = superMonoBehaviour.CreateCoroutineContainer();
     }
 
 
@@ -22,7 +22,7 @@ public class ColorSchemeGenerator
 
     private Color currentSetColorScheme;
 
-    private ICoroutineInfo changeColorSchemeInfo;
+    private ICoroutineContainer changeColorSchemeInfo;
 
 
     public void SetDefaultColorScheme()

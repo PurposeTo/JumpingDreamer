@@ -9,7 +9,7 @@ public class AnimatorByScript<T> : SuperMonoBehaviourContainer where T : Animati
     public AnimatorByScript(T animationByScript, SuperMonoBehaviour superMonoBehaviour) : base(superMonoBehaviour)
     {
         this.Animation = animationByScript ?? throw new ArgumentNullException(nameof(animationByScript));
-        animationInfo = superMonoBehaviour.CreateCoroutineInfo();
+        animationInfo = superMonoBehaviour.CreateCoroutineContainer();
         SetCommandsOnSwitchingActiveStateGameObject();
     }
 
@@ -25,7 +25,7 @@ public class AnimatorByScript<T> : SuperMonoBehaviourContainer where T : Animati
 
 
 
-    private ICoroutineInfo animationInfo;
+    private ICoroutineContainer animationInfo;
 
 
     public void StartAnimation()
