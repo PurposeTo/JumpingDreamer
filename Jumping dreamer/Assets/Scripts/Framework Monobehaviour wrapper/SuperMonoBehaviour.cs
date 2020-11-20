@@ -67,6 +67,8 @@ public class SuperMonoBehaviour : MonoBehaviour
 
     #region OnEnable realization
 
+    public event Action OnEnabling;
+
     /// <summary>
     /// Необходимо использовать данный метод взамен OnEnable()
     /// </summary>
@@ -77,6 +79,7 @@ public class SuperMonoBehaviour : MonoBehaviour
         UpdateManager.AllUpdatesSuper.Add(UpdateSuper);
         UpdateManager.AllFixedUpdatesSuper.Add(FixedUpdateSuper);
         UpdateManager.AllUpdatesSuper.Add(LateUpdateSuper);
+        OnEnabling?.Invoke();
     }
 
     private void OnEnableSuper()
@@ -140,6 +143,8 @@ public class SuperMonoBehaviour : MonoBehaviour
 
     #region OnDisable realization
 
+    public event Action OnDisabling;
+
     /// <summary>
     /// Необходимо использовать данный метод взамен OnEnable()
     /// </summary>
@@ -150,6 +155,7 @@ public class SuperMonoBehaviour : MonoBehaviour
         UpdateManager.AllUpdatesSuper.Remove(UpdateSuper);
         UpdateManager.AllFixedUpdatesSuper.Remove(FixedUpdateSuper);
         UpdateManager.AllUpdatesSuper.Remove(LateUpdateSuper);
+        OnDisabling?.Invoke();
     }
 
     private void OnDisableSuper()
@@ -220,22 +226,12 @@ public class SuperMonoBehaviour : MonoBehaviour
     #region CoroutineExecutor
 
     /// <summary>
-    /// Создаёт "Holder" объект для конкретной корутины
+    /// Создаёт "Container" объект для конкретной корутины
     /// </summary>
     /// <returns></returns>
-    public ICoroutineInfo CreateCoroutineInfo()
+    public ICoroutineContainer CreateCoroutineContainer()
     {
-        return CreateCoroutineInfo(null);
-    }
-
-
-    /// <summary>
-    /// Создаёт "Holder" объект для конкретной корутины
-    /// </summary>
-    /// <returns></returns>
-    public ICoroutineInfo CreateCoroutineInfo(IEnumerator enumerator)
-    {
-        return coroutineExecutor.CreateCoroutineInfo(enumerator);
+        return coroutineExecutor.CreateCoroutineContainer();
     }
 
 
@@ -244,19 +240,9 @@ public class SuperMonoBehaviour : MonoBehaviour
     /// </summary>
     /// <param name="enumerator">Позволяет запустить другой IEnumerator</param>
     /// <returns></returns>
-    public void ContiniousCoroutineExecution(ref ICoroutineInfo coroutineInfo, IEnumerator enumerator)
+    public void ExecuteCoroutineContinuously(ref ICoroutineContainer coroutineInfo, IEnumerator enumerator)
     {
-        coroutineExecutor.ContiniousCoroutineExecution(ref coroutineInfo, enumerator);
-    }
-
-
-    /// <summary>
-    /// Запускает корутину в том случае, если она НЕ выполняется в данный момент.
-    /// </summary>
-    /// <returns></returns>
-    public void ContiniousCoroutineExecution(ref ICoroutineInfo coroutineInfo)
-    {
-        coroutineExecutor.ContiniousCoroutineExecution(ref coroutineInfo);
+        coroutineExecutor.ExecuteCoroutineContinuously(ref coroutineInfo, enumerator);
     }
 
 
@@ -265,19 +251,9 @@ public class SuperMonoBehaviour : MonoBehaviour
     /// </summary>
     /// <param name="enumerator">Позволяет запустить другой IEnumerator</param>
     /// <returns></returns>
-    public void ReStartCoroutineExecution(ref ICoroutineInfo coroutineInfo, IEnumerator enumerator)
+    public void ReStartCoroutineExecution(ref ICoroutineContainer coroutineInfo, IEnumerator enumerator)
     {
         coroutineExecutor.ReStartCoroutineExecution(ref coroutineInfo, enumerator);
-    }
-
-
-    /// <summary>
-    /// Перед запуском корутины останавливает её, если она выполнялась на данный момент.
-    /// </summary>
-    /// <returns></returns>
-    public void ReStartCoroutineExecution(ref ICoroutineInfo coroutineInfo)
-    {
-        coroutineExecutor.ReStartCoroutineExecution(ref coroutineInfo);
     }
 
 
@@ -285,10 +261,20 @@ public class SuperMonoBehaviour : MonoBehaviour
     /// Останавливает корутину.
     /// </summary>
     /// <param name="coroutineInfo"></param>
-    public void BreakCoroutine(ref ICoroutineInfo coroutineInfo)
+    public void BreakCoroutine(ref ICoroutineContainer coroutineInfo)
     {
         coroutineExecutor.BreakCoroutine(ref coroutineInfo);
     }
+
+
+    /// <summary>
+    /// Останавливает все корутины на объекте
+    /// </summary>
+    public void BreakAllCoroutines()
+    {
+        coroutineExecutor.BreakAllCoroutines();
+    }
+
 
     #endregion
 

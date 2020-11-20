@@ -2,12 +2,13 @@
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
 public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
 {
-    private protected AnimatorBlinkingController animatorBlinkingController;
-    private readonly float blinkingAnimationSeconds = 1.25f;
+    private AnimatorByScript<FadeAnimation> fadeAnimator;
+    private AnimatorByScript<BlinkingLoopAnimation> blinkingLoopAnimator;
 
-    private ICoroutineInfo lifeCycleRoutineInfo;
+    private ICoroutineContainer lifeCycleRoutineInfo;
     private Func<bool> IsAliveState;
 
     private PlatformCauseOfDestroyDeterminator platformCauseOfDestroyCreator;
@@ -15,37 +16,27 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
     // Debug values
     private float lifeTime = 0f;
     private float hight = 0f;
-    private PlatformCausesOfDestroy causeOfDestroyDebug;
-    private bool isDestroying = false;
+
 
     protected override void AwakeWrapped()
     {
-        lifeCycleRoutineInfo = CreateCoroutineInfo(LifeCycleEnumerator());
-        animatorBlinkingController = GetComponent<AnimatorBlinkingController>();
-        SetAnimationConfings();
-        animatorBlinkingController.OnDisableBlinking += DisableObject;
+        fadeAnimator = new AnimatorByScript<FadeAnimation>(new FadeAnimation(this, gameObject.GetComponent<SpriteRendererContainer>()), this);
+        blinkingLoopAnimator = new AnimatorByScript<BlinkingLoopAnimation>(new BlinkingLoopAnimation(this, gameObject.GetComponent<SpriteRendererContainer>()), this);
+        lifeCycleRoutineInfo = CreateCoroutineContainer();
+        lifeCycleRoutineInfo.OnCoroutineAlreadyStarted += () => Debug.LogWarning("Уже запущена!");
     }
 
 
     void IPooledObject.OnObjectSpawn()
     {
-        lifeTime = 0f;
-        hight = 0f;
         platformCauseOfDestroyCreator = new PlatformCauseOfDestroyDeterminator();
 
-        animatorBlinkingController.EnableAlphaColor();
-
-        ContiniousCoroutineExecution(ref lifeCycleRoutineInfo);
+        // Рестарт потому, что кроме данного скрипта, платформу также может выключить Broakable
+        ExecuteCoroutineContinuously(ref lifeCycleRoutineInfo, LifeCycleEnumerator());
     }
 
 
-    private void OnDestroy()
-    {
-        animatorBlinkingController.OnDisableBlinking -= DisableObject;
-    }
-
-
-    private void Update()
+    protected override void UpdateWrapped()
     {
         lifeTime += Time.deltaTime;
         hight = GameObjectsHolder.Instance.Centre.GetToCentreMagnitude(transform.position);
@@ -54,6 +45,11 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
 
     private IEnumerator LifeCycleEnumerator()
     {
+        //fadeAnimator.SetAnimationDuration(10f);
+        fadeAnimator.Animation.SetFadeState(FadeAnimation.FadeState.fadeIn);
+        fadeAnimator.StartAnimation();
+        yield return new WaitWhile(() => fadeAnimator.IsExecuting);
+
         // Проблемы с инициализацией!
         IPlatformCauseOfDestroyConfigs platformCauseOfDestroy = WorldGenerationRulesController.Instance.PlatformGeneratorPresenter.PlatformGeneratorConfigs.PlatformConfigs.CauseOfDestroy;
 
@@ -61,15 +57,24 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
 
         yield return new WaitWhile(IsAliveState);
 
-        animatorBlinkingController.StartBlinking(unscaledTime: false);
+        // Todo: внести в blinkingLoopAnimator -> параметры по умолчанию.
+        blinkingLoopAnimator.Animation.SetAnimationDuration(1f);
+        blinkingLoopAnimator.Animation.SetLowerAlphaValue(0.25f);
+        blinkingLoopAnimator.Animation.SetLoopsCount(3);
+        blinkingLoopAnimator.StartAnimation();
+        yield return new WaitWhile(() => blinkingLoopAnimator.IsExecuting);
+
+        fadeAnimator.Animation.SetFadeState(FadeAnimation.FadeState.fadeOut);
+        fadeAnimator.StartAnimation();
+        yield return new WaitWhile(() => fadeAnimator.IsExecuting);
+
+        gameObject.SetActive(false);
     }
 
 
     private IEnumerator SetCauseOfDestroy(IPlatformCauseOfDestroyConfigs platformCauseOfDestroy)
     {
         Predicate<float> IsAlive;
-
-        causeOfDestroyDebug = platformCauseOfDestroy.ParentTier.Value;
 
         switch (platformCauseOfDestroy.ParentTier.Value)
         {
@@ -99,20 +104,5 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
             default:
                 break;
         }
-    }
-
-
-    private void SetAnimationConfings()
-    {
-        animatorBlinkingController.SetBlinkingAnimationSpeed(blinkingAnimationSeconds);
-        animatorBlinkingController.SetAnimationDuration(AnimatorBlinkingController.DurationType.Loops, 3);
-        animatorBlinkingController.SetManualControl(manualControlEnableState: true, manualControlDisableState: false);
-    }
-
-
-    private void DisableObject()
-    {
-        gameObject.SetActive(false);
-        isDestroying = true;
     }
 }

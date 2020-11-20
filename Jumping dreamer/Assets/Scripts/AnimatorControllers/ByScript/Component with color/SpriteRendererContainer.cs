@@ -1,17 +1,16 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(SpriteRenderer))]
 public class SpriteRendererContainer : ComponentWithColor
 {
     private SpriteRenderer spriteRenderer;
 
-    private void Awake()
+    protected override void AwakeWrapped()
     {
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
     }
 
 
-    public override void ChangeColor(Color color)
+    public override void SetColor(Color color)
     {
         spriteRenderer.color = color;
     }

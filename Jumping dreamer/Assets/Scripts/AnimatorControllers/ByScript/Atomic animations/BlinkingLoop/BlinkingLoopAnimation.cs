@@ -2,45 +2,73 @@
 using System.Collections;
 using UnityEngine;
 
-/*
- * 1. Данный скрипт должен останавливать анимацию и сбрасывать все настройки при выключении объекта.
- * 2. Если объект выключается до того, как анимация закончилась, необходимо кинуть варнинг, что так делать нельзя
- */
-public class BlinkingLoop : AnimationByScript
+
+public class BlinkingLoopAnimation : AnimationByScript
 {
     private readonly ComponentWithColor componentWithColor;
 
-    public BlinkingLoop(SuperMonoBehaviour superMonoBehaviour, ComponentWithColor componentWithColor) : base(superMonoBehaviour)
+    public BlinkingLoopAnimation(SuperMonoBehaviour superMonoBehaviour, ComponentWithColor componentWithColor) : base(superMonoBehaviour)
     {
         this.componentWithColor = componentWithColor != null ? componentWithColor : throw new ArgumentNullException(nameof(componentWithColor));
-
-        blinkingLoopInfo = superMonoBehaviour.CreateCoroutineInfo(BlinkingLoopEnumerator());
-        SetDefaultAnimationConfigs();
     }
 
-    public event Action OnAnimationEnd;
+    #region Параметры данной анимации
 
-    private ICoroutineInfo blinkingLoopInfo;
-    private AnimationCurve animationCurve;
-
-
-
-    #region Настройки данной анимации
     private bool isHasALimitedDuration = false; // Есть ли ограниченная длительность у анимации
     private int amountOfLoopsToExit = 1; // Количество повторений анимации
-
+    protected override float AnimationDuration { get; set; } = 2f;
     private float lowerAlphaValue = 0.25f; // Нижнее значение альфа-канала при мигании
 
     #endregion
 
-    
-    public override void StartAnimation()
+
+    protected override void SetDefaultAnimationCreatingParameters()
     {
-        superMonoBehaviour.ContiniousCoroutineExecution(ref blinkingLoopInfo);
+        lowerAlphaValue = 0.25f;
     }
 
 
-    private IEnumerator BlinkingLoopEnumerator()
+    protected override void SetDefaultAnimationExecutionParameters()
+    {
+        isHasALimitedDuration = false;
+        amountOfLoopsToExit = 1;
+        AnimationDuration = 2f;
+    }
+
+
+    /// <summary>
+    /// Задать количество повторений мигания
+    /// </summary>
+    public void SetLoopsCount(int loopsCount)
+    {
+        ChangeAnimationExecutionParameters(() =>
+        {
+            isHasALimitedDuration = true;
+            amountOfLoopsToExit = loopsCount;
+        });
+    }
+
+    public void SetInfiniteNumberOfLoops()
+    {
+        ChangeAnimationExecutionParameters(() =>
+        {
+            isHasALimitedDuration = false;
+            amountOfLoopsToExit = 1;
+        });
+    }
+
+
+    /// <summary>
+    /// Задать нижнее значение альфа-канала. Рекомендуется использовать 0f / 0.25f / 0.5f
+    /// </summary>
+    /// <param name="lowerAlphaValue"></param>
+    public void SetLowerAlphaValue(float lowerAlphaValue)
+    {
+        ChangeAnimationCreatingParameters(() => this.lowerAlphaValue = lowerAlphaValue);
+    }
+
+
+    public override IEnumerator AnimationEnumerator()
     {
         int loopCounter = 0;
 
@@ -50,9 +78,12 @@ public class BlinkingLoop : AnimationByScript
             yield return new WaitWhile(() => NeedAnimating(ref counter));
             loopCounter++;
         }
-
-        OnAnimationEnd?.Invoke();
     }
+
+
+    protected override AnimationCurve GetAnimationCurve() => GetBlinkingAnimationCurve(lowerAlphaValue);
+
+
 
 
     /// <summary>
@@ -62,17 +93,12 @@ public class BlinkingLoop : AnimationByScript
     /// <returns></returns>
     private bool NeedAnimating(ref float counter)
     {
-        float alphaChannel = animationCurve.Evaluate(counter);
+        float alphaChannel = AnimationCurve.Evaluate(counter);
         componentWithColor.SetChangedAlphaChannelToColor(alphaChannel);
 
-        counter += deltaTime / AnimationDuration;
+        counter += GetDeltaTime() / AnimationDuration;
+
         return counter < 1f;  // counter от 0 до 1: начало -> конец -> начало кривой   
-    }
-
-
-    private protected override void SetAnimationCurve()
-    {
-        animationCurve = GetBlinkingAnimationCurve(lowerAlphaValue);
     }
 
 

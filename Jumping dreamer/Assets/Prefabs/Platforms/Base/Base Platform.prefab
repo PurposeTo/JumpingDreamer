@@ -13,11 +13,10 @@ GameObject:
   - component: {fileID: 3831292459548958180}
   - component: {fileID: 4440618660956165925}
   - component: {fileID: 8235671811413646632}
-  - component: {fileID: 2174944452442663017}
+  - component: {fileID: 8883639842903326930}
   - component: {fileID: 7788431073906995449}
   - component: {fileID: 5109959233876350566}
   - component: {fileID: 6972453592572408174}
-  - component: {fileID: 1921353013124953376}
   - component: {fileID: 3341666627142754377}
   - component: {fileID: 6788460187542422528}
   m_Layer: 0
@@ -157,25 +156,18 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
---- !u!95 &2174944452442663017
-Animator:
-  serializedVersion: 3
+--- !u!114 &8883639842903326930
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3806970468814158532}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: f8dd26de6a2bf014189f4093f62b4df4, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c79b852fbd4472f46ac53ccae91ae75f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7788431073906995449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,18 +202,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6de206bcc520b06448c69769051cdbd3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1921353013124953376
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3806970468814158532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90340a20eca5c8941833ed7687e202f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &3341666627142754377

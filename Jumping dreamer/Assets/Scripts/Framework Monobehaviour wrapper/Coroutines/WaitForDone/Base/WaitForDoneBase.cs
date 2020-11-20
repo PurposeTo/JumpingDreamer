@@ -6,7 +6,7 @@ public abstract class WaitForDoneBase : CustomYieldInstruction
     private readonly Func<bool> predicate;
     private float timeout;
 
-    public WaitForDoneBase(float timeout, Func<bool> predicate)
+    protected WaitForDoneBase(float timeout, Func<bool> predicate)
     {
         this.predicate = predicate;
         this.timeout = timeout;

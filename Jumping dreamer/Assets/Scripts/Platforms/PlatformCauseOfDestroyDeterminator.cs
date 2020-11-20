@@ -45,7 +45,7 @@ public class PlatformCauseOfDestroyDeterminator
 
     private Predicate<float> GetNoLifeTimeCauseOfDestroy()
     {
-        lifeTimeToDestroy = PlatformGeneratorData.MinlifeTime / 2.5f;
+        lifeTimeToDestroy = PlatformGeneratorData.MinlifeTime / 2f;
         return GetAsTimeCauseOfDestroy();
     }
 
