@@ -6,18 +6,24 @@ using UnityEngine;
 using System.Collections;
 using System.Text;
 
-public class GPGSPlayerDataCloudStorage : SingletonSuperMonoBehaviour<GPGSPlayerDataCloudStorage>
+public class GPGSPlayerDataCloudStorage
 {
+    private ICoroutineInfo loadSavedGameFromCloudInfo;
+    private readonly SuperMonoBehaviour superMonoBehaviour;
+
+
+    public GPGSPlayerDataCloudStorage(SuperMonoBehaviour superMonoBehaviour)
+    {
+        this.superMonoBehaviour = superMonoBehaviour != null ? superMonoBehaviour : throw new ArgumentNullException(nameof(superMonoBehaviour));
+        loadSavedGameFromCloudInfo = this.superMonoBehaviour.CreateCoroutineInfo(LoadSavedGameFromCloudEnumerator());
+    }
+
+
+    public PlayerDataModel CloudPlayerDataModel { get; private set; } = null;
     public ISavedGameMetadata CurrentGameMetadata { get; private set; }
     public DateTime StartPlayingTime { get; private set; }
 
     private ISavedGameClient SavedGameClient => ((PlayGamesPlatform)Social.Active).SavedGame;
-
-
-    private void Start()
-    {
-        StartCoroutine(LoadSavedGameFromCloudEnumerator());
-    }
 
 
     public void CreateSave(PlayerDataModel localModelToSaveOnCloud)
@@ -135,20 +141,11 @@ public class GPGSPlayerDataCloudStorage : SingletonSuperMonoBehaviour<GPGSPlayer
             action?.Invoke();
         });
     }
+    
 
-
-    private void OpenSavedGame(Action<SavedGameRequestStatus, ISavedGameMetadata> OnSavedGameOpened)
+    public void StartLoadSavedGameFromCloudCoroutine()
     {
-        if (!GPGSAuthentication.IsAuthenticated)
-        {
-            OnSavedGameOpened(SavedGameRequestStatus.AuthenticationError, null);
-            return;
-        }
-
-        SavedGameClient.OpenWithAutomaticConflictResolution(PlayerDataModel.FileName,
-            DataSource.ReadNetworkOnly,                                              
-            ConflictResolutionStrategy.UseLongestPlaytime,
-            OnSavedGameOpened);
+        superMonoBehaviour.ContiniousCoroutineExecution(ref loadSavedGameFromCloudInfo);
     }
 
 
@@ -165,8 +162,23 @@ public class GPGSPlayerDataCloudStorage : SingletonSuperMonoBehaviour<GPGSPlayer
         {
             Debug.Log($"###ДЕСЕРИАЛИЗАЦИЯ ДАННЫХ С ОБЛАКА ЗАВЕРШЕНА.\nReceived from cloud model: {cloudModel}.\nCloud model as json: {JsonConverterWrapper.SerializeObject(cloudModel, null)}");
 
-            PlayerDataModelController.Instance.SynchronizePlayerDataStorages(cloudModel);
+            CloudPlayerDataModel = cloudModel;
         });
+    }
+
+
+    private void OpenSavedGame(Action<SavedGameRequestStatus, ISavedGameMetadata> OnSavedGameOpened)
+    {
+        if (!GPGSAuthentication.IsAuthenticated)
+        {
+            OnSavedGameOpened(SavedGameRequestStatus.AuthenticationError, null);
+            return;
+        }
+
+        SavedGameClient.OpenWithAutomaticConflictResolution(PlayerDataModel.FileName,
+            DataSource.ReadNetworkOnly,                                              
+            ConflictResolutionStrategy.UseLongestPlaytime,
+            OnSavedGameOpened);
     }
 
 

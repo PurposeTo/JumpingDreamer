@@ -3,18 +3,19 @@ using System.IO;
 
 public class PlayerDataLocalStorageSafe
 {
+    public PlayerDataModel LocalPlayerDataModel { get; private set; } = null;
     public string FilePath { get; private set; }
 
     // Public set, т.к. в соответствии с архитектурой приложения объект этого класса может находиться только в контроллере. При этом так как это часть контроллера, то он может напрямую изменять значения этого свойства.
     public bool IsDataFileLoaded { get; set; } = false;
 
 
-    public PlayerDataModel LoadPlayerData()
+    public void LoadPlayerData()
     {
         FilePath = DataLoaderHelper.GetFilePath(PlayerDataModel.FileName);
         Debug.Log($"File path: {FilePath}");
 
-        return GetPlayerData();
+        LocalPlayerDataModel = GetPlayerData();
     }
 
 

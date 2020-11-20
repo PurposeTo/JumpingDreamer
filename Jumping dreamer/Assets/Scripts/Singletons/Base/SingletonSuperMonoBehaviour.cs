@@ -32,7 +32,7 @@ public abstract class SingletonSuperMonoBehaviour<T> : SuperMonoBehaviour where 
     private static Action<T> OnInstanceInitialize;
 
 
-    protected override void AwakeWrapped()
+    protected sealed override void AwakeWrapped()
     {
         if (Instance == null)
         {
@@ -51,6 +51,11 @@ public abstract class SingletonSuperMonoBehaviour<T> : SuperMonoBehaviour where 
             Destroy(gameObject); //Destroy(gameObject.GetComponent<T>());
         }
     }
+
+
+    /// <summary>
+    /// Используется после инициализации Singleton. Использовать вместо Awake/AwakeWrapped.
+    /// </summary>
     protected virtual void AwakeSingleton() { }
 
 

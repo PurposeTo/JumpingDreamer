@@ -1,23 +1,21 @@
 ﻿using System;
+using System.Collections;
 using GooglePlayGames.BasicApi.SavedGame;
 using UnityEngine; // Не удалять, т.к. используется для платформозависимой компиляции
 
 
 public class PlayerDataModelController : SingletonSuperMonoBehaviour<PlayerDataModelController>
 {
-    private PlayerDataModel playerDataLocalModel;
-
-    private PlayerDataLocalStorageSafe localStorageSafe = new PlayerDataLocalStorageSafe();
-    private PlayerDataSynchronizer playerDataSynchronizer = new PlayerDataSynchronizer();
-
-    private GPGSPlayerDataCloudStorage GPGSPlayerDataCloudStorage => GPGSPlayerDataCloudStorage.Instance;
-    public bool IsDataFileLoaded => localStorageSafe.IsDataFileLoaded;
-
     public static bool IsPlayerDataHaveAlreadyDeletedOrRestored { get; private set; } = false;
 
     public event Action OnSavePlayerStats;
     public event Action OnDeletePlayerData;
     public event Action OnRestoreDataFromCloud;
+
+    private PlayerDataModel playerDataModel;
+    private PlayerDataSynchronizer playerDataSynchronizer;
+
+    private ICoroutineInfo synchronizePlayerDataStoragesInfo;
 
 
     public enum DataModelSelectionStatus
@@ -29,11 +27,13 @@ public class PlayerDataModelController : SingletonSuperMonoBehaviour<PlayerDataM
 
     protected override void AwakeSingleton()
     {
-        playerDataLocalModel = localStorageSafe.LoadPlayerData();
+        playerDataSynchronizer = new PlayerDataSynchronizer(this);
+        synchronizePlayerDataStoragesInfo = CreateCoroutineInfo(SynchronizePlayerDataStorages());
+        ContiniousCoroutineExecution(ref synchronizePlayerDataStoragesInfo);
     }
 
 
-    public PlayerDataModel GetPlayerDataModel() => playerDataLocalModel;
+    public PlayerDataModel GetPlayerDataModel() => playerDataModel;
 
 
     public void UpdatePlayerModelAndSavePlayerData()
@@ -45,12 +45,12 @@ public class PlayerDataModelController : SingletonSuperMonoBehaviour<PlayerDataM
 
     public void DeletePlayerData()
     {
-        playerDataLocalModel = PlayerDataModel.CreateModelWithDefaultValues();
+        playerDataModel = PlayerDataModel.CreateModelWithDefaultValues();
 
         localStorageSafe.DeletePlayerData();
 
         // Загрузка обновленных данных на облако
-        GPGSPlayerDataCloudStorage.CreateSave(playerDataLocalModel);
+        GPGSPlayerDataCloudStorage.CreateSave(playerDataModel);
 
         IsPlayerDataHaveAlreadyDeletedOrRestored = true;
         OnDeletePlayerData?.Invoke();
@@ -63,7 +63,7 @@ public class PlayerDataModelController : SingletonSuperMonoBehaviour<PlayerDataM
         {
             if (cloudModel != null)
             {
-                playerDataLocalModel = cloudModel;
+                playerDataModel = cloudModel;
 
                 localStorageSafe.IsDataFileLoaded = true;
                 IsPlayerDataHaveAlreadyDeletedOrRestored = true;
@@ -76,7 +76,7 @@ public class PlayerDataModelController : SingletonSuperMonoBehaviour<PlayerDataM
                 {
                     Debug.Log("Полученные пустые данные с облака.");
 
-                    playerDataLocalModel = PlayerDataModel.CreateModelWithDefaultValues();
+                    playerDataModel = PlayerDataModel.CreateModelWithDefaultValues();
 
                     localStorageSafe.IsDataFileLoaded = true;
                     IsPlayerDataHaveAlreadyDeletedOrRestored = true;
@@ -89,22 +89,26 @@ public class PlayerDataModelController : SingletonSuperMonoBehaviour<PlayerDataM
     }
 
 
-    public void SynchronizePlayerDataStorages(PlayerDataModel cloudModel)
+    public void OnDataModelSelected(PlayerDataModel selectedModel, DataModelSelectionStatus modelSelectionStatus)
     {
-        playerDataSynchronizer.SynchronizePlayerDataStorages(ref playerDataLocalModel, cloudModel);
+        playerDataSynchronizer.OnDataModelSelected(selectedModel, ref playerDataModel, modelSelectionStatus);
     }
 
 
-    public void OnDataModelSelected(PlayerDataModel selectedModel, DataModelSelectionStatus modelSelectionStatus)
+    private IEnumerator SynchronizePlayerDataStorages()
     {
-        playerDataSynchronizer.OnDataModelSelected(selectedModel, ref playerDataLocalModel, modelSelectionStatus);
+        playerDataSynchronizer.StartGetSynchronizedPlayerDataModelCoroutine(synchronizedPlayerDataModel =>
+        {
+            this.playerDataModel = synchronizedPlayerDataModel;
+        });
+        yield return new WaitWhile(() => playerDataSynchronizer.IsGetSynchronizedPlayerDataModelCoroutineExecuting());
     }
 
 
     private void SavePlayerData()
     {
-        localStorageSafe.WritePlayerDataToFile(playerDataLocalModel);
-        GPGSPlayerDataCloudStorage.CreateSave(playerDataLocalModel);
+        localStorageSafe.WritePlayerDataToFile(playerDataModel);
+        GPGSPlayerDataCloudStorage.CreateSave(playerDataModel);
     }
 
 
