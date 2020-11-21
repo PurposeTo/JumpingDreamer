@@ -25,16 +25,33 @@ public class PlatformMotionConfigFactory
 }
 
 
-public class PlatformMotionConfig : GrouperEnumHigherTier<PlatformMovingTypes, PlatformMotionConfig>
+public abstract class PlatformMotionConfig<T> where T : System.Enum
 {
-    public PlatformMotionConfig(PlatformMovingTypes platformMovingType) : base(platformMovingType) { }
+    public T Value { get; }
+
+    protected abstract T[] ConcreteEnumValues { get; }
+
+    public PlatformMotionConfig()
+    {
+        Value = GameLogic.GetRandomEnumItem<T>();
+    }
+
+
+    public PlatformMotionConfig(T Value)
+    {
+        this.Value = Value;
+    }
+
+
+    public T GetConcreteRandomEnumValue()
+    {
+        return GameLogic.GetRandomItem(ConcreteEnumValues);
+    }
 }
 
 
 
-public class VerticalMotionConfig
-    : GrouperEnumLowerTierRandomable<VerticalMotionConfig.VerticalMotionConfigs, VerticalMotionConfig, PlatformMovingTypes>,
-    IPlatformMotionConfig
+public class VerticalMotionConfig : PlatformMotionConfig<VerticalMotionConfig.VerticalMotionConfigs>, IPlatformMotionConfig
 {
     public enum VerticalMotionConfigs
     {
@@ -43,17 +60,15 @@ public class VerticalMotionConfig
         Random
     }
 
-    public VerticalMotionConfig() : base(new PlatformMotionConfig(PlatformMovingTypes.VerticalMotion)) { }
+    public VerticalMotionConfig() : base() { }
 
-    public VerticalMotionConfig(VerticalMotionConfigs verticalMotionConfigs) : base(verticalMotionConfigs,
-        new PlatformMotionConfig(PlatformMovingTypes.VerticalMotion))
-    { }
+    public VerticalMotionConfig(VerticalMotionConfigs verticalMotionConfigs) : base(verticalMotionConfigs) { }
 
+    protected override VerticalMotionConfigs[] ConcreteEnumValues { get; } = { VerticalMotionConfigs.Up, VerticalMotionConfigs.Down };
 }
 
 
-public class CircularMotionConfig :
-    GrouperEnumLowerTierRandomable<CircularMotionConfig.CircularMotionConfigs, CircularMotionConfig, PlatformMovingTypes>, IPlatformMotionConfig
+public class CircularMotionConfig : PlatformMotionConfig<CircularMotionConfig.CircularMotionConfigs>, IPlatformMotionConfig
 {
     public enum CircularMotionConfigs
     {
@@ -62,18 +77,18 @@ public class CircularMotionConfig :
         Random
     }
 
-    public CircularMotionConfig() : base(new PlatformMotionConfig(PlatformMovingTypes.CircularMotion)) { }
+    public CircularMotionConfig() : base() { }
 
-    public CircularMotionConfig(CircularMotionConfigs circularMotionConfigs) : base(circularMotionConfigs,
-        new PlatformMotionConfig(PlatformMovingTypes.CircularMotion))
-    { }
+    public CircularMotionConfig(CircularMotionConfigs circularMotionConfigs) : base(circularMotionConfigs) { }
+
+    protected override CircularMotionConfigs[] ConcreteEnumValues { get; } = { CircularMotionConfigs.Left, CircularMotionConfigs.Right };
 }
 
 
 /// <summary>
 /// Необходим, что бы создать контейнер из элементов
 /// </summary>
-public interface IPlatformMotionConfig : IGrouperEnumLowerTier<PlatformMovingTypes>
+public interface IPlatformMotionConfig
 {
 
 }

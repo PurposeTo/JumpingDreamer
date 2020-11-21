@@ -8,8 +8,6 @@ using Random = UnityEngine.Random;
 /// </summary>
 public class VerticalMotion : PlatformMovable, IMovable, IPooledObject
 {
-    public bool IsInitialized { get; private set; }
-
     [SerializeField]
     private bool UpdateMoveDirectionEveryFrame = false;
 
@@ -21,14 +19,12 @@ public class VerticalMotion : PlatformMovable, IMovable, IPooledObject
 
     void IPooledObject.OnObjectSpawn()
     {
-        FindAndSetMotionConfigs(WorldGenerationRulesController.Instance.PlatformGeneratorPresenter.PlatformGeneratorConfigs.PlatformConfigs);
-        IsInitialized = true;
+
     }
 
 
     private void OnDisable()
     {
-        IsInitialized = false;
         direction = 0;
     }
 
@@ -42,30 +38,7 @@ public class VerticalMotion : PlatformMovable, IMovable, IPooledObject
     }
 
 
-    public PlatformCauseOfDestroyByHight.PlatformCausesOfDestroyByHight GetPlatformCauseOfDestroyByHight()
-    {
-        switch (direction)
-        {
-            case 1:
-                return PlatformCauseOfDestroyByHight.PlatformCausesOfDestroyByHight.TopBorder;
-            case -1:
-                return PlatformCauseOfDestroyByHight.PlatformCausesOfDestroyByHight.BottomBorder;
-            default:
-                throw new Exception($"{direction} is unknown direction!");
-        }
-    }
-
-
-    private void FindAndSetMotionConfigs(PlatformConfigs platformConfigs)
-    {
-        SetMotionConfigs(platformConfigs.MovingTypeConfigs
-            .ToList()
-            .Find(platformMotionConfig => platformMotionConfig.TryToDownCastTier(out VerticalMotionConfig _))
-            .DownCastTier<VerticalMotionConfig>().Value);
-    }
-
-
-    private void SetMotionConfigs(VerticalMotionConfig.VerticalMotionConfigs verticalMotionConfigs)
+    public void SetMotionConfigs(VerticalMotionConfig.VerticalMotionConfigs verticalMotionConfigs)
     {
         switch (verticalMotionConfigs)
         {
@@ -74,9 +47,6 @@ public class VerticalMotion : PlatformMovable, IMovable, IPooledObject
                 break;
             case VerticalMotionConfig.VerticalMotionConfigs.Down:
                 direction = -1;
-                break;
-            case VerticalMotionConfig.VerticalMotionConfigs.Random:
-                direction = directionsToChoice[Random.Range(0, directionsToChoice.Length)];
                 break;
             default:
                 throw new Exception($"{verticalMotionConfigs} is unknown motionConfig!");

@@ -8,30 +8,20 @@ public class PlatformCauseOfDestroyDeterminator
     private float lifeTimeToDestroy;
 
 
-    public Predicate<float> GetCauseOfDestroyByTime(PlatformCauseOfDestroyByTime.PlatformCausesOfDestroyByTime platformCausesOfDestroyByTime)
+    public Predicate<float> GetCauseOfDestroy(PlatformCausesOfDestroy causeOfDestroy)
     {
-        switch (platformCausesOfDestroyByTime)
+        switch (causeOfDestroy)
         {
-            case PlatformCauseOfDestroyByTime.PlatformCausesOfDestroyByTime.AsTimePasses:
+            case PlatformCausesOfDestroy.AsTimePasses:
                 return GetAsTimePassesCauseOfDestroy();
-            case PlatformCauseOfDestroyByTime.PlatformCausesOfDestroyByTime.NoLifeTime:
+            case PlatformCausesOfDestroy.NoLifeTime:
                 return GetNoLifeTimeCauseOfDestroy();
-            default:
-                throw new Exception($"{platformCausesOfDestroyByTime} is unknown PlatformCauseOfDestroy!");
-        }
-    }
-
-
-    public Predicate<float> GetCauseOfDestroyByHight(PlatformCauseOfDestroyByHight.PlatformCausesOfDestroyByHight platformCausesOfDestroyByHight)
-    {
-        switch (platformCausesOfDestroyByHight)
-        {
-            case PlatformCauseOfDestroyByHight.PlatformCausesOfDestroyByHight.TopBorder:
+            case PlatformCausesOfDestroy.TopBorder:
                 return GetTopBorderCauseOfDestroy();
-            case PlatformCauseOfDestroyByHight.PlatformCausesOfDestroyByHight.BottomBorder:
+            case PlatformCausesOfDestroy.BottomBorder:
                 return GetBottomBorderCauseOfDestroy();
             default:
-                throw new Exception($"{platformCausesOfDestroyByHight} is unknown VerticalCauseOfDeathControl!");
+                throw new Exception($"{causeOfDestroy} is unknown PlatformCauseOfDestroy!");
         }
     }
 

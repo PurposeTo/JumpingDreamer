@@ -42,7 +42,7 @@ public class PlatformGeneratorConfigs
 
         if (platformConfigs.CreatingPlace == PlatformConfigsData.PlatformCreatingPlace.InRandomArea) delay -= 0.1f;
 
-        if (platformConfigs.CauseOfDestroy is PlatformCauseOfDestroyByTime platformCauseOfDestroyConfigsByTime && platformCauseOfDestroyConfigsByTime.Value == PlatformCauseOfDestroyByTime.PlatformCausesOfDestroyByTime.NoLifeTime)
+        if (platformConfigs.CauseOfDestroy == PlatformCausesOfDestroy.NoLifeTime)
         {
             delay -= 0.2f;
         }
@@ -57,18 +57,18 @@ public class PlatformConfigs
     public PlatformMovingTypes[] MovingTypes { get; private set; }
     public IPlatformMotionConfig[] MovingTypeConfigs { get; private set; }
     public PlatformConfigsData.PlatformCreatingPlace CreatingPlace { get; private set; }
-    public IPlatformCauseOfDestroyConfigs CauseOfDestroy { get; private set; }
+    public PlatformCausesOfDestroy CauseOfDestroy { get; private set; }
 
-    private PlatformConfigs() { }
 
     public static PlatformConfigs GetDefault()
     {
         return new PlatformConfigs()
         {
-            MovingTypes = new PlatformMovingTypes[] { global::PlatformMovingTypes.VerticalMotion},
-            MovingTypeConfigs = new IPlatformMotionConfig[] { new VerticalMotionConfig(VerticalMotionConfig.VerticalMotionConfigs.Up) },
+            MovingTypes = new PlatformMovingTypes[] { global::PlatformMovingTypes.VerticalMotion },
+            MovingTypeConfigs = new IPlatformMotionConfig[] {
+                new VerticalMotionConfig(VerticalMotionConfig.VerticalMotionConfigs.Up) },
             CreatingPlace = PlatformConfigsData.PlatformCreatingPlace.InCentre,
-            CauseOfDestroy = new PlatformCauseOfDestroyByHight(PlatformCauseOfDestroyByHight.PlatformCausesOfDestroyByHight.TopBorder)
+            CauseOfDestroy = PlatformCausesOfDestroy.TopBorder
         };
     }
 
@@ -78,7 +78,11 @@ public class PlatformConfigs
         var platformMovingTypes = GameLogic.GetAllEnumValues<PlatformMovingTypes>();
         var platformMovingTypeConfigs = platformConfigsData.GetRandomPlatformMovingConfigs(platformMovingTypes);
         var platformCreatingPlace = platformConfigsData.GetRandomPlatformCreatingPlace(platformMovingTypes, platformMovingTypeConfigs);
-        var platformCauseOfDestroy = platformConfigsData.GetRandomPlatformCauseOfDestroy(platformMovingTypes, platformCreatingPlace);
+
+        var platformCauseOfDestroy = platformConfigsData.GetRandomPlatformCauseOfDestroy(
+            platformMovingTypes,
+            platformMovingTypeConfigs,
+            platformCreatingPlace);
 
         return new PlatformConfigs()
         {

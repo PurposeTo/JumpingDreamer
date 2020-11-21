@@ -37,12 +37,10 @@ public class PlatformConfigsData
 
         if (platformMovingTypes.Contains(PlatformMovingTypes.VerticalMotion))
         {
-            VerticalMotionConfig.VerticalMotionConfigs verticalMotionConfigs = platformMovingTypeConfigs
-                .ToList()
-                .Find(platformMotionConfig => platformMotionConfig.TryToDownCastTier(out VerticalMotionConfig _))
-                .DownCastTier<VerticalMotionConfig>().Value;
+            VerticalMotionConfig verticalMotionConfig =
+                (VerticalMotionConfig)platformMovingTypeConfigs.ToList().Find(x => x is VerticalMotionConfig);
 
-            switch (verticalMotionConfigs)
+            switch (verticalMotionConfig.Value)
             {
                 case VerticalMotionConfig.VerticalMotionConfigs.Up:
                     availablePlatformCreatingPlaces.Add(PlatformCreatingPlace.InCentre);
@@ -54,7 +52,7 @@ public class PlatformConfigsData
                     availablePlatformCreatingPlaces.Add(PlatformCreatingPlace.InRandomArea);
                     break;
                 default:
-                    throw new System.Exception($"{verticalMotionConfigs} is unknown MotionConfig!");
+                    throw new System.Exception($"{verticalMotionConfig.Value} is unknown MotionConfig!");
             }
 
         }
@@ -63,13 +61,16 @@ public class PlatformConfigsData
     }
 
 
-    public IPlatformCauseOfDestroyConfigs GetRandomPlatformCauseOfDestroy(PlatformMovingTypes[] platformMovingTypes, PlatformCreatingPlace platformCreatingPlace)
+    public PlatformCausesOfDestroy GetRandomPlatformCauseOfDestroy(
+        PlatformMovingTypes[] platformMovingTypes,
+        IPlatformMotionConfig[] platformMotionConfigs,
+        PlatformCreatingPlace platformCreatingPlace)
     {
-        HashSet<IPlatformCauseOfDestroyConfigs> platformCauseOfDestroys = new HashSet<IPlatformCauseOfDestroyConfigs>();
+        HashSet<PlatformCausesOfDestroy> platformCauseOfDestroys = new HashSet<PlatformCausesOfDestroy>();
 
         if (platformCreatingPlace == PlatformCreatingPlace.InRandomArea)
         {
-            platformCauseOfDestroys.Add(new PlatformCauseOfDestroyByTime(PlatformCauseOfDestroyByTime.PlatformCausesOfDestroyByTime.NoLifeTime));
+            platformCauseOfDestroys.Add(PlatformCausesOfDestroy.NoLifeTime);
         }
 
         bool isPlatformVerticalMotion = platformMovingTypes.Contains(PlatformMovingTypes.VerticalMotion);
@@ -77,13 +78,32 @@ public class PlatformConfigsData
 
         if (isPlatformVerticalMotion)
         {
-            platformCauseOfDestroys.Add(new PlatformCauseOfDestroyByHight(PlatformCauseOfDestroyByHight.PlatformCausesOfDestroyByHight.WaitingForInitializate));
+            VerticalMotionConfig verticalMotionConfig =
+                (VerticalMotionConfig)platformMotionConfigs.ToList().Find(x => x is VerticalMotionConfig);
+
+            platformCauseOfDestroys.Add(GetPlatformCauseOfDestroyByVerticalMotionConfig(verticalMotionConfig.Value));
         }
         else if (!isPlatformVerticalMotion && isPlatformCircularMotion)
         {
-            platformCauseOfDestroys.Add(new PlatformCauseOfDestroyByTime(PlatformCauseOfDestroyByTime.PlatformCausesOfDestroyByTime.AsTimePasses));
+            platformCauseOfDestroys.Add(PlatformCausesOfDestroy.AsTimePasses);
         }
 
         return GameLogic.GetRandomItem(platformCauseOfDestroys.ToArray());
+    }
+
+
+    public PlatformCausesOfDestroy GetPlatformCauseOfDestroyByVerticalMotionConfig(VerticalMotionConfig.VerticalMotionConfigs verticalMotionConfig)
+    {
+        switch (verticalMotionConfig)
+        {
+            case VerticalMotionConfig.VerticalMotionConfigs.Up:
+                return PlatformCausesOfDestroy.TopBorder;
+            case VerticalMotionConfig.VerticalMotionConfigs.Down:
+                return PlatformCausesOfDestroy.BottomBorder;
+            case VerticalMotionConfig.VerticalMotionConfigs.Random:
+                return PlatformCausesOfDestroy.LateInitialization;
+            default:
+                throw new Exception($"{verticalMotionConfig} is unknown motionConfig!");
+        }
     }
 }

@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-public class PlatformGenerator : MonoBehaviour
+public class PlatformGenerator : SuperMonoBehaviour
 {
     public PlatformGeneratorConfigs PlatformGeneratorConfigs { get; private set; }
     private PlatformGeneratorData platformGeneratorData;
@@ -11,13 +11,13 @@ public class PlatformGenerator : MonoBehaviour
     private protected List<Vector2> directionsAroundCircle = new List<Vector2>();
 
 
-    private void Start()
+    protected override void StartWrapped()
     {
         GenerateRingFromVerticalMotionPlatforms();
     }
 
 
-    private void Update()
+    protected override void UpdateWrapped()
     {
         Generating();
     }
@@ -25,8 +25,7 @@ public class PlatformGenerator : MonoBehaviour
 
     public void Constructor(PlatformGeneratorData platformGeneratorData)
     {
-        if (platformGeneratorData == null) throw new System.ArgumentNullException("platformGeneratorData");
-        this.platformGeneratorData = platformGeneratorData;
+        this.platformGeneratorData = platformGeneratorData != null ? platformGeneratorData : throw new System.ArgumentNullException("platformGeneratorData");
     }
 
 
@@ -87,7 +86,8 @@ public class PlatformGenerator : MonoBehaviour
         position *= platformGeneratorData.GetCreatingRange(platformConfigs.CreatingPlace);
 
         GameObject platformToCreate = platformGeneratorData.GetPlatform(platformConfigs.MovingTypes);
-        GameObject createdPlatform = ObjectPooler.Instance.SpawnFromPool(platformToCreate, position, Quaternion.identity);
+
+        SpawnPlatform(platformToCreate, position);
     }
 
 
@@ -106,7 +106,61 @@ public class PlatformGenerator : MonoBehaviour
         foreach (Vector2 direction in vector2sDirections)
         {
             Vector3 position = direction * range;
-            ObjectPooler.Instance.SpawnFromPool(platform, position, Quaternion.identity);
+            SpawnPlatform(platform, position);
+        }
+    }
+
+
+    private GameObject SpawnPlatform(GameObject prefabPlatform, Vector3 position)
+    {
+        GameObject createdPlatform = ObjectPooler.Instance.SpawnFromPool(prefabPlatform, position, Quaternion.identity);
+        SetMotionConfigsAndGetCauseOfDestroy(createdPlatform, out PlatformCausesOfDestroy causeOfDestroy);
+        createdPlatform.GetComponent<PlatformLifeCycle>().SetCauseOfDestroy(causeOfDestroy);
+        return createdPlatform;
+    }
+
+
+    private void SetMotionConfigsAndGetCauseOfDestroy(GameObject createdPlatform, out PlatformCausesOfDestroy platformCausesOfDestroy)
+    {
+        // CauseOfDestroy в некоторых случаях может задаваться не при общей настройке правил генерации, а при определении правил движения вертикальной платформы.
+
+
+        var movingTypeConfigs = PlatformGeneratorConfigs.PlatformConfigs.MovingTypeConfigs;
+
+        platformCausesOfDestroy = PlatformGeneratorConfigs.PlatformConfigs.CauseOfDestroy;
+
+        if (createdPlatform.TryGetComponent(out VerticalMotion verticalMotion))
+        {
+            VerticalMotionConfig verticalMotionConfig =
+                (VerticalMotionConfig)movingTypeConfigs.ToList().Find(x => x is VerticalMotionConfig);
+
+            VerticalMotionConfig.VerticalMotionConfigs config = verticalMotionConfig.Value != VerticalMotionConfig.VerticalMotionConfigs.Random
+                ? verticalMotionConfig.Value
+                : verticalMotionConfig.GetConcreteRandomEnumValue();
+
+            if (platformCausesOfDestroy == PlatformCausesOfDestroy.LateInitialization)
+            {
+                platformCausesOfDestroy = new PlatformConfigsData().GetPlatformCauseOfDestroyByVerticalMotionConfig(config);
+
+                if (platformCausesOfDestroy == PlatformCausesOfDestroy.LateInitialization)
+                {
+                    Debug.LogError("VerticalMotionConfigs shouldn't be Random!");
+                }
+            }
+
+            verticalMotion.SetMotionConfigs(config);
+        }
+
+        if (createdPlatform.TryGetComponent(out CircularMotion circularMotion))
+        {
+            CircularMotionConfig circularMotionConfig =
+                (CircularMotionConfig)movingTypeConfigs.ToList().Find(x => x is CircularMotionConfig);
+
+            CircularMotionConfig.CircularMotionConfigs config = circularMotionConfig.Value != CircularMotionConfig.CircularMotionConfigs.Random
+                ? circularMotionConfig.Value
+                : circularMotionConfig.GetConcreteRandomEnumValue();
+
+            circularMotion.SetMotionConfigs(config);
         }
     }
 }

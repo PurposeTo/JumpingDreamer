@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(PlatformGenerator))]
-public class PlatformGeneratorPresenter : MonoBehaviour
+public class PlatformGeneratorPresenter : SuperMonoBehaviour
 {
     [SerializeField] private PlatformGeneratorData platformGeneratorData = null;
     private PlatformGenerator platformGenerator;
     public PlatformGeneratorConfigs PlatformGeneratorConfigs => platformGenerator.PlatformGeneratorConfigs;
 
 
-    private void Awake()
+    protected override void AwakeWrapped()
     {
         platformGenerator = gameObject.GetComponent<PlatformGenerator>();
         platformGenerator.Constructor(platformGeneratorData);
