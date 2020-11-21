@@ -30,9 +30,11 @@ public class TrainingTutorial : SuperMonoBehaviour
     {
         bool shouldStartByShowingTheTutorial = PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.TotalLifeTime < minTotalLifeTimeToShowTutorial;
 
+        Array.ForEach(trainingTips, trainingTip => trainingTip.gameObject.SetActive(false));
+
         if (IsTutorialNeedsToBeShown())
         {
-            ExecuteCoroutineContinuously(ref CheckingIfTutorialNeedsToBeShownRoutineInfo,
+            ReStartCoroutineExecution(ref CheckingIfTutorialNeedsToBeShownRoutineInfo,
                 CheckingIfTutorialNeedsToBeShownEnumerator(shouldStartByShowingTheTutorial));
         }
     }
@@ -71,7 +73,7 @@ public class TrainingTutorial : SuperMonoBehaviour
 
     private bool IsTutorialNeedsToBeShown()
     {
-        return absAverageHorizontalInput <= minHorizontalInputToShowTutorial;
+       return absAverageHorizontalInput <= minHorizontalInputToShowTutorial;
     }
 
     private IEnumerator CheckingIfTutorialNeedsToBeShownEnumerator(bool shouldStartByShowingTheTutorial)
