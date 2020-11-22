@@ -51,9 +51,9 @@ public abstract class PlatformMotionConfig<T> where T : System.Enum
 
 
 
-public class VerticalMotionConfig : PlatformMotionConfig<VerticalMotionConfig.VerticalMotionConfigs>, IPlatformMotionConfig
+public class VerticalMotionConfig : PlatformMotionConfig<VerticalMotionConfig.MotionConfigs>, IPlatformMotionConfig
 {
-    public enum VerticalMotionConfigs
+    public enum MotionConfigs
     {
         Up,
         Down,
@@ -62,15 +62,15 @@ public class VerticalMotionConfig : PlatformMotionConfig<VerticalMotionConfig.Ve
 
     public VerticalMotionConfig() : base() { }
 
-    public VerticalMotionConfig(VerticalMotionConfigs verticalMotionConfigs) : base(verticalMotionConfigs) { }
+    public VerticalMotionConfig(MotionConfigs verticalMotionConfigs) : base(verticalMotionConfigs) { }
 
-    protected override VerticalMotionConfigs[] ConcreteEnumValues { get; } = { VerticalMotionConfigs.Up, VerticalMotionConfigs.Down };
+    protected override MotionConfigs[] ConcreteEnumValues { get; } = { MotionConfigs.Up, MotionConfigs.Down };
 }
 
 
-public class CircularMotionConfig : PlatformMotionConfig<CircularMotionConfig.CircularMotionConfigs>, IPlatformMotionConfig
+public class CircularMotionConfig : PlatformMotionConfig<CircularMotionConfig.MotionConfigs>, IPlatformMotionConfig
 {
-    public enum CircularMotionConfigs
+    public enum MotionConfigs
     {
         Left,
         Right,
@@ -79,9 +79,9 @@ public class CircularMotionConfig : PlatformMotionConfig<CircularMotionConfig.Ci
 
     public CircularMotionConfig() : base() { }
 
-    public CircularMotionConfig(CircularMotionConfigs circularMotionConfigs) : base(circularMotionConfigs) { }
+    public CircularMotionConfig(MotionConfigs circularMotionConfigs) : base(circularMotionConfigs) { }
 
-    protected override CircularMotionConfigs[] ConcreteEnumValues { get; } = { CircularMotionConfigs.Left, CircularMotionConfigs.Right };
+    protected override MotionConfigs[] ConcreteEnumValues { get; } = { MotionConfigs.Left, MotionConfigs.Right };
 }
 
 

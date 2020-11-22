@@ -67,18 +67,18 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
     }
 
 
-    public void SetCauseOfDestroy(PlatformCausesOfDestroy platformCauseOfDestroy)
+    public void SetCauseOfDestroy(PlatformCauseOfDestroy.CauseOfDestroy platformCauseOfDestroy)
     {
         Predicate<float> IsAlive = causeOfDestroyDeterminator.GetCauseOfDestroy(platformCauseOfDestroy);
 
         switch (platformCauseOfDestroy)
         {
-            case PlatformCausesOfDestroy.AsTimePasses:
-            case PlatformCausesOfDestroy.NoLifeTime:
+            case PlatformCauseOfDestroy.CauseOfDestroy.AsTimePasses:
+            case PlatformCauseOfDestroy.CauseOfDestroy.NoLifeTime:
                 IsAliveState = () => IsAlive(lifeTime);
                 break;
-            case PlatformCausesOfDestroy.TopBorder:
-            case PlatformCausesOfDestroy.BottomBorder:
+            case PlatformCauseOfDestroy.CauseOfDestroy.TopBorder:
+            case PlatformCauseOfDestroy.CauseOfDestroy.BottomBorder:
                 IsAliveState = () => IsAlive(hight);
                 break;
             default:

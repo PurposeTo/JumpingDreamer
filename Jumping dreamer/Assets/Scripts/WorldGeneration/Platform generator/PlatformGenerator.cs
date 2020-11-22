@@ -114,13 +114,13 @@ public class PlatformGenerator : SuperMonoBehaviour
     private GameObject SpawnPlatform(GameObject prefabPlatform, Vector3 position)
     {
         GameObject createdPlatform = ObjectPooler.Instance.SpawnFromPool(prefabPlatform, position, Quaternion.identity);
-        SetMotionConfigsAndGetCauseOfDestroy(createdPlatform, out PlatformCausesOfDestroy causeOfDestroy);
+        SetMotionConfigsAndGetCauseOfDestroy(createdPlatform, out PlatformCauseOfDestroy.CauseOfDestroy causeOfDestroy);
         createdPlatform.GetComponent<PlatformLifeCycle>().SetCauseOfDestroy(causeOfDestroy);
         return createdPlatform;
     }
 
 
-    private void SetMotionConfigsAndGetCauseOfDestroy(GameObject createdPlatform, out PlatformCausesOfDestroy platformCausesOfDestroy)
+    private void SetMotionConfigsAndGetCauseOfDestroy(GameObject createdPlatform, out PlatformCauseOfDestroy.CauseOfDestroy platformCausesOfDestroy)
     {
         // CauseOfDestroy в некоторых случаях может задаваться не при общей настройке правил генерации, а при определении правил движения вертикальной платформы.
 
@@ -134,15 +134,15 @@ public class PlatformGenerator : SuperMonoBehaviour
             VerticalMotionConfig verticalMotionConfig =
                 (VerticalMotionConfig)movingTypeConfigs.ToList().Find(x => x is VerticalMotionConfig);
 
-            VerticalMotionConfig.VerticalMotionConfigs config = verticalMotionConfig.Value != VerticalMotionConfig.VerticalMotionConfigs.Random
+            VerticalMotionConfig.MotionConfigs config = verticalMotionConfig.Value != VerticalMotionConfig.MotionConfigs.Random
                 ? verticalMotionConfig.Value
                 : verticalMotionConfig.GetConcreteRandomEnumValue();
 
-            if (platformCausesOfDestroy == PlatformCausesOfDestroy.LateInitialization)
+            if (platformCausesOfDestroy == PlatformCauseOfDestroy.CauseOfDestroy.LateInitialization)
             {
                 platformCausesOfDestroy = new PlatformConfigsData().GetPlatformCauseOfDestroyByVerticalMotionConfig(config);
 
-                if (platformCausesOfDestroy == PlatformCausesOfDestroy.LateInitialization)
+                if (platformCausesOfDestroy == PlatformCauseOfDestroy.CauseOfDestroy.LateInitialization)
                 {
                     Debug.LogError("VerticalMotionConfigs shouldn't be Random!");
                 }
@@ -156,7 +156,7 @@ public class PlatformGenerator : SuperMonoBehaviour
             CircularMotionConfig circularMotionConfig =
                 (CircularMotionConfig)movingTypeConfigs.ToList().Find(x => x is CircularMotionConfig);
 
-            CircularMotionConfig.CircularMotionConfigs config = circularMotionConfig.Value != CircularMotionConfig.CircularMotionConfigs.Random
+            CircularMotionConfig.MotionConfigs config = circularMotionConfig.Value != CircularMotionConfig.MotionConfigs.Random
                 ? circularMotionConfig.Value
                 : circularMotionConfig.GetConcreteRandomEnumValue();
 

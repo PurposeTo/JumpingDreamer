@@ -8,17 +8,17 @@ public class PlatformCauseOfDestroyDeterminator
     private float lifeTimeToDestroy;
 
 
-    public Predicate<float> GetCauseOfDestroy(PlatformCausesOfDestroy causeOfDestroy)
+    public Predicate<float> GetCauseOfDestroy(PlatformCauseOfDestroy.CauseOfDestroy causeOfDestroy)
     {
         switch (causeOfDestroy)
         {
-            case PlatformCausesOfDestroy.AsTimePasses:
+            case PlatformCauseOfDestroy.CauseOfDestroy.AsTimePasses:
                 return GetAsTimePassesCauseOfDestroy();
-            case PlatformCausesOfDestroy.NoLifeTime:
+            case PlatformCauseOfDestroy.CauseOfDestroy.NoLifeTime:
                 return GetNoLifeTimeCauseOfDestroy();
-            case PlatformCausesOfDestroy.TopBorder:
+            case PlatformCauseOfDestroy.CauseOfDestroy.TopBorder:
                 return GetTopBorderCauseOfDestroy();
-            case PlatformCausesOfDestroy.BottomBorder:
+            case PlatformCauseOfDestroy.CauseOfDestroy.BottomBorder:
                 return GetBottomBorderCauseOfDestroy();
             default:
                 throw new Exception($"{causeOfDestroy} is unknown PlatformCauseOfDestroy!");

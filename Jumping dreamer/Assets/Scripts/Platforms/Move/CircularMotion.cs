@@ -1,20 +1,13 @@
 ﻿using System;
-using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class CircularMotion : PlatformMovable, IMovable, IPooledObject
+public class CircularMotion : PlatformMovable, IMovable
 {
     private readonly float minVelocityMultiplier = 2.5f;
     private readonly float maxVelocityMultiplier = 10f;
 
     private int direction;
-
-
-    void IPooledObject.OnObjectSpawn()
-    {
-
-    }
 
 
     private void FixedUpdate()
@@ -23,14 +16,14 @@ public class CircularMotion : PlatformMovable, IMovable, IPooledObject
     }
 
 
-    public void SetMotionConfigs(CircularMotionConfig.CircularMotionConfigs circularMotionConfigs)
+    public void SetMotionConfigs(CircularMotionConfig.MotionConfigs circularMotionConfigs)
     {
         switch (circularMotionConfigs)
         {
-            case CircularMotionConfig.CircularMotionConfigs.Left:
+            case CircularMotionConfig.MotionConfigs.Left:
                 direction = 1;
                 break;
-            case CircularMotionConfig.CircularMotionConfigs.Right:
+            case CircularMotionConfig.MotionConfigs.Right:
                 direction = -1;
                 break;
             default:

@@ -8,16 +8,11 @@ public class CollectRewardsScreen : SuperMonoBehaviour
     private LoadingWindow adLoadingWindow = null;
 
 
-    protected override void UpdateWrapped()
-    {
-        Debug.LogWarning($"UpdateWrapped call. {adLoadingWindow}");
-    }
-
-
     private void OnDestroy()
     {
         UnsubscribeAdMobEvents();
     }
+
 
     public void Constructor(GameOverStatusScreen gameOverStatusScreen)
     {
@@ -114,5 +109,4 @@ public class CollectRewardsScreen : SuperMonoBehaviour
         adLoadingWindow.TurnOff();
         UnsubscribeAdMobEvents();
     }
-
 }
