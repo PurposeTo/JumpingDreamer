@@ -6,15 +6,13 @@ using UnityEngine;
 using System.Collections;
 using System.Text;
 
-public class GPGSPlayerDataCloudStorage
+public class GPGSPlayerDataCloudStorage : SuperMonoBehaviourContainer
 {
     private ICoroutineContainer loadSavedGameFromCloudInfo;
-    private readonly SuperMonoBehaviour superMonoBehaviour;
 
 
-    public GPGSPlayerDataCloudStorage(SuperMonoBehaviour superMonoBehaviour)
+    public GPGSPlayerDataCloudStorage(SuperMonoBehaviour superMonoBehaviour) : base(superMonoBehaviour)
     {
-        this.superMonoBehaviour = superMonoBehaviour != null ? superMonoBehaviour : throw new ArgumentNullException(nameof(superMonoBehaviour));
         loadSavedGameFromCloudInfo = this.superMonoBehaviour.CreateCoroutineContainer();
     }
 

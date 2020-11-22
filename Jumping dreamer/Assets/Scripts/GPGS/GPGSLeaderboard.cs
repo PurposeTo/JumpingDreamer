@@ -27,8 +27,8 @@ public class GPGSLeaderboard : SingletonSuperMonoBehaviour<GPGSLeaderboard>
 
     public void UpdateLeaderboardScore(Action openLeaderboardAction)
     {
-        if (PlayerDataModelController.Instance.IsDataFileLoaded)
-        {
+        //if (PlayerDataModelController.Instance.IsDataFileLoaded)
+        //{
             Social.ReportScore(PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.MaxEarnedScore.Value, GPGSIds.leaderboard_dreamer_the_king, (bool success) =>
             {
                 if (success)
@@ -38,7 +38,7 @@ public class GPGSLeaderboard : SingletonSuperMonoBehaviour<GPGSLeaderboard>
                     UpdateLeaderboard = null;
                 }
             });
-        }
+        //}
     }
 
 

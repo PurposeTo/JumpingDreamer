@@ -17,6 +17,8 @@ public class PopUpWindowGenerator : SingletonSuperMonoBehaviour<PopUpWindowGener
     {
         ModelChoosingWindow modelChoosingWindow = Instantiate(choosingWindow).GetComponent<ModelChoosingWindow>();
         modelChoosingWindow.Constructor(chooseTheModelCallback);
+
+        return modelChoosingWindow;
     }
 
 
