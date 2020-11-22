@@ -31,6 +31,13 @@ public class ObjectPooler : SingletonSuperMonoBehaviour<ObjectPooler>
     }
 
 
+    public T SpawnFromPoolAndGetComponent<T>(GameObject prefabKey, Vector3 position, Quaternion rotation, Transform parent = null)
+    where T : Component
+    {
+        return Instance.SpawnFromPool(prefabKey, position, rotation, parent).GetComponent<T>();
+    }
+
+
     public GameObject SpawnFromPool(GameObject prefabKey, Vector3 position, Quaternion rotation, Transform parent = null)
     {
         if (!poolDictionary.ContainsKey(prefabKey))

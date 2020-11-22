@@ -1,12 +1,23 @@
 ﻿using System;
 using UnityEngine;
 
-public class CollectRewardsScreen : MonoBehaviour
+public class CollectRewardsScreen : SuperMonoBehaviour
 {
     private GameOverStatusScreen gameOverStatusScreen;
 
     private LoadingWindow adLoadingWindow = null;
 
+
+    protected override void UpdateWrapped()
+    {
+        Debug.LogWarning($"UpdateWrapped call. {adLoadingWindow}");
+    }
+
+
+    private void OnDestroy()
+    {
+        UnsubscribeAdMobEvents();
+    }
 
     public void Constructor(GameOverStatusScreen gameOverStatusScreen)
     {
@@ -22,9 +33,10 @@ public class CollectRewardsScreen : MonoBehaviour
             if (isAdWasReallyLoaded)
             {
                 // Если реклама была успешно загружена, то включить окошко ожидания показа рекламы
-                adLoadingWindow = PopUpWindowGenerator.Instance.CreateLoadingWindow();
+                EnableLoadingWindow();
 
-                SubscribeAdMobEvents();
+                Debug.LogWarning($"CollectRewards call. {adLoadingWindow}");
+
             }
         });
     }
@@ -54,19 +66,20 @@ public class CollectRewardsScreen : MonoBehaviour
 
     private void OnAdOpening()
     {
-        if (adLoadingWindow == null) throw new NullReferenceException("adLoadingWindow");
+        if (adLoadingWindow is null) throw new NullReferenceException("adLoadingWindow");
 
         // При открытии рекламы окошко ожидания необходимо выключить
-        adLoadingWindow.TurnOff();
+        DisableLoadingWindow();
     }
 
 
     private void OnAdFailedToShow()
     {
-        if (adLoadingWindow == null) throw new NullReferenceException("adLoadingWindow");
+        Debug.LogWarning($"OnAdFailedToShow call {adLoadingWindow}");
+        if (adLoadingWindow is null) throw new NullReferenceException("adLoadingWindow");
 
         // Если произошла ошибка показа рекламы, то окошко ожидания необходимо выключить и показать GameOverMenu
-        adLoadingWindow.TurnOff();
+        DisableLoadingWindow();
         gameOverStatusScreen.ShowGameOverMenu();
     }
 
@@ -87,6 +100,19 @@ public class CollectRewardsScreen : MonoBehaviour
             gameOverStatusScreen.ShowRefuseToViewAdsScreen();
         }
 
+    }
+
+    private void EnableLoadingWindow()
+    {
+        adLoadingWindow = PopUpWindowGenerator.Instance.CreateLoadingWindow();
+        SubscribeAdMobEvents();
+    }
+
+
+    private void DisableLoadingWindow()
+    {
+        adLoadingWindow.TurnOff();
         UnsubscribeAdMobEvents();
     }
+
 }

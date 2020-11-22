@@ -136,11 +136,4 @@ public static class GameLogic
     {
         return UnityEngine.Object.Instantiate(prefab).GetComponent<T>();
     }
-
-
-    public static T SpawnFromPoolAndGetComponent<T>(GameObject prefabKey, Vector3 position, Quaternion rotation, Transform parent = null)
-        where T : Component
-    {
-        return ObjectPooler.Instance.SpawnFromPool(prefabKey, position, rotation, parent).GetComponent<T>();
-    }
 }
