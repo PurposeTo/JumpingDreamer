@@ -160,12 +160,10 @@ public class PlayerStatsData
     }
 
 
-    public static PlayerStatsData MixPlayerStats(PlayerStatsData cloudPlayerStatsData, PlayerStatsData localPlayerStatsData)
+    public static PlayerStatsData CombinePlayerStats(PlayerStatsData cloudPlayerStatsData, PlayerStatsData localPlayerStatsData)
     {
-        if (cloudPlayerStatsData == null)
-        {
-            return localPlayerStatsData;
-        }
+        if (cloudPlayerStatsData is null) throw new ArgumentNullException(nameof(cloudPlayerStatsData));
+        if (localPlayerStatsData is null) throw new ArgumentNullException(nameof(localPlayerStatsData));
 
         PlayerStatsData mixedPlayerStatsData = CreateStatsWithDefaultValues();
 

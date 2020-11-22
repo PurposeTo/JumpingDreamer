@@ -31,12 +31,10 @@ public class PlayerInGamePurchases
     }
 
 
-    public static PlayerInGamePurchases MixPlayerInGamePurchases(PlayerInGamePurchases cloudPlayerInGamePurchasesData, PlayerInGamePurchases localPlayerInGamePurchasesData)
+    public static PlayerInGamePurchases CombinePlayerInGamePurchases(PlayerInGamePurchases cloudPlayerInGamePurchasesData, PlayerInGamePurchases localPlayerInGamePurchasesData)
     {
-        if (cloudPlayerInGamePurchasesData == null)
-        {
-            return localPlayerInGamePurchasesData;
-        }
+        if (cloudPlayerInGamePurchasesData is null) throw new System.ArgumentNullException(nameof(cloudPlayerInGamePurchasesData));
+        if (localPlayerInGamePurchasesData is null) throw new System.ArgumentNullException(nameof(localPlayerInGamePurchasesData));
 
         return cloudPlayerInGamePurchasesData.EstimatedCostInStars > localPlayerInGamePurchasesData.EstimatedCostInStars ? cloudPlayerInGamePurchasesData : localPlayerInGamePurchasesData;
     }

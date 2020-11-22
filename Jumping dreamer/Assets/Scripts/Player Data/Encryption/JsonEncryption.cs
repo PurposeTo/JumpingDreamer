@@ -8,7 +8,7 @@ public static class JsonEncryption
 {
     public static string FilePathWithHash => DataLoaderHelper.GetFilePath(fileName);
 
-    private static readonly string fileName = $"{PlayerDataModel.FileName}Alpha{PlayerDataModel.FileName.Remove(0, PlayerDataModel.FileName.Length - ".json".Length)}";
+    private static readonly string fileName = $"{PlayerDataModel.FileName}Alpha{PlayerDataModel.FileExtension}";
 
     private static readonly int salt = 100;
 
@@ -21,7 +21,7 @@ public static class JsonEncryption
         return Convert.ToBase64String(Encoding.UTF8.GetBytes(saltedData));
     }
 
-    
+
     public static string Decrypt(string dataFile)
     {
         if (File.Exists(dataFile) && File.Exists(FilePathWithHash))

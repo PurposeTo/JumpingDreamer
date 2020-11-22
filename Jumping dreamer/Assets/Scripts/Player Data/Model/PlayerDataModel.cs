@@ -3,7 +3,9 @@ using System.Collections.Generic;
 
 public class PlayerDataModel
 {
-    public const string FileName = "GameData.json";
+    //public const string FileName = "GameData";
+    public const string FileExtension = ".json";
+    public static string FileNameWithExtension => FileName + FileExtension;
 
     public string Id { get; set; }
     public PlayerStatsData PlayerStats { get; set; }
@@ -32,17 +34,15 @@ public class PlayerDataModel
     }
 
 
-    public static PlayerDataModel MixPlayerModels(PlayerDataModel cloudPlayerDataModel, PlayerDataModel localPlayerDataModel)
+    public static PlayerDataModel CombinePlayerModels(PlayerDataModel cloudPlayerDataModel, PlayerDataModel localPlayerDataModel)
     {
-        if (cloudPlayerDataModel == null)
-        {
-            return localPlayerDataModel;
-        }
+        if (cloudPlayerDataModel is null) throw new ArgumentNullException(nameof(cloudPlayerDataModel));
+        if (localPlayerDataModel is null) throw new ArgumentNullException(nameof(localPlayerDataModel));
 
         PlayerDataModel mixedPlayerDataModel = CreateModelWithDefaultValues();
 
-        mixedPlayerDataModel.PlayerStats = PlayerStatsData.MixPlayerStats(cloudPlayerDataModel.PlayerStats, localPlayerDataModel.PlayerStats);
-        mixedPlayerDataModel.PlayerInGamePurchases = PlayerInGamePurchases.MixPlayerInGamePurchases(cloudPlayerDataModel.PlayerInGamePurchases, localPlayerDataModel.PlayerInGamePurchases);
+        mixedPlayerDataModel.PlayerStats = PlayerStatsData.CombinePlayerStats(cloudPlayerDataModel.PlayerStats, localPlayerDataModel.PlayerStats);
+        mixedPlayerDataModel.PlayerInGamePurchases = PlayerInGamePurchases.CombinePlayerInGamePurchases(cloudPlayerDataModel.PlayerInGamePurchases, localPlayerDataModel.PlayerInGamePurchases);
 
         return mixedPlayerDataModel;
     }

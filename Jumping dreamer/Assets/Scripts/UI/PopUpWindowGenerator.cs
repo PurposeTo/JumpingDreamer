@@ -13,9 +13,10 @@ public class PopUpWindowGenerator : SingletonSuperMonoBehaviour<PopUpWindowGener
     }
 
 
-    public void CreateChoosingWindow(PlayerDataModel localModel, PlayerDataModel cloudModel)
+    public ModelChoosingWindow CreateModelChoosingWindow(Action<LoadedPlayerDataModel> chooseTheModelCallback)
     {
-        Instantiate(choosingWindow).GetComponent<MixingModelsWindow>().Initialize(localModel, cloudModel);
+        ModelChoosingWindow modelChoosingWindow = Instantiate(choosingWindow).GetComponent<ModelChoosingWindow>();
+        modelChoosingWindow.Constructor(chooseTheModelCallback);
     }
 
 

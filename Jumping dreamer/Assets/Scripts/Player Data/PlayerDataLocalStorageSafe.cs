@@ -6,54 +6,39 @@ public class PlayerDataLocalStorageSafe
     public PlayerDataModel LocalPlayerDataModel { get; private set; } = null;
     public string FilePath { get; private set; }
 
-    // Public set, т.к. в соответствии с архитектурой приложения объект этого класса может находиться только в контроллере. При этом так как это часть контроллера, то он может напрямую изменять значения этого свойства.
-    public bool IsDataFileLoaded { get; set; } = false;
 
-
-    public void LoadPlayerData()
+    public void LoadPlayerDataFromFileAndDecrypt()
     {
-        FilePath = DataLoaderHelper.GetFilePath(PlayerDataModel.FileName);
+        FilePath = DataLoaderHelper.GetFilePath(PlayerDataModel.FileNameWithExtension);
         Debug.Log($"File path: {FilePath}");
 
-        LocalPlayerDataModel = GetPlayerData();
+        LocalPlayerDataModel = GetDecryptedPlayerData();
     }
 
 
-    public void DeletePlayerData()
+    public void SaveDataToFileAndEncrypt(PlayerDataModel dataModel)
     {
-        File.Delete(FilePath);
-        File.Delete(FilePath + ".meta");
-        File.Delete(JsonEncryption.FilePathWithHash);
-        File.Delete(JsonEncryption.FilePathWithHash + ".meta");
+        if (dataModel == null) throw new System.ArgumentNullException("dataModel can't be null!");
 
-        IsDataFileLoaded = true; // Снова можем записывать информацию в файл
-    }
+        // TODO: А если у пользователя недостаточно памяти, чтобы создать файл?
 
+        bool isSerializingSuccess = false;
+        string json = JsonConverterWrapper.SerializeObject(dataModel, (success, exception) => isSerializingSuccess = success);
 
-    public void WritePlayerDataToFile(PlayerDataModel localPlayerDataModel)
-    {
-        if (localPlayerDataModel == null) throw new System.ArgumentNullException("Local model can't be null!");
-
-        if (IsDataFileLoaded)
+        if (isSerializingSuccess)
         {
-            // TODO: А если у пользователя недостаточно памяти, чтобы создать файл?
-
-            bool isSerializingSuccess = false;
-            string json = JsonConverterWrapper.SerializeObject(localPlayerDataModel, (success, exception) => isSerializingSuccess = success);
-
-            if (isSerializingSuccess)
-            {
-                Debug.Log("AfterSerializingModel: " + json);
-                string modifiedData = JsonEncryption.Encrypt(json);
-                File.WriteAllText(FilePath, modifiedData);
-                //File.WriteAllText(FilePath, json); // без шифрования
-            }
-            else PopUpWindowGenerator.Instance.CreateDialogWindow("Ошибка записи данных игровой статистики! Пожалуйста, обратитесь в службу поддержки.");
+            Debug.Log("After serializing model: " + json);
+            string modifiedData = JsonEncryption.Encrypt(json);
+            File.WriteAllText(FilePath, modifiedData);
+            #region без шифрования
+            //File.WriteAllText(FilePath, json); // без шифрования
+            #endregion
         }
+        else PopUpWindowGenerator.Instance.CreateDialogWindow("Ошибка записи данных игровой статистики! Пожалуйста, обратитесь в службу поддержки.");
     }
 
 
-    private PlayerDataModel GetPlayerData()
+    private PlayerDataModel GetDecryptedPlayerData()
     {
         // Проверка на существование файла
         if (File.Exists(FilePath))
@@ -61,16 +46,18 @@ public class PlayerDataLocalStorageSafe
             Debug.Log($"File on path \"{FilePath}\" was found.");
 
             string dataAsJSON = JsonEncryption.Decrypt(FilePath);
+            #region без шифрования
             //string dataAsJSON = File.ReadAllText(FilePath); // без расшифрования
+            #endregion
+
             return ValidateModel(dataAsJSON);
         }
         else
         {
             // Установить значения по дефолту
-            Debug.Log($"File path \"{FilePath}\" didn't found. Creating empty object...");
+            Debug.Log($"File path \"{FilePath}\" didn't found.");
 
-            IsDataFileLoaded = true;
-            return PlayerDataModel.CreateModelWithDefaultValues();
+            return null;
         }
     }
 
@@ -81,25 +68,22 @@ public class PlayerDataLocalStorageSafe
 
         bool IsJsonConverted()
         {
-            bool returnedSuccess = false;
-            playerDataModel = JsonConverterWrapper.DeserializeObject(dataAsJSON, (success, exception) => returnedSuccess = success);
+            bool isDeserializationSuccess = false;
+            playerDataModel = JsonConverterWrapper.DeserializeObject(dataAsJSON, (success, exception) => isDeserializationSuccess = success);
 
-            return returnedSuccess;
+            return isDeserializationSuccess;
         }
 
         if (dataAsJSON == null || !IsJsonConverted() || playerDataModel.IsModelHasNullValues())
         {
-            IsDataFileLoaded = false;
+            Debug.LogError($"Data reading from \"{PlayerDataModel.FileNameWithExtension}\" ERROR!\nData was edited from outside.");
+            PopUpWindowGenerator.Instance.CreateDialogWindow("Ошибка загрузки данных игровой статистики!");
 
-            Debug.LogError($"Data reading from \"{PlayerDataModel.FileName}\" ERROR!\nData was edited from outside.");
-            PopUpWindowGenerator.Instance.CreateDialogWindow("Ошибка загрузки данных игровой статистики!\nЗапись новых данных заблокирована!");
-
-            return PlayerDataModel.CreateModelWithDefaultValues();
+            return null;
         }
         else
         {
-            IsDataFileLoaded = true;
-            Debug.Log($"Data from \"{PlayerDataModel.FileName}\" was loaded successfully.");
+            Debug.Log($"Data from \"{PlayerDataModel.FileNameWithExtension}\" was loaded successfully.");
 
             return playerDataModel;
         }
