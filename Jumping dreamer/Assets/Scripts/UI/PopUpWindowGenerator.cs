@@ -24,6 +24,6 @@ public class PopUpWindowGenerator : SingletonSuperMonoBehaviour<PopUpWindowGener
 
     public LoadingWindow CreateLoadingWindow()
     {
-        return GameLogic.SpawnFromPoolAndGetComponent<LoadingWindow>(this.loadingWindow, Vector3.zero, Quaternion.identity);
+        return ObjectPooler.Instance.SpawnFromPoolAndGetComponent<LoadingWindow>(loadingWindow, Vector3.zero, Quaternion.identity);
     }
 }

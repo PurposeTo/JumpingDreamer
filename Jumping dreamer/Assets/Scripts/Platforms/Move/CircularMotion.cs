@@ -13,7 +13,7 @@ public class CircularMotion : PlatformMovable, IMovable, IPooledObject
 
     void IPooledObject.OnObjectSpawn()
     {
-        FindAndSetMotionConfigs(WorldGenerationRulesController.Instance.PlatformGeneratorPresenter.PlatformGeneratorConfigs.PlatformConfigs);
+
     }
 
 
@@ -23,16 +23,7 @@ public class CircularMotion : PlatformMovable, IMovable, IPooledObject
     }
 
 
-    public void FindAndSetMotionConfigs(PlatformConfigs platformConfigs)
-    {
-        SetMotionConfigs(platformConfigs.MovingTypeConfigs
-            .ToList()
-            .Find(platformMotionConfig => platformMotionConfig.TryToDownCastTier(out CircularMotionConfig _))
-            .DownCastTier<CircularMotionConfig>().Value);
-    }
-
-
-    private void SetMotionConfigs(CircularMotionConfig.CircularMotionConfigs circularMotionConfigs)
+    public void SetMotionConfigs(CircularMotionConfig.CircularMotionConfigs circularMotionConfigs)
     {
         switch (circularMotionConfigs)
         {
@@ -41,9 +32,6 @@ public class CircularMotion : PlatformMovable, IMovable, IPooledObject
                 break;
             case CircularMotionConfig.CircularMotionConfigs.Right:
                 direction = -1;
-                break;
-            case CircularMotionConfig.CircularMotionConfigs.Random:
-                direction = directionsToChoice[Random.Range(0, directionsToChoice.Length)];
                 break;
             default:
                 throw new Exception($"{circularMotionConfigs} is unknown motionConfig!");

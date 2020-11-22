@@ -11,7 +11,7 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
     private ICoroutineContainer lifeCycleRoutineInfo;
     private Func<bool> IsAliveState;
 
-    private PlatformCauseOfDestroyDeterminator platformCauseOfDestroyCreator;
+    private PlatformCauseOfDestroyDeterminator causeOfDestroyDeterminator;
 
     // Debug values
     private float lifeTime = 0f;
@@ -29,7 +29,7 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
 
     void IPooledObject.OnObjectSpawn()
     {
-        platformCauseOfDestroyCreator = new PlatformCauseOfDestroyDeterminator();
+        causeOfDestroyDeterminator = new PlatformCauseOfDestroyDeterminator();
 
         // Рестарт потому, что кроме данного скрипта, платформу также может выключить Broakable
         ExecuteCoroutineContinuously(ref lifeCycleRoutineInfo, LifeCycleEnumerator());
@@ -50,11 +50,6 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
         fadeAnimator.StartAnimation();
         yield return new WaitWhile(() => fadeAnimator.IsExecuting);
 
-        // Проблемы с инициализацией!
-        IPlatformCauseOfDestroyConfigs platformCauseOfDestroy = WorldGenerationRulesController.Instance.PlatformGeneratorPresenter.PlatformGeneratorConfigs.PlatformConfigs.CauseOfDestroy;
-
-        yield return SetCauseOfDestroy(platformCauseOfDestroy);
-
         yield return new WaitWhile(IsAliveState);
 
         // Todo: внести в blinkingLoopAnimator -> параметры по умолчанию.
@@ -72,37 +67,22 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
     }
 
 
-    private IEnumerator SetCauseOfDestroy(IPlatformCauseOfDestroyConfigs platformCauseOfDestroy)
+    public void SetCauseOfDestroy(PlatformCausesOfDestroy platformCauseOfDestroy)
     {
-        Predicate<float> IsAlive;
+        Predicate<float> IsAlive = causeOfDestroyDeterminator.GetCauseOfDestroy(platformCauseOfDestroy);
 
-        switch (platformCauseOfDestroy.ParentTier.Value)
+        switch (platformCauseOfDestroy)
         {
-            case PlatformCausesOfDestroy.ByTime:
-
-                var causeOfDestroyByTime = ((PlatformCauseOfDestroyByTime)platformCauseOfDestroy).Value;
-
-                IsAlive = platformCauseOfDestroyCreator.GetCauseOfDestroyByTime(causeOfDestroyByTime);
+            case PlatformCausesOfDestroy.AsTimePasses:
+            case PlatformCausesOfDestroy.NoLifeTime:
                 IsAliveState = () => IsAlive(lifeTime);
-
                 break;
-
-
-            case PlatformCausesOfDestroy.ByHight:
-
-                // Проблемы с инициализацией!
-                VerticalMotion verticalMotion = gameObject.GetComponent<VerticalMotion>();
-                // Эту штуку нужно ожидать
-                yield return new WaitUntil(() => verticalMotion.IsInitialized);
-
-                // Должно выполняться после VerticalMotion.SetMotionConfigs, тк как будет зависеть от него
-                IsAlive = platformCauseOfDestroyCreator.GetCauseOfDestroyByHight(verticalMotion.GetPlatformCauseOfDestroyByHight());
+            case PlatformCausesOfDestroy.TopBorder:
+            case PlatformCausesOfDestroy.BottomBorder:
                 IsAliveState = () => IsAlive(hight);
-
-
                 break;
             default:
-                break;
+                throw new Exception($"{platformCauseOfDestroy} is unknown causeOfDestroy!");
         }
     }
 }
