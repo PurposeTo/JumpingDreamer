@@ -1,31 +1,34 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ModelChoosingWindow : MonoBehaviour
 {
-    private Action<LoadedPlayerDataModel> selectTheModel;
+    public PlayerDataModel SelectedDataModel;
+    public PlayerDataModelType SelectedDataModelType;
 
-    public void Constructor(Action<LoadedPlayerDataModel> chooseTheModelCallback)
+    private PlayerDataModel localModel;
+    private PlayerDataModel cloudModel;
+
+
+    public void Constructor(PlayerDataModel localModel, PlayerDataModel cloudModel)
     {
-        selectTheModel = chooseTheModelCallback;
+        this.localModel = localModel;
+        this.cloudModel = cloudModel;
     }
 
 
     public void ChooseLocalModelData()
     {
-        //PlayerDataModelController.Instance.OnDataModelSelected(localModel, PlayerDataModelController.DataModelSelectionStatus.LocalModel);
-        selectTheModel?.Invoke(LoadedPlayerDataModel.LocalModel);
-        CloseWindow();
+        SelectedDataModel = localModel;
+        SelectedDataModelType = PlayerDataModelType.LocalModel;
     }
 
 
     public void ChooseCloudModelData()
     {
-        //PlayerDataModelController.Instance.OnDataModelSelected(cloudModel, PlayerDataModelController.DataModelSelectionStatus.CloudModel);
-        selectTheModel?.Invoke(LoadedPlayerDataModel.CloudModel);
-        CloseWindow();
+        SelectedDataModel = cloudModel;
+        SelectedDataModelType = PlayerDataModelType.CloudModel;
     }
 
 
-    private void CloseWindow() => Destroy(gameObject);
+    public void CloseWindow() => Destroy(gameObject);
 }

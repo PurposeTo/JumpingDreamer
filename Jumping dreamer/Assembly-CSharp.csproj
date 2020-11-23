@@ -213,7 +213,6 @@
     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerPresenter.cs" />
     <Compile Include="Assets\Scripts\Player\SpeedTrail.cs" />
-    <Compile Include="Assets\Scripts\Player\Statistics\JumpHeightStats.cs" />
     <Compile Include="Assets\Scripts\Player\Statistics\LifeTimer.cs" />
     <Compile Include="Assets\Scripts\Player\Statistics\PlayerTactics.cs" />
     <Compile Include="Assets\Scripts\Scene loading helpers\Shutter.cs" />

@@ -2,130 +2,133 @@
 using System.Collections;
 using UnityEngine;
 
-public enum LoadedPlayerDataModel
+public enum PlayerDataModelType
 {
     LocalModel,
-    CloudModel,
-    CombinedModel,
-    SameModels,
-    Null
+    CloudModel
 }
 
 public class PlayerDataSynchronizer : SuperMonoBehaviourContainer
 {
+    private readonly PlayerDataLocalStorageSafe localStorage;
+    private readonly GPGSPlayerDataCloudStorage cloudStorage;
     private ICoroutineContainer getSyncronizedPlayerDataModelInfo;
     private ICoroutineContainer provideModelChoosingToPlayerInfo;
 
 
-    public PlayerDataSynchronizer(SuperMonoBehaviour superMonoBehaviour) : base(superMonoBehaviour)
+    public PlayerDataSynchronizer(SuperMonoBehaviour superMonoBehaviour,
+                                  PlayerDataLocalStorageSafe localStorage,
+                                  GPGSPlayerDataCloudStorage cloudStorage) : base(superMonoBehaviour)
     {
+        this.localStorage = localStorage;
+        this.cloudStorage = cloudStorage;
         getSyncronizedPlayerDataModelInfo = superMonoBehaviour.CreateCoroutineContainer();
         provideModelChoosingToPlayerInfo = superMonoBehaviour.CreateCoroutineContainer();
     }
 
 
-    // Синхронизация данных модели из облака и локальной модели
-    public PlayerDataModel SynchronizePlayerDataStorages(PlayerDataModel localModel, PlayerDataModel cloudModel, out LoadedPlayerDataModel loadedPlayerDataModel)
-    {
-        Debug.Log($"SYNC: Received cloud model: {cloudModel}.\nCloud model as json: {JsonConverterWrapper.SerializeObject(cloudModel, null)}");
-        Debug.Log($"SYNC: Received local model: {localModel}.\nLocal model as json: {JsonConverterWrapper.SerializeObject(localModel, null)}");
+    private PlayerDataModel LocalModel => localStorage.LocalPlayerDataModel;
+    private PlayerDataModel CloudModel => cloudStorage.CloudPlayerDataModel;
 
-        if (localModel.Id != cloudModel.Id)
+
+    // Синхронизация данных модели из облака и локальной модели
+    public PlayerDataModel SynchronizePlayerDataModels()
+    {
+        Debug.Log($"SYNC: Received cloud model: {CloudModel}.\nCloud model as json: {JsonConverterWrapper.SerializeObject(CloudModel, null)}");
+        Debug.Log($"SYNC: Received local model: {LocalModel}.\nLocal model as json: {JsonConverterWrapper.SerializeObject(LocalModel, null)}");
+
+        if (LocalModel.Id != CloudModel.Id)
         {
             if (PlayerDataModelController.IsPlayerDataHaveAlreadyDeletedOrRestored)
             {
-                loadedPlayerDataModel = LoadedPlayerDataModel.LocalModel;
-                return localModel;
+                cloudStorage.SaveData(LocalModel);
+                return LocalModel;
             }
             else
             {
-                LoadedPlayerDataModel choosenModel = LoadedPlayerDataModel.Null;
-                superMonoBehaviour.ExecuteCoroutineContinuously(ref provideModelChoosingToPlayerInfo, ProvideModelChoosingToPlayer(choosenPlayerDataModel => choosenModel = choosenPlayerDataModel));
+                PlayerDataModelType choosenDataModelType = default;
 
-                loadedPlayerDataModel = choosenModel;
+                superMonoBehaviour.ExecuteCoroutineContinuously(ref provideModelChoosingToPlayerInfo, ProvideModelChoosingToPlayer(choosenModelType => choosenDataModelType = choosenModelType));
 
-                if (choosenModel == LoadedPlayerDataModel.CloudModel) return cloudModel;
-                else return localModel;
+                if (choosenDataModelType == PlayerDataModelType.CloudModel) return CloudModel;
+                else return LocalModel;
             }
         }
         else
         {
-            if (!(localModel.PlayerStats.Equals(cloudModel.PlayerStats) &&
-            localModel.PlayerInGamePurchases.Equals(cloudModel.PlayerInGamePurchases)))
+            if (!(LocalModel.PlayerStats.Equals(CloudModel.PlayerStats) &&
+            LocalModel.PlayerInGamePurchases.Equals(CloudModel.PlayerInGamePurchases)))
             {
-                loadedPlayerDataModel = LoadedPlayerDataModel.CombinedModel;
-                return CombineModels(localModel, cloudModel);
+                PlayerDataModel combinedModel = CombineModels();
+                SavePlayerDataToAllStorages(combinedModel);
+                return combinedModel;
             }
             else
             {
                 Debug.Log("Cloud and local models already have the same data.");
 
-                loadedPlayerDataModel = LoadedPlayerDataModel.SameModels;
-                return localModel;
+                return LocalModel;
             }
         }
     }
 
 
-    //// В зависимости от выбора пользователя загрузить модель либо в облако, либо на устройство
-    //public void OnDataModelSelected(PlayerDataModel selectedModel, ref PlayerDataModel localModel, PlayerDataModelController.DataModelSelectionStatus modelSelectionStatus)
-    //{
-    //    switch(modelSelectionStatus)
-    //    {
-    //        case PlayerDataModelController.DataModelSelectionStatus.LocalModel:
-    //            if (selectedModel == null) throw new ArgumentNullException("selectedModel which in fact is the localModel");
-    //            GPGSPlayerDataCloudStorage.SaveDataToCloud(selectedModel);
-    //            break;
-    //        case PlayerDataModelController.DataModelSelectionStatus.CloudModel:
-    //            if (selectedModel == null) break;
-    //            else localModel = selectedModel;
-    //            break;
-    //    }
-    //}
-
-
-    public IEnumerator GetSynchronizedPlayerDataModelEnumerator(PlayerDataLocalStorageSafe localStorage, GPGSPlayerDataCloudStorage cloudStorage, Action<PlayerDataModel, LoadedPlayerDataModel> onPlayerDataModelsSynchronizedCallback)
+    public IEnumerator GetSynchronizedPlayerDataModelEnumerator(Action<PlayerDataModel> onPlayerDataModelsSynchronizedCallback)
     {
         float timeout = 15f;
 
         localStorage.LoadPlayerDataFromFileAndDecrypt();
-        cloudStorage.StartLoadSavedGameFromCloudCoroutine();
-        yield return new WaitForDoneRealtime(timeout, () => cloudStorage.CloudPlayerDataModel != null);
+        cloudStorage.StartLoadingData();
+        yield return new WaitForDoneRealtime(timeout, () => !cloudStorage.IsDataLoading);
 
-        PlayerDataModel localModel = localStorage.LocalPlayerDataModel;
-        PlayerDataModel cloudModel = cloudStorage.CloudPlayerDataModel;
-
-        if (localModel != null && cloudModel != null)
+        if (LocalModel != null && CloudModel != null)
         {
-            onPlayerDataModelsSynchronizedCallback?.Invoke(SynchronizePlayerDataStorages(localModel, cloudModel, out LoadedPlayerDataModel loadedPlayerDataModel), loadedPlayerDataModel);
+            onPlayerDataModelsSynchronizedCallback?.Invoke(SynchronizePlayerDataModels());
         }
-        else if (localModel != null) onPlayerDataModelsSynchronizedCallback?.Invoke(localModel, LoadedPlayerDataModel.LocalModel);
-        else if (cloudModel != null) onPlayerDataModelsSynchronizedCallback?.Invoke(cloudModel, LoadedPlayerDataModel.CloudModel);
-        else onPlayerDataModelsSynchronizedCallback?.Invoke(null, LoadedPlayerDataModel.Null);
+        else if (LocalModel != null)
+        {
+            cloudStorage.SaveData(LocalModel);
+            onPlayerDataModelsSynchronizedCallback?.Invoke(LocalModel);
+        }
+        else if (CloudModel != null)
+        {
+            localStorage.SaveDataToFileAndEncrypt(CloudModel);
+            onPlayerDataModelsSynchronizedCallback?.Invoke(CloudModel);
+        }
+        else
+        {
+            PlayerDataModel emptyModel = PlayerDataModel.CreateModelWithDefaultValues();
+            SavePlayerDataToAllStorages(emptyModel);
+            onPlayerDataModelsSynchronizedCallback?.Invoke(emptyModel);
+        }
     }
 
 
-    public void StartGetSynchronizedPlayerDataModelCoroutine(PlayerDataLocalStorageSafe localStorage, GPGSPlayerDataCloudStorage cloudStorage, Action<PlayerDataModel, LoadedPlayerDataModel> onPlayerDataModelsSynchronizedCallback)
+    public void StartSynchronizingPlayerDataModel(Action<PlayerDataModel> onPlayerDataModelsSynchronizedCallback)
     {
-        superMonoBehaviour.ExecuteCoroutineContinuously(ref getSyncronizedPlayerDataModelInfo, GetSynchronizedPlayerDataModelEnumerator(localStorage, cloudStorage, onPlayerDataModelsSynchronizedCallback));
+        superMonoBehaviour.ExecuteCoroutineContinuously(
+            ref getSyncronizedPlayerDataModelInfo,
+            GetSynchronizedPlayerDataModelEnumerator(onPlayerDataModelsSynchronizedCallback));
     }
 
 
-    public bool IsGetSynchronizedPlayerDataModelCoroutineExecuting() => getSyncronizedPlayerDataModelInfo.IsExecuting;
-
-
-    private IEnumerator ProvideModelChoosingToPlayer(Action<LoadedPlayerDataModel> chooseTheModelCallback)
+    private IEnumerator ProvideModelChoosingToPlayer(Action<PlayerDataModelType> chooseTheModelCallback)
     {
-        ModelChoosingWindow choosingWindow = PopUpWindowGenerator.Instance.CreateModelChoosingWindow(chooseTheModelCallback);
-        yield return new WaitUntil(() => choosingWindow == null);
+        ModelChoosingWindow choosingWindow = PopUpWindowGenerator.Instance.CreateModelChoosingWindow(LocalModel, CloudModel);
+
+        yield return new WaitUntil(() => choosingWindow.SelectedDataModel == null);
+        chooseTheModelCallback?.Invoke(choosingWindow.SelectedDataModelType);
+
+        choosingWindow.CloseWindow();
     }
 
 
-    private PlayerDataModel CombineModels(PlayerDataModel localModel, PlayerDataModel cloudModel)
-    {
-        if (localModel is null) throw new ArgumentNullException(nameof(localModel));
-        if (cloudModel is null) throw new ArgumentNullException(nameof(cloudModel));
+    private PlayerDataModel CombineModels() => PlayerDataModel.CombinePlayerModels(CloudModel, LocalModel);
 
-        return PlayerDataModel.CombinePlayerModels(cloudModel, localModel);
+
+    private void SavePlayerDataToAllStorages(PlayerDataModel playerDataModel)
+    {
+        localStorage.SaveDataToFileAndEncrypt(playerDataModel);
+        cloudStorage.SaveData(playerDataModel);
     }
 }

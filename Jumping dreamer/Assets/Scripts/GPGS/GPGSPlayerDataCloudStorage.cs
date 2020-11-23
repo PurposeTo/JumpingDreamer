@@ -17,6 +17,7 @@ public class GPGSPlayerDataCloudStorage : SuperMonoBehaviourContainer
     }
 
 
+    public bool IsDataLoading => loadSavedGameFromCloudInfo.IsExecuting;
     public PlayerDataModel CloudPlayerDataModel { get; private set; } = null;
     public ISavedGameMetadata CurrentGameMetadata { get; private set; }
     public DateTime StartPlayingTime { get; private set; }
@@ -24,11 +25,11 @@ public class GPGSPlayerDataCloudStorage : SuperMonoBehaviourContainer
     private ISavedGameClient SavedGameClient => ((PlayGamesPlatform)Social.Active).SavedGame;
 
 
-    public void SaveDataToCloud(PlayerDataModel dataModel)
+    public void SaveData(PlayerDataModel dataModel)
     {
         Debug.Log("#CreateSave: begin");
 
-        if (dataModel == null) throw new ArgumentNullException("dataModel model can't be null!");
+        if (dataModel is null) throw new ArgumentNullException(nameof(dataModel));
 
         bool isSerializationSuccess = false;
 
@@ -76,7 +77,7 @@ public class GPGSPlayerDataCloudStorage : SuperMonoBehaviourContainer
     }
 
 
-    public void ReadDataFromCloud(Action<PlayerDataModel, SavedGameRequestStatus> action)
+    public void ReadData(Action<PlayerDataModel, SavedGameRequestStatus> action)
     {
         OpenSavedGame((gameRequestStatus, gameMetadata) =>
         {
@@ -112,31 +113,37 @@ public class GPGSPlayerDataCloudStorage : SuperMonoBehaviourContainer
                     action?.Invoke(cloudModel, readingCloudDataStatus);
                 });
             }
-            else return;
+            else action?.Invoke(null, gameRequestStatus);
         });
     }
 
 
-    public void StartLoadSavedGameFromCloudCoroutine()
+    public void StartLoadingData()
     {
-        superMonoBehaviour.ExecuteCoroutineContinuously(ref loadSavedGameFromCloudInfo, LoadSavedGameFromCloudEnumerator());
+        superMonoBehaviour.ExecuteCoroutineContinuously(ref loadSavedGameFromCloudInfo, OpenGameSessionAndReadDataEnumerator());
     }
 
 
-    private IEnumerator LoadSavedGameFromCloudEnumerator()
+    private IEnumerator OpenGameSessionAndReadDataEnumerator()
     {
         yield return new WaitUntil(() => GPGSAuthentication.IsAuthenticated);
 
         // Начать отсчет времени для текущей сессии игры
         StartPlayingTime = DateTime.Now;
 
+        bool isDataWasReceivedFromCloud = false;
+
         // Загрузка данных из облака
-        ReadDataFromCloud((cloudModel, readingStatus) =>
+        ReadData((cloudModel, readingStatus) =>
         {
             Debug.Log($"#Десериализация данных с облака завершена.");
 
             CloudPlayerDataModel = cloudModel;
+            isDataWasReceivedFromCloud = true;
         });
+
+        // Необходимо закончить выполнение корутины после извлечения данных из облака.
+        yield return new WaitUntil(() => isDataWasReceivedFromCloud);
     }
 
 

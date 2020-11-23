@@ -18,7 +18,7 @@ public class PlayerDataLocalStorageSafe
 
     public void SaveDataToFileAndEncrypt(PlayerDataModel dataModel)
     {
-        if (dataModel == null) throw new System.ArgumentNullException("dataModel can't be null!");
+        if (dataModel is null) throw new System.ArgumentNullException(nameof(dataModel));
 
         // TODO: А если у пользователя недостаточно памяти, чтобы создать файл?
 

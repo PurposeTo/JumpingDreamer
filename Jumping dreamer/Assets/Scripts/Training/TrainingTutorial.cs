@@ -28,15 +28,18 @@ public class TrainingTutorial : SuperMonoBehaviour
 
     protected override void OnEnableWrapped()
     {
-        bool shouldStartByShowingTheTutorial = PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.TotalLifeTime < minTotalLifeTimeToShowTutorial;
-
-        Array.ForEach(trainingTips, trainingTip => trainingTip.gameObject.SetActive(false));
-
-        if (IsTutorialNeedsToBeShown())
+        PlayerDataModelController.Instance.OnPlayerDataModelAvailable += (playerDataModel) =>
         {
-            ReStartCoroutineExecution(ref CheckingIfTutorialNeedsToBeShownRoutineInfo,
-                CheckingIfTutorialNeedsToBeShownEnumerator(shouldStartByShowingTheTutorial));
-        }
+            bool shouldStartByShowingTheTutorial = playerDataModel.PlayerStats.TotalLifeTime < minTotalLifeTimeToShowTutorial;
+
+            Array.ForEach(trainingTips, trainingTip => trainingTip.gameObject.SetActive(false));
+
+            if (IsTutorialNeedsToBeShown())
+            {
+                ReStartCoroutineExecution(ref CheckingIfTutorialNeedsToBeShownRoutineInfo,
+                    CheckingIfTutorialNeedsToBeShownEnumerator(shouldStartByShowingTheTutorial));
+            }
+        };
     }
 
 

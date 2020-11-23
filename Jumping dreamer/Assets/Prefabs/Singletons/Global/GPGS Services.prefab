@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7237526332153162636}
   - component: {fileID: 7237526332153162637}
-  - component: {fileID: 7237526332153162639}
   - component: {fileID: 7542349997682060845}
   m_Layer: 0
   m_Name: GPGS Services
@@ -47,19 +46,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 1
   AuthenticateStatus: {fileID: 0}
---- !u!114 &7237526332153162639
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7237526332153162626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36bcaea1c7afd9940a1cddae7bf38f10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 1
 --- !u!114 &7542349997682060845
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -5,10 +5,12 @@ public class GPGSLeaderboard : SingletonSuperMonoBehaviour<GPGSLeaderboard>
 {
     private Action UpdateLeaderboard;
 
-
-    private void Start()
+    protected override void StartWrapped()
     {
-        PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.OnNewScoreRecord += SetUpdateLeaderboardMethodToAction;
+        PlayerDataModelController.Instance.OnPlayerDataModelAvailable += (playerDataModel) =>
+        {
+            playerDataModel.PlayerStats.OnNewScoreRecord += SetUpdateLeaderboardMethodToAction;
+        };
     }
 
 
@@ -27,18 +29,15 @@ public class GPGSLeaderboard : SingletonSuperMonoBehaviour<GPGSLeaderboard>
 
     public void UpdateLeaderboardScore(Action openLeaderboardAction)
     {
-        //if (PlayerDataModelController.Instance.IsDataFileLoaded)
-        //{
-            Social.ReportScore(PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.MaxEarnedScore.Value, GPGSIds.leaderboard_dreamer_the_king, (bool success) =>
+        Social.ReportScore(PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.MaxEarnedScore.Value, GPGSIds.leaderboard_dreamer_the_king, (bool success) =>
+        {
+            if (success)
             {
-                if (success)
-                {
-                    Debug.Log("The score is load to leaderboard!");
-                    openLeaderboardAction?.Invoke();
-                    UpdateLeaderboard = null;
-                }
-            });
-        //}
+                Debug.Log("The score is load to leaderboard!");
+                openLeaderboardAction?.Invoke();
+                UpdateLeaderboard = null;
+            }
+        });
     }
 
 

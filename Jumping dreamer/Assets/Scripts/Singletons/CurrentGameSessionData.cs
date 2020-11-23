@@ -9,7 +9,10 @@ public class CurrentGameSessionData : SingletonSuperMonoBehaviour<CurrentGameSes
 
     private void Start()
     {
-        PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.OnNewScoreRecord += ActivateRecordNewToggle;
+        PlayerDataModelController.Instance.OnPlayerDataModelAvailable += (playerDataModel) =>
+        {
+            playerDataModel.PlayerStats.OnNewScoreRecord += ActivateRecordNewToggle;
+        };
     }
 
     private void OnDestroy()
