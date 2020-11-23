@@ -172,6 +172,27 @@ public class SuperMonoBehaviour : MonoBehaviour
     #endregion
 
 
+    #region OnDestroy realization
+
+
+    /// <summary>
+    /// Необходимо использовать данный метод взамен OnDestroy()
+    /// </summary>
+    protected virtual void OnDestroyWrapped() { }
+
+    private void OnDestroySuper()
+    {
+        OnDestroyWrapped();
+    }
+
+    private void OnDestroy()
+    {
+        OnDestroySuper();
+    }
+
+    #endregion
+
+
     #region Update realization
 
     /// <summary>

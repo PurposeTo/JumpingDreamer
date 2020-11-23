@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 public class UpdateManager : SingletonSuperMonoBehaviour<UpdateManager>
 {
-    private static List<Action> AllUpdates = new List<Action>();
-    private static List<Action> AllFixedUpdates = new List<Action>();
-    private static List<Action> AllLateUpdates = new List<Action>();
+    private static readonly List<Action> AllUpdates = new List<Action>();
+    private static readonly List<Action> AllFixedUpdates = new List<Action>();
+    private static readonly List<Action> AllLateUpdates = new List<Action>();
 
 
     private void Update()
