@@ -76,9 +76,9 @@ public class SuperMonoBehaviour : MonoBehaviour
 
     private void EndOnEnableExecution()
     {
-        UpdateManager.AllUpdatesSuper.Add(UpdateSuper);
-        UpdateManager.AllFixedUpdatesSuper.Add(FixedUpdateSuper);
-        UpdateManager.AllUpdatesSuper.Add(LateUpdateSuper);
+        UpdateManager.AddUpdate(UpdateSuper);
+        UpdateManager.AddFixedUpdate(FixedUpdateSuper);
+        UpdateManager.AddLateUpdate(LateUpdateSuper);
         OnEnabling?.Invoke();
     }
 
@@ -152,9 +152,9 @@ public class SuperMonoBehaviour : MonoBehaviour
 
     private void EndOnDisableExecution()
     {
-        UpdateManager.AllUpdatesSuper.Remove(UpdateSuper);
-        UpdateManager.AllFixedUpdatesSuper.Remove(FixedUpdateSuper);
-        UpdateManager.AllUpdatesSuper.Remove(LateUpdateSuper);
+        UpdateManager.RemoveUpdate(UpdateSuper);
+        UpdateManager.RemoveFixedUpdate(FixedUpdateSuper);
+        UpdateManager.RemoveLateUpdate(LateUpdateSuper);
         OnDisabling?.Invoke();
     }
 
