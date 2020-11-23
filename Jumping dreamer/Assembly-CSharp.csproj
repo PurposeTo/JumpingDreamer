@@ -156,13 +156,14 @@
     <Compile Include="Assets\Scripts\CommandQueue\Realization\CommandQueue.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyGenerator.cs" />
     <Compile Include="Assets\Scripts\Enemy\Pursuer.cs" />
+    <Compile Include="Assets\Scripts\Framework Monobehaviour wrapper\Containers\MonoBehaviourContainer.cs" />
+    <Compile Include="Assets\Scripts\Framework Monobehaviour wrapper\Containers\SuperMonoBehaviourContainer.cs" />
     <Compile Include="Assets\Scripts\Framework Monobehaviour wrapper\Coroutines\CoroutineExecutor\CoroutineExecutor.cs" />
     <Compile Include="Assets\Scripts\Framework Monobehaviour wrapper\Coroutines\CoroutineExecutor\ICoroutineContainer.cs" />
     <Compile Include="Assets\Scripts\Framework Monobehaviour wrapper\Coroutines\WaitForDone\Base\WaitForDoneBase.cs" />
     <Compile Include="Assets\Scripts\Framework Monobehaviour wrapper\Coroutines\WaitForDone\WaitForDone.cs" />
     <Compile Include="Assets\Scripts\Framework Monobehaviour wrapper\Coroutines\WaitForDone\WaitForDoneRealtime.cs" />
     <Compile Include="Assets\Scripts\Framework Monobehaviour wrapper\SuperMonoBehaviour.cs" />
-    <Compile Include="Assets\Scripts\Framework Monobehaviour wrapper\SuperMonoBehaviourContainer.cs" />
     <Compile Include="Assets\Scripts\Framework Monobehaviour wrapper\UpdateManager.cs" />
     <Compile Include="Assets\Scripts\GPGS\GPGSAuthentication.cs" />
     <Compile Include="Assets\Scripts\GPGS\GPGSLeaderboard.cs" />

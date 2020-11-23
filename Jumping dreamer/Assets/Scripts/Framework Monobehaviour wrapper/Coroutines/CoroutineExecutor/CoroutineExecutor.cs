@@ -7,17 +7,12 @@ using UnityEngine;
  * ICoroutineInfo, в методах, запускающих корутину, всегда идут с ref параметром потому, что
  * таким образом будет гарантия того, что ТОЧНО будет переназначена ссылка на объект ICoroutineInfo
  */
-public class CoroutineExecutor
+public class CoroutineExecutor : MonoBehaviourContainer
 {
-    private readonly MonoBehaviour monoBehaviour;
-
-    public CoroutineExecutor(MonoBehaviour monoBehaviour)
-    {
-        this.monoBehaviour = monoBehaviour != null ? monoBehaviour : throw new ArgumentNullException(nameof(monoBehaviour));
-    }
+    public CoroutineExecutor(MonoBehaviour monoBehaviour) : base(monoBehaviour) { }
 
 
-    private List<ICoroutineContainer> allCoroutineContainers = new List<ICoroutineContainer>();
+    private readonly List<ICoroutineContainer> allCoroutineContainers = new List<ICoroutineContainer>();
 
 
     public ICoroutineContainer CreateCoroutineContainer()
