@@ -47,7 +47,6 @@
   <PropertyGroup>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <UnityProjectGenerator>Unity/VSTU</UnityProjectGenerator>
-    <UnityProjectGeneratorVersion>4.8.2.0</UnityProjectGeneratorVersion>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>Android:13</UnityBuildTarget>
     <UnityVersion>2019.4.15f1</UnityVersion>
@@ -215,7 +214,6 @@
     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerPresenter.cs" />
     <Compile Include="Assets\Scripts\Player\SpeedTrail.cs" />
-    <Compile Include="Assets\Scripts\Player\Statistics\JumpHeightStats.cs" />
     <Compile Include="Assets\Scripts\Player\Statistics\LifeTimer.cs" />
     <Compile Include="Assets\Scripts\Player\Statistics\PlayerTactics.cs" />
     <Compile Include="Assets\Scripts\Scene loading helpers\Shutter.cs" />
@@ -253,7 +251,7 @@
     <Compile Include="Assets\Scripts\UI\Menu\PauseMenu.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\PopUp Windows\ConfirmationOperationWindow.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\PopUp Windows\DialogWindow.cs" />
-    <Compile Include="Assets\Scripts\UI\Menu\PopUp Windows\MixingModelsWindow.cs" />
+    <Compile Include="Assets\Scripts\UI\Menu\PopUp Windows\ModelChoosingWindow.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\SettingsMenu.cs" />
     <Compile Include="Assets\Scripts\UI\PlayerUI.cs" />
     <Compile Include="Assets\Scripts\UI\PopUpText.cs" />
@@ -508,7 +506,7 @@
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.15f1/Editor/Data/Managed/UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Assets/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll</HintPath>
+      <HintPath>C:/Users/repin/source/repos/JumpingDreamer/Jumping dreamer/Assets/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.15f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
@@ -865,34 +863,31 @@
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.15f1/Editor/Data/MonoBleedingEdge/lib/mono/unityscript/Boo.Lang.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline.Editor">
-      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+      <HintPath>C:/Users/repin/source/repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
-      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+      <HintPath>C:/Users/repin/source/repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>C:/Users/repin/source/repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+      <HintPath>C:/Users/repin/source/repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+      <HintPath>C:/Users/repin/source/repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>C:/Users/repin/source/repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
-      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Mobile.AndroidLogcat.Editor">
-      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.Mobile.AndroidLogcat.Editor.dll</HintPath>
+      <HintPath>C:/Users/repin/source/repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>C:/Users/repin/source/repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+      <HintPath>C:/Users/repin/source/repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

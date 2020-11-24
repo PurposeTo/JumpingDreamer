@@ -47,8 +47,8 @@ public static class JsonConverterWrapper
         {
             Debug.LogError($"Unsuccessful attempt of deserialization: {exception.Message}");
             onDeserialize?.Invoke(false, exception);
-
             Debug.Log("Неуспешная десериализация!");
+
             return null;
         }
 

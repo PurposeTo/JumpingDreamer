@@ -32,18 +32,18 @@ public class PlayerStatsData
 
     public void SaveMaxStarsData(SafeInt starsAmount)
     {
-        if (starsAmount > PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.MaxCollectedStars)
+        if (starsAmount > MaxCollectedStars)
         {
-            PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.MaxCollectedStars = starsAmount;
+            MaxCollectedStars = starsAmount;
         }
     }
 
 
     public void SaveScoreData(SafeInt scoreAmount)
     {
-        if (scoreAmount > PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.MaxEarnedScore)
+        if (scoreAmount > MaxEarnedScore)
         {
-            PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.MaxEarnedScore = scoreAmount;
+            MaxEarnedScore = scoreAmount;
             OnNewScoreRecord?.Invoke();
         }
     }
@@ -51,31 +51,21 @@ public class PlayerStatsData
 
     public void SaveScoreMultiplierData(SafeInt multiplierValue)
     {
-        if (multiplierValue > PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.MaxScoreMultiplierValue)
+        if (multiplierValue > MaxScoreMultiplierValue)
         {
-            PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.MaxScoreMultiplierValue = multiplierValue;
+            MaxScoreMultiplierValue = multiplierValue;
         }
     }
 
 
     public void SaveLifeTimeData(SafeInt lifeTime)
     {
-        PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.TotalLifeTime += lifeTime;
+        TotalLifeTime += lifeTime;
 
-        if (lifeTime > PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.MaxLifeTime)
+        if (lifeTime > MaxLifeTime)
         {
-            PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.MaxLifeTime = lifeTime;
+            MaxLifeTime = lifeTime;
         }
-    }
-
-
-    [Obsolete]
-    public void SaveJumpHeightData(float jumpHeight)
-    {
-        //if (jumpHeight > PlayerStatsData.PlayerStats.MaxJumpHeight)
-        //{
-        //    PlayerStatsData.PlayerStats.MaxJumpHeight = jumpHeight;
-        //}
     }
 
 
@@ -160,12 +150,10 @@ public class PlayerStatsData
     }
 
 
-    public static PlayerStatsData MixPlayerStats(PlayerStatsData cloudPlayerStatsData, PlayerStatsData localPlayerStatsData)
+    public static PlayerStatsData CombinePlayerStats(PlayerStatsData cloudPlayerStatsData, PlayerStatsData localPlayerStatsData)
     {
-        if (cloudPlayerStatsData == null)
-        {
-            return localPlayerStatsData;
-        }
+        if (cloudPlayerStatsData is null) throw new ArgumentNullException(nameof(cloudPlayerStatsData));
+        if (localPlayerStatsData is null) throw new ArgumentNullException(nameof(localPlayerStatsData));
 
         PlayerStatsData mixedPlayerStatsData = CreateStatsWithDefaultValues();
 

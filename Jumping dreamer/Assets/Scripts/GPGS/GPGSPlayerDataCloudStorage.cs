@@ -6,30 +6,35 @@ using UnityEngine;
 using System.Collections;
 using System.Text;
 
-public class GPGSPlayerDataCloudStorage : SingletonSuperMonoBehaviour<GPGSPlayerDataCloudStorage>
+public class GPGSPlayerDataCloudStorage : SuperMonoBehaviourContainer
 {
+    private ICoroutineContainer loadSavedGameFromCloudInfo;
+
+
+    public GPGSPlayerDataCloudStorage(SuperMonoBehaviour superMonoBehaviour) : base(superMonoBehaviour)
+    {
+        loadSavedGameFromCloudInfo = this.superMonoBehaviour.CreateCoroutineContainer();
+    }
+
+
+    public bool IsDataLoading => loadSavedGameFromCloudInfo.IsExecuting;
+    public PlayerDataModel CloudPlayerDataModel { get; private set; } = null;
     public ISavedGameMetadata CurrentGameMetadata { get; private set; }
     public DateTime StartPlayingTime { get; private set; }
 
     private ISavedGameClient SavedGameClient => ((PlayGamesPlatform)Social.Active).SavedGame;
 
 
-    private void Start()
-    {
-        StartCoroutine(LoadSavedGameFromCloudEnumerator());
-    }
-
-
-    public void CreateSave(PlayerDataModel localModelToSaveOnCloud)
+    public void SaveData(PlayerDataModel dataModel)
     {
         Debug.Log("#CreateSave: begin");
 
-        if (localModelToSaveOnCloud == null) throw new ArgumentNullException("Local model can't be null!");
+        if (dataModel is null) throw new ArgumentNullException(nameof(dataModel));
 
         bool isSerializationSuccess = false;
-        string json = JsonConverterWrapper.SerializeObject(localModelToSaveOnCloud, (success, exception) => isSerializationSuccess = success);
 
-        if (!isSerializationSuccess || !PlayerDataModelController.Instance.IsDataFileLoaded) return;
+        string json = JsonConverterWrapper.SerializeObject(dataModel, (success, exception) => isSerializationSuccess = success);
+        if (!isSerializationSuccess) return;
 
         byte[] dataToSave = Encoding.UTF8.GetBytes(json);
 
@@ -53,16 +58,15 @@ public class GPGSPlayerDataCloudStorage : SingletonSuperMonoBehaviour<GPGSPlayer
             Debug.Log("#CreateSave: CurrentGameMetadata == null");
 
             OpenSavedGame((gameRequestStatus, gameMetadata) =>
-        {
-            if (gameRequestStatus == SavedGameRequestStatus.Success)
             {
-                // Получаем метаданные открытого файла
-                CurrentGameMetadata = gameMetadata;
-
-                SavePlayerData();
-            }
-            else { return; }
-        });
+                if (gameRequestStatus == SavedGameRequestStatus.Success)
+                {
+                    // Получаем метаданные открытого файла
+                    CurrentGameMetadata = gameMetadata;
+                    SavePlayerData();
+                }
+                else return;
+            });
 
             return;
         }
@@ -73,7 +77,7 @@ public class GPGSPlayerDataCloudStorage : SingletonSuperMonoBehaviour<GPGSPlayer
     }
 
 
-    public void ReadSavedGame(Action<PlayerDataModel, SavedGameRequestStatus> action)
+    public void ReadData(Action<PlayerDataModel, SavedGameRequestStatus> action)
     {
         OpenSavedGame((gameRequestStatus, gameMetadata) =>
         {
@@ -98,42 +102,48 @@ public class GPGSPlayerDataCloudStorage : SingletonSuperMonoBehaviour<GPGSPlayer
 
                             cloudModel = JsonConverterWrapper.DeserializeObject(Encoding.UTF8.GetString(data), (isSuccess, exception) =>
                             {
-                                if (!isSuccess)
-                                {
-                                    Debug.LogError("Ошибка десериализации данных с облака " + exception);
-                                }
+                                if (!isSuccess) Debug.LogError("Ошибка десериализации данных с облака " + exception);
                             });
                         }
-                        else { Debug.LogError("Данные на облаке не были найдены. Если даже на облаке нет данных, то возвращается пустой массив байт. Так что этот блок не должен выполняться."); }
-                    }
-                    else
-                    {
-                        // handle error
+                        else Debug.LogError("Данные на облаке не были найдены. Если даже на облаке нет данных, то возвращается пустой массив байт. Так что этот блок не должен выполняться.");
                     }
 
                     Debug.Log($"Received cloud model: {cloudModel}.\nCloud model as json: {JsonConverterWrapper.SerializeObject(cloudModel, null)}\nReading status: {readingCloudDataStatus}.");
+
                     action?.Invoke(cloudModel, readingCloudDataStatus);
                 });
             }
-            else { return; }
+            else action?.Invoke(null, gameRequestStatus);
         });
     }
 
 
-    public void DeleteSavedGame(Action action)
+    public void StartLoadingData()
     {
-        OpenSavedGame((gameRequestStatus, gameMetadata) =>
+        superMonoBehaviour.ExecuteCoroutineContinuously(ref loadSavedGameFromCloudInfo, OpenGameSessionAndReadDataEnumerator());
+    }
+
+
+    private IEnumerator OpenGameSessionAndReadDataEnumerator()
+    {
+        yield return new WaitUntil(() => GPGSAuthentication.IsAuthenticated);
+
+        // Начать отсчет времени для текущей сессии игры
+        StartPlayingTime = DateTime.Now;
+
+        bool isDataWasReceivedFromCloud = false;
+
+        // Загрузка данных из облака
+        ReadData((cloudModel, readingStatus) =>
         {
-            if (gameRequestStatus == SavedGameRequestStatus.Success)
-            {
-                SavedGameClient.Delete(gameMetadata);
+            Debug.Log($"#Десериализация данных с облака завершена.");
 
-                CurrentGameMetadata = null;
-            }
-            else { return; }
-
-            action?.Invoke();
+            CloudPlayerDataModel = cloudModel;
+            isDataWasReceivedFromCloud = true;
         });
+
+        // Необходимо закончить выполнение корутины после извлечения данных из облака.
+        yield return new WaitUntil(() => isDataWasReceivedFromCloud);
     }
 
 
@@ -145,28 +155,10 @@ public class GPGSPlayerDataCloudStorage : SingletonSuperMonoBehaviour<GPGSPlayer
             return;
         }
 
-        SavedGameClient.OpenWithAutomaticConflictResolution(PlayerDataModel.FileName,
-            DataSource.ReadNetworkOnly,                                              
+        SavedGameClient.OpenWithAutomaticConflictResolution(PlayerDataModel.FileNameWithExtension,
+            DataSource.ReadNetworkOnly,
             ConflictResolutionStrategy.UseLongestPlaytime,
             OnSavedGameOpened);
-    }
-
-
-    private IEnumerator LoadSavedGameFromCloudEnumerator()
-    {
-        yield return new WaitUntil(() => GPGSAuthentication.IsAuthenticated);
-        yield return new WaitUntil(() => PlayerDataModelController.Instance.IsDataFileLoaded);
-
-        // Начать отсчет времени для текущей сессии игры
-        StartPlayingTime = DateTime.Now;
-
-        // Загрузка данных из облака
-        ReadSavedGame((cloudModel, readingStatus) =>
-        {
-            Debug.Log($"###ДЕСЕРИАЛИЗАЦИЯ ДАННЫХ С ОБЛАКА ЗАВЕРШЕНА.\nReceived from cloud model: {cloudModel}.\nCloud model as json: {JsonConverterWrapper.SerializeObject(cloudModel, null)}");
-
-            PlayerDataModelController.Instance.SynchronizePlayerDataStorages(cloudModel);
-        });
     }
 
 
@@ -174,21 +166,16 @@ public class GPGSPlayerDataCloudStorage : SingletonSuperMonoBehaviour<GPGSPlayer
     {
         if (gameRequestStatus == SavedGameRequestStatus.Success)
         {
-            // handle writing of saved game.
-
             // Так как при сохранении метаданные обновляются, то после его завершения необходимо их перезаписать
             CurrentGameMetadata = gameMetadata;
 
             // Заново считаем время игры с момента записи сохранения
             StartPlayingTime = DateTime.Now;
         }
-        else
-        {
-            // handle error
-        }
     }
 
 
+    #region GetScreenshot
     // Необходимо дождаться конца кадра, чтобы сделать скриншот. (Рендер изображения должен браться не из буфера устройства)
     [Obsolete]
     private Texture2D GetScreenshot()
@@ -201,4 +188,5 @@ public class GPGSPlayerDataCloudStorage : SingletonSuperMonoBehaviour<GPGSPlayer
 
         return screenShot;
     }
+    #endregion
 }

@@ -32,7 +32,7 @@ public class SafeIntConverter : JsonConverter
 
     public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
     {
-        if (value is SafeInt) // value is SafeInt?
+        if (value is SafeInt) // value is SafeInt? (nullable)
         {
             writer.WriteValue((SafeInt)value);
         }
