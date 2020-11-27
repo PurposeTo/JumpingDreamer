@@ -19,9 +19,8 @@ public abstract class SingletonSuperMonoBehaviour<T> : SuperMonoBehaviour where 
     {
         add
         {
-            OnInstanceInitialize += value;
-
-            if (Instance != null) Instance.ExecuteCommandsAndClear();
+            if (Instance != null) value?.Invoke(Instance);
+            else OnInstanceInitialize += value;
         }
         remove
         {
