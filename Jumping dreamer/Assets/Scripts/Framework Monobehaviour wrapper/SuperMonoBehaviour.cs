@@ -174,6 +174,7 @@ public class SuperMonoBehaviour : MonoBehaviour
 
     #region OnDestroy realization
 
+    public event Action OnDestroying;
 
     /// <summary>
     /// Необходимо использовать данный метод взамен OnDestroy()
@@ -183,7 +184,15 @@ public class SuperMonoBehaviour : MonoBehaviour
     private void OnDestroySuper()
     {
         OnDestroyWrapped();
+        EndOnDestroyExecution();
     }
+
+
+    private void EndOnDestroyExecution()
+    {
+        OnDestroying?.Invoke();
+    }
+
 
     private void OnDestroy()
     {

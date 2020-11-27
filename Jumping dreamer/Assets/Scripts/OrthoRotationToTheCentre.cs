@@ -2,11 +2,10 @@
 
 public class OrthoRotationToTheCentre : SuperMonoBehaviour
 {
-    private GameObject centre;
+    private GameObject Centre => GameObjectsHolder.Instance.Centre.gameObject;
 
     protected override void StartWrapped()
     {
-        centre = GameObjectsHolder.Instance.Centre.gameObject;
         SetOrthoRotation();
     }
 
@@ -19,6 +18,6 @@ public class OrthoRotationToTheCentre : SuperMonoBehaviour
 
     private void SetOrthoRotation()
     {
-        transform.rotation = GameLogic.GetOrthoRotation(transform.position, centre.transform.position);
+        transform.rotation = GameLogic.GetOrthoRotation(transform.position, Centre.transform.position);
     }
 }

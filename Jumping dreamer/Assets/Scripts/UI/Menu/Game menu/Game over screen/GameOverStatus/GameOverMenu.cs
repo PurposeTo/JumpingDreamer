@@ -22,13 +22,13 @@ public class GameOverMenu : MonoBehaviour
 
     public void ReloadLvl()
     {
-        SingleSceneLoader.LoadScene(SingleSceneLoader.GameSceneName);
+        SingleSceneLoader.Instance.LoadScene(SingleSceneLoader.GameSceneName);
     }
 
 
     public void OpenMainMenu()
     {
-        SingleSceneLoader.LoadScene(SingleSceneLoader.MainMenuName);
+        SingleSceneLoader.Instance.LoadScene(SingleSceneLoader.MainMenuName);
     }
 
 

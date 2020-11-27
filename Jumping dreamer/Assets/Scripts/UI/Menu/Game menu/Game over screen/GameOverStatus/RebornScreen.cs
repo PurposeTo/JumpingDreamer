@@ -12,14 +12,12 @@ public class RebornScreen : MonoBehaviour
 
     public void Reborn()
     {
-        gameOverStatusScreen.SetPlayerMustSeeAdTrue();
-
         GameMenu.Instance.GameOverScreen.gameObject.SetActive(false);
         GameManager.Instance.SetPause(false);
         GameMenu.Instance.AdRewardMessage.gameObject.SetActive(true);
 
         // Возродить
-        GameObjectsHolder.Instance.PlayerPresenter.PlayerHealth.RaiseTheDead();
+        GameManager.Instance.RebornPlayer();
     }
 
 

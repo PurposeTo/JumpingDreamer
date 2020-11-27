@@ -4,12 +4,12 @@ public class RefuseToViewAdsScreen : MonoBehaviour
 {
     public void OpenMainMenu()
     {
-        SingleSceneLoader.LoadScene(SingleSceneLoader.MainMenuName);
+        SingleSceneLoader.Instance.LoadScene(SingleSceneLoader.MainMenuName);
     }
 
 
     public void ReloadLvl()
     {
-        SingleSceneLoader.LoadScene(SingleSceneLoader.GameSceneName);
+        SingleSceneLoader.Instance.LoadScene(SingleSceneLoader.GameSceneName);
     }
 }

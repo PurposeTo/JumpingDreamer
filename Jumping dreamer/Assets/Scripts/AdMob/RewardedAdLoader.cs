@@ -46,7 +46,6 @@ public class RewardedAdLoader : IRewardedAdLoader
 
     public void Show()
     {
-        Debug.Log($"rewardedAd.Show() call");
         rewardedAd.Show();
     }
 
