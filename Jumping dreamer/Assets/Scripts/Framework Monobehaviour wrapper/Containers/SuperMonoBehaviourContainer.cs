@@ -3,7 +3,7 @@
 /// <summary>
 /// Содержит поле superMonoBehaviour, которое инициализируется конструктором
 /// </summary>
-public class SuperMonoBehaviourContainer
+public abstract class SuperMonoBehaviourContainer
 {
     protected readonly SuperMonoBehaviour superMonoBehaviour;
 

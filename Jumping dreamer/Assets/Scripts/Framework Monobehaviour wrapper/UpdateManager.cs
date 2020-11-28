@@ -1,40 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
 
 public class UpdateManager : SingletonSuperMonoBehaviour<UpdateManager>
 {
-    public static List<Action> AllUpdatesSuper = new List<Action>();
-    public static List<Action> AllFixedUpdatesSuper = new List<Action>();
-    public static List<Action> AllLateUpdatesSuper = new List<Action>();
+    private static readonly List<Action> AllUpdates = new List<Action>();
+    private static readonly List<Action> AllFixedUpdates = new List<Action>();
+    private static readonly List<Action> AllLateUpdates = new List<Action>();
 
 
     private void Update()
     {
-        for (int i = 0; i < AllUpdatesSuper.Count; i++)
+        for (int i = 0; i < AllUpdates.Count; i++)
         {
-            AllUpdatesSuper[i]?.Invoke();
+            AllUpdates[i]?.Invoke();
         }
     }
 
 
     private void FixedUpdate()
     {
-        for (int i = 0; i < AllFixedUpdatesSuper.Count; i++)
+        for (int i = 0; i < AllFixedUpdates.Count; i++)
         {
-            AllFixedUpdatesSuper[i]?.Invoke();
+            AllFixedUpdates[i]?.Invoke();
         }
     }
 
 
     private void LateUpdate()
     {
-        for (int i = 0; i < AllLateUpdatesSuper.Count; i++)
+        for (int i = 0; i < AllLateUpdates.Count; i++)
         {
-            AllLateUpdatesSuper[i]?.Invoke();
+            AllLateUpdates[i]?.Invoke();
         }
     }
+
+
+    public static void AddUpdate(Action update) => AllUpdates.Add(update);
+    public static void RemoveUpdate(Action update) => AllUpdates.Remove(update);
+
+    public static void AddFixedUpdate(Action fixedUpdate) => AllFixedUpdates.Add(fixedUpdate);
+    public static void RemoveFixedUpdate(Action fixedUpdate) => AllFixedUpdates.Remove(fixedUpdate);
+
+    public static void AddLateUpdate(Action lateUpdate) => AllLateUpdates.Add(lateUpdate);
+    public static void RemoveLateUpdate(Action lateUpdate) => AllLateUpdates.Remove(lateUpdate);
 }

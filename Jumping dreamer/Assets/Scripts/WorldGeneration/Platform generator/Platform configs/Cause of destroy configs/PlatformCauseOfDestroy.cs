@@ -1,19 +1,18 @@
-﻿public enum PlatformCausesOfDestroy
+﻿public class PlatformCauseOfDestroy
 {
-    AsTimePasses,
-    NoLifeTime,
-    LateInitialization, // Определяется после создания создания вертикальной платформы
-    TopBorder,
-    BottomBorder
-}
+    public enum CauseOfDestroy
+    {
+        AsTimePasses,
+        NoLifeTime,
+        LateInitialization, // Определяется после создания создания вертикальной платформы
+        TopBorder,
+        BottomBorder
+    }
+
+    public CauseOfDestroy Value { get; }
 
 
-public class PlatformCauseOfDestroy
-{
-    public PlatformCausesOfDestroy Value { get; }
-
-
-    public PlatformCauseOfDestroy(PlatformCausesOfDestroy causesOfDestroy)
+    public PlatformCauseOfDestroy(CauseOfDestroy causesOfDestroy)
     {
         Value = causesOfDestroy;
     }

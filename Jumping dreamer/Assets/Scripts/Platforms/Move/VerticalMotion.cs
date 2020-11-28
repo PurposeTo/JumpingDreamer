@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 /// <summary>
 /// Платформа при создании движется от центра
 /// </summary>
-public class VerticalMotion : PlatformMovable, IMovable, IPooledObject
+public class VerticalMotion : PlatformMovable, IMovable
 {
     [SerializeField]
     private bool UpdateMoveDirectionEveryFrame = false;
@@ -15,12 +14,6 @@ public class VerticalMotion : PlatformMovable, IMovable, IPooledObject
     private readonly float maxVelocityMultiplier = 5f;
 
     private int direction = 0;
-
-
-    void IPooledObject.OnObjectSpawn()
-    {
-
-    }
 
 
     private void OnDisable()
@@ -38,14 +31,14 @@ public class VerticalMotion : PlatformMovable, IMovable, IPooledObject
     }
 
 
-    public void SetMotionConfigs(VerticalMotionConfig.VerticalMotionConfigs verticalMotionConfigs)
+    public void SetMotionConfigs(VerticalMotionConfig.MotionConfigs verticalMotionConfigs)
     {
         switch (verticalMotionConfigs)
         {
-            case VerticalMotionConfig.VerticalMotionConfigs.Up:
+            case VerticalMotionConfig.MotionConfigs.Up:
                 direction = 1;
                 break;
-            case VerticalMotionConfig.VerticalMotionConfigs.Down:
+            case VerticalMotionConfig.MotionConfigs.Down:
                 direction = -1;
                 break;
             default:

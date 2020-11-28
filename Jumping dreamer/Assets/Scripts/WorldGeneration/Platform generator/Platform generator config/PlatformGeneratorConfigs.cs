@@ -42,7 +42,7 @@ public class PlatformGeneratorConfigs
 
         if (platformConfigs.CreatingPlace == PlatformConfigsData.PlatformCreatingPlace.InRandomArea) delay -= 0.1f;
 
-        if (platformConfigs.CauseOfDestroy == PlatformCausesOfDestroy.NoLifeTime)
+        if (platformConfigs.CauseOfDestroy == PlatformCauseOfDestroy.CauseOfDestroy.NoLifeTime)
         {
             delay -= 0.2f;
         }
@@ -57,7 +57,7 @@ public class PlatformConfigs
     public PlatformMovingTypes[] MovingTypes { get; private set; }
     public IPlatformMotionConfig[] MovingTypeConfigs { get; private set; }
     public PlatformConfigsData.PlatformCreatingPlace CreatingPlace { get; private set; }
-    public PlatformCausesOfDestroy CauseOfDestroy { get; private set; }
+    public PlatformCauseOfDestroy.CauseOfDestroy CauseOfDestroy { get; private set; }
 
 
     public static PlatformConfigs GetDefault()
@@ -66,9 +66,9 @@ public class PlatformConfigs
         {
             MovingTypes = new PlatformMovingTypes[] { global::PlatformMovingTypes.VerticalMotion },
             MovingTypeConfigs = new IPlatformMotionConfig[] {
-                new VerticalMotionConfig(VerticalMotionConfig.VerticalMotionConfigs.Up) },
+                new VerticalMotionConfig(VerticalMotionConfig.MotionConfigs.Up) },
             CreatingPlace = PlatformConfigsData.PlatformCreatingPlace.InCentre,
-            CauseOfDestroy = PlatformCausesOfDestroy.TopBorder
+            CauseOfDestroy = PlatformCauseOfDestroy.CauseOfDestroy.TopBorder
         };
     }
 
