@@ -3,8 +3,10 @@ using System.Reflection;
 using System.Linq;
 using System.Collections.Generic;
 
+[Obsolete]
 public class NullableValuesChecker
 {
+    //Not working...
     public bool HaveNullableValues(object model)
     {
 
