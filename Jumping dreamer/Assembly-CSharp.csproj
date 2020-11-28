@@ -201,6 +201,7 @@
     <Compile Include="Assets\Scripts\Player Data\Model\PlayerDataModel.cs" />
     <Compile Include="Assets\Scripts\Player Data\Model\PlayerInGamePurchases.cs" />
     <Compile Include="Assets\Scripts\Player Data\Model\PlayerStatsData.cs" />
+    <Compile Include="Assets\Scripts\Player Data\Nullable values checker\NullableValuesChecker.cs" />
     <Compile Include="Assets\Scripts\Player Data\Player settings\PlayerSettings.cs" />
     <Compile Include="Assets\Scripts\Player Data\Player settings\PlayerSettingsStorage.cs" />
     <Compile Include="Assets\Scripts\Player Data\PlayerDataLocalStorageSafe.cs" />

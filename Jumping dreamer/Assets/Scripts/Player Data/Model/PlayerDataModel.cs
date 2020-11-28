@@ -23,12 +23,14 @@ public class PlayerDataModel
 
     public bool IsModelHasNullValues()
     {
-        if (string.IsNullOrEmpty(Id) || PlayerStats == null || PlayerInGamePurchases == null)
-        {
-            return false;
-        }
+        //if (string.IsNullOrEmpty(Id) || PlayerStats == null || PlayerInGamePurchases == null)
+        //{
+        //    return false;
+        //}
 
-        return PlayerStats.IsStatsHaveNullValues() || PlayerInGamePurchases.IsInGamePurchasesHaveNullValues();
+        //return PlayerStats.IsStatsHaveNullValues() || PlayerInGamePurchases.IsInGamePurchasesHaveNullValues();
+
+        return string.IsNullOrEmpty(Id) || new NullableValuesChecker().HaveNullableValues(this);
     }
 
 
