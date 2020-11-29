@@ -1,6 +1,6 @@
 ﻿public interface IGetDataModel
 {
-    public string Id { get; }
-    public IGetStatsData PlayerStats { get; }
-    public IGetInGamePurchases PlayerInGamePurchases { get; }
+    string Id { get; }
+    IGetStatsData PlayerStats { get; }
+    IGetInGamePurchases PlayerInGamePurchases { get; }
 }

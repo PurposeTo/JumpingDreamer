@@ -1,8 +1,13 @@
-﻿public interface IGetStatsData
+﻿using System;
+
+public interface IGetStatsData
 {
-   public SafeInt? MaxCollectedStars { get; }
-   public SafeInt? MaxEarnedScore { get; }
-   public SafeInt? MaxScoreMultiplierValue { get; }
-   public SafeInt? MaxLifeTime { get; }
-   public SafeInt? TotalLifeTime { get; }
+    event Action OnNewScoreRecord;
+
+
+    SafeInt? MaxCollectedStars { get; }
+    SafeInt? MaxEarnedScore { get; }
+    SafeInt? MaxScoreMultiplierValue { get; }
+    SafeInt? MaxLifeTime { get; }
+    SafeInt? TotalLifeTime { get; }
 }

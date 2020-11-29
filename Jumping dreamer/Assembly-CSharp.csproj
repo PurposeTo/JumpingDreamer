@@ -8,8 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{5955EDAF-1570-54EA-222F-0340AEA33492}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -195,14 +194,14 @@
     <Compile Include="Assets\Scripts\Player Data\Encryption\SafeFloat.cs" />
     <Compile Include="Assets\Scripts\Player Data\Encryption\SafeInt.cs" />
     <Compile Include="Assets\Scripts\Player Data\Model\IGetDataModel.cs" />
+    <Compile Include="Assets\Scripts\Player Data\Model\ISetDataModel.cs" />
     <Compile Include="Assets\Scripts\Player Data\Model\InGamePurchases\IGetInGamePurchases.cs" />
     <Compile Include="Assets\Scripts\Player Data\Model\InGamePurchases\ISetInGamePurchases.cs" />
-    <Compile Include="Assets\Scripts\Player Data\Model\ISetDataModel.cs" />
-    <Compile Include="Assets\Scripts\Player Data\Model\PlayerDataModel.cs" />
     <Compile Include="Assets\Scripts\Player Data\Model\InGamePurchases\PlayerInGamePurchases.cs" />
-    <Compile Include="Assets\Scripts\Player Data\Model\PlayerStats\PlayerStatsData.cs" />
+    <Compile Include="Assets\Scripts\Player Data\Model\PlayerDataModel.cs" />
     <Compile Include="Assets\Scripts\Player Data\Model\PlayerStats\IGetStatsData.cs" />
-    <Compile Include="Assets\Scripts\Player Data\Model\PlayerStats\ISet.cs" />
+    <Compile Include="Assets\Scripts\Player Data\Model\PlayerStats\ISetStatsData.cs" />
+    <Compile Include="Assets\Scripts\Player Data\Model\PlayerStats\PlayerStatsData.cs" />
     <Compile Include="Assets\Scripts\Player Data\Player settings\PlayerSettings.cs" />
     <Compile Include="Assets\Scripts\Player Data\Player settings\PlayerSettingsStorage.cs" />
     <Compile Include="Assets\Scripts\Player Data\PlayerDataLocalStorageSafe.cs" />
@@ -907,7 +906,6 @@
       <Name>GoogleMobileAds.Editor</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,5 +1,5 @@
 ﻿public interface IGetInGamePurchases
 {
-    public SafeInt? TotalStars { get; }
-    public SafeInt? EstimatedCostInStars { get; }
+    SafeInt? TotalStars { get; }
+    SafeInt? EstimatedCostInStars { get; }
 }

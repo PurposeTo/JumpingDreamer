@@ -1,5 +1,5 @@
 ﻿public interface ISetDataModel
 {
-    public ISetStatsData PlayerStats { get; }
-    public ISetInGamePurchases PlayerInGamePurchases { get; }
+    ISetStatsData PlayerStats { get; }
+    ISetInGamePurchases PlayerInGamePurchases { get; }
 }

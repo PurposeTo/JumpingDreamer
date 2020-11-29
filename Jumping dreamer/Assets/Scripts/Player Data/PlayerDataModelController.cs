@@ -12,24 +12,6 @@ public class PlayerDataModelController : SingletonSuperMonoBehaviour<PlayerDataM
     public event Action OnResetPlayerData;
     public event Action OnRestoreDataFromCloud;
 
-    // Подписываться на событие только извне. Внутри класса использовать проверку на выполнение корутины.
-    public event Action<PlayerDataModel> OnPlayerDataModelAvailable
-    {
-        add
-        {
-            queueOfRequestsToModel += value;
-
-            if (!synchronizePlayerDataStoragesInfo.IsExecuting) ExecuteCommandsAndClear(ref queueOfRequestsToModel);
-        }
-        remove
-        {
-            queueOfRequestsToModel -= value;
-        }
-    }
-
-
-    private Action<PlayerDataModel> queueOfRequestsToModel;
-
     private PlayerDataModel playerDataModel;
     private GPGSPlayerDataCloudStorage GPGSPlayerDataCloudStorage;
     private readonly PlayerDataLocalStorageSafe localStorageSafe = new PlayerDataLocalStorageSafe();
@@ -71,7 +53,18 @@ public class PlayerDataModelController : SingletonSuperMonoBehaviour<PlayerDataM
     #endregion
 
 
-    public PlayerDataModel GetPlayerDataModel() => playerDataModel;
+    public IGetDataModel GetGettableDataModel()
+    {
+        TryToUsePlayerDataModel(out PlayerDataModel playerDataModel);
+        return playerDataModel;
+    }
+
+
+    public ISetDataModel GetSettableDataModel()
+    {
+        TryToUsePlayerDataModel(out PlayerDataModel playerDataModel);
+        return playerDataModel;
+    }
 
 
     public void ResetPlayerData()
@@ -140,7 +133,6 @@ public class PlayerDataModelController : SingletonSuperMonoBehaviour<PlayerDataM
         });
 
         yield return new WaitWhile(() => isPlayerDataModelSynchronizing);
-        ExecuteCommandsAndClear(ref queueOfRequestsToModel);
     }
 
 
@@ -169,13 +161,6 @@ public class PlayerDataModelController : SingletonSuperMonoBehaviour<PlayerDataM
     }
 
 
-    private void ExecuteCommandsAndClear(ref Action<PlayerDataModel> action)
-    {
-        action?.Invoke(playerDataModel);
-        action = null;
-    }
-
-
     private bool TryToUsePlayerDataModel(out PlayerDataModel playerDataModel)
     {
         playerDataModel = this.playerDataModel;
@@ -183,8 +168,8 @@ public class PlayerDataModelController : SingletonSuperMonoBehaviour<PlayerDataM
 
         if (isModelNull)
         {
-            if (synchronizePlayerDataStoragesInfo.IsExecuting) Debug.LogWarning("Синхронизация не была завершена. PlayerDataModel is null");
-            else throw new NullReferenceException(nameof(playerDataModel));
+            if (synchronizePlayerDataStoragesInfo.IsExecuting) Debug.LogError("Синхронизация не была завершена. PlayerDataModel is null");
+            else throw new NullReferenceException($"{nameof(playerDataModel)} is null");
         }
 
         return !isModelNull;

@@ -57,8 +57,8 @@ public class ScoreCollector : RewardCollector
 
     private void SaveScoreStats()
     {
-        PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.SaveScoreData(Score);
-        PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.SaveScoreMultiplierData(currentMaxScoreMultiplierValue);
+        PlayerDataModelController.Instance.GetSettableDataModel().PlayerStats.SaveScoreData(Score);
+        PlayerDataModelController.Instance.GetSettableDataModel().PlayerStats.SaveScoreMultiplierData(currentMaxScoreMultiplierValue);
     }
 
 

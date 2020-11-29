@@ -28,9 +28,9 @@ public class TrainingTutorial : SuperMonoBehaviour
 
     protected override void OnEnableWrapped()
     {
-        PlayerDataModelController.Instance.OnPlayerDataModelAvailable += (playerDataModel) =>
+        PlayerDataModelController.InitializedInstance += (instance) =>
         {
-            bool shouldStartByShowingTheTutorial = playerDataModel.PlayerStats.TotalLifeTime < minTotalLifeTimeToShowTutorial;
+            bool shouldStartByShowingTheTutorial = instance.GetGettableDataModel().PlayerStats.TotalLifeTime < minTotalLifeTimeToShowTutorial;
 
             Array.ForEach(trainingTips, trainingTip => trainingTip.gameObject.SetActive(false));
 
@@ -76,7 +76,7 @@ public class TrainingTutorial : SuperMonoBehaviour
 
     private bool IsTutorialNeedsToBeShown()
     {
-       return absAverageHorizontalInput <= minHorizontalInputToShowTutorial;
+        return absAverageHorizontalInput <= minHorizontalInputToShowTutorial;
     }
 
     private IEnumerator CheckingIfTutorialNeedsToBeShownEnumerator(bool shouldStartByShowingTheTutorial)

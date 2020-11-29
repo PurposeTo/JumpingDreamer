@@ -7,17 +7,14 @@ public class CurrentGameSessionData : SingletonSuperMonoBehaviour<CurrentGameSes
     public event Action OnNewRecordScore;
     public event Action OnScoreOrStarsChanged;
 
-    private void Start()
+    protected override void StartWrapped()
     {
-        PlayerDataModelController.Instance.OnPlayerDataModelAvailable += (playerDataModel) =>
-        {
-            playerDataModel.PlayerStats.OnNewScoreRecord += ActivateRecordNewToggle;
-        };
+        PlayerDataModelController.Instance.GetGettableDataModel().PlayerStats.OnNewScoreRecord += ActivateRecordNewToggle;
     }
 
-    private void OnDestroy()
+    protected override void OnDestroyWrapped()
     {
-        PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.OnNewScoreRecord -= ActivateRecordNewToggle;
+        PlayerDataModelController.Instance.GetGettableDataModel().PlayerStats.OnNewScoreRecord -= ActivateRecordNewToggle;
     }
 
 
