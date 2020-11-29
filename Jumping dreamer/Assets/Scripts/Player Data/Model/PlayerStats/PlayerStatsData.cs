@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-public class PlayerStatsData
+public class PlayerStatsData : ISetStatsData, IGetStatsData
 {
     public event Action OnNewScoreRecord;
 
@@ -11,7 +11,6 @@ public class PlayerStatsData
     [JsonConverter(typeof(SafeIntConverter))] public SafeInt? MaxEarnedScore { get; set; }
     [JsonConverter(typeof(SafeIntConverter))] public SafeInt? MaxScoreMultiplierValue { get; set; }
     [JsonConverter(typeof(SafeIntConverter))] public SafeInt? MaxLifeTime { get; set; }
-    //public float MaxJumpHeight; // json хранит double
 
     // Общие результаты за все время игры
     [JsonConverter(typeof(SafeIntConverter))] public SafeInt? TotalLifeTime { get; set; }
@@ -30,7 +29,7 @@ public class PlayerStatsData
     }
 
 
-    public void SaveMaxStarsData(SafeInt starsAmount)
+    void ISetStatsData.SaveMaxStarsData(SafeInt starsAmount)
     {
         if (starsAmount > MaxCollectedStars)
         {
@@ -39,7 +38,7 @@ public class PlayerStatsData
     }
 
 
-    public void SaveScoreData(SafeInt scoreAmount)
+    void ISetStatsData.SaveScoreData(SafeInt scoreAmount)
     {
         if (scoreAmount > MaxEarnedScore)
         {
@@ -49,7 +48,7 @@ public class PlayerStatsData
     }
 
 
-    public void SaveScoreMultiplierData(SafeInt multiplierValue)
+    void ISetStatsData.SaveScoreMultiplierData(SafeInt multiplierValue)
     {
         if (multiplierValue > MaxScoreMultiplierValue)
         {
@@ -58,7 +57,7 @@ public class PlayerStatsData
     }
 
 
-    public void SaveLifeTimeData(SafeInt lifeTime)
+    void ISetStatsData.SaveLifeTimeData(SafeInt lifeTime)
     {
         TotalLifeTime += lifeTime;
 

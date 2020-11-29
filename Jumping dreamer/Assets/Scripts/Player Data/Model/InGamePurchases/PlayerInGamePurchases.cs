@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-public class PlayerInGamePurchases
+public class PlayerInGamePurchases : ISetInGamePurchases, IGetInGamePurchases
 {
     [JsonConverter(typeof(SafeIntConverter))] public SafeInt? TotalStars { get; set; }
     [JsonConverter(typeof(SafeIntConverter))] public SafeInt? EstimatedCostInStars { get; set; } // Не может уменьшаться!
@@ -17,7 +17,7 @@ public class PlayerInGamePurchases
     }
 
 
-    public void SaveTotalStarsData(SafeInt starsAmount)
+    void ISetInGamePurchases.SaveTotalStarsData(SafeInt starsAmount)
     {
         TotalStars += starsAmount;
         EstimatedCostInStars += starsAmount;
