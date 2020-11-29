@@ -197,6 +197,7 @@
     <Compile Include="Assets\Scripts\Player Data\Model\IGetDataModel.cs" />
     <Compile Include="Assets\Scripts\Player Data\Model\InGamePurchases\IGetInGamePurchases.cs" />
     <Compile Include="Assets\Scripts\Player Data\Model\InGamePurchases\ISetInGamePurchases.cs" />
+    <Compile Include="Assets\Scripts\Player Data\Model\ISetDataModel.cs" />
     <Compile Include="Assets\Scripts\Player Data\Model\PlayerDataModel.cs" />
     <Compile Include="Assets\Scripts\Player Data\Model\InGamePurchases\PlayerInGamePurchases.cs" />
     <Compile Include="Assets\Scripts\Player Data\Model\PlayerStats\PlayerStatsData.cs" />

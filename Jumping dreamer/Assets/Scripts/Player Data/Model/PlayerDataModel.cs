@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class PlayerDataModel : IGetDataModel
+public class PlayerDataModel : IGetDataModel, ISetDataModel
 {
     public const string FileName = "GameData";
     public const string FileExtension = ".json";
@@ -10,6 +10,11 @@ public class PlayerDataModel : IGetDataModel
     public string Id { get; set; }
     public PlayerStatsData PlayerStats { get; set; }
     public PlayerInGamePurchases PlayerInGamePurchases { get; set; }
+
+    IGetStatsData IGetDataModel.PlayerStats => PlayerStats;
+    IGetInGamePurchases IGetDataModel.PlayerInGamePurchases => PlayerInGamePurchases;
+    ISetStatsData ISetDataModel.PlayerStats => PlayerStats;
+    ISetInGamePurchases ISetDataModel.PlayerInGamePurchases => PlayerInGamePurchases;
 
 
     public static PlayerDataModel CreateModelWithDefaultValues()
