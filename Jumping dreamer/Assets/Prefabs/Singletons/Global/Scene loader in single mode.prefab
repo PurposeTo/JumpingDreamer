@@ -88,8 +88,9 @@ GameObject:
   - component: {fileID: 4005192986996057831}
   - component: {fileID: 4005192986996057828}
   - component: {fileID: 4005192986996057829}
+  - component: {fileID: 270915498914844404}
   m_Layer: 5
-  m_Name: Shutter Canvas
+  m_Name: Scene loader in single mode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -205,6 +206,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5115ff4c295840d4f8b1e877d5d452f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dontDestroyOnLoad: 1
+--- !u!114 &270915498914844404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4005192986996057826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60a85fe64b7079546b3558c978457f09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 1

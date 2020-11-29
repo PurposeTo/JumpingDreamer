@@ -1,17 +1,16 @@
 ﻿using UnityEngine;
 
-public class OrthoRotationToTheCentre : MonoBehaviour
+public class OrthoRotationToTheCentre : SuperMonoBehaviour
 {
-    private GameObject centre;
+    private GameObject Centre => GameObjectsHolder.Instance.Centre.gameObject;
 
-    private void Start()
+    protected override void StartWrapped()
     {
-        centre = GameObjectsHolder.Instance.Centre.gameObject;
         SetOrthoRotation();
     }
 
 
-    private void Update()
+    protected override void UpdateWrapped()
     {
         SetOrthoRotation();
     }
@@ -19,6 +18,6 @@ public class OrthoRotationToTheCentre : MonoBehaviour
 
     private void SetOrthoRotation()
     {
-        transform.rotation = GameLogic.GetOrthoRotation(transform.position, centre.transform.position);
+        transform.rotation = GameLogic.GetOrthoRotation(transform.position, Centre.transform.position);
     }
 }

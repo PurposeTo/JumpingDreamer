@@ -174,6 +174,7 @@ public class SuperMonoBehaviour : MonoBehaviour
 
     #region OnDestroy realization
 
+    public event Action OnDestroying;
 
     /// <summary>
     /// Необходимо использовать данный метод взамен OnDestroy()
@@ -183,7 +184,15 @@ public class SuperMonoBehaviour : MonoBehaviour
     private void OnDestroySuper()
     {
         OnDestroyWrapped();
+        EndOnDestroyExecution();
     }
+
+
+    private void EndOnDestroyExecution()
+    {
+        OnDestroying?.Invoke();
+    }
+
 
     private void OnDestroy()
     {
@@ -249,7 +258,6 @@ public class SuperMonoBehaviour : MonoBehaviour
     /// <summary>
     /// Создаёт "Container" объект для конкретной корутины
     /// </summary>
-    /// <returns></returns>
     public ICoroutineContainer CreateCoroutineContainer()
     {
         return coroutineExecutor.CreateCoroutineContainer();
@@ -259,8 +267,6 @@ public class SuperMonoBehaviour : MonoBehaviour
     /// <summary>
     /// Запускает корутину в том случае, если она НЕ выполняется в данный момент.
     /// </summary>
-    /// <param name="enumerator">Позволяет запустить другой IEnumerator</param>
-    /// <returns></returns>
     public void ExecuteCoroutineContinuously(ref ICoroutineContainer coroutineInfo, IEnumerator enumerator)
     {
         coroutineExecutor.ExecuteCoroutineContinuously(ref coroutineInfo, enumerator);
@@ -270,8 +276,6 @@ public class SuperMonoBehaviour : MonoBehaviour
     /// <summary>
     /// Перед запуском корутины останавливает её, если она выполнялась на данный момент.
     /// </summary>
-    /// <param name="enumerator">Позволяет запустить другой IEnumerator</param>
-    /// <returns></returns>
     public void ReStartCoroutineExecution(ref ICoroutineContainer coroutineInfo, IEnumerator enumerator)
     {
         coroutineExecutor.ReStartCoroutineExecution(ref coroutineInfo, enumerator);
@@ -281,7 +285,6 @@ public class SuperMonoBehaviour : MonoBehaviour
     /// <summary>
     /// Останавливает корутину.
     /// </summary>
-    /// <param name="coroutineInfo"></param>
     public void BreakCoroutine(ref ICoroutineContainer coroutineInfo)
     {
         coroutineExecutor.BreakCoroutine(ref coroutineInfo);
@@ -297,15 +300,5 @@ public class SuperMonoBehaviour : MonoBehaviour
     }
 
 
-    #endregion
-
-    //TODO: доделать, когда будет инициализатор вызовов
-    #region ObjectPooler
-
-    private GameObject SpawnFromPool(GameObject prefabKey, Vector3 position, Quaternion rotation, Transform parent = null)
-    {
-        //TODO: Что бы этот метод корректно работал, необходимо отдельным классом, который будет контролировать все вызовы, инициализировать ObjectPooler раньше всех...
-        return ObjectPooler.Instance.SpawnFromPool(prefabKey, position, rotation, parent);
-    }
     #endregion
 }

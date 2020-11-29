@@ -168,6 +168,10 @@
     <Compile Include="Assets\Scripts\GPGS\GPGSLeaderboard.cs" />
     <Compile Include="Assets\Scripts\GPGS\GPGSPlayerDataCloudStorage.cs" />
     <Compile Include="Assets\Scripts\GameLogic.cs" />
+    <Compile Include="Assets\Scripts\GameStates\GameManager.cs" />
+    <Compile Include="Assets\Scripts\GameStates\TimeScaler\IPausable.cs" />
+    <Compile Include="Assets\Scripts\GameStates\TimeScaler\Pauser.cs" />
+    <Compile Include="Assets\Scripts\GameStates\TimeScaler\TimeScaler.cs" />
     <Compile Include="Assets\Scripts\Localizaton\LanguageButton.cs" />
     <Compile Include="Assets\Scripts\Localizaton\LocalizationData.cs" />
     <Compile Include="Assets\Scripts\Localizaton\LocalizationManager.cs" />
@@ -196,6 +200,7 @@
     <Compile Include="Assets\Scripts\Player Data\Model\PlayerDataModel.cs" />
     <Compile Include="Assets\Scripts\Player Data\Model\PlayerInGamePurchases.cs" />
     <Compile Include="Assets\Scripts\Player Data\Model\PlayerStatsData.cs" />
+    <Compile Include="Assets\Scripts\Player Data\Nullable values checker\NullableValuesChecker.cs" />
     <Compile Include="Assets\Scripts\Player Data\Player settings\PlayerSettings.cs" />
     <Compile Include="Assets\Scripts\Player Data\Player settings\PlayerSettingsStorage.cs" />
     <Compile Include="Assets\Scripts\Player Data\PlayerDataLocalStorageSafe.cs" />
@@ -213,6 +218,7 @@
     <Compile Include="Assets\Scripts\Player\PlayerHealth.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerPresenter.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerView.cs" />
     <Compile Include="Assets\Scripts\Player\SpeedTrail.cs" />
     <Compile Include="Assets\Scripts\Player\Statistics\LifeTimer.cs" />
     <Compile Include="Assets\Scripts\Player\Statistics\PlayerTactics.cs" />
@@ -221,7 +227,6 @@
     <Compile Include="Assets\Scripts\Singletons\Base\Singleton.cs" />
     <Compile Include="Assets\Scripts\Singletons\Base\SingletonSuperMonoBehaviour.cs" />
     <Compile Include="Assets\Scripts\Singletons\CurrentGameSessionData.cs" />
-    <Compile Include="Assets\Scripts\Singletons\GameManager.cs" />
     <Compile Include="Assets\Scripts\Singletons\GameObjectsHolder.cs" />
     <Compile Include="Assets\Scripts\Singletons\Object Pooler Asset\Object Pooler\ObjectPooler.cs" />
     <Compile Include="Assets\Scripts\Singletons\Object Pooler Asset\Object Pooler\PoolData.cs" />
@@ -232,6 +237,7 @@
     <Compile Include="Assets\Scripts\Tools\InternetConnectionChecker.cs" />
     <Compile Include="Assets\Scripts\Training\TrainingTipContainer.cs" />
     <Compile Include="Assets\Scripts\Training\TrainingTutorial.cs" />
+    <Compile Include="Assets\Scripts\UI\DisplayerOfLoading.cs" />
     <Compile Include="Assets\Scripts\UI\FPSCounter.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\AdRewardMessage.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Buttons\OperationWithPlayerDataButton.cs" />
