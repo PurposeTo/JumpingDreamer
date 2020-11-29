@@ -118,7 +118,7 @@ public class GPGSPlayerDataCloudStorage : SuperMonoBehaviourContainer
     }
 
 
-    public void StartLoadingData()
+    public void StartOpeningGameSession()
     {
         superMonoBehaviour.ExecuteCoroutineContinuously(ref loadSavedGameFromCloudInfo, OpenGameSessionAndReadDataEnumerator());
     }

@@ -6,6 +6,7 @@ using TMPro;
 public class GPGSAuthentication : SingletonSuperMonoBehaviour<GPGSAuthentication>
 {
     public static PlayGamesPlatform Platform { get; private set; }
+    public SignInStatus SignInStatus { get; private set; } = SignInStatus.NotAuthenticated;
     public TextMeshProUGUI AuthenticateStatus;
 
     public static bool IsAuthenticated
@@ -32,25 +33,17 @@ public class GPGSAuthentication : SingletonSuperMonoBehaviour<GPGSAuthentication
             Debug.LogError("Authentication has already been passed!");
             return;
         }
+        else
+        {
+            Platform.SignOut();
+            Debug.Log($"GPGS Sign out have performed");
+        }
 
         // Аутентификация пользователя
         Platform.Authenticate(SignInInteractivity.CanPromptOnce, (result) =>
         {
             Debug.Log($"Authenticate is completed with code: {result}");
-
-            switch (result)
-            {
-                case SignInStatus.UiSignInRequired:
-                case SignInStatus.DeveloperError:
-                case SignInStatus.NetworkError:
-                case SignInStatus.InternalError:
-                case SignInStatus.Canceled:
-                case SignInStatus.Failed:
-
-                    Debug.Log($"GPGS Sign out have performed");
-                    Platform.SignOut();
-                    break;
-            }
+            SignInStatus = result;
 
             if (AuthenticateStatus != null) AuthenticateStatus.text = $"{result}";
         });

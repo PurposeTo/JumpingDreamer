@@ -25,6 +25,6 @@ public class LifeTimer : MonoBehaviour
 
     private void SaveLifeTimeStats()
     {
-        PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.SaveLifeTimeData((SafeInt)lifeTime);
+        PlayerDataModelController.Instance.GetSettableDataModel().PlayerStats.SaveLifeTimeData((SafeInt)lifeTime);
     }
 }

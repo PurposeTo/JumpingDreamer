@@ -44,7 +44,7 @@ public class StarCollector : RewardCollector
 
     private void SaveStarsStats()
     {
-        PlayerDataModelController.Instance.GetPlayerDataModel().PlayerStats.SaveMaxStarsData(Stars);
-        PlayerDataModelController.Instance.GetPlayerDataModel().PlayerInGamePurchases.SaveTotalStarsData(Stars);
+        PlayerDataModelController.Instance.GetSettableDataModel().PlayerStats.SaveMaxStarsData(Stars);
+        PlayerDataModelController.Instance.GetSettableDataModel().PlayerInGamePurchases.SaveTotalStarsData(Stars);
     }
 }
