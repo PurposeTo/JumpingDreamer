@@ -15,7 +15,7 @@ public abstract class Toss : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent(out PlayerPresenter playerPresenter))
         {
-            TossUp(playerPresenter.PlayerMovement);
+            TossPlayer(playerPresenter);
         }
     }
 
@@ -26,15 +26,17 @@ public abstract class Toss : MonoBehaviour
         {
             if (collision.enabled)
             {
-                TossUp(playerPresenter.PlayerMovement);
+                TossPlayer(playerPresenter);
             }
         }
     }
 
 
-    private void TossUp(PlayerMovement playerMovement)
+    private void TossPlayer(PlayerPresenter playerPresenter)
     {
-        playerMovement.TossUp(GetDirecrion(TossDirection));
+        if (TossDirection == TossDirectionEnum.Down && playerPresenter.PlayerHealth.IsInvulnerable) return;
+
+        playerPresenter.PlayerMovement.Toss(GetDirecrion(TossDirection));
     }
 
 
