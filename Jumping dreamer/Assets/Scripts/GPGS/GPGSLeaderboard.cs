@@ -11,7 +11,7 @@ public class GPGSLeaderboard : SingletonSuperMonoBehaviour<GPGSLeaderboard>
     }
 
 
-    private void OnDestroy()
+    protected override void OnDestroyWrapped()
     {
         PlayerDataModelController.Instance.GetGettableDataModel().PlayerStats.OnNewScoreRecord -= SetUpdateLeaderboardMethodToAction;
     }
