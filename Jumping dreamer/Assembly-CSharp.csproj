@@ -219,6 +219,7 @@
     <Compile Include="Assets\Scripts\Player\PlayerHealth.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerPresenter.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerView.cs" />
     <Compile Include="Assets\Scripts\Player\SpeedTrail.cs" />
     <Compile Include="Assets\Scripts\Player\Statistics\JumpHeightStats.cs" />
     <Compile Include="Assets\Scripts\Player\Statistics\LifeTimer.cs" />
