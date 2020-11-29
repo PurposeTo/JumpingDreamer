@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class PlayerDataModel
+public class PlayerDataModel : IGetDataModel
 {
     public const string FileName = "GameData";
     public const string FileExtension = ".json";

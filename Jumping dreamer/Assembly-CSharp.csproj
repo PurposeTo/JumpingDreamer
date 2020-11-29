@@ -194,10 +194,11 @@
     <Compile Include="Assets\Scripts\Player Data\Encryption\JsonEncryption.cs" />
     <Compile Include="Assets\Scripts\Player Data\Encryption\SafeFloat.cs" />
     <Compile Include="Assets\Scripts\Player Data\Encryption\SafeInt.cs" />
+    <Compile Include="Assets\Scripts\Player Data\Model\IGetDataModel.cs" />
     <Compile Include="Assets\Scripts\Player Data\Model\InGamePurchases\IGetInGamePurchases.cs" />
     <Compile Include="Assets\Scripts\Player Data\Model\InGamePurchases\ISetInGamePurchases.cs" />
     <Compile Include="Assets\Scripts\Player Data\Model\PlayerDataModel.cs" />
-    <Compile Include="Assets\Scripts\Player Data\Model\PlayerInGamePurchases.cs" />
+    <Compile Include="Assets\Scripts\Player Data\Model\InGamePurchases\PlayerInGamePurchases.cs" />
     <Compile Include="Assets\Scripts\Player Data\Model\PlayerStats\PlayerStatsData.cs" />
     <Compile Include="Assets\Scripts\Player Data\Model\PlayerStats\IGetStatsData.cs" />
     <Compile Include="Assets\Scripts\Player Data\Model\PlayerStats\ISet.cs" />
