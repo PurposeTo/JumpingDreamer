@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
@@ -71,7 +73,6 @@ public class PlayerStatsData : IGetStatsData, ISetStatsData
     // Если не хватает какого-либо поля в объекте статов игрока, т.е. значение этого поля равно null, то это значит, что файл изменялся
     public bool IsStatsHaveNullValues()
     {
-        //bool haveNullValue = false;
 
         #region C# 8.0 don't support by Unity
         //PlayerStatsData dataModel = (PlayerStatsData)PlayerStats.Clone();
@@ -103,42 +104,6 @@ public class PlayerStatsData : IGetStatsData, ISetStatsData
         //    return base.GetHashCode();
         //}
         #endregion
-
-        #region set default values only for fields, which have null value
-        //// Установить все null values И ТОЛЬКО ИХ! в default для того, чтобы можно было продолжить работу с ними
-        //if (!MaxCollectedStars.HasValue)
-        //{
-        //    MaxCollectedStars = default(int);
-        //    haveNullValue = true;
-        //}
-        //if (!MaxEarnedScore.HasValue)
-        //{
-        //    MaxEarnedScore = default(int);
-        //    haveNullValue = true;
-        //}
-        //if (!MaxScoreMultiplierValue.HasValue)
-        //{
-        //    MaxScoreMultiplierValue = default(int);
-        //    haveNullValue = true;
-        //}
-        //if (!MaxLifeTime.HasValue)
-        //{
-        //    MaxLifeTime = default(int);
-        //    haveNullValue = true;
-        //}
-        //if (!TotalCollectedStars.HasValue)
-        //{
-        //    TotalCollectedStars = default(int);
-        //    haveNullValue = true;
-        //}
-        //if (!TotalLifeTime.HasValue)
-        //{
-        //    TotalLifeTime = default(int);
-        //    haveNullValue = true;
-        //}
-        #endregion
-
-        //return haveNullValue;
 
         return
             !(MaxCollectedStars.HasValue &&

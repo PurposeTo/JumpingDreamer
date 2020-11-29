@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Singleton<T> where T : Singleton<T>
+public class Singleton<T> where T : Singleton<T>, new()
 {
     private static T instance;
     public static T Instance
@@ -9,7 +9,7 @@ public class Singleton<T> where T : Singleton<T>
         {
             if (instance == null)
             {
-                instance = new Singleton<T>() as T;
+                instance = new T();
                 Debug.Log($"{typeof(T)} was initialized by lazy initialization.");
             }
             return instance;

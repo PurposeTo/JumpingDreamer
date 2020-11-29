@@ -1,13 +1,13 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Animator))]
 public class Shutter : SingletonSuperMonoBehaviour<Shutter>
 {
     private Animator animator;
 
-    private string sceneToLoadName;
+    public event Action OnShutterOpen;
+    public event Action OnShutterClose;
 
     //1.	Исходный скрипт – Вызываем метод “сменить уровень на Scene scene”
     //2.	Shutter - Игровое время останавливается
@@ -19,50 +19,13 @@ public class Shutter : SingletonSuperMonoBehaviour<Shutter>
 
     protected override void AwakeSingleton()
     {
-        base.AwakeSingleton();
         animator = gameObject.GetComponent<Animator>();
-        SceneManager.sceneLoaded += OnSceneLoaded;
-
-        // Остановить время при старте игры и ждать выполнения метода OpenShutter()
-        GameManager.InitializedInstance += (Instance) => Instance.SetGameReady(false);
     }
 
 
-    private void OnDestroy()
+    public void CloseShutter()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-
-    public void CloseShutterAndLoadScene(string sceneName)
-    {
-        sceneToLoadName = sceneName;
-
-        GameManager.Instance.SetGameReady(false);
         animator.SetBool("isOpen", false);
-    }
-
-
-    // Этот метод вызывается после конца анимации закрытия заслонки
-    public void LoadSceneAfterClosingShutter()
-    {
-        SceneManager.LoadScene(sceneToLoadName);
-        sceneToLoadName = ""; // Необходимо очистить поле после загрузки сцены
-    }
-
-
-    // Этот метод вызывается после конца анимации открытия заслонки
-    public void RecoverTimeAfterOpeningShutter()
-    {
-        GameManager.Instance.SetGameReady(true);
-    }
-
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        Debug.Log($"OnSceneLoaded: {scene.name} in mode: {mode}");
-
-        OpenShutter();
     }
 
 
@@ -70,4 +33,12 @@ public class Shutter : SingletonSuperMonoBehaviour<Shutter>
     {
         animator.SetBool("isOpen", true);
     }
+
+
+    // Этот метод вызывается аниматором после конца анимации открытия заслонки
+    private void OnShutterOpenCall() => OnShutterOpen?.Invoke();
+
+
+    // Этот метод вызывается аниматором после конца анимации закрытия заслонки
+    private void OnShutterCloseCall() => OnShutterClose?.Invoke();
 }

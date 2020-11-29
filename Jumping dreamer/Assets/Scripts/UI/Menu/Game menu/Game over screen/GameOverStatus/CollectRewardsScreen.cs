@@ -5,9 +5,6 @@ public class CollectRewardsScreen : SuperMonoBehaviour
 {
     private GameOverStatusScreen gameOverStatusScreen;
 
-    private LoadingWindow adLoadingWindow = null;
-
-
     private void OnDestroy()
     {
         UnsubscribeAdMobEvents();
@@ -28,10 +25,7 @@ public class CollectRewardsScreen : SuperMonoBehaviour
             if (isAdWasReallyLoaded)
             {
                 // Если реклама была успешно загружена, то включить окошко ожидания показа рекламы
-                EnableLoadingWindow();
-
-                Debug.LogWarning($"CollectRewards call. {adLoadingWindow}");
-
+                StartWaitingRewardAd();
             }
         });
     }
@@ -39,7 +33,7 @@ public class CollectRewardsScreen : SuperMonoBehaviour
 
     public void OpenMainMenu()
     {
-        SingleSceneLoader.LoadScene(SingleSceneLoader.MainMenuName);
+        SingleSceneLoader.Instance.LoadScene(SingleSceneLoader.MainMenuName);
     }
 
 
@@ -61,20 +55,14 @@ public class CollectRewardsScreen : SuperMonoBehaviour
 
     private void OnAdOpening()
     {
-        if (adLoadingWindow is null) throw new NullReferenceException("adLoadingWindow");
-
-        // При открытии рекламы окошко ожидания необходимо выключить
-        DisableLoadingWindow();
+        EndWaitingRewardAd();
     }
 
 
     private void OnAdFailedToShow()
     {
-        Debug.LogWarning($"OnAdFailedToShow call {adLoadingWindow}");
-        if (adLoadingWindow is null) throw new NullReferenceException("adLoadingWindow");
-
-        // Если произошла ошибка показа рекламы, то окошко ожидания необходимо выключить и показать GameOverMenu
-        DisableLoadingWindow();
+        // Если произошла ошибка показа рекламы, то необходимо перестать ждать и показать GameOverMenu
+        EndWaitingRewardAd();
         gameOverStatusScreen.ShowGameOverMenu();
     }
 
@@ -97,16 +85,16 @@ public class CollectRewardsScreen : SuperMonoBehaviour
 
     }
 
-    private void EnableLoadingWindow()
+    private void StartWaitingRewardAd()
     {
-        adLoadingWindow = PopUpWindowGenerator.Instance.CreateLoadingWindow();
+        DisplayerOfLoading.Instance.StartWaiting(this);
         SubscribeAdMobEvents();
     }
 
 
-    private void DisableLoadingWindow()
+    private void EndWaitingRewardAd()
     {
-        adLoadingWindow.TurnOff();
+        DisplayerOfLoading.Instance.EndWaiting(this);
         UnsubscribeAdMobEvents();
     }
 }

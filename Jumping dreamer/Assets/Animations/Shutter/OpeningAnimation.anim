@@ -412,7 +412,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.5
-    functionName: RecoverTimeAfterOpeningShutter
+    functionName: OnShutterOpenCall
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
