@@ -12,7 +12,6 @@ public class PlayerDataSynchronizer : SuperMonoBehaviourContainer
 {
     private readonly PlayerDataLocalStorageSafe localStorage;
     private readonly GPGSPlayerDataCloudStorage cloudStorage;
-    private ICoroutineContainer getSyncronizedPlayerModelDataInfo;
     private ICoroutineContainer provideModelChoosingToPlayerInfo;
 
 
@@ -22,7 +21,6 @@ public class PlayerDataSynchronizer : SuperMonoBehaviourContainer
     {
         this.localStorage = localStorage;
         this.cloudStorage = cloudStorage;
-        getSyncronizedPlayerModelDataInfo = superMonoBehaviour.CreateCoroutineContainer();
         provideModelChoosingToPlayerInfo = superMonoBehaviour.CreateCoroutineContainer();
     }
 
@@ -97,14 +95,6 @@ public class PlayerDataSynchronizer : SuperMonoBehaviourContainer
             onPlayerDataModelsSynchronizedCallback?.Invoke(CloudModel);
         }
         else onPlayerDataModelsSynchronizedCallback?.Invoke(null);
-    }
-
-
-    public void StartSynchronizingPlayerDataModel(Action<PlayerModelData> onPlayerDataModelsSynchronizedCallback)
-    {
-        superMonoBehaviour.ExecuteCoroutineContinuously(
-            ref getSyncronizedPlayerModelDataInfo,
-            GetSynchronizedPlayerDataModelEnumerator(onPlayerDataModelsSynchronizedCallback));
     }
 
 
