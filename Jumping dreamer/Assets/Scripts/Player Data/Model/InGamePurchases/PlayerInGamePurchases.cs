@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
-
-public class PlayerInGamePurchases : IGetInGamePurchases, ISetInGamePurchases
+﻿public class PlayerInGamePurchases : ISetPlayerInGamePurchases
 {
-    [JsonConverter(typeof(SafeIntConverter))] public SafeInt? TotalStars { get; set; }
-    [JsonConverter(typeof(SafeIntConverter))] public SafeInt? EstimatedCostInStars { get; set; } // Не может уменьшаться!
+    private PlayerInGamePurchasesData data;
 
 
-    public static PlayerInGamePurchases CreateInGamePurchasesWithDefaultValues()
+    public PlayerInGamePurchasesData GetData() => data;
+    public void SetData(PlayerInGamePurchasesData data) => this.data = data;
+
+
+    public void SetDataWithDefaultValues()
     {
-        return new PlayerInGamePurchases
+        data = new PlayerInGamePurchasesData
         {
             TotalStars = default(int),
             EstimatedCostInStars = default(int)
@@ -17,53 +17,25 @@ public class PlayerInGamePurchases : IGetInGamePurchases, ISetInGamePurchases
     }
 
 
-    void ISetInGamePurchases.SaveTotalStarsData(SafeInt starsAmount)
+    void ISetPlayerInGamePurchases.SaveTotalStarsData(SafeInt starsAmount)
     {
-        TotalStars += starsAmount;
-        EstimatedCostInStars += starsAmount;
+        data.TotalStars += starsAmount;
+        data.EstimatedCostInStars += starsAmount;
     }
 
 
-    public bool IsInGamePurchasesHaveNullValues()
+    public bool HasDataNullValues()
     {
-        return !TotalStars.HasValue ||
-          !EstimatedCostInStars.HasValue;
+        return !data.TotalStars.HasValue ||
+          !data.EstimatedCostInStars.HasValue;
     }
 
 
-    public static PlayerInGamePurchases CombinePlayerInGamePurchases(PlayerInGamePurchases cloudPlayerInGamePurchasesData, PlayerInGamePurchases localPlayerInGamePurchasesData)
+    public static PlayerInGamePurchasesData CombineData(PlayerInGamePurchasesData cloudData, PlayerInGamePurchasesData localData)
     {
-        if (cloudPlayerInGamePurchasesData is null) throw new System.ArgumentNullException(nameof(cloudPlayerInGamePurchasesData));
-        if (localPlayerInGamePurchasesData is null) throw new System.ArgumentNullException(nameof(localPlayerInGamePurchasesData));
+        if (cloudData is null) throw new System.ArgumentNullException(nameof(cloudData));
+        if (localData is null) throw new System.ArgumentNullException(nameof(localData));
 
-        return cloudPlayerInGamePurchasesData.EstimatedCostInStars > localPlayerInGamePurchasesData.EstimatedCostInStars ? cloudPlayerInGamePurchasesData : localPlayerInGamePurchasesData;
-    }
-
-
-    #region Моя реализация Equals
-    //public override bool Equals(object obj)
-    //{
-    //    return obj is PlayerInGamePurchases && base.Equals(obj);
-    //}
-    #endregion
-
-
-    // TODO: Работает?
-    public override bool Equals(object obj)
-    {
-        return obj is PlayerInGamePurchases purchases &&
-               EqualityComparer<SafeInt?>.Default.Equals(TotalStars, purchases.TotalStars) &&
-               EqualityComparer<SafeInt?>.Default.Equals(EstimatedCostInStars, purchases.EstimatedCostInStars);
-    }
-
-
-    // TODO: Работает?
-    public override int GetHashCode()
-    {
-        int hashCode = -1596784190;
-        hashCode = hashCode * -1521134295 + TotalStars.GetHashCode();
-        hashCode = hashCode * -1521134295 + EstimatedCostInStars.GetHashCode();
-
-        return hashCode;
+        return cloudData.EstimatedCostInStars > localData.EstimatedCostInStars ? cloudData : localData;
     }
 }

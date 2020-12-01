@@ -1,10 +1,5 @@
-﻿using System;
-
-public interface IGetStatsData
+﻿public interface IGetStatsData
 {
-    event Action OnNewScoreRecord;
-
-
     SafeInt? MaxCollectedStars { get; }
     SafeInt? MaxEarnedScore { get; }
     SafeInt? MaxScoreMultiplierValue { get; }

@@ -14,11 +14,11 @@ public static class JsonConverterWrapper
     }
 
 
-    public static string SerializeObject(PlayerDataModel playerDataModel, Action<bool, Exception> onSerialize)
+    public static string SerializeObject(PlayerModelData playerModelData, Action<bool, Exception> onSerialize)
     {
         try
         {
-            string json = JsonConvert.SerializeObject(playerDataModel, serializerSettings);
+            string json = JsonConvert.SerializeObject(playerModelData, serializerSettings);
             onSerialize?.Invoke(true, null);
 
             return json;
@@ -33,15 +33,15 @@ public static class JsonConverterWrapper
     }
 
 
-    public static PlayerDataModel DeserializeObject(string json, Action<bool, Exception> onDeserialize)
+    public static PlayerModelData DeserializeObject(string json, Action<bool, Exception> onDeserialize)
     {
         try
         {
-            PlayerDataModel playerDataModel = JsonConvert.DeserializeObject<PlayerDataModel>(json, serializerSettings);
+            PlayerModelData playerModelData = JsonConvert.DeserializeObject<PlayerModelData>(json, serializerSettings);
             onDeserialize?.Invoke(true, null);
             Debug.Log("Успешная десериализация!");
 
-            return playerDataModel;
+            return playerModelData;
         }
         catch (Exception exception)
         {

@@ -3,7 +3,6 @@ using System.Collections;
 using GooglePlayGames.BasicApi.SavedGame;
 using UnityEngine; // Не удалять, т.к. используется для платформозависимой компиляции
 
-
 public class PlayerDataModelController : SingletonSuperMonoBehaviour<PlayerDataModelController>
 {
     public static bool IsPlayerDataHaveAlreadyDeletedOrRestored { get; private set; } = false;
@@ -12,7 +11,7 @@ public class PlayerDataModelController : SingletonSuperMonoBehaviour<PlayerDataM
     public event Action OnResetPlayerData;
     public event Action OnRestoreDataFromCloud;
 
-    private PlayerDataModel playerDataModel;
+    private PlayerModel playerModel = new PlayerModel();
     private GPGSPlayerDataCloudStorage GPGSPlayerDataCloudStorage;
     private readonly PlayerDataLocalStorageSafe localStorageSafe = new PlayerDataLocalStorageSafe();
     private PlayerDataSynchronizer playerDataSynchronizer;
@@ -25,7 +24,12 @@ public class PlayerDataModelController : SingletonSuperMonoBehaviour<PlayerDataM
         GPGSPlayerDataCloudStorage = new GPGSPlayerDataCloudStorage(this);
         playerDataSynchronizer = new PlayerDataSynchronizer(this, localStorageSafe, GPGSPlayerDataCloudStorage);
         synchronizePlayerDataStoragesInfo = CreateCoroutineContainer();
-        ExecuteCoroutineContinuously(ref synchronizePlayerDataStoragesInfo, SynchronizePlayerDataModel());
+
+        DisplayerOfLoading.InitializedInstance += (instance) =>
+        {
+            instance.StartWaiting(this);
+            ExecuteCoroutineContinuously(ref synchronizePlayerDataStoragesInfo, SynchronizePlayerDataModel());
+        };
     }
 
 
@@ -53,63 +57,61 @@ public class PlayerDataModelController : SingletonSuperMonoBehaviour<PlayerDataM
     #endregion
 
 
-    public IGetDataModel GetGettableDataModel()
+    public IGetAction GetAction() => playerModel.GetPlayerStats();
+
+
+    public IGetModelData GetGettableDataModel()
     {
-        TryToUsePlayerDataModel(out PlayerDataModel playerDataModel);
-        return playerDataModel;
+        TryToUsePlayerDataModel(out PlayerModelData modelData);
+        return modelData;
     }
 
 
     public ISetDataModel GetSettableDataModel()
     {
-        TryToUsePlayerDataModel(out PlayerDataModel playerDataModel);
-        return playerDataModel;
+        TryToUsePlayerDataModel(out PlayerModelData modelData);
+        return playerModel;
     }
 
 
     public void ResetPlayerData()
     {
-        if (TryToUsePlayerDataModel(out PlayerDataModel playerDataModel))
-        {
-            this.playerDataModel = PlayerDataModel.CreateModelWithDefaultValues();
+        playerModel.SetDataWithDefaultValues();
 
-            SavePlayerDataToAllStorages();
-            IsPlayerDataHaveAlreadyDeletedOrRestored = true;
-            OnResetPlayerData?.Invoke();
-        }
+        SavePlayerDataToAllStorages();
+        IsPlayerDataHaveAlreadyDeletedOrRestored = true;
+        OnResetPlayerData?.Invoke();
     }
 
 
     public void RestorePlayerDataFromCloud()
     {
-        if (TryToUsePlayerDataModel(out PlayerDataModel playerDataModel))
-        {
-            GPGSPlayerDataCloudStorage.ReadData((cloudModel, readingCloudDataStatus) =>
-            {
-                if (cloudModel != null)
-                {
-                    this.playerDataModel = cloudModel;
 
-                    SavePlayerDataToLocalFile();
+        GPGSPlayerDataCloudStorage.ReadData((cloudData, readingCloudDataStatus) =>
+        {
+            if (cloudData != null)
+            {
+                playerModel.SetData(cloudData);
+
+                SavePlayerDataToLocalFile();
+                IsPlayerDataHaveAlreadyDeletedOrRestored = true;
+                OnRestoreDataFromCloud?.Invoke();
+            }
+            else
+            {
+                if (readingCloudDataStatus == SavedGameRequestStatus.Success)
+                {
+                    Debug.Log("Из облака полученные пустые данные.");
+
+                    playerModel.SetDataWithDefaultValues();
+
+                    SavePlayerDataToAllStorages();
                     IsPlayerDataHaveAlreadyDeletedOrRestored = true;
                     OnRestoreDataFromCloud?.Invoke();
                 }
-                else
-                {
-                    if (readingCloudDataStatus == SavedGameRequestStatus.Success)
-                    {
-                        Debug.Log("Из облака полученные пустые данные.");
-
-                        this.playerDataModel = PlayerDataModel.CreateModelWithDefaultValues();
-
-                        SavePlayerDataToAllStorages();
-                        IsPlayerDataHaveAlreadyDeletedOrRestored = true;
-                        OnRestoreDataFromCloud?.Invoke();
-                    }
-                    else PopUpWindowGenerator.Instance.CreateDialogWindow("Ошибка соединения!");
-                }
-            });
-        }
+                else PopUpWindowGenerator.Instance.CreateDialogWindow("Ошибка соединения!");
+            }
+        });
     }
 
 
@@ -126,30 +128,35 @@ public class PlayerDataModelController : SingletonSuperMonoBehaviour<PlayerDataM
 
         playerDataSynchronizer.StartSynchronizingPlayerDataModel((synchronizedPlayerDataModel) =>
         {
-            if (synchronizedPlayerDataModel is null) throw new ArgumentNullException(nameof(synchronizedPlayerDataModel));
+            if (synchronizedPlayerDataModel is null)
+            {
+                playerModel.SetDataWithDefaultValues();
+                SavePlayerDataToAllStorages();
+            }
+            else playerModel.SetData(synchronizedPlayerDataModel);
 
-            playerDataModel = synchronizedPlayerDataModel;
             isPlayerDataModelSynchronizing = false;
         });
 
         yield return new WaitWhile(() => isPlayerDataModelSynchronizing);
+        DisplayerOfLoading.Instance.EndWaiting(this);
     }
 
 
     private void SavePlayerDataToLocalFile()
     {
-        if (TryToUsePlayerDataModel(out PlayerDataModel playerDataModel))
+        if (TryToUsePlayerDataModel(out PlayerModelData modelData))
         {
-            localStorageSafe.SaveDataToFileAndEncrypt(playerDataModel);
+            localStorageSafe.SaveDataToFileAndEncrypt(modelData);
         }
     }
 
 
     private void SavePlayerDataToCloud()
     {
-        if (TryToUsePlayerDataModel(out PlayerDataModel playerDataModel))
+        if (TryToUsePlayerDataModel(out PlayerModelData modelData))
         {
-            GPGSPlayerDataCloudStorage.SaveData(playerDataModel);
+            GPGSPlayerDataCloudStorage.SaveData(modelData);
         }
     }
 
@@ -161,17 +168,17 @@ public class PlayerDataModelController : SingletonSuperMonoBehaviour<PlayerDataM
     }
 
 
-    private bool TryToUsePlayerDataModel(out PlayerDataModel playerDataModel)
+    private bool TryToUsePlayerDataModel(out PlayerModelData modelData)
     {
-        playerDataModel = this.playerDataModel;
-        bool isModelNull = playerDataModel is null;
+        modelData = playerModel.GetData();
+        bool isDataNull = modelData is null;
 
-        if (isModelNull)
+        if (isDataNull)
         {
-            if (synchronizePlayerDataStoragesInfo.IsExecuting) Debug.LogError("Синхронизация не была завершена. PlayerDataModel is null");
-            else throw new NullReferenceException($"{nameof(playerDataModel)} is null");
+            if (synchronizePlayerDataStoragesInfo.IsExecuting) Debug.LogError("Синхронизация не была завершена. DataModel is null.");
+            else throw new NullReferenceException($"{nameof(modelData)} is null");
         }
 
-        return !isModelNull;
+        return !isDataNull;
     }
 }

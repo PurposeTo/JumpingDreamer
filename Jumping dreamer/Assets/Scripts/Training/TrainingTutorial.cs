@@ -30,7 +30,7 @@ public class TrainingTutorial : SuperMonoBehaviour
     {
         PlayerDataModelController.InitializedInstance += (instance) =>
         {
-            bool shouldStartByShowingTheTutorial = instance.GetGettableDataModel().PlayerStats.TotalLifeTime < minTotalLifeTimeToShowTutorial;
+            bool shouldStartByShowingTheTutorial = instance.GetGettableDataModel().StatsData.TotalLifeTime < minTotalLifeTimeToShowTutorial;
 
             Array.ForEach(trainingTips, trainingTip => trainingTip.gameObject.SetActive(false));
 

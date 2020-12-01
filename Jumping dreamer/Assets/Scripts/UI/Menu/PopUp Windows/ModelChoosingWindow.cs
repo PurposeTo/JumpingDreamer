@@ -2,31 +2,31 @@
 
 public class ModelChoosingWindow : MonoBehaviour
 {
-    public PlayerDataModel SelectedDataModel;
-    public PlayerDataModelType SelectedDataModelType;
+    public IGetStatsData SelectedDataModel;
+    public PlayerModelDataType SelectedModelDataType;
 
-    private PlayerDataModel localModel;
-    private PlayerDataModel cloudModel;
+    private IGetStatsData localModel;
+    private IGetStatsData cloudModel;
 
 
-    public void Constructor(PlayerDataModel localModel, PlayerDataModel cloudModel)
+    public void Constructor(IGetStatsData localModelData, IGetStatsData cloudModelData)
     {
-        this.localModel = localModel;
-        this.cloudModel = cloudModel;
+        localModel = localModelData;
+        cloudModel = cloudModelData;
     }
 
 
     public void ChooseLocalModelData()
     {
         SelectedDataModel = localModel;
-        SelectedDataModelType = PlayerDataModelType.LocalModel;
+        SelectedModelDataType = PlayerModelDataType.LocalModel;
     }
 
 
     public void ChooseCloudModelData()
     {
         SelectedDataModel = cloudModel;
-        SelectedDataModelType = PlayerDataModelType.CloudModel;
+        SelectedModelDataType = PlayerModelDataType.CloudModel;
     }
 
 

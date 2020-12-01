@@ -8,32 +8,32 @@ using System.Text;
 
 public class GPGSPlayerDataCloudStorage : SuperMonoBehaviourContainer
 {
-    private ICoroutineContainer loadSavedGameFromCloudInfo;
+    private ICoroutineContainer loadSavedGameInfo;
 
 
     public GPGSPlayerDataCloudStorage(SuperMonoBehaviour superMonoBehaviour) : base(superMonoBehaviour)
     {
-        loadSavedGameFromCloudInfo = this.superMonoBehaviour.CreateCoroutineContainer();
+        loadSavedGameInfo = this.superMonoBehaviour.CreateCoroutineContainer();
     }
 
 
-    public bool IsDataLoading => loadSavedGameFromCloudInfo.IsExecuting;
-    public PlayerDataModel CloudPlayerDataModel { get; private set; } = null;
+    public bool IsDataLoading => loadSavedGameInfo.IsExecuting;
+    public PlayerModelData Data { get; private set; } = null;
     public ISavedGameMetadata CurrentGameMetadata { get; private set; }
     public DateTime StartPlayingTime { get; private set; }
 
     private ISavedGameClient SavedGameClient => ((PlayGamesPlatform)Social.Active).SavedGame;
 
 
-    public void SaveData(PlayerDataModel dataModel)
+    public void SaveData(PlayerModelData modelData)
     {
         Debug.Log("#CreateSave: begin");
 
-        if (dataModel is null) throw new ArgumentNullException(nameof(dataModel));
+        if (modelData is null) throw new ArgumentNullException(nameof(modelData));
 
         bool isSerializationSuccess = false;
 
-        string json = JsonConverterWrapper.SerializeObject(dataModel, (success, exception) => isSerializationSuccess = success);
+        string json = JsonConverterWrapper.SerializeObject(modelData, (success, exception) => isSerializationSuccess = success);
         if (!isSerializationSuccess) return;
 
         byte[] dataToSave = Encoding.UTF8.GetBytes(json);
@@ -77,7 +77,7 @@ public class GPGSPlayerDataCloudStorage : SuperMonoBehaviourContainer
     }
 
 
-    public void ReadData(Action<PlayerDataModel, SavedGameRequestStatus> action)
+    public void ReadData(Action<PlayerModelData, SavedGameRequestStatus> action)
     {
         OpenSavedGame((gameRequestStatus, gameMetadata) =>
         {
@@ -88,19 +88,19 @@ public class GPGSPlayerDataCloudStorage : SuperMonoBehaviourContainer
                 // Получаем метаданные открытого файла
                 CurrentGameMetadata = gameMetadata;
 
-                SavedGameClient.ReadBinaryData(gameMetadata, (readingCloudDataStatus, data) =>
+                SavedGameClient.ReadBinaryData(gameMetadata, (readingStatus, data) =>
                 {
-                    Debug.Log($"Данные с облака были извлечены со статусом " + readingCloudDataStatus);
+                    Debug.Log($"Данные с облака были извлечены со статусом " + readingStatus);
 
-                    PlayerDataModel cloudModel = null;
+                    PlayerModelData cloudData = null;
 
-                    if (readingCloudDataStatus == SavedGameRequestStatus.Success)
+                    if (readingStatus == SavedGameRequestStatus.Success)
                     {
                         if (data != null)
                         {
                             Debug.Log($"Длина извлеченного массива байт = { data.Length }.\nДанные в виде строки: " + Encoding.UTF8.GetString(data));
 
-                            cloudModel = JsonConverterWrapper.DeserializeObject(Encoding.UTF8.GetString(data), (isSuccess, exception) =>
+                            cloudData = JsonConverterWrapper.DeserializeObject(Encoding.UTF8.GetString(data), (isSuccess, exception) =>
                             {
                                 if (!isSuccess) Debug.LogError("Ошибка десериализации данных с облака " + exception);
                             });
@@ -108,9 +108,9 @@ public class GPGSPlayerDataCloudStorage : SuperMonoBehaviourContainer
                         else Debug.LogError("Данные на облаке не были найдены. Если даже на облаке нет данных, то возвращается пустой массив байт. Так что этот блок не должен выполняться.");
                     }
 
-                    Debug.Log($"Received cloud model: {cloudModel}.\nCloud model as json: {JsonConverterWrapper.SerializeObject(cloudModel, null)}\nReading status: {readingCloudDataStatus}.");
+                    Debug.Log($"Received cloud model: {cloudData}.\nCloud model as json: {JsonConverterWrapper.SerializeObject(cloudData, null)}\nReading status: {readingStatus}.");
 
-                    action?.Invoke(cloudModel, readingCloudDataStatus);
+                    action?.Invoke(cloudData, readingStatus);
                 });
             }
             else action?.Invoke(null, gameRequestStatus);
@@ -120,7 +120,7 @@ public class GPGSPlayerDataCloudStorage : SuperMonoBehaviourContainer
 
     public void StartOpeningGameSession()
     {
-        superMonoBehaviour.ExecuteCoroutineContinuously(ref loadSavedGameFromCloudInfo, OpenGameSessionAndReadDataEnumerator());
+        superMonoBehaviour.ExecuteCoroutineContinuously(ref loadSavedGameInfo, OpenGameSessionAndReadDataEnumerator());
     }
 
 
@@ -131,19 +131,19 @@ public class GPGSPlayerDataCloudStorage : SuperMonoBehaviourContainer
         // Начать отсчет времени для текущей сессии игры
         StartPlayingTime = DateTime.Now;
 
-        bool isDataWasReceivedFromCloud = false;
+        bool isDataWasReceived = false;
 
         // Загрузка данных из облака
         ReadData((cloudModel, readingStatus) =>
         {
             Debug.Log($"#Десериализация данных с облака завершена.");
 
-            CloudPlayerDataModel = cloudModel;
-            isDataWasReceivedFromCloud = true;
+            Data = cloudModel;
+            isDataWasReceived = true;
         });
 
         // Необходимо закончить выполнение корутины после извлечения данных из облака.
-        yield return new WaitUntil(() => isDataWasReceivedFromCloud);
+        yield return new WaitUntil(() => isDataWasReceived);
     }
 
 
@@ -155,7 +155,7 @@ public class GPGSPlayerDataCloudStorage : SuperMonoBehaviourContainer
             return;
         }
 
-        SavedGameClient.OpenWithAutomaticConflictResolution(PlayerDataModel.FileNameWithExtension,
+        SavedGameClient.OpenWithAutomaticConflictResolution(PlayerModel.FileNameWithExtension,
             DataSource.ReadNetworkOnly,
             ConflictResolutionStrategy.UseLongestPlaytime,
             OnSavedGameOpened);

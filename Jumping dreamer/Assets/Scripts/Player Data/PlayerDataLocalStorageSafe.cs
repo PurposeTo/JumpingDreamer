@@ -3,27 +3,27 @@ using System.IO;
 
 public class PlayerDataLocalStorageSafe
 {
-    public PlayerDataModel LocalPlayerDataModel { get; private set; } = null;
+    public PlayerModelData Data { get; private set; } = null;
     public string FilePath { get; private set; }
 
 
-    public void LoadPlayerDataFromFileAndDecrypt()
+    public void LoadDataFromFileAndDecrypt()
     {
-        FilePath = DataLoaderHelper.GetFilePath(PlayerDataModel.FileNameWithExtension);
+        FilePath = DataLoaderHelper.GetFilePath(PlayerModel.FileNameWithExtension);
         Debug.Log($"File path: {FilePath}");
 
-        LocalPlayerDataModel = GetDecryptedPlayerData();
+        Data = GetDecryptedData();
     }
 
 
-    public void SaveDataToFileAndEncrypt(PlayerDataModel dataModel)
+    public void SaveDataToFileAndEncrypt(PlayerModelData modelData)
     {
-        if (dataModel is null) throw new System.ArgumentNullException(nameof(dataModel));
+        if (modelData is null) throw new System.ArgumentNullException(nameof(modelData));
 
         // TODO: А если у пользователя недостаточно памяти, чтобы создать файл?
 
         bool isSerializingSuccess = false;
-        string json = JsonConverterWrapper.SerializeObject(dataModel, (success, exception) => isSerializingSuccess = success);
+        string json = JsonConverterWrapper.SerializeObject(modelData, (success, exception) => isSerializingSuccess = success);
 
         if (isSerializingSuccess)
         {
@@ -38,7 +38,7 @@ public class PlayerDataLocalStorageSafe
     }
 
 
-    private PlayerDataModel GetDecryptedPlayerData()
+    private PlayerModelData GetDecryptedData()
     {
         // Проверка на существование файла
         if (File.Exists(FilePath))
@@ -50,7 +50,7 @@ public class PlayerDataLocalStorageSafe
             //string dataAsJSON = File.ReadAllText(FilePath); // без расшифрования
             #endregion
 
-            return ValidateModel(dataAsJSON);
+            return ValidateData(dataAsJSON);
         }
         else
         {
@@ -62,30 +62,30 @@ public class PlayerDataLocalStorageSafe
     }
 
 
-    private PlayerDataModel ValidateModel(string dataAsJSON)
+    private PlayerModelData ValidateData(string dataAsJSON)
     {
-        PlayerDataModel playerDataModel = null;
+        PlayerModelData modelData = new PlayerModelData();
 
         bool IsJsonConverted()
         {
             bool isDeserializationSuccess = false;
-            playerDataModel = JsonConverterWrapper.DeserializeObject(dataAsJSON, (success, exception) => isDeserializationSuccess = success);
+            modelData = JsonConverterWrapper.DeserializeObject(dataAsJSON, (success, exception) => isDeserializationSuccess = success);
 
             return isDeserializationSuccess;
         }
 
-        if (dataAsJSON == null || !IsJsonConverted() || playerDataModel.IsModelHasNullValues())
+        if (dataAsJSON == null || !IsJsonConverted() || new Validator().HasNullValues())
         {
-            Debug.LogError($"Data reading from \"{PlayerDataModel.FileNameWithExtension}\" ERROR!\nData was edited from outside.");
+            Debug.LogError($"Data reading from \"{PlayerModel.FileNameWithExtension}\" ERROR!\nData was edited from outside.");
             PopUpWindowGenerator.Instance.CreateDialogWindow("Ошибка загрузки данных игровой статистики!");
 
             return null;
         }
         else
         {
-            Debug.Log($"Data from \"{PlayerDataModel.FileNameWithExtension}\" was loaded successfully.");
+            Debug.Log($"Data from \"{PlayerModel.FileNameWithExtension}\" was loaded successfully.");
 
-            return playerDataModel;
+            return modelData;
         }
     }
 }
