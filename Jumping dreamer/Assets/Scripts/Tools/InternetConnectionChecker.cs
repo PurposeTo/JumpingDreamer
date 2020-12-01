@@ -13,7 +13,7 @@ public class InternetConnectionChecker
     /// No timeout is applied when timeout is set to 0 and this property defaults to 0.
     /// Note: The set timeout may apply to each URL redirect on Android which can result in a longer response.</param>
     /// <returns></returns>
-    public IEnumerator PingGoogleEnumerator(Action<bool> isInternetAvailable, int timeOut = 0)
+    public IEnumerator PingGoogleEnumerator(Action<bool> isInternetAvailable, int timeOut = 5)
     {
         if(Application.internetReachability == NetworkReachability.NotReachable) isInternetAvailable?.Invoke(false);
 
@@ -29,5 +29,12 @@ public class InternetConnectionChecker
             }
             else isInternetAvailable?.Invoke(true);
         }
+    }
+
+
+    public IEnumerator PingGoogleEnumeratorWithOutTimeOut(Action<bool> isInternetAvailable)
+    {
+        // при timeOut = 0 тайм аут отсутствует, операция прервана не будет.
+        yield return PingGoogleEnumerator(isInternetAvailable, 0);
     }
 }
