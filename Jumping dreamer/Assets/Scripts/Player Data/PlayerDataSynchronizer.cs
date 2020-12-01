@@ -78,7 +78,7 @@ public class PlayerDataSynchronizer : SuperMonoBehaviourContainer
     {
         float timeout = 15f;
 
-        localStorage.LoadDataFromFileAndDecrypt();
+        localStorage.LoadValidatedSourceDataFromFile();
         cloudStorage.StartOpeningGameSession();
         yield return new WaitForDoneRealtime(timeout, () => !cloudStorage.IsDataLoading);
 

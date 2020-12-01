@@ -7,12 +7,19 @@ public class PlayerDataLocalStorageSafe
     public string FilePath { get; private set; }
 
 
-    public void LoadDataFromFileAndDecrypt()
+    public void LoadValidatedSourceDataFromFile()
     {
         FilePath = DataLoaderHelper.GetFilePath(PlayerModel.FileNameWithExtension);
         Debug.Log($"File path: {FilePath}");
 
-        Data = GetDecryptedData();
+        string fileData = Load();
+
+        if (fileData != null)
+        {
+            string dataAsJSON = JsonEncryption.Decrypt(fileData);
+            Data = GetValidatedData(dataAsJSON);
+        }
+        else Data = null;
     }
 
 
@@ -30,39 +37,27 @@ public class PlayerDataLocalStorageSafe
             Debug.Log("After serializing model: " + json);
             string modifiedData = JsonEncryption.Encrypt(json);
             File.WriteAllText(FilePath, modifiedData);
-            #region без шифрования
-            //File.WriteAllText(FilePath, json); // без шифрования
-            #endregion
         }
         else PopUpWindowGenerator.Instance.CreateDialogWindow("Ошибка записи данных игровой статистики! Пожалуйста, обратитесь в службу поддержки.");
     }
 
 
-    private PlayerModelData GetDecryptedData()
+    private string Load()
     {
-        // Проверка на существование файла
         if (File.Exists(FilePath))
-        {
+        { 
             Debug.Log($"File on path \"{FilePath}\" was found.");
-
-            string dataAsJSON = JsonEncryption.Decrypt(FilePath);
-            #region без шифрования
-            //string dataAsJSON = File.ReadAllText(FilePath); // без расшифрования
-            #endregion
-
-            return ValidateData(dataAsJSON);
+            return File.ReadAllText(FilePath);
         }
         else
         {
-            // Установить значения по дефолту
             Debug.Log($"File path \"{FilePath}\" didn't found.");
-
             return null;
         }
     }
 
 
-    private PlayerModelData ValidateData(string dataAsJSON)
+    private PlayerModelData GetValidatedData(string dataAsJSON)
     {
         PlayerModelData modelData = new PlayerModelData();
 

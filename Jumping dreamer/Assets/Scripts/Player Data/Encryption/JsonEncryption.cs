@@ -22,11 +22,10 @@ public static class JsonEncryption
     }
 
 
-    public static string Decrypt(string dataFile)
+    public static string Decrypt(string dataInBase64Encoding)
     {
-        if (File.Exists(dataFile) && File.Exists(FilePathWithHash))
+        if (File.Exists(FilePathWithHash))
         {
-            string dataInBase64Encoding = File.ReadAllText(dataFile);
             string saltedData;
 
             try
