@@ -3,7 +3,7 @@
 public class PlayerModelData : IGetModelData
 {
     IGetStatsData IGetModelData.StatsData => StatsData;
-    IGetPlayerInGamePurchasesData IGetModelData.InGamePurchasesData => InGamePurchasesData;
+    IGetInGamePurchasesData IGetModelData.InGamePurchasesData => InGamePurchasesData;
 
     public string Id { get; set; }
     public PlayerStatsData StatsData { get; set; }

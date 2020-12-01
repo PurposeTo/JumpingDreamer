@@ -25,6 +25,9 @@ public class PlayerDataModelController : SingletonSuperMonoBehaviour<PlayerDataM
         playerDataSynchronizer = new PlayerDataSynchronizer(this, localStorageSafe, GPGSPlayerDataCloudStorage);
         synchronizePlayerDataStoragesInfo = CreateCoroutineContainer();
 
+        // Для editor'a
+        if (Application.platform == RuntimePlatform.WindowsEditor) playerModel.SetDataWithDefaultValues();
+
         DisplayerOfLoading.InitializedInstance += (instance) =>
         {
             instance.StartWaiting(this);

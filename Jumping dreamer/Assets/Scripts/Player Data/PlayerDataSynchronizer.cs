@@ -32,7 +32,7 @@ public class PlayerDataSynchronizer : SuperMonoBehaviourContainer
 
 
     // Синхронизация данных модели из облака и локальной модели
-    public PlayerModelData SynchronizePlayerDataModels()
+    public IEnumerator SynchronizePlayerDataModels(Action<PlayerModelData> modelData)
     {
         Debug.Log($"SYNC: Received cloud model: {CloudModel}.\nCloud model as json: {JsonConverterWrapper.SerializeObject(CloudModel, null)}");
         Debug.Log($"SYNC: Received local model: {LocalModel}.\nLocal model as json: {JsonConverterWrapper.SerializeObject(LocalModel, null)}");
@@ -42,16 +42,17 @@ public class PlayerDataSynchronizer : SuperMonoBehaviourContainer
             if (PlayerDataModelController.IsPlayerDataHaveAlreadyDeletedOrRestored)
             {
                 cloudStorage.SaveData(LocalModel);
-                return LocalModel;
+                modelData?.Invoke(LocalModel);
             }
             else
             {
                 PlayerModelDataType choosenDataModelType = default;
 
                 superMonoBehaviour.ExecuteCoroutineContinuously(ref provideModelChoosingToPlayerInfo, ProvideModelChoosingToPlayer(choosenModelType => choosenDataModelType = choosenModelType));
+                yield return new WaitWhile(() => provideModelChoosingToPlayerInfo.IsExecuting);
 
-                if (choosenDataModelType == PlayerModelDataType.CloudModel) return CloudModel;
-                else return LocalModel;
+                if (choosenDataModelType == PlayerModelDataType.CloudModel) modelData?.Invoke(CloudModel);
+                else modelData?.Invoke(LocalModel);
             }
         }
         else
@@ -61,13 +62,13 @@ public class PlayerDataSynchronizer : SuperMonoBehaviourContainer
             {
                 PlayerModelData combinedModel = CombineModels();
                 SavePlayerDataToAllStorages(combinedModel);
-                return combinedModel;
+                modelData?.Invoke(combinedModel);
             }
             else
             {
                 Debug.Log("Cloud and local models already have the same data.");
 
-                return LocalModel;
+                modelData?.Invoke(LocalModel);
             }
         }
     }
@@ -83,7 +84,7 @@ public class PlayerDataSynchronizer : SuperMonoBehaviourContainer
 
         if (LocalModel != null && CloudModel != null)
         {
-            onPlayerDataModelsSynchronizedCallback?.Invoke(SynchronizePlayerDataModels());
+            yield return SynchronizePlayerDataModels(modelData => onPlayerDataModelsSynchronizedCallback?.Invoke(modelData));
         }
         else if (LocalModel != null)
         {

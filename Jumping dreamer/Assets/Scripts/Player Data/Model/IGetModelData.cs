@@ -2,5 +2,5 @@
 {
     string Id { get; }
     IGetStatsData StatsData { get; }
-    IGetPlayerInGamePurchasesData InGamePurchasesData { get; }
+    IGetInGamePurchasesData InGamePurchasesData { get; }
 }

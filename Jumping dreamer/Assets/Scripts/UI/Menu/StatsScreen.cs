@@ -23,10 +23,10 @@ public class StatsScreen : SuperMonoBehaviour
     {
         PlayerDataModelController.InitializedInstance += (instance) =>
         {
-            IGetDataModel dataModel = instance.GetGettableDataModel();
+            IGetModelData modelData = instance.GetGettableDataModel();
 
-            SetStatsText(dataModel.PlayerStats);
-            SetInGamePurchasesText(dataModel.PlayerInGamePurchases);
+            SetStatsText(modelData.StatsData);
+            SetInGamePurchasesText(modelData.InGamePurchasesData);
 
             SetRecordsText();
         };
@@ -55,7 +55,7 @@ public class StatsScreen : SuperMonoBehaviour
     }
 
 
-    private void SetInGamePurchasesText(IGetInGamePurchases InGamePurchases)
+    private void SetInGamePurchasesText(IGetInGamePurchasesData InGamePurchases)
     {
         totalStars = $"Total stars: {InGamePurchases.TotalStars}";
     }
