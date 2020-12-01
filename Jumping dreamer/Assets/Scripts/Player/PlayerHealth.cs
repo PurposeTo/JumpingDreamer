@@ -6,7 +6,7 @@ public class PlayerHealth : MonoBehaviour
     private Rigidbody2D rb2D;
     private Animator animator;
 
-    private bool isInvulnerable = false;
+    public bool IsInvulnerable { get; private set; } = false;
 
     private readonly float maxRaiseHeight = 65f;
     private readonly float minRaiseHeight = 20f;
@@ -25,7 +25,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!isInvulnerable && collision.gameObject.TryGetComponent(out KillingZone _))
+        if (!IsInvulnerable && collision.gameObject.TryGetComponent(out KillingZone _))
         {
             Die();
         }
@@ -48,7 +48,7 @@ public class PlayerHealth : MonoBehaviour
     private void SetInvulnerable(bool isInvulnerable)
     {
         animator.SetBool("isInvulnerable", isInvulnerable);
-        this.isInvulnerable = isInvulnerable;
+        this.IsInvulnerable = isInvulnerable;
         OnPlayerIsInvulnerable?.Invoke(isInvulnerable);
     }
 

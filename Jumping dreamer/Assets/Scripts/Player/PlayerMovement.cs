@@ -70,7 +70,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    public void TossUp(float direction)
+    public void Toss(float direction)
     {
         GravityProjectVector = GameObjectsHolder.Instance.Centre.GetFromCentreDirection(transform.position) *
         GravityProjectVector.magnitude * bounciness * direction;

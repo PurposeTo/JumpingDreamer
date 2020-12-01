@@ -102,8 +102,6 @@ public class GoogleAdMobController : SingletonSuperMonoBehaviour<GoogleAdMobCont
 
     private IEnumerator CheckInternetConnectionAndShowAd()
     {
-        int operationTimeOut = 4;
-
         yield return connectionChecker.PingGoogleEnumerator(isInternetAvaliable =>
         {
             if (isInternetAvaliable)
@@ -116,8 +114,7 @@ public class GoogleAdMobController : SingletonSuperMonoBehaviour<GoogleAdMobCont
                 Debug.Log($"Force invoke OnAdFailedToShow because internet is not avaliable.");
                 OnAdFailedToShow?.Invoke();
             }
-        },
-        timeOut: operationTimeOut);
+        });
     }
 
 
