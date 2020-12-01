@@ -2254,8 +2254,14 @@ PrefabInstance:
     - target: {fileID: 2024437486911971761, guid: 97d55d6e73264b64b97f822e8db8f566,
         type: 3}
       propertyPath: PoolDatas.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2024437486911971761, guid: 97d55d6e73264b64b97f822e8db8f566,
+        type: 3}
+      propertyPath: PoolDatas.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: b9a7071767257d24b8164479b80fe597,
+        type: 2}
     - target: {fileID: 2024437486911971762, guid: 97d55d6e73264b64b97f822e8db8f566,
         type: 3}
       propertyPath: m_Name
