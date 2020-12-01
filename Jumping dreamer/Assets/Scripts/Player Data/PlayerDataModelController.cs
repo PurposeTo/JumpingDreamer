@@ -129,7 +129,7 @@ public class PlayerDataModelController : SingletonSuperMonoBehaviour<PlayerDataM
     {
         bool isPlayerDataModelSynchronizing = true;
 
-        playerDataSynchronizer.GetSynchronizedPlayerDataModelEnumerator((synchronizedPlayerDataModel) =>
+        playerDataSynchronizer.StartSynchronizingPlayerDataModel((synchronizedPlayerDataModel) =>
         {
             if (synchronizedPlayerDataModel is null)
             {
