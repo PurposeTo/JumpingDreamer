@@ -1,5 +1,7 @@
 ﻿using TMPro;
+using UnityEngine;
 
+[RequireComponent(typeof(TMP_Text))]
 public class StatsView : SuperMonoBehaviour
 {
     private string maxCollectedStars;
