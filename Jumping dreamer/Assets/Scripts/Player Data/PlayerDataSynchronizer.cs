@@ -110,10 +110,11 @@ public class PlayerDataSynchronizer : SuperMonoBehaviourContainer
 
     private IEnumerator ProvideModelChoosingToPlayer(Action<PlayerModelDataType> chooseTheModelCallback)
     {
-        ModelChoosingWindow choosingWindow = PopUpWindowGenerator.Instance.CreateModelChoosingWindow(((IGetModelData)LocalModel).StatsData, ((IGetModelData)CloudModel).StatsData);
+        ModelChoosingInfo modelDataUI = new ModelChoosingInfo();
+        ModelChoosingWindow choosingWindow = PopUpWindowGenerator.Instance.CreateModelChoosingWindow(modelDataUI);
 
-        yield return new WaitUntil(() => choosingWindow.SelectedDataModel == null);
-        chooseTheModelCallback?.Invoke(choosingWindow.SelectedModelDataType);
+        yield return new WaitUntil(() => modelDataUI.IsModelSelected);
+        chooseTheModelCallback?.Invoke(modelDataUI.SelectedModelDataType);
 
         choosingWindow.CloseWindow();
     }

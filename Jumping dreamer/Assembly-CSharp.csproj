@@ -8,7 +8,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{5955EDAF-1570-54EA-222F-0340AEA33492}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -47,6 +48,7 @@
   <PropertyGroup>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <UnityProjectGenerator>Unity/VSTU</UnityProjectGenerator>
+    <UnityProjectGeneratorVersion>4.8.2.0</UnityProjectGeneratorVersion>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>Android:13</UnityBuildTarget>
     <UnityVersion>2019.4.15f1</UnityVersion>
@@ -210,6 +212,7 @@
     <Compile Include="Assets\Scripts\Player Data\Model\PlayerStats\ISetStatsData.cs" />
     <Compile Include="Assets\Scripts\Player Data\Model\PlayerStats\PlayerStats.cs" />
     <Compile Include="Assets\Scripts\Player Data\Model\PlayerStats\PlayerStatsData.cs" />
+    <Compile Include="Assets\Scripts\Player Data\Model\ModelChoosingInfo.cs" />
     <Compile Include="Assets\Scripts\Player Data\Player settings\PlayerSettings.cs" />
     <Compile Include="Assets\Scripts\Player Data\Player settings\PlayerSettingsStorage.cs" />
     <Compile Include="Assets\Scripts\Player Data\PlayerDataLocalStorageSafe.cs" />
@@ -917,6 +920,7 @@
       <Name>GoogleMobileAds.Editor</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

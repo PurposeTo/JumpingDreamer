@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PopUpWindowGenerator : SingletonSuperMonoBehaviour<PopUpWindowGenerator>
 {
@@ -13,10 +12,10 @@ public class PopUpWindowGenerator : SingletonSuperMonoBehaviour<PopUpWindowGener
     }
 
 
-    public ModelChoosingWindow CreateModelChoosingWindow(IGetStatsData localModel, IGetStatsData cloudModel)
+    public ModelChoosingWindow CreateModelChoosingWindow(ModelChoosingInfo modelInfo)
     {
         ModelChoosingWindow modelChoosingWindow = Instantiate(choosingWindow).GetComponent<ModelChoosingWindow>();
-        modelChoosingWindow.Constructor(localModel, cloudModel);
+        modelChoosingWindow.Constructor(modelInfo);
 
         return modelChoosingWindow;
     }
