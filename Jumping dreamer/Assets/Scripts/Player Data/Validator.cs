@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 using Newtonsoft.Json.Linq;
 
 public class Validator
@@ -7,20 +9,35 @@ public class Validator
     {
         string json = JsonConverterWrapper.SerializeObject(modelData, out bool isSuccess, out Exception exection);
         if (!isSuccess) return true;
-        else return HasNullValues(json);
+        else return HasJsonNullValues(json);
     }
 
 
-    public bool HasNullValues(string stringAsJson)
+    public bool HasJsonNullValues(string stringAsJson)
     {
-        // Debug!
-        stringAsJson = JsonConverterWrapper.SerializeObject(new PlayerModelData(), out bool isSuccess, out Exception exection);
+        JObject jObject = JObject.Parse(stringAsJson);
 
-        var jObject = JObject.Parse(stringAsJson);
+        Debug.Log($"Found JObject Start validating...\n{jObject}");
 
-        UnityEngine.Debug.LogWarning(jObject);
+        foreach (KeyValuePair<string, JToken> item in jObject)
+        {
+            //Debug.LogWarning($"Checking KeyValuePair. Key = {item.Key}, Value = {item.Value}");
 
-        // Debug!
+            switch (item.Value.Type)
+            {
+                case JTokenType.Object:
+                    // Если true, то сразу вернуть значение
+                    if (HasJsonNullValues(item.Value.ToString())) return true;
+                    break;
+                case JTokenType.Array:
+                    // todo Преобразовать в массив?..
+                    break;
+                case JTokenType.Null:
+                    Debug.LogWarning($"{item.Key} has null value!");
+                    return true;
+            }
+        }
+
         return false;
     }
 }
