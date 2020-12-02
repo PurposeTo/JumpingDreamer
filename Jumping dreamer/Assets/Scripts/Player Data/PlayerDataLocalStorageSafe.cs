@@ -29,10 +29,10 @@ public class PlayerDataLocalStorageSafe
 
         // TODO: А если у пользователя недостаточно памяти, чтобы создать файл?
 
-        bool isSerializingSuccess = false;
-        string json = JsonConverterWrapper.SerializeObject(modelData, (success, exception) => isSerializingSuccess = success);
+        string json = JsonConverterWrapper.SerializeObject(modelData, 
+            out bool isSerializationSuccess, out _);
 
-        if (isSerializingSuccess)
+        if (isSerializationSuccess)
         {
             Debug.Log("After serializing model: " + json);
             string modifiedData = JsonEncryption.Encrypt(json);
@@ -45,7 +45,7 @@ public class PlayerDataLocalStorageSafe
     private string Load()
     {
         if (File.Exists(FilePath))
-        { 
+        {
             Debug.Log($"File on path \"{FilePath}\" was found.");
             return File.ReadAllText(FilePath);
         }
@@ -59,17 +59,17 @@ public class PlayerDataLocalStorageSafe
 
     private PlayerModelData GetValidatedData(string dataAsJSON)
     {
-        PlayerModelData modelData = new PlayerModelData();
+        PlayerModelData modelData;
 
         bool IsJsonConverted()
         {
-            bool isDeserializationSuccess = false;
-            modelData = JsonConverterWrapper.DeserializeObject(dataAsJSON, (success, exception) => isDeserializationSuccess = success);
+            modelData = JsonConverterWrapper.DeserializeObject(dataAsJSON, 
+                out bool isDeserializationSuccess, out _);
 
             return isDeserializationSuccess;
         }
 
-        if (dataAsJSON == null || !IsJsonConverted() || new Validator().HasNullValues())
+        if (dataAsJSON == null || !IsJsonConverted() || new Validator().HasModelDataNullValues(modelData))
         {
             Debug.LogError($"Data reading from \"{PlayerModel.FileNameWithExtension}\" ERROR!\nData was edited from outside.");
             PopUpWindowGenerator.Instance.CreateDialogWindow("Ошибка загрузки данных игровой статистики!");

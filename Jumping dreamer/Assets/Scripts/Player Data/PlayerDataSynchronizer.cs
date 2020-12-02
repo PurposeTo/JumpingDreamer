@@ -34,8 +34,9 @@ public class PlayerDataSynchronizer : SuperMonoBehaviourContainer
     // Синхронизация данных модели из облака и локальной модели
     public IEnumerator SynchronizePlayerDataModels(Action<PlayerModelData> modelData)
     {
-        Debug.Log($"SYNC: Received cloud model: {CloudModel}.\nCloud model as json: {JsonConverterWrapper.SerializeObject(CloudModel, null)}");
-        Debug.Log($"SYNC: Received local model: {LocalModel}.\nLocal model as json: {JsonConverterWrapper.SerializeObject(LocalModel, null)}");
+        // todo: заменить сериализацию на CloudModel/LocalModel.toString();
+        Debug.Log($"SYNC: Received cloud model: {CloudModel}.\nCloud model as json: {JsonConverterWrapper.SerializeObject(CloudModel, out bool _1, out Exception _2)}");
+        Debug.Log($"SYNC: Received local model: {LocalModel}.\nLocal model as json: {JsonConverterWrapper.SerializeObject(LocalModel, out bool _3, out Exception _4)}");
 
         if (LocalModel.Id != CloudModel.Id)
         {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class JsonConverterWrapper
 {
-    private static JsonSerializerSettings serializerSettings;
+    private static readonly JsonSerializerSettings serializerSettings;
 
 
     static JsonConverterWrapper()
@@ -14,39 +14,43 @@ public static class JsonConverterWrapper
     }
 
 
-    public static string SerializeObject(PlayerModelData playerModelData, Action<bool, Exception> onSerialize)
+    public static string SerializeObject(PlayerModelData playerModelData, out bool isSuccess, out Exception exception)
     {
         try
         {
             string json = JsonConvert.SerializeObject(playerModelData, serializerSettings);
-            onSerialize?.Invoke(true, null);
+            isSuccess = true;
+            exception = null;
 
             return json;
         }
-        catch (Exception exception)
+        catch (Exception catchedException)
         {
-            Debug.LogError($"Unsuccessful attempt of serialization: {exception.Message}");
-            onSerialize?.Invoke(false, exception);
+            Debug.LogError($"Unsuccessful attempt of serialization: {catchedException.Message}");
+            isSuccess = false;
+            exception = catchedException;
 
             return null;
         }
     }
 
 
-    public static PlayerModelData DeserializeObject(string json, Action<bool, Exception> onDeserialize)
+    public static PlayerModelData DeserializeObject(string json, out bool isSuccess, out Exception exception)
     {
         try
         {
             PlayerModelData playerModelData = JsonConvert.DeserializeObject<PlayerModelData>(json, serializerSettings);
-            onDeserialize?.Invoke(true, null);
             Debug.Log("Успешная десериализация!");
+            isSuccess = true;
+            exception = null;
 
             return playerModelData;
         }
-        catch (Exception exception)
+        catch (Exception catchedException)
         {
-            Debug.LogError($"Unsuccessful attempt of deserialization: {exception.Message}");
-            onDeserialize?.Invoke(false, exception);
+            Debug.LogError($"Unsuccessful attempt of deserialization: {catchedException.Message}");
+            isSuccess = false;
+            exception = catchedException;
             Debug.Log("Неуспешная десериализация!");
 
             return null;
