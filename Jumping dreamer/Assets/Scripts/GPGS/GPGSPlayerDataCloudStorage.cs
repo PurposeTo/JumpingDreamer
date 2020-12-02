@@ -31,9 +31,7 @@ public class GPGSPlayerDataCloudStorage : SuperMonoBehaviourContainer
 
         if (modelData is null) throw new ArgumentNullException(nameof(modelData));
 
-        bool isSerializationSuccess = false;
-
-        string json = JsonConverterWrapper.SerializeObject(modelData, (success, exception) => isSerializationSuccess = success);
+        string json = JsonConverterWrapper.SerializeObject(modelData, out bool isSerializationSuccess, out Exception exception);
         if (!isSerializationSuccess) return;
 
         byte[] dataToSave = Encoding.UTF8.GetBytes(json);
@@ -100,15 +98,16 @@ public class GPGSPlayerDataCloudStorage : SuperMonoBehaviourContainer
                         {
                             Debug.Log($"Длина извлеченного массива байт = { data.Length }.\nДанные в виде строки: " + Encoding.UTF8.GetString(data));
 
-                            cloudData = JsonConverterWrapper.DeserializeObject(Encoding.UTF8.GetString(data), (isSuccess, exception) =>
-                            {
-                                if (!isSuccess) Debug.LogError("Ошибка десериализации данных с облака " + exception);
-                            });
+                            cloudData = JsonConverterWrapper.DeserializeObject(Encoding.UTF8.GetString(data), 
+                                out bool isSuccess, out Exception exception);
+
+                            if (!isSuccess) Debug.LogError("Ошибка десериализации данных с облака " + exception);
                         }
                         else Debug.LogError("Данные на облаке не были найдены. Если даже на облаке нет данных, то возвращается пустой массив байт. Так что этот блок не должен выполняться.");
                     }
 
-                    Debug.Log($"Received cloud model: {cloudData}.\nCloud model as json: {JsonConverterWrapper.SerializeObject(cloudData, null)}\nReading status: {readingStatus}.");
+                    // todo: заменить сериализацию на cloudData.toString();
+                    Debug.Log($"Received cloud model: {cloudData}.\nCloud model as json: {JsonConverterWrapper.SerializeObject(cloudData, out bool _1, out Exception _2)}\nReading status: {readingStatus}.");
 
                     action?.Invoke(cloudData, readingStatus);
                 });

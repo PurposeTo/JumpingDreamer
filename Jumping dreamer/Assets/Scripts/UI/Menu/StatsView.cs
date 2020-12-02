@@ -1,6 +1,6 @@
 ﻿using TMPro;
 
-public class StatsScreen : SuperMonoBehaviour
+public class StatsView : SuperMonoBehaviour
 {
     private string maxCollectedStars;
     private string maxEarnedScore;
