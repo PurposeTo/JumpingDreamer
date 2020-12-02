@@ -212,7 +212,6 @@
     <Compile Include="Assets\Scripts\Player Data\Model\PlayerStats\ISetStatsData.cs" />
     <Compile Include="Assets\Scripts\Player Data\Model\PlayerStats\PlayerStats.cs" />
     <Compile Include="Assets\Scripts\Player Data\Model\PlayerStats\PlayerStatsData.cs" />
-    <Compile Include="Assets\Scripts\Player Data\Model\ModelChoosingInfo.cs" />
     <Compile Include="Assets\Scripts\Player Data\Player settings\PlayerSettings.cs" />
     <Compile Include="Assets\Scripts\Player Data\Player settings\PlayerSettingsStorage.cs" />
     <Compile Include="Assets\Scripts\Player Data\PlayerDataLocalStorageSafe.cs" />
@@ -273,6 +272,7 @@
     <Compile Include="Assets\Scripts\UI\Menu\PopUp Windows\ModelChoosingWindow.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\SettingsMenu.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\StatsView.cs" />
+    <Compile Include="Assets\Scripts\UI\ModelChoosingInfo.cs" />
     <Compile Include="Assets\Scripts\UI\PlayerUI.cs" />
     <Compile Include="Assets\Scripts\UI\PopUpText.cs" />
     <Compile Include="Assets\Scripts\UI\PopUpWindowGenerator.cs" />
