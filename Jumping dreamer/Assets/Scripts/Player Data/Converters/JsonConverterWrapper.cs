@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class JsonConverterWrapper
 {
-    private static JsonSerializerSettings serializerSettings;
+    private static readonly JsonSerializerSettings serializerSettings;
 
 
     static JsonConverterWrapper()

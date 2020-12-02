@@ -30,7 +30,7 @@ public class PlayerDataLocalStorageSafe
         // TODO: А если у пользователя недостаточно памяти, чтобы создать файл?
 
         string json = JsonConverterWrapper.SerializeObject(modelData, 
-            out bool isSerializationSuccess, out System.Exception exception);
+            out bool isSerializationSuccess, out _);
 
         if (isSerializationSuccess)
         {
@@ -64,7 +64,7 @@ public class PlayerDataLocalStorageSafe
         bool IsJsonConverted()
         {
             modelData = JsonConverterWrapper.DeserializeObject(dataAsJSON, 
-                out bool isDeserializationSuccess, out System.Exception exception);
+                out bool isDeserializationSuccess, out _);
 
             return isDeserializationSuccess;
         }

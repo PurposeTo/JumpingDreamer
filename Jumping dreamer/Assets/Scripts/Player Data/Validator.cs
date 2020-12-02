@@ -7,7 +7,7 @@ public class Validator
 {
     public bool HasModelDataNullValues(PlayerModelData modelData)
     {
-        string json = JsonConverterWrapper.SerializeObject(modelData, out bool isSuccess, out Exception exection);
+        string json = JsonConverterWrapper.SerializeObject(modelData, out bool isSuccess, out _);
         if (!isSuccess) return true;
         else return HasJsonNullValues(json);
     }
