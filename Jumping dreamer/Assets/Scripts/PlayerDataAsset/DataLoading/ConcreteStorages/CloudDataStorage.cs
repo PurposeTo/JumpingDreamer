@@ -23,13 +23,13 @@ public class CloudDataStorage : DataStorage, IDataReloader
     private ISavedGameClient SavedGameClient => ((PlayGamesPlatform)Social.Active).SavedGame;
 
 
-    public override void Read(Action<Data> callback)
+    public override void Read(Action<PlayerGameData> callback)
     {
         superMonoBehaviour.ExecuteCoroutineContinuously(ref loadDataInfo, LoadDataEnumerator(callback));
     }
 
 
-    public override void Write(Data data)
+    public override void Write(PlayerGameData data)
     {
         CreateSavedGame(data);
     }
@@ -41,7 +41,7 @@ public class CloudDataStorage : DataStorage, IDataReloader
     }
 
 
-    private IEnumerator LoadDataEnumerator(Action<Data> callback)
+    private IEnumerator LoadDataEnumerator(Action<PlayerGameData> callback)
     {
         yield return new WaitUntil(() => GPGSAuthentication.IsAuthenticated);
 
@@ -76,7 +76,7 @@ public class CloudDataStorage : DataStorage, IDataReloader
     }
 
 
-    private void ReadSavedGame(Action<Data> callback)
+    private void ReadSavedGame(Action<PlayerGameData> callback)
     {
         OpenSavedGame((gameRequestStatus, gameMetadata) =>
         {
@@ -93,11 +93,11 @@ public class CloudDataStorage : DataStorage, IDataReloader
     }
 
 
-    private void OnSavedGameWasReaded(SavedGameRequestStatus readingStatus, byte[] data, Action<Data> callback)
+    private void OnSavedGameWasReaded(SavedGameRequestStatus readingStatus, byte[] data, Action<PlayerGameData> callback)
     {
         Debug.Log($"Данные с облака были извлечены со статусом " + readingStatus);
 
-        Data cloudData = null;
+        PlayerGameData cloudData = null;
 
         if (readingStatus == SavedGameRequestStatus.Success)
         {
@@ -105,7 +105,7 @@ public class CloudDataStorage : DataStorage, IDataReloader
             {
                 Debug.Log($"Длина извлеченного массива байт = { data.Length }.\nДанные в виде строки: " + Encoding.UTF8.GetString(data));
 
-                cloudData = Converter.ToObject(Encoding.UTF8.GetString(data), out bool isSuccess, out Exception exception);
+                cloudData = DataConverter.ToObject(Encoding.UTF8.GetString(data), out bool isSuccess, out Exception exception);
 
                 if (!isSuccess) Debug.LogError("Ошибка десериализации данных с облака " + exception);
                 else callback?.Invoke(cloudData);
@@ -117,11 +117,11 @@ public class CloudDataStorage : DataStorage, IDataReloader
     }
 
 
-    private void CreateSavedGame(Data data)
+    private void CreateSavedGame(PlayerGameData data)
     {
         if (data == null) throw new ArgumentNullException(nameof(data));
 
-        string json = Converter.ToJson(data, out bool isSerializationSuccess, out Exception _);
+        string json = DataConverter.ToJson(data, out bool isSerializationSuccess, out Exception _);
         if (!isSerializationSuccess) return;
         byte[] dataToSave = Encoding.UTF8.GetBytes(json);
 

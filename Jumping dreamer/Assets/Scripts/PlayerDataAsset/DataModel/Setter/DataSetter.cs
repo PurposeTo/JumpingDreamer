@@ -4,7 +4,7 @@
     private readonly InGamePurchasesSetter inGamePurchasesSetter;
 
 
-    public DataSetter(Data data)
+    public DataSetter(PlayerGameData data)
     {
         statsSetter = new StatsSetter(data.Stats);
         inGamePurchasesSetter = new InGamePurchasesSetter(data.InGamePurchases);

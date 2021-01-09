@@ -1,15 +1,26 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-public class InGamePurchases1 : IInGamePurchasesGetter
+public class InGamePurchasesData1 : IInGamePurchasesGetter
 {
     [JsonConverter(typeof(SafeIntConverter))] public SafeInt? TotalStars { get; set; }
     [JsonConverter(typeof(SafeIntConverter))] public SafeInt? EstimatedCostInStars { get; set; } // Не может уменьшаться!
 
 
+    public static InGamePurchasesData1 CreatePurchasesWithDefaultValues()
+    {
+        return new InGamePurchasesData1
+        {
+            TotalStars = default,
+            EstimatedCostInStars = default
+        };
+    }
+
+
+
     public override string ToString()
     {
-        return TotalStars.ToString() + EstimatedCostInStars.ToString();
+        return $"{{\n{TotalStars},\n{EstimatedCostInStars}\n}}";
     }
 
 

@@ -19,20 +19,19 @@ public class DataModel : IDataInteraction, IDataChangingNotifier, IModelInteract
     IDataSetter IDataInteraction.Setter => dataSetter;
     IDataChangingNotifier IDataInteraction.Notifier => this;
 
-
     public event Action OnDataReset;
     IStatsChangingNotifier IDataChangingNotifier.StatsChangingNotifier => dataSetter.StatsChangingNotifier;
 
-    private Data data = Data.CreateDataWithDefaultValues();
+    private PlayerGameData data = PlayerGameData.CreateDataWithDefaultValues();
 
 
-    Data IModelInteraction.GetData()
+    PlayerGameData IModelInteraction.GetData()
     {
         return data;
     }
 
 
-    void IModelInteraction.SetData(Data data)
+    void IModelInteraction.SetData(PlayerGameData data)
     {
         this.data = data;
     }

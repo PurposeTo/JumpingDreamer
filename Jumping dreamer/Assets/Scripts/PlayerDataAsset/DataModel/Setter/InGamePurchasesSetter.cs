@@ -1,9 +1,9 @@
 ﻿public class InGamePurchasesSetter : IInGamePurchasesSetter
 {
-    private readonly InGamePurchases1 inGamePurchases;
+    private readonly InGamePurchasesData1 inGamePurchases;
 
 
-    public InGamePurchasesSetter(InGamePurchases1 inGamePurchases)
+    public InGamePurchasesSetter(InGamePurchasesData1 inGamePurchases)
     {
         this.inGamePurchases = inGamePurchases;
     }

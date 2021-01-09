@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-public class PlayerStats1 : IStatsGetter
+public class PlayerStatsData1 : IStatsGetter
 {
     // Лучшие результаты за все время игры
     [JsonConverter(typeof(SafeIntConverter))] public SafeInt? RecordCollectedStars { get; set; }
@@ -13,13 +13,22 @@ public class PlayerStats1 : IStatsGetter
     [JsonConverter(typeof(SafeIntConverter))] public SafeInt? TotalLifeTime { get; set; }
 
 
+    public static PlayerStatsData1 CreateStatsWithDefaultValues()
+    {
+        return new PlayerStatsData1
+        {
+            RecordCollectedStars = default,
+            RecordEarnedScore = default,
+            RecordScoreMultiplierValue = default,
+            RecordLifeTime = default,
+            TotalLifeTime = default
+        };
+    }
+
+
     public override string ToString()
     {
-        return RecordCollectedStars.ToString() +
-            RecordEarnedScore.ToString() +
-            RecordScoreMultiplierValue.ToString() +
-            RecordLifeTime.ToString() +
-            TotalLifeTime.ToString();
+        return $"{{\n{RecordCollectedStars},\n{RecordEarnedScore},\n{RecordScoreMultiplierValue},\n{RecordLifeTime},\n{TotalLifeTime}\n}}";
     }
 
 

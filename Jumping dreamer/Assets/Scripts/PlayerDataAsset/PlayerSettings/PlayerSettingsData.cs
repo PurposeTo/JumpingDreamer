@@ -1,7 +1,7 @@
 ﻿using System;
 
 [Serializable]
-public class PlayerSettingsModel
+public class PlayerSettingsData
 {
     [NonSerialized] public const string FileName = "PlayerSettings.json";
 

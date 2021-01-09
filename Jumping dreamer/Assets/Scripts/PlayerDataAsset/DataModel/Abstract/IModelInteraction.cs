@@ -1,5 +1,5 @@
 ﻿public interface IModelInteraction
 {
-    Data GetData();
-    void SetData(Data data);
+    PlayerGameData GetData();
+    void SetData(PlayerGameData data);
 }

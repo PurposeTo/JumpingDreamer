@@ -6,10 +6,10 @@ public abstract class DataStorage : StorageDataReaderWriter
 
 
     private bool isDataReading = false;
-    private protected Data data;
+    private protected PlayerGameData data;
 
 
-    public sealed override void ReadAllData(Action<Data> callback)
+    public sealed override void ReadAllData(Action<PlayerGameData> callback)
     {
         isDataReading = true;
         Read(data =>
@@ -20,12 +20,12 @@ public abstract class DataStorage : StorageDataReaderWriter
     }
 
 
-    public sealed override void WriteAllData(Data data)
+    public sealed override void WriteAllData(PlayerGameData data)
     {
         if (!isDataReading) Write(data);
     }
 
 
-    public abstract void Read(Action<Data> callback);
-    public abstract void Write(Data data);
+    public abstract void Read(Action<PlayerGameData> callback);
+    public abstract void Write(PlayerGameData data);
 }

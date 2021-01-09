@@ -32,7 +32,7 @@ public class LocalizationManager : SingletonSuperMonoBehaviour<LocalizationManag
     }
 
 
-    private void SetLanguageSettings(PlayerSettingsModel playerSettings)
+    private void SetLanguageSettings(PlayerSettingsData playerSettings)
     {
         if (!Array.Exists(langArray, item => item == playerSettings.Language))
         {

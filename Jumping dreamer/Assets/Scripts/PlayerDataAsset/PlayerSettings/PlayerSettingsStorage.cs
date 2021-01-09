@@ -3,27 +3,27 @@ using UnityEngine;
 
 public class PlayerSettingsStorage : SingletonSuperMonoBehaviour<PlayerSettingsStorage>
 {
-    public PlayerSettingsModel PlayerSettings { get; private set; }
+    public PlayerSettingsData PlayerSettings { get; private set; }
 
     private string filePath;
 
 
     protected override void AwakeSingleton()
     {
-        filePath = DataLoaderHelper.GetFilePath(PlayerSettingsModel.FileName);
+        filePath = DataLoaderHelper.GetFilePath(PlayerSettingsData.FileName);
         PlayerSettings = LoadPlayerSettings();
     }
 
 
-    private PlayerSettingsModel LoadPlayerSettings()
+    private PlayerSettingsData LoadPlayerSettings()
     {
         if (File.Exists(filePath))
         {
             string json = File.ReadAllText(filePath);
             Debug.Log($"PlayerSettingsModel json = {json}");
-            return JsonUtility.FromJson<PlayerSettingsModel>(json);
+            return JsonUtility.FromJson<PlayerSettingsData>(json);
         }
-        else return new PlayerSettingsModel();
+        else return new PlayerSettingsData();
     }
 
 

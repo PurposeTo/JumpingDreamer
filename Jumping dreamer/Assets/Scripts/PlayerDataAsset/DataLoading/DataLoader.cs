@@ -12,13 +12,13 @@ public class DataLoader : StorageDataReaderWriter
     }
 
 
-    public override void ReadAllData(Action<Data> callback)
+    public override void ReadAllData(Action<PlayerGameData> callback)
     {
         storages.ForEach(storage => storage.ReadAllData(callback));
     }
 
 
-    public override void WriteAllData(Data data)
+    public override void WriteAllData(PlayerGameData data)
     {
         storages.ForEach(storage => storage.WriteAllData(data));
     }

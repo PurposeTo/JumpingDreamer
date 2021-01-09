@@ -17,13 +17,13 @@ public class LocalDataStorage : DataStorage
     private string filePath;
 
 
-    public override void Read(Action<Data> callback)
+    public override void Read(Action<PlayerGameData> callback)
     {
         superMonoBehaviour.ExecuteCoroutineContinuously(ref loadDataInfo, LoadAndDecryptData(json =>
         {
             if (!new Validator().HasJsonNullValues(json))
             {
-                data = Converter.ToObject(json, out bool isSuccess, out Exception exception);
+                data = DataConverter.ToObject(json, out bool isSuccess, out Exception exception);
 
                 if (!isSuccess)
                 {
@@ -39,7 +39,7 @@ public class LocalDataStorage : DataStorage
     }
 
 
-    public override void Write(Data data)
+    public override void Write(PlayerGameData data)
     {
         SaveAndEncryptData(data);
     }
@@ -57,13 +57,13 @@ public class LocalDataStorage : DataStorage
     }
 
 
-    private void SaveAndEncryptData(Data data)
+    private void SaveAndEncryptData(PlayerGameData data)
     {
         if (data == null) throw new ArgumentNullException(nameof(data));
 
         // TODO: А если у пользователя недостаточно памяти, чтобы создать файл?
 
-        string json = Converter.ToJson(data, out bool isSerializationSuccess, out _);
+        string json = DataConverter.ToJson(data, out bool isSerializationSuccess, out _);
 
         if (isSerializationSuccess)
         {

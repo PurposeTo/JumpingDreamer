@@ -13,7 +13,8 @@ public class DataSynchronizer : IDataInModelUpdater, IDataInStorageUpdater, IDat
     }
 
 
-    private Data data;
+    private PlayerGameData data;
+    private readonly DataCombiner dataCombiner = new DataCombiner();
 
 
     void IDataInModelUpdater.UpdateModel()
@@ -34,33 +35,35 @@ public class DataSynchronizer : IDataInModelUpdater, IDataInStorageUpdater, IDat
 
     void IDataReseter.Reset()
     {
-        modelInteraction.SetData(Data.CreateDataWithDefaultValues());
+        modelInteraction.SetData(PlayerGameData.CreateDataWithDefaultValues());
     }
 
 
-    private void CombineDataFromStorages(Data storageData)
+    private void CombineDataFromStorages(PlayerGameData storageData)
     {
         if (storageData == null) throw new ArgumentNullException(nameof(storageData));
 
+        // Выполняется при первом получении данных
         if (data == null)
         {
             data = storageData;
             return;
         }
 
+        // Выполняется при последующем получении данных из другого хранилища
         if (data.Id != storageData.Id)
         {
-            // Вывод диалогового окна
+            // TODO: Вывод диалогового окна
         }
         else if (!data.Equals(storageData))
         {
-            // Объединение (mixing)
+            data = dataCombiner.Combine(data, storageData);
         }
     }
 
 
-    private void CombineModelAndStorageDatas(Data storagesData)
+    private void CombineModelAndStorageDatas(PlayerGameData storageData)
     {
-
+        throw new NotImplementedException();
     }
 }

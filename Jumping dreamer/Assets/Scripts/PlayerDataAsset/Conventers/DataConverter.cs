@@ -2,19 +2,19 @@
 using System;
 using UnityEngine;
 
-public static class Converter
+public static class DataConverter
 {
     private static readonly JsonSerializerSettings serializerSettings;
 
 
-    static Converter()
+    static DataConverter()
     {
         serializerSettings = new JsonSerializerSettings();
         serializerSettings.Converters.Add(new SafeIntConverter());
     }
 
 
-    public static string ToJson(Data data, out bool isSuccess, out Exception exception)
+    public static string ToJson(PlayerGameData data, out bool isSuccess, out Exception exception)
     {
         try
         {
@@ -36,11 +36,11 @@ public static class Converter
     }
 
 
-    public static Data ToObject(string json, out bool isSuccess, out Exception exception)
+    public static PlayerGameData ToObject(string json, out bool isSuccess, out Exception exception)
     {
         try
         {
-            Data data = JsonConvert.DeserializeObject<Data>(json, serializerSettings);
+            PlayerGameData data = JsonConvert.DeserializeObject<PlayerGameData>(json, serializerSettings);
             isSuccess = true;
             exception = null;
 
