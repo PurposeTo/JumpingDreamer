@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 public class DataLoader : StorageDataReaderWriter
 {
-    private readonly List<StorageDataReaderWriter> storages;
+    private readonly StorageDataReaderWriter[] storages;
 
 
-    public DataLoader(SuperMonoBehaviour superMonoBehaviour, List<StorageDataReaderWriter> storages) : base(superMonoBehaviour)
+    public DataLoader(SuperMonoBehaviour superMonoBehaviour, StorageDataReaderWriter[] storages) : base(superMonoBehaviour)
     {
         this.storages = storages;
     }
@@ -14,12 +14,12 @@ public class DataLoader : StorageDataReaderWriter
 
     public override void ReadAllData(Action<PlayerGameData> callback)
     {
-        storages.ForEach(storage => storage.ReadAllData(callback));
+        Array.ForEach(storages, storage => storage.ReadAllData(callback));
     }
 
 
     public override void WriteAllData(PlayerGameData data)
     {
-        storages.ForEach(storage => storage.WriteAllData(data));
+        Array.ForEach(storages, storage => storage.WriteAllData(data));
     }
 }
