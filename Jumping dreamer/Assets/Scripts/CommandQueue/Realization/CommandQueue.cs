@@ -12,7 +12,7 @@ public class CommandQueue
 
     public void SetCommandToQueue(params Action[] actions)
     {
-        if (actions.Length == 0 || actions is null) throw new ArgumentNullException(nameof(actions));
+        if (actions.Length == 0 || actions == null) throw new ArgumentNullException(nameof(actions));
 
         Array.ForEach(actions, action => commandsQueue.Enqueue(action));
     }

@@ -142,7 +142,7 @@ namespace GooglePlayGames.BasicApi.Multiplayer
         /// <param name="match">Match identifier.</param>
         /// <param name="data">Data. New match data.</param>
         /// <param name="pendingParticipantId">ID of participant who is next to play. If
-        /// this is null and there are automatch slots open, the turn will be passed
+        /// this == null and there are automatch slots open, the turn will be passed
         /// to one of the automatch players. Passing null when there are no open
         /// automatch slots is an error.</param>
         /// <param name="callback">Callback. Will be called with true for success,

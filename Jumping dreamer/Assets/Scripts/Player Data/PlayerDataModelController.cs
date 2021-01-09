@@ -40,7 +40,7 @@ public class PlayerDataModelController : SingletonSuperMonoBehaviour<PlayerDataM
         };
     }
 
-
+    // Не забывать вносить изменения в случае их возникновения
     #region Платформозависимое сохранение
 #if UNITY_EDITOR
 
@@ -49,7 +49,6 @@ public class PlayerDataModelController : SingletonSuperMonoBehaviour<PlayerDataM
         SavePlayerDataToAllStorages();
     }
 
-    // Не забывать вносить изменения в случае их возникновения
 #elif UNITY_ANDROID
 
         private void OnApplicationPause(bool pause)
@@ -136,7 +135,7 @@ public class PlayerDataModelController : SingletonSuperMonoBehaviour<PlayerDataM
 
         playerDataSynchronizer.StartSynchronizingPlayerDataModel((synchronizedPlayerDataModel) =>
         {
-            if (synchronizedPlayerDataModel is null)
+            if (synchronizedPlayerDataModel == null)
             {
                 playerModel.SetDataWithDefaultValues();
                 SavePlayerDataToAllStorages();
@@ -179,12 +178,12 @@ public class PlayerDataModelController : SingletonSuperMonoBehaviour<PlayerDataM
     private bool TryToUsePlayerDataModel(out PlayerModelData modelData)
     {
         modelData = playerModel.GetData();
-        bool isDataNull = modelData is null;
+        bool isDataNull = modelData == null;
 
         if (isDataNull)
         {
-            if (synchronizePlayerDataStoragesInfo.IsExecuting) Debug.LogError("Синхронизация не была завершена. DataModel is null.");
-            else throw new NullReferenceException($"{nameof(modelData)} is null");
+            if (synchronizePlayerDataStoragesInfo.IsExecuting) Debug.LogError("Синхронизация не была завершена. DataModel == null.");
+            else throw new NullReferenceException($"{nameof(modelData)} == null");
         }
 
         return !isDataNull;

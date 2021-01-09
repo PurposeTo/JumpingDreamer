@@ -48,8 +48,8 @@ public class PlayerModel : ISetDataModel
 
     public static PlayerModelData CombineData(PlayerModelData cloudData, PlayerModelData localModel)
     {
-        if (cloudData is null) throw new ArgumentNullException(nameof(cloudData));
-        if (localModel is null) throw new ArgumentNullException(nameof(localModel));
+        if (cloudData == null) throw new ArgumentNullException(nameof(cloudData));
+        if (localModel == null) throw new ArgumentNullException(nameof(localModel));
 
         PlayerModelData mixedModelData = new PlayerModelData
         {

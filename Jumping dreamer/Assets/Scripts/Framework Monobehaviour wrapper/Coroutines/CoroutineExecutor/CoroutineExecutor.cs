@@ -28,8 +28,8 @@ public class CoroutineExecutor : MonoBehaviourContainer
     /// <returns></returns>
     public void ExecuteCoroutineContinuously(ref ICoroutineContainer coroutineInfo, IEnumerator enumerator)
     {
-        if (coroutineInfo is null) throw new ArgumentNullException(nameof(coroutineInfo));
-        if (enumerator is null) throw new ArgumentNullException(nameof(enumerator));
+        if (coroutineInfo == null) throw new ArgumentNullException(nameof(coroutineInfo));
+        if (enumerator == null) throw new ArgumentNullException(nameof(enumerator));
 
         CoroutineWithData coroutineWithData = (CoroutineWithData)coroutineInfo;
         coroutineWithData.SetEnumerator(enumerator);
@@ -49,7 +49,7 @@ public class CoroutineExecutor : MonoBehaviourContainer
     /// <returns></returns>
     public void ReStartCoroutineExecution(ref ICoroutineContainer coroutineInfo, IEnumerator enumerator)
     {
-        if (enumerator is null) throw new ArgumentNullException(nameof(enumerator));
+        if (enumerator == null) throw new ArgumentNullException(nameof(enumerator));
 
         CoroutineWithData coroutineWithData = (CoroutineWithData)coroutineInfo;
         coroutineWithData.SetEnumerator(enumerator);
@@ -66,7 +66,7 @@ public class CoroutineExecutor : MonoBehaviourContainer
     /// <param name="coroutineInfo"></param>
     public void BreakCoroutine(ref ICoroutineContainer coroutineInfo)
     {
-        if (coroutineInfo is null) throw new ArgumentNullException(nameof(coroutineInfo));
+        if (coroutineInfo == null) throw new ArgumentNullException(nameof(coroutineInfo));
 
         CoroutineWithData coroutineWithData = (CoroutineWithData)coroutineInfo;
 

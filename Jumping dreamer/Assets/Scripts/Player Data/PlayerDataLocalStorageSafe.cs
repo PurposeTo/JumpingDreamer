@@ -25,7 +25,7 @@ public class PlayerDataLocalStorageSafe
 
     public void SaveDataToFileAndEncrypt(PlayerModelData modelData)
     {
-        if (modelData is null) throw new System.ArgumentNullException(nameof(modelData));
+        if (modelData == null) throw new System.ArgumentNullException(nameof(modelData));
 
         // TODO: А если у пользователя недостаточно памяти, чтобы создать файл?
 
@@ -69,7 +69,7 @@ public class PlayerDataLocalStorageSafe
             return isDeserializationSuccess;
         }
 
-        if (dataAsJSON == null || !IsJsonConverted() || new Validator().HasModelDataNullValues(modelData))
+        if (dataAsJSON == null || !IsJsonConverted() /*|| new Validator().HasModelDataNullValues(modelData)*/)
         {
             Debug.LogError($"Data reading from \"{PlayerModel.FileNameWithExtension}\" ERROR!\nData was edited from outside.");
             PopUpWindowGenerator.Instance.CreateDialogWindow("Ошибка загрузки данных игровой статистики!");

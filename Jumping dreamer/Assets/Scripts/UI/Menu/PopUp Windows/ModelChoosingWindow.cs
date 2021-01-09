@@ -7,7 +7,7 @@ public class ModelChoosingWindow : MonoBehaviour
 
     public void Constructor(ModelChoosingInfo modelInfo)
     {
-        if (modelInfo is null) throw new System.ArgumentNullException(nameof(modelInfo));
+        if (modelInfo == null) throw new System.ArgumentNullException(nameof(modelInfo));
 
         this.modelInfo = modelInfo;
     }

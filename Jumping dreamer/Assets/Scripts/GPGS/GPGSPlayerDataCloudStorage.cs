@@ -29,7 +29,7 @@ public class GPGSPlayerDataCloudStorage : SuperMonoBehaviourContainer
     {
         Debug.Log("#CreateSave: begin");
 
-        if (modelData is null) throw new ArgumentNullException(nameof(modelData));
+        if (modelData == null) throw new ArgumentNullException(nameof(modelData));
 
         string json = JsonConverterWrapper.SerializeObject(modelData, out bool isSerializationSuccess, out Exception exception);
         if (!isSerializationSuccess) return;

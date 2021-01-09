@@ -33,8 +33,8 @@
 
     public static PlayerInGamePurchasesData CombineData(PlayerInGamePurchasesData cloudData, PlayerInGamePurchasesData localData)
     {
-        if (cloudData is null) throw new System.ArgumentNullException(nameof(cloudData));
-        if (localData is null) throw new System.ArgumentNullException(nameof(localData));
+        if (cloudData == null) throw new System.ArgumentNullException(nameof(cloudData));
+        if (localData == null) throw new System.ArgumentNullException(nameof(localData));
 
         return cloudData.EstimatedCostInStars > localData.EstimatedCostInStars ? cloudData : localData;
     }

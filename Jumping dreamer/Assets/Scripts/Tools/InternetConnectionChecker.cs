@@ -32,7 +32,7 @@ public class InternetConnectionChecker
     }
 
 
-    public IEnumerator PingGoogleEnumeratorWithOutTimeOut(Action<bool> isInternetAvailable)
+    public IEnumerator PingGoogleWithoutTimeoutEnumerator(Action<bool> isInternetAvailable)
     {
         // при timeOut = 0 тайм аут отсутствует, операция прервана не будет.
         yield return PingGoogleEnumerator(isInternetAvailable, 0);

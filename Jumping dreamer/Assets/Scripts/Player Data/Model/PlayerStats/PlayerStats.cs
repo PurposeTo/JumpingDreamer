@@ -78,8 +78,8 @@ public class PlayerStats : ISetStatsData, IGetAction
 
     public static PlayerStatsData CombineData(PlayerStatsData cloudStatsData, PlayerStatsData localStatsData)
     {
-        if (cloudStatsData is null) throw new ArgumentNullException(nameof(cloudStatsData));
-        if (localStatsData is null) throw new ArgumentNullException(nameof(localStatsData));
+        if (cloudStatsData == null) throw new ArgumentNullException(nameof(cloudStatsData));
+        if (localStatsData == null) throw new ArgumentNullException(nameof(localStatsData));
 
         PlayerStatsData mixedStatsData = new PlayerStatsData
         {

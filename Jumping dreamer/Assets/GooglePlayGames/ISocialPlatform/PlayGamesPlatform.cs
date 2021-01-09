@@ -227,7 +227,7 @@ namespace GooglePlayGames
                         callback.Invoke(client);
                     }
                     else {
-                        Debug.Log("Initialize Nearby callback is null");
+                        Debug.Log("Initialize Nearby callback == null");
                     }
                 });
 #else

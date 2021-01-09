@@ -22,7 +22,7 @@ public class DisplayerOfLoading : SingletonSuperMonoBehaviour<DisplayerOfLoading
     /// <param name="waitingEntity">Ожидающая сущность. Передавать "this"</param>
     public void StartWaiting(object waitingEntity)
     {
-        if (waitingEntity is null) throw new ArgumentNullException(nameof(waitingEntity));
+        if (waitingEntity == null) throw new ArgumentNullException(nameof(waitingEntity));
 
         if (waitingEntities.Count == 0)
         {
@@ -40,7 +40,7 @@ public class DisplayerOfLoading : SingletonSuperMonoBehaviour<DisplayerOfLoading
     /// <param name="waitingEntity">Ожидающая сущность. Передавать "this"</param>
     public void EndWaiting(object waitingEntity)
     {
-        if (waitingEntity is null) throw new ArgumentNullException(nameof(waitingEntity));
+        if (waitingEntity == null) throw new ArgumentNullException(nameof(waitingEntity));
 
         waitingEntities.Remove(waitingEntity);
 
@@ -55,13 +55,13 @@ public class DisplayerOfLoading : SingletonSuperMonoBehaviour<DisplayerOfLoading
     private void EnableLoadingWindow()
     {
         adLoadingWindow = PopUpWindowGenerator.Instance.CreateLoadingWindow();
-        if (adLoadingWindow is null) throw new NullReferenceException("adLoadingWindow");
+        if (adLoadingWindow == null) throw new NullReferenceException("adLoadingWindow");
     }
 
 
     private void DisableLoadingWindow()
     {
-        if (adLoadingWindow is null) throw new NullReferenceException("adLoadingWindow");
+        if (adLoadingWindow == null) throw new NullReferenceException("adLoadingWindow");
         adLoadingWindow.TurnOff();
     }
 }

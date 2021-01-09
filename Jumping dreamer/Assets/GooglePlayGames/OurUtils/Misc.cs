@@ -30,7 +30,7 @@ namespace GooglePlayGames.OurUtils
 
             if (a == null || b == null)
             {
-                // one of them is null, the other one isn't
+                // one of them == null, the other one isn't
                 return false;
             }
 
