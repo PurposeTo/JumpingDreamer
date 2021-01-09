@@ -1,7 +1,7 @@
 ﻿public interface IStatsSetter
 {
-    void SaveRecordStarsData(SafeInt starsAmount);
-    void SaveScoreData(SafeInt score);
-    void SaveScoreMultiplierData(SafeInt multiplier);
-    void SaveLifeTimeData(SafeInt lifeTime);
+    void SaveRecordStars(SafeInt starsAmount);
+    void SaveRecordScore(SafeInt score);
+    void SaveRecordScoreMultiplier(SafeInt multiplier);
+    void SaveRecordLifeTime(SafeInt lifeTime);
 }

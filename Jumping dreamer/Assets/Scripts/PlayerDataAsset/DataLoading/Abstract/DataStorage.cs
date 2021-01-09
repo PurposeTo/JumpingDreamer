@@ -1,31 +1,41 @@
 ﻿using System;
+using UnityEngine;
 
 public abstract class DataStorage : StorageDataReaderWriter
 {
     public DataStorage(SuperMonoBehaviour superMonoBehaviour) : base(superMonoBehaviour) { }
 
 
-    private bool isDataReading = false;
     private protected PlayerGameData data;
+
+    private bool isDataReading = false;
+    private bool isDataHasAlreadyReaded = false;
 
 
     public sealed override void ReadAllData(Action<PlayerGameData> callback)
     {
-        isDataReading = true;
-        Read(data =>
+        if (isDataHasAlreadyReaded) Debug.LogWarning($"Данные с {this.GetType()} уже были загружены!");
+        else
         {
-            isDataReading = false;
-            callback?.Invoke(data);
-        });
+            isDataReading = true;
+
+            ReadFromStorage(data =>
+            {
+                isDataReading = false;
+                callback?.Invoke(data);
+            });
+
+            isDataHasAlreadyReaded = true;
+        }
     }
 
 
     public sealed override void WriteAllData(PlayerGameData data)
     {
-        if (!isDataReading) Write(data);
+        if (!isDataReading) WriteToStorage(data);
     }
 
 
-    public abstract void Read(Action<PlayerGameData> callback);
-    public abstract void Write(PlayerGameData data);
+    private protected abstract void ReadFromStorage(Action<PlayerGameData> callback);
+    private protected abstract void WriteToStorage(PlayerGameData data);
 }

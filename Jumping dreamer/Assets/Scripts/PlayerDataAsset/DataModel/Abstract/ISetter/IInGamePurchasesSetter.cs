@@ -1,4 +1,4 @@
 ﻿public interface IInGamePurchasesSetter
 {
-    void SaveTotalStarsData(SafeInt stars);
+    void AddTotalStars(SafeInt stars);
 }

@@ -17,7 +17,7 @@ public class LocalDataStorage : DataStorage
     private string filePath;
 
 
-    public override void Read(Action<PlayerGameData> callback)
+    private protected override void ReadFromStorage(Action<PlayerGameData> callback)
     {
         superMonoBehaviour.ExecuteCoroutineContinuously(ref loadDataInfo, LoadAndDecryptData(json =>
         {
@@ -39,7 +39,7 @@ public class LocalDataStorage : DataStorage
     }
 
 
-    public override void Write(PlayerGameData data)
+    private protected override void WriteToStorage(PlayerGameData data)
     {
         SaveAndEncryptData(data);
     }

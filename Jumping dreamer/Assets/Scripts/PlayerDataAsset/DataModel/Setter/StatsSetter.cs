@@ -14,7 +14,7 @@ public class StatsSetter : IStatsSetter, IStatsChangingNotifier
     public event Action OnNewScoreRecord;
 
 
-    void IStatsSetter.SaveRecordStarsData(SafeInt starsAmount)
+    void IStatsSetter.SaveRecordStars(SafeInt starsAmount)
     {
         if (starsAmount > playerStats.RecordCollectedStars)
         {
@@ -23,7 +23,7 @@ public class StatsSetter : IStatsSetter, IStatsChangingNotifier
     }
 
 
-    void IStatsSetter.SaveScoreData(SafeInt scoreAmount)
+    void IStatsSetter.SaveRecordScore(SafeInt scoreAmount)
     {
         if (scoreAmount > playerStats.RecordEarnedScore)
         {
@@ -33,7 +33,7 @@ public class StatsSetter : IStatsSetter, IStatsChangingNotifier
     }
 
 
-    void IStatsSetter.SaveScoreMultiplierData(SafeInt multiplierValue)
+    void IStatsSetter.SaveRecordScoreMultiplier(SafeInt multiplierValue)
     {
         if (multiplierValue > playerStats.RecordScoreMultiplierValue)
         {
@@ -42,7 +42,7 @@ public class StatsSetter : IStatsSetter, IStatsChangingNotifier
     }
 
 
-    void IStatsSetter.SaveLifeTimeData(SafeInt lifeTime)
+    void IStatsSetter.SaveRecordLifeTime(SafeInt lifeTime)
     {
         playerStats.TotalLifeTime += lifeTime;
 

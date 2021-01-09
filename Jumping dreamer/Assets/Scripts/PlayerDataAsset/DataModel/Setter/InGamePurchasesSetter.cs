@@ -9,7 +9,7 @@
     }
 
 
-    void IInGamePurchasesSetter.SaveTotalStarsData(SafeInt starsAmount)
+    void IInGamePurchasesSetter.AddTotalStars(SafeInt starsAmount)
     {
         inGamePurchases.TotalStars += starsAmount;
         inGamePurchases.EstimatedCostInStars += starsAmount;

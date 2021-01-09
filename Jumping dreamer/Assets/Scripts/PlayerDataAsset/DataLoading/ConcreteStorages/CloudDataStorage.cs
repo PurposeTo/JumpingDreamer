@@ -23,21 +23,21 @@ public class CloudDataStorage : DataStorage, IDataReloader
     private ISavedGameClient SavedGameClient => ((PlayGamesPlatform)Social.Active).SavedGame;
 
 
-    public override void Read(Action<PlayerGameData> callback)
+    void IDataReloader.LoadDataAgain()
+    {
+        ReadSavedGame(receivedData => data = receivedData);
+    }
+
+
+    private protected override void ReadFromStorage(Action<PlayerGameData> callback)
     {
         superMonoBehaviour.ExecuteCoroutineContinuously(ref loadDataInfo, LoadDataEnumerator(callback));
     }
 
 
-    public override void Write(PlayerGameData data)
+    private protected override void WriteToStorage(PlayerGameData data)
     {
         CreateSavedGame(data);
-    }
-
-
-    void IDataReloader.LoadDataAgain()
-    {
-        ReadSavedGame(receivedData => data = receivedData);
     }
 
 
