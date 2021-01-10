@@ -7,10 +7,12 @@ public class DataModel : IDataInteraction, IDataChangingNotifier, IModelInteract
     public static string FileNameWithExtension => FileName + FileExtension;
 
     private readonly DataSetter dataSetter;
+    private PlayerGameData data;
 
 
     public DataModel()
     {
+        data = PlayerGameData.CreateDataWithDefaultValues();
         dataSetter = new DataSetter(data);
     }
 
@@ -22,13 +24,8 @@ public class DataModel : IDataInteraction, IDataChangingNotifier, IModelInteract
     public event Action OnDataReset;
     IStatsChangingNotifier IDataChangingNotifier.StatsChangingNotifier => dataSetter.StatsChangingNotifier;
 
-    private PlayerGameData data = PlayerGameData.CreateDataWithDefaultValues();
 
-
-    PlayerGameData IModelInteraction.GetData()
-    {
-        return data;
-    }
+    PlayerGameData IModelInteraction.GetData() => data;
 
 
     void IModelInteraction.SetData(PlayerGameData data)

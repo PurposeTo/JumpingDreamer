@@ -14,7 +14,7 @@ public class DataSynchronizer : IDataInModelUpdater, IDataInStorageUpdater, IDat
 
 
     private PlayerGameData data;
-    private readonly DataCombiner dataCombiner = new DataCombiner();
+    private DataCombiner dataCombiner => throw new NotImplementedException();
 
 
     void IDataInModelUpdater.UpdateModel()

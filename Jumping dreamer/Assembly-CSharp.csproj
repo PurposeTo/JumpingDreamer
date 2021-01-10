@@ -196,6 +196,10 @@
     <Compile Include="Assets\Scripts\Player Data\Converters\JsonConverterWrapper.cs" />
     <Compile Include="Assets\Scripts\PlayerDataAsset\Conventers\SafeIntConverter.cs" />
     <Compile Include="Assets\Scripts\PlayerDataAsset\DataLoaderHelper.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\IDataHandlerInteraction.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\DataHandler.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataCombiner\CurrentGameSessionsDataCombiner.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataCombiner\LastGamingSessionsDataCombiner.cs" />
     <Compile Include="Assets\Scripts\PlayerDataAsset\Encryption\JsonEncryption.cs" />
     <Compile Include="Assets\Scripts\PlayerDataAsset\Encryption\SafeFloat.cs" />
     <Compile Include="Assets\Scripts\PlayerDataAsset\Encryption\SafeInt.cs" />
@@ -230,7 +234,7 @@
     <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\INotifier\IDataChangingNotifier.cs" />
     <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\IGetter\IDataGetter.cs" />
     <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\ISetter\IDataSetter.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataCombiner.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataCombiner\DataCombiner.cs" />
     <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\DataModel.cs" />
     <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Setter\DataSetter.cs" />
     <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Setter\InGamePurchasesSetter.cs" />
