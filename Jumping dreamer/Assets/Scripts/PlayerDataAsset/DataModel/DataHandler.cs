@@ -2,8 +2,8 @@
 
 public class DataHandler : IDataInteraction, IDataHandlerInteraction
 {
-    private readonly DataModel currentGamingSession;
-    private readonly DataModel lastGamingSessions;
+    private readonly IDataInteraction currentGamingSession;
+    private readonly IDataInteraction lastGamingSessions;
 
     private readonly IDataGetter usedDataGetter;
 
@@ -22,10 +22,8 @@ public class DataHandler : IDataInteraction, IDataHandlerInteraction
 
 
     IDataGetter IDataInteraction.Getter => usedDataGetter;
-    IDataSetter IDataInteraction.Setter => ((IDataInteraction)currentGamingSession).Setter;
+    IDataSetter IDataInteraction.Setter => currentGamingSession.Setter;
     IDataChangingNotifier IDataInteraction.Notifier => currentGamingSession;
-
     IModelInteraction IDataHandlerInteraction.GetInteractionWithDataOfCurrentGameSession() => currentGamingSession;
-
     IModelInteraction IDataHandlerInteraction.GetInteractionWithDataOfLastGamingSessions() => lastGamingSessions;
 }
