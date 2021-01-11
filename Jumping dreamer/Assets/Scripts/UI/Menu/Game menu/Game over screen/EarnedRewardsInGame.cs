@@ -5,7 +5,7 @@ public class EarnedRewardsInGame : MonoBehaviour
 {
     private TextMeshProUGUI earnedRewardsInGame;
 
-    private int RecordUI => PlayerDataModelController.Instance.GetGettableDataModel().StatsData.MaxEarnedScore.Value;
+    private int RecordUI => PlayerDataModelController.Instance.DataInteraction.Getter.Stats.RecordEarnedScore.Value;
 
     private bool IsRecordNew => CurrentGameSessionData.Instance.IsRecordNew;
 

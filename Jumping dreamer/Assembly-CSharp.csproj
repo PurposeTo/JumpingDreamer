@@ -8,8 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{5955EDAF-1570-54EA-222F-0340AEA33492}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -168,7 +167,6 @@
     <Compile Include="Assets\Scripts\Framework Monobehaviour wrapper\UpdateManager.cs" />
     <Compile Include="Assets\Scripts\GPGS\GPGSAuthentication.cs" />
     <Compile Include="Assets\Scripts\GPGS\GPGSLeaderboard.cs" />
-    <Compile Include="Assets\Scripts\GPGS\GPGSPlayerDataCloudStorage.cs" />
     <Compile Include="Assets\Scripts\GameLogic.cs" />
     <Compile Include="Assets\Scripts\GameStates\GameManager.cs" />
     <Compile Include="Assets\Scripts\GameStates\TimeScaler\IPausable.cs" />
@@ -193,65 +191,6 @@
     <Compile Include="Assets\Scripts\Platforms\Toss\Base\Toss.cs" />
     <Compile Include="Assets\Scripts\Platforms\Toss\TossDown.cs" />
     <Compile Include="Assets\Scripts\Platforms\Toss\TossUp.cs" />
-    <Compile Include="Assets\Scripts\Player Data\Converters\JsonConverterWrapper.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\Conventers\SafeIntConverter.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataLoaderHelper.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\IDataHandlerInteraction.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\DataHandler.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataCombiner\CurrentGameSessionsDataCombiner.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataCombiner\LastGamingSessionsDataCombiner.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\Encryption\JsonEncryption.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\Encryption\SafeFloat.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\Encryption\SafeInt.cs" />
-    <Compile Include="Assets\Scripts\Player Data\Model\IGetModelData.cs" />
-    <Compile Include="Assets\Scripts\Player Data\Model\ISetDataModel.cs" />
-    <Compile Include="Assets\Scripts\Player Data\Model\InGamePurchases\IGetInGamePurchasesData.cs" />
-    <Compile Include="Assets\Scripts\Player Data\Model\InGamePurchases\ISetPlayerInGamePurchases.cs" />
-    <Compile Include="Assets\Scripts\Player Data\Model\InGamePurchases\PlayerInGamePurchases.cs" />
-    <Compile Include="Assets\Scripts\Player Data\Model\InGamePurchases\PlayerInGamePurchasesData.cs" />
-    <Compile Include="Assets\Scripts\Player Data\Model\PlayerModel.cs" />
-    <Compile Include="Assets\Scripts\Player Data\Model\PlayerModelData.cs" />
-    <Compile Include="Assets\Scripts\Player Data\Model\PlayerStats\IGetAction.cs" />
-    <Compile Include="Assets\Scripts\Player Data\Model\PlayerStats\IGetStatsData.cs" />
-    <Compile Include="Assets\Scripts\Player Data\Model\PlayerStats\ISetStatsData.cs" />
-    <Compile Include="Assets\Scripts\Player Data\Model\PlayerStats\PlayerStats.cs" />
-    <Compile Include="Assets\Scripts\Player Data\Model\PlayerStats\PlayerStatsData.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\PlayerSettings\PlayerSettingsData.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\PlayerSettings\PlayerSettingsStorage.cs" />
-    <Compile Include="Assets\Scripts\Player Data\PlayerDataLocalStorageSafe.cs" />
-    <Compile Include="Assets\Scripts\Player Data\PlayerDataModelController.cs" />
-    <Compile Include="Assets\Scripts\Player Data\PlayerDataSynchronizer.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\Validator.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\Conventers\DataConverter.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataLoading\Abstract\IDataReloader.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\IGetter\IInGamePurchasesGetter.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\IGetter\IStatsGetter.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\IModelInteraction.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\INotifier\IStatsChangingNotifier.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\ISetter\IInGamePurchasesSetter.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\ISetter\IStatsSetter.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\IDataInteraction.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\INotifier\IDataChangingNotifier.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\IGetter\IDataGetter.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\ISetter\IDataSetter.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataCombiner\DataCombiner.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\DataModel.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Setter\DataSetter.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Setter\InGamePurchasesSetter.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Setter\StatsSetter.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\Abstract\IDataInModelUpdater.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\Abstract\IDataInStorageUpdater.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\Abstract\IDataReseter.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\Abstract\ISynchronizerNotifier.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataSynchronizer.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\PlayerGameData\PlayerGameData.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataLoading\ConcreteStorages\CloudDataStorage.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataLoading\DataLoader.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataLoading\Abstract\DataStorage.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataLoading\ConcreteStorages\LocalDataStorage.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataLoading\Abstract\StorageDataReaderWriter.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\PlayerGameData\InGamePurchasesData1.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\PlayerGameData\PlayerStatsData1.cs" />
     <Compile Include="Assets\Scripts\Player\Collectors\Base\RewardCollector.cs" />
     <Compile Include="Assets\Scripts\Player\Collectors\ScoreCollector.cs" />
     <Compile Include="Assets\Scripts\Player\Collectors\StarCollector.cs" />
@@ -268,6 +207,53 @@
     <Compile Include="Assets\Scripts\Player\SpeedTrail.cs" />
     <Compile Include="Assets\Scripts\Player\Statistics\LifeTimer.cs" />
     <Compile Include="Assets\Scripts\Player\Statistics\PlayerTactics.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\Conventers\DataConverter.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\Conventers\SafeIntConverter.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataLoader\Abstract\IDataReloader.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataLoader\Abstract\StorageDataReaderWriter.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataLoader\DataLoader.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataLoader\ReadingAndWritingDataToStorage.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataLoader\Storages\Abstract\DataStorage.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataLoader\Storages\CloudDataStorage.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataLoader\Storages\LocalDataStorage.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataLoaderHelper.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\IDataHandlerInteraction.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\IDataInteraction.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\IGetter\IDataGetter.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\IGetter\IInGamePurchasesGetter.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\IGetter\IStatsGetter.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\IModelInteraction.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\INotifier\IDataChangingNotifier.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\INotifier\IStatsChangingNotifier.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\ISetter\IDataSetter.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\ISetter\IInGamePurchasesSetter.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\ISetter\IStatsSetter.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\DataHandler.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\DataModel.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Setter\DataSetter.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Setter\InGamePurchasesSetter.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Setter\StatsSetter.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\Abstract\IDataFromModelToStorageUpdater.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\Abstract\IDataFromStorageToModelUpdater.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\Abstract\IDataReseter.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\Abstract\ISynchronizerNotifier.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataCombiner\CurrentGameSessionsDataCombiner.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataCombiner\DataCombiner.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataCombiner\LastGamingSessionsDataCombiner.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataCombiner\UsedDataGetter\UsedDataGetter.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataCombiner\UsedDataGetter\UsedInGamePurchasesGetter.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataCombiner\UsedDataGetter\UsedStatsGetter.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataSynchronizer.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\Encryption\JsonEncryption.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\Encryption\SafeFloat.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\Encryption\SafeInt.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\PlayerDataModelController.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\PlayerGameData\InGamePurchasesData.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\PlayerGameData\PlayerGameData.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\PlayerGameData\PlayerStatsData.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\PlayerSettings\PlayerSettingsData.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\PlayerSettings\PlayerSettingsStorage.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\Validator.cs" />
     <Compile Include="Assets\Scripts\Scene loading helpers\Shutter.cs" />
     <Compile Include="Assets\Scripts\Scene loading helpers\SingleSceneLoader.cs" />
     <Compile Include="Assets\Scripts\Singletons\Base\Singleton.cs" />
@@ -289,7 +275,6 @@
     <Compile Include="Assets\Scripts\UI\Menu\AdRewardMessage.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Buttons\OperationWithPlayerDataButton.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Buttons\ResetPlayerDataButton.cs" />
-    <Compile Include="Assets\Scripts\UI\Menu\Buttons\RestorePlayerDataButton.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Buttons\SignInGoogleServicesButton.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\EarnedRewardsInGame.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Game menu\Game over screen\GameOverScreen.cs" />
@@ -561,10 +546,10 @@
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.17f1/Editor/Data/Managed/UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>C:/Users/repin/source/repos/JumpingDreamer/Jumping dreamer/Assets/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Assets/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>C:/Users/repin/source/repos/JumpingDreamer/Jumping dreamer/Library/PackageCache/com.unity.ext.nunit@1.0.5/net35/unity-custom/nunit.framework.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/PackageCache/com.unity.ext.nunit@1.0.5/net35/unity-custom/nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.17f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
@@ -912,34 +897,34 @@
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.17f1/Editor/Data/NetStandard/compat/2.0.0/shims/netfx/System.Xml.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline.Editor">
-      <HintPath>C:/Users/repin/source/repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
-      <HintPath>C:/Users/repin/source/repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>C:/Users/repin/source/repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>C:/Users/repin/source/repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-      <HintPath>C:/Users/repin/source/repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>C:/Users/repin/source/repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
-      <HintPath>C:/Users/repin/source/repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro">
-      <HintPath>C:/Users/repin/source/repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.UI">
-      <HintPath>C:/Users/repin/source/repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Mobile.AndroidLogcat.Editor">
-      <HintPath>C:/Users/repin/source/repos/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.Mobile.AndroidLogcat.Editor.dll</HintPath>
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.Mobile.AndroidLogcat.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.UI">
+      <HintPath>C:/Users/firec/Documents/GitHub/JumpingDreamer/Jumping dreamer/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -952,7 +937,6 @@
       <Name>GoogleMobileAds.Editor</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

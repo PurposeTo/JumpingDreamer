@@ -8,7 +8,7 @@ public static class JsonEncryption
 {
     public static string FilePathWithHash => DataLoaderHelper.GetFilePath(fileName);
 
-    private static readonly string fileName = $"{PlayerModel.FileName}Alpha{PlayerModel.FileExtension}";
+    private static readonly string fileName = $"{DataModel.FileName}Alpha{DataModel.FileExtension}";
 
     private static readonly int salt = 100;
 

@@ -1,69 +1,73 @@
 ﻿using System;
+using UnityEngine;
 
-public class DataSynchronizer : IDataInModelUpdater, IDataInStorageUpdater, IDataReseter, ISynchronizerNotifier
+public class DataSynchronizer : IDataFromStorageToModelUpdater, IDataFromModelToStorageUpdater, IDataReseter, ISynchronizerNotifier
 {
-    private readonly IModelInteraction modelInteraction;
+    private readonly IDataHandlerInteraction dataHandlerInteraction;
+    private readonly IDataGetter dataGetter;
     private readonly StorageDataReaderWriter readerWriter;
 
-
-    public DataSynchronizer(IModelInteraction modelInteraction, StorageDataReaderWriter readerWriter)
+    public DataSynchronizer(IDataHandlerInteraction dataHandlerInteraction, IDataGetter dataGetter, StorageDataReaderWriter readerWriter)
     {
-        this.modelInteraction = modelInteraction;
-        this.readerWriter = readerWriter;
+        this.dataGetter = dataGetter ?? throw new ArgumentNullException(nameof(dataGetter));
+        this.dataHandlerInteraction = dataHandlerInteraction ?? throw new ArgumentNullException(nameof(dataHandlerInteraction));
+        this.readerWriter = readerWriter ?? throw new ArgumentNullException(nameof(readerWriter));
     }
 
 
-    private PlayerGameData data;
-    private DataCombiner dataCombiner => throw new NotImplementedException();
+    public event Action OnResetPlayerData;
+    public event Action OnSavePlayerData;
 
 
-    void IDataInModelUpdater.UpdateModel()
+    void IDataFromStorageToModelUpdater.UpdateModel()
     {
         readerWriter.ReadAllData(receivedData =>
         {
-            CombineDataFromStorages(receivedData);
-            CombineModelAndStorageDatas(data);
+            IModelInteraction modelInteraction = dataHandlerInteraction.GetInteractionWithDataOfLastGamingSessions();
+            modelInteraction.SetData(CombineDataFromStorages(modelInteraction.GetData(), receivedData));
         });
     }
 
 
-    void IDataInStorageUpdater.UpdateStorage()
+    void IDataFromModelToStorageUpdater.UpdateStorage()
     {
-        readerWriter.WriteAllData(modelInteraction.GetData());
+        OnSavePlayerData?.Invoke();
+
+        readerWriter.WriteAllData(new PlayerGameData(dataGetter));
     }
 
 
     void IDataReseter.Reset()
     {
-        modelInteraction.SetData(PlayerGameData.CreateDataWithDefaultValues());
+        PlayerGameData newData = PlayerGameData.CreateDataWithDefaultValues();
+
+        dataHandlerInteraction.GetInteractionWithDataOfCurrentGameSession().SetData(newData);
+        readerWriter.WriteAllData(newData);
     }
 
 
-    private void CombineDataFromStorages(PlayerGameData storageData)
+    private PlayerGameData CombineDataFromStorages(PlayerGameData data1, PlayerGameData data2)
     {
-        if (storageData == null) throw new ArgumentNullException(nameof(storageData));
-
-        // Выполняется при первом получении данных
-        if (data == null)
+        if (data1 == null && data2 == null) throw new ArgumentNullException($"{nameof(data1)} and {nameof(data2)}");
+        else if (data1 == null || data2 == null)
         {
-            data = storageData;
-            return;
+            if (data1 == null) return data2;
+            else return data1;
         }
 
-        // Выполняется при последующем получении данных из другого хранилища
-        if (data.Id != storageData.Id)
+        if (data1.Equals(data2)) return data1;
+
+        if (data1.Id != data2.Id)
         {
             // TODO: Вывод диалогового окна
+            throw new NotImplementedException();
         }
-        else if (!data.Equals(storageData))
+        else
         {
-            data = dataCombiner.Combine(data, storageData);
+            // TODO: скомбинировать значения полей по правилам.
+            throw new NotImplementedException();
         }
-    }
 
-
-    private void CombineModelAndStorageDatas(PlayerGameData storageData)
-    {
-        throw new NotImplementedException();
+        // TODO: надо ли сохранить в хранилища данные после этого?
     }
 }

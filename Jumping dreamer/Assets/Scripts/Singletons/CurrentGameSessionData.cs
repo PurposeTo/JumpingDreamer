@@ -9,12 +9,12 @@ public class CurrentGameSessionData : SingletonSuperMonoBehaviour<CurrentGameSes
 
     protected override void StartWrapped()
     {
-        PlayerDataModelController.Instance.GetAction().OnNewScoreRecord += ActivateRecordNewToggle;
+        PlayerDataModelController.Instance.DataInteraction.Notifier.StatsChangingNotifier.OnNewScoreRecord += ActivateRecordNewToggle;
     }
 
     protected override void OnDestroyWrapped()
     {
-        PlayerDataModelController.Instance.GetAction().OnNewScoreRecord -= ActivateRecordNewToggle;
+        PlayerDataModelController.Instance.DataInteraction.Notifier.StatsChangingNotifier.OnNewScoreRecord -= ActivateRecordNewToggle;
     }
 
 

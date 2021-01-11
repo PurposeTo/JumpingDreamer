@@ -38,14 +38,14 @@ public class ScoreCollector : RewardCollector
     private protected override void Start()
     {
         base.Start();
-        PlayerDataModelController.Instance.OnSavePlayerStats += SaveScoreStats;
+        PlayerDataModelController.Instance.SynchronizerNotifier.OnSavePlayerData += SaveScoreStats;
     }
 
 
     private protected override void OnDestroy()
     {
         base.OnDestroy();
-        PlayerDataModelController.Instance.OnSavePlayerStats -= SaveScoreStats;
+        PlayerDataModelController.Instance.SynchronizerNotifier.OnSavePlayerData -= SaveScoreStats;
     }
 
 
@@ -57,8 +57,8 @@ public class ScoreCollector : RewardCollector
 
     private void SaveScoreStats()
     {
-        PlayerDataModelController.Instance.GetSettableDataModel().PlayerStats.SaveScoreData(Score);
-        PlayerDataModelController.Instance.GetSettableDataModel().PlayerStats.SaveScoreMultiplierData(currentMaxScoreMultiplierValue);
+        PlayerDataModelController.Instance.DataInteraction.Setter.Stats.SaveRecordScore(Score);
+        PlayerDataModelController.Instance.DataInteraction.Setter.Stats.SaveRecordScoreMultiplier(currentMaxScoreMultiplierValue);
     }
 
 

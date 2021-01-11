@@ -2,10 +2,10 @@
 
 public class StatsSetter : IStatsSetter, IStatsChangingNotifier
 {
-    private readonly PlayerStatsData1 playerStats;
+    private readonly PlayerStatsData playerStats;
 
 
-    public StatsSetter(PlayerStatsData1 stats)
+    public StatsSetter(PlayerStatsData stats)
     {
         playerStats = stats;
     }

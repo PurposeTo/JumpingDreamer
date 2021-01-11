@@ -1,11 +1,11 @@
 ﻿public interface IStatsGetter
 {
     // Лучшие результаты за все время игры
-    public SafeInt? RecordCollectedStars { get; }
-    public SafeInt? RecordEarnedScore { get; }
-    public SafeInt? RecordScoreMultiplierValue { get; }
-    public SafeInt? RecordLifeTime { get; }
+    SafeInt? RecordCollectedStars { get; }
+    SafeInt? RecordEarnedScore { get; }
+    SafeInt? RecordScoreMultiplierValue { get; }
+    SafeInt? RecordLifeTime { get; }
 
     // Общие результаты за все время игры
-    public SafeInt? TotalLifeTime { get; }
+    SafeInt? TotalLifeTime { get; }
 }

@@ -7,13 +7,13 @@ public class LifeTimer : MonoBehaviour
 
     private void Start()
     {
-        PlayerDataModelController.Instance.OnSavePlayerStats += SaveLifeTimeStats;
+        PlayerDataModelController.Instance.SynchronizerNotifier.OnSavePlayerData += SaveLifeTimeStats;
     }
 
 
     private void OnDestroy()
     {
-        PlayerDataModelController.Instance.OnSavePlayerStats -= SaveLifeTimeStats;
+        PlayerDataModelController.Instance.SynchronizerNotifier.OnSavePlayerData -= SaveLifeTimeStats;
     }
 
 
@@ -25,6 +25,6 @@ public class LifeTimer : MonoBehaviour
 
     private void SaveLifeTimeStats()
     {
-        PlayerDataModelController.Instance.GetSettableDataModel().PlayerStats.SaveLifeTimeData((SafeInt)lifeTime);
+        PlayerDataModelController.Instance.DataInteraction.Setter.Stats.SaveRecordLifeTime((SafeInt)lifeTime);
     }
 }

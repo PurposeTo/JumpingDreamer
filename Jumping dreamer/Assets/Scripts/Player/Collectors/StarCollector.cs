@@ -21,14 +21,14 @@ public class StarCollector : RewardCollector
     private protected override void Start()
     {
         base.Start();
-        PlayerDataModelController.Instance.OnSavePlayerStats += SaveStarsStats;
+        PlayerDataModelController.Instance.SynchronizerNotifier.OnSavePlayerData += SaveStarsStats;
     }
 
 
     private protected override void OnDestroy()
     {
         base.OnDestroy();
-        PlayerDataModelController.Instance.OnSavePlayerStats -= SaveStarsStats;
+        PlayerDataModelController.Instance.SynchronizerNotifier.OnSavePlayerData -= SaveStarsStats;
     }
 
 
@@ -44,7 +44,7 @@ public class StarCollector : RewardCollector
 
     private void SaveStarsStats()
     {
-        PlayerDataModelController.Instance.GetSettableDataModel().PlayerStats.SaveMaxStarsData(Stars);
-        PlayerDataModelController.Instance.GetSettableDataModel().PlayerInGamePurchases.SaveTotalStarsData(Stars);
+        PlayerDataModelController.Instance.DataInteraction.Setter.Stats.SaveRecordStars(Stars);
+        PlayerDataModelController.Instance.DataInteraction.Setter.InGamePurchases.AddTotalStars(Stars);
     }
 }

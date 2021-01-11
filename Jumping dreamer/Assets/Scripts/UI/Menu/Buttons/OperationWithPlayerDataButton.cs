@@ -11,29 +11,11 @@ public abstract class OperationWithPlayerDataButton : MonoBehaviour
     private void Start()
     {
         button = gameObject.GetComponent<Button>();
-
-        PlayerDataModelController.Instance.OnResetPlayerData += ToggleButton;
-        PlayerDataModelController.Instance.OnRestoreDataFromCloud += ToggleButton;
-
-        ToggleButton();
-    }
-
-
-    private void OnDestroy()
-    {
-        PlayerDataModelController.Instance.OnResetPlayerData -= ToggleButton;
-        PlayerDataModelController.Instance.OnRestoreDataFromCloud -= ToggleButton;
     }
 
 
     public virtual void DoOperationWithPlayerData()
     {
         ConfirmationOperationWindow.gameObject.SetActive(true);
-    }
-
-
-    private protected virtual void ToggleButton()
-    {
-        button.interactable = !PlayerDataModelController.IsPlayerDataHaveAlreadyDeletedOrRestored;
     }
 }

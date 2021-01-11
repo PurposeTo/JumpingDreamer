@@ -2,5 +2,4 @@
 {
     IModelInteraction GetInteractionWithDataOfLastGamingSessions();
     IModelInteraction GetInteractionWithDataOfCurrentGameSession();
-    PlayerGameData GetUsedData();
 }

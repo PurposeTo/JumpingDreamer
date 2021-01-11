@@ -17,7 +17,7 @@ public class DataCombiner
     }
 
 
-    public void CombineRecordStats(PlayerStatsData1 stats1, PlayerStatsData1 stats2, ref PlayerStatsData1 combinedRecordStats)
+    public void CombineRecordStats(PlayerStatsData stats1, PlayerStatsData stats2, ref PlayerStatsData combinedRecordStats)
     {
         combinedRecordStats.RecordCollectedStars = Mathf.Max((int)stats1.RecordCollectedStars, (int)stats2.RecordCollectedStars);
         combinedRecordStats.RecordEarnedScore = Mathf.Max((int)stats1.RecordEarnedScore, (int)stats2.RecordEarnedScore);
@@ -26,25 +26,25 @@ public class DataCombiner
     }
 
 
-    public void CombineTotalStatsForLastGamesData(PlayerStatsData1 stats1, PlayerStatsData1 stats2, ref PlayerStatsData1 combinedStats)
+    public void CombineTotalStatsForLastGamesData(PlayerStatsData stats1, PlayerStatsData stats2, ref PlayerStatsData combinedStats)
     {
         combinedStats.TotalLifeTime = Mathf.Max((int)stats1.TotalLifeTime, (int)stats2.TotalLifeTime);
     }
 
 
-    public void CombineTotalStarsForCurrentGameData(PlayerStatsData1 stats1, PlayerStatsData1 stats2, ref PlayerStatsData1 combinedStats)
+    public void CombineTotalStarsForCurrentGameData(PlayerStatsData stats1, PlayerStatsData stats2, ref PlayerStatsData combinedStats)
     {
         combinedStats.TotalLifeTime = stats1.TotalLifeTime + stats2.TotalLifeTime;
     }
 
 
-    private InGamePurchasesData1 CombinePurchasesForLastGamesData(InGamePurchasesData1 purchases1, InGamePurchasesData1 purchases2)
+    private InGamePurchasesData CombinePurchasesForLastGamesData(InGamePurchasesData purchases1, InGamePurchasesData purchases2)
     {
         throw new NotImplementedException();
     }
 
 
-    private InGamePurchasesData1 CombinePurchasesForCurrentGameData(InGamePurchasesData1 purchases1, InGamePurchasesData1 purchases2)
+    private InGamePurchasesData CombinePurchasesForCurrentGameData(InGamePurchasesData purchases1, InGamePurchasesData purchases2)
     {
         throw new NotImplementedException();
     }

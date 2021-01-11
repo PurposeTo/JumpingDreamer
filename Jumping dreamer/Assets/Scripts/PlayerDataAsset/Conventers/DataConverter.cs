@@ -14,7 +14,7 @@ public static class DataConverter
     }
 
 
-    public static string ToJson(PlayerGameData data, out bool isSuccess, out Exception exception)
+    public static string ToJson(IDataGetter data, out bool isSuccess, out Exception exception)
     {
         try
         {

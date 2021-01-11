@@ -1,36 +1,31 @@
-﻿public class DataHandler : IDataInteraction, IDataHandlerInteraction
+﻿using UnityEngine;
+
+public class DataHandler : IDataInteraction, IDataHandlerInteraction
 {
-    private DataModel lastGamingSessions;
     private readonly DataModel currentGamingSession;
-    private readonly IModelInteraction modelInteraction;
+    private readonly DataModel lastGamingSessions;
 
+    private readonly IDataGetter usedDataGetter;
 
-    public DataHandler(DataModel modelWithCurrentData)
+    public DataHandler(DataModel currentGamingSession, DataModel lastGamingSessions)
     {
-        currentGamingSession = modelWithCurrentData;
-        modelInteraction = modelWithCurrentData;
+        this.currentGamingSession = currentGamingSession ?? throw new System.ArgumentNullException(nameof(currentGamingSession));
+        this.lastGamingSessions = lastGamingSessions ?? throw new System.ArgumentNullException(nameof(lastGamingSessions));
+
+        //todo: останется ли внутри UsedDataGetter правильные ссылки на PlayerGameData, если внутри модели ее пере-set'ят?
+        usedDataGetter = new UsedDataGetter
+            (
+                ((IModelInteraction)currentGamingSession).GetData(),
+                ((IModelInteraction)lastGamingSessions).GetData()
+            );
     }
 
 
-    IDataGetter IDataInteraction.Getter => throw new System.NotImplementedException();
+    IDataGetter IDataInteraction.Getter => usedDataGetter;
     IDataSetter IDataInteraction.Setter => ((IDataInteraction)currentGamingSession).Setter;
-    IDataChangingNotifier IDataInteraction.Notifier => throw new System.NotImplementedException();
+    IDataChangingNotifier IDataInteraction.Notifier => currentGamingSession;
 
+    IModelInteraction IDataHandlerInteraction.GetInteractionWithDataOfCurrentGameSession() => currentGamingSession;
 
-    IModelInteraction IDataHandlerInteraction.GetInteractionWithDataOfCurrentGameSession()
-    {
-        return currentGamingSession;
-    }
-    
-
-    IModelInteraction IDataHandlerInteraction.GetInteractionWithDataOfLastGamingSessions()
-    {
-        return lastGamingSessions;
-    }
-
-
-    PlayerGameData IDataHandlerInteraction.GetUsedData()
-    {
-        throw new System.NotImplementedException();
-    }
+    IModelInteraction IDataHandlerInteraction.GetInteractionWithDataOfLastGamingSessions() => lastGamingSessions;
 }

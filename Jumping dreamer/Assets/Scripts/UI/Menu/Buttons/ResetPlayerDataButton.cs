@@ -6,7 +6,7 @@
         {
             if (success)
             {
-                PlayerDataModelController.Instance.ResetPlayerData();
+                PlayerDataModelController.Instance.DataReseter.Reset();
                 PopUpWindowGenerator.Instance.CreateDialogWindow(LocalizationManager.Instance.GetLocalizedValue("ProgressWasDeleted"));
             }
             else

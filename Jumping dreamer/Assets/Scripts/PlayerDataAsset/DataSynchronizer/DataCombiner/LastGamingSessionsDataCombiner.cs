@@ -17,9 +17,9 @@ public class LastGamingSessionsDataCombiner
     }
 
 
-    private PlayerStatsData1 CombineStats(PlayerStatsData1 stats1, PlayerStatsData1 stats2)
+    private PlayerStatsData CombineStats(PlayerStatsData stats1, PlayerStatsData stats2)
     {
-        PlayerStatsData1 combinedStats = new PlayerStatsData1();
+        PlayerStatsData combinedStats = new PlayerStatsData();
         dataCombiner.CombineRecordStats(stats1, stats2, ref combinedStats);
         dataCombiner.CombineTotalStatsForLastGamesData(stats1, stats2, ref combinedStats);
 
@@ -27,7 +27,7 @@ public class LastGamingSessionsDataCombiner
     }
 
 
-    private InGamePurchasesData1 CombinePurchases(InGamePurchasesData1 purchases1, InGamePurchasesData1 purchases2)
+    private InGamePurchasesData CombinePurchases(InGamePurchasesData purchases1, InGamePurchasesData purchases2)
     {
         return purchases1.EstimatedCostInStars > purchases2.EstimatedCostInStars ? purchases1 : purchases2;
     }

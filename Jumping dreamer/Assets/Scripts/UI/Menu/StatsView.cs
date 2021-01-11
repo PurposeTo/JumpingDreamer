@@ -25,10 +25,10 @@ public class StatsView : SuperMonoBehaviour
     {
         PlayerDataModelController.InitializedInstance += (instance) =>
         {
-            IGetModelData modelData = instance.GetGettableDataModel();
+            IDataGetter data = instance.DataInteraction.Getter;
 
-            SetStatsText(modelData.StatsData);
-            SetInGamePurchasesText(modelData.InGamePurchasesData);
+            SetStatsText(data.Stats);
+            SetInGamePurchasesText(data.InGamePurchases);
 
             SetRecordsText();
         };
@@ -47,17 +47,17 @@ public class StatsView : SuperMonoBehaviour
     }
 
 
-    private void SetStatsText(IGetStatsData statsData)
+    private void SetStatsText(IStatsGetter stats)
     {
-        maxCollectedStars = $"Max collected stars: {statsData.MaxCollectedStars}";
-        maxEarnedScore = $"Max earned score: {statsData.MaxEarnedScore}";
-        maxScoreMultiplierValue = $"Max score multiplier: {statsData.MaxScoreMultiplierValue}";
-        maxLifeTime = $"Max life time: {statsData.MaxLifeTime}";
-        totalLifeTime = $"Total life time: {statsData.TotalLifeTime}";
+        maxCollectedStars = $"Max collected stars: {stats.RecordCollectedStars}";
+        maxEarnedScore = $"Max earned score: {stats.RecordEarnedScore}";
+        maxScoreMultiplierValue = $"Max score multiplier: {stats.RecordScoreMultiplierValue}";
+        maxLifeTime = $"Max life time: {stats.RecordLifeTime}";
+        totalLifeTime = $"Total life time: {stats.TotalLifeTime}";
     }
 
 
-    private void SetInGamePurchasesText(IGetInGamePurchasesData InGamePurchases)
+    private void SetInGamePurchasesText(IInGamePurchasesGetter InGamePurchases)
     {
         totalStars = $"Total stars: {InGamePurchases.TotalStars}";
     }

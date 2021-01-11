@@ -7,13 +7,13 @@ public class GPGSLeaderboard : SingletonSuperMonoBehaviour<GPGSLeaderboard>
 
     protected override void StartWrapped()
     {
-        PlayerDataModelController.Instance.GetAction().OnNewScoreRecord += SetUpdateLeaderboardMethodToAction;
+        PlayerDataModelController.Instance.DataInteraction.Notifier.StatsChangingNotifier.OnNewScoreRecord += SetUpdateLeaderboardMethodToAction;
     }
 
 
     protected override void OnDestroyWrapped()
     {
-        PlayerDataModelController.Instance.GetAction().OnNewScoreRecord -= SetUpdateLeaderboardMethodToAction;
+        PlayerDataModelController.Instance.DataInteraction.Notifier.StatsChangingNotifier.OnNewScoreRecord -= SetUpdateLeaderboardMethodToAction;
     }
 
 
@@ -26,7 +26,7 @@ public class GPGSLeaderboard : SingletonSuperMonoBehaviour<GPGSLeaderboard>
 
     public void UpdateLeaderboardScore(Action openLeaderboardAction)
     {
-        Social.ReportScore(PlayerDataModelController.Instance.GetGettableDataModel().StatsData.MaxEarnedScore.Value, GPGSIds.leaderboard_dreamer_the_king, (bool success) =>
+        Social.ReportScore(PlayerDataModelController.Instance.DataInteraction.Getter.Stats.RecordEarnedScore.Value, GPGSIds.leaderboard_dreamer_the_king, (bool success) =>
         {
             if (success)
             {
