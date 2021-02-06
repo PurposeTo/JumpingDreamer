@@ -9,16 +9,10 @@ public class UsedInGamePurchasesGetter : IInGamePurchasesGetter
     public UsedInGamePurchasesGetter(IInGamePurchasesGetter currentSessionData, IInGamePurchasesGetter lastSessionsData)
     {
         this.currentSessionData = currentSessionData ?? throw new ArgumentNullException(nameof(currentSessionData));
-        this.lastSessionsData = lastSessionsData;
+        this.lastSessionsData = lastSessionsData ?? throw new ArgumentNullException(nameof(lastSessionsData));
     }
 
-    SafeInt? IInGamePurchasesGetter.TotalStars =>
-                lastSessionsData == null || lastSessionsData.TotalStars == null
-                ? currentSessionData.TotalStars
-                : (SafeInt)(currentSessionData.TotalStars + lastSessionsData.TotalStars);
+    SafeInt? IInGamePurchasesGetter.TotalStars => currentSessionData.TotalStars + lastSessionsData.TotalStars;
 
-    SafeInt? IInGamePurchasesGetter.EstimatedCostInStars =>
-                        lastSessionsData == null || lastSessionsData.EstimatedCostInStars == null
-                ? currentSessionData.EstimatedCostInStars
-                : (SafeInt)(currentSessionData.EstimatedCostInStars + lastSessionsData.EstimatedCostInStars);
+    SafeInt? IInGamePurchasesGetter.EstimatedCostInStars => currentSessionData.EstimatedCostInStars + lastSessionsData.EstimatedCostInStars;
 }

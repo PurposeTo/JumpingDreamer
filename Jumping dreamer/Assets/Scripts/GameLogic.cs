@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -105,7 +105,7 @@ public static class GameLogic
     }
 
 
-    public static T[] GetAllEnumValues<T>() where T: System.Enum
+    public static T[] GetAllEnumValues<T>() where T : System.Enum
     {
         return (T[])System.Enum.GetValues(typeof(T));
     }

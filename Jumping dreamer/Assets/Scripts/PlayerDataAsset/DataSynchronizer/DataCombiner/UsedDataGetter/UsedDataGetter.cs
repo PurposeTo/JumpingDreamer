@@ -1,31 +1,27 @@
 ﻿using System;
 using UnityEngine;
 
+
+/// <summary>
+/// Объединяет данные за текущую игровую сессию и прошлые игровые сессии
+/// </summary>
 public class UsedDataGetter : IDataGetter
 {
-    private readonly IDataGetter currentSessionData;
-
-    private readonly UsedStatsGetter usedStatsGetter;
-    private readonly UsedInGamePurchasesGetter usedInGamePurchasesGetter;
+    private readonly IStatsGetter usedStatsGetter;
+    private readonly IInGamePurchasesGetter usedInGamePurchasesGetter;
 
     public UsedDataGetter(IDataGetter currentSessionData, IDataGetter lastSessionsData)
     {
-        this.currentSessionData = currentSessionData ?? throw new ArgumentNullException(nameof(currentSessionData));
+        if (currentSessionData == null) throw new ArgumentNullException(nameof(currentSessionData));
+        if (lastSessionsData == null) throw new ArgumentNullException(nameof(lastSessionsData));
 
-        IStatsGetter lastSessionsStatsGetter = lastSessionsData == null
-            ? null
-            : lastSessionsData.Stats;
-
-        IInGamePurchasesGetter lastSessionsInGamePurchasesGetter = lastSessionsData == null
-            ? null
-            : lastSessionsData.InGamePurchases;
-
-        usedStatsGetter = new UsedStatsGetter(currentSessionData.Stats, lastSessionsStatsGetter);
-        usedInGamePurchasesGetter = new UsedInGamePurchasesGetter(currentSessionData.InGamePurchases, lastSessionsInGamePurchasesGetter);
+        Id = currentSessionData.Id;
+        usedStatsGetter = new UsedStatsGetter(currentSessionData.Stats, lastSessionsData.Stats);
+        usedInGamePurchasesGetter = new UsedInGamePurchasesGetter(currentSessionData.InGamePurchases, lastSessionsData.InGamePurchases);
     }
 
 
-    string IDataGetter.Id => currentSessionData.Id;
+    public string Id { get; }
 
     IStatsGetter IDataGetter.Stats => usedStatsGetter;
 

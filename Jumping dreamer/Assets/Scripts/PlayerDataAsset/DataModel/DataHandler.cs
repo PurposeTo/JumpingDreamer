@@ -2,28 +2,28 @@
 
 public class DataHandler : IDataInteraction, IDataHandlerInteraction
 {
-    private readonly IDataInteraction currentGamingSession;
-    private readonly IDataInteraction lastGamingSessions;
-
-    private readonly IDataGetter usedDataGetter;
-
     public DataHandler(DataModel currentGamingSession, DataModel lastGamingSessions)
     {
-        this.currentGamingSession = currentGamingSession ?? throw new System.ArgumentNullException(nameof(currentGamingSession));
-        this.lastGamingSessions = lastGamingSessions ?? throw new System.ArgumentNullException(nameof(lastGamingSessions));
+        CurrentGameSession = currentGamingSession;
+        LastGamingSessions = lastGamingSessions;
 
         //todo: останется ли внутри UsedDataGetter правильные ссылки на PlayerGameData, если внутри модели ее пере-set'ят?
-        usedDataGetter = new UsedDataGetter
+        Getter = new UsedDataGetter
             (
-                ((IModelInteraction)currentGamingSession).GetData(),
-                ((IModelInteraction)lastGamingSessions).GetData()
+                CurrentGameSession.GetData(),
+                LastGamingSessions.GetData()
             );
+
+        Setter = ((IDataInteraction)currentGamingSession).Setter;
+        Notifier = ((IDataInteraction)currentGamingSession).Notifier;
+
     }
 
 
-    IDataGetter IDataInteraction.Getter => usedDataGetter;
-    IDataSetter IDataInteraction.Setter => currentGamingSession.Setter;
-    IDataChangingNotifier IDataInteraction.Notifier => currentGamingSession;
-    IModelInteraction IDataHandlerInteraction.GetInteractionWithDataOfCurrentGameSession() => currentGamingSession;
-    IModelInteraction IDataHandlerInteraction.GetInteractionWithDataOfLastGamingSessions() => lastGamingSessions;
+    public IDataGetter Getter { get; }
+    public IDataSetter Setter { get; }
+    public IDataChangingNotifier Notifier { get; }
+
+    public IModelInteraction CurrentGameSession { get; }
+    public IModelInteraction LastGamingSessions { get; }
 }

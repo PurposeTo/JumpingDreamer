@@ -1,5 +1,5 @@
 ﻿public interface IDataHandlerInteraction
 {
-    IModelInteraction GetInteractionWithDataOfLastGamingSessions();
-    IModelInteraction GetInteractionWithDataOfCurrentGameSession();
+    IModelInteraction LastGamingSessions { get; }
+    IModelInteraction CurrentGameSession { get; }
 }

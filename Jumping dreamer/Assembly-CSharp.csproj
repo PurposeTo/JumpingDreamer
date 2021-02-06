@@ -237,9 +237,9 @@
     <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\Abstract\IDataFromStorageToModelUpdater.cs" />
     <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\Abstract\IDataReseter.cs" />
     <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\Abstract\ISynchronizerNotifier.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataCombiner\CurrentGameSessionsDataCombiner.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataCombiner\DataCombiner.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataCombiner\LastGamingSessionsDataCombiner.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataCombiner\LastSessionsDataGetter\LastSessionsDataGetter.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataCombiner\LastSessionsDataGetter\LastSessionsInGamePurchasesGetter.cs" />
+    <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataCombiner\LastSessionsDataGetter\LastSessionsStatsGetter.cs" />
     <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataCombiner\UsedDataGetter\UsedDataGetter.cs" />
     <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataCombiner\UsedDataGetter\UsedInGamePurchasesGetter.cs" />
     <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataCombiner\UsedDataGetter\UsedStatsGetter.cs" />
