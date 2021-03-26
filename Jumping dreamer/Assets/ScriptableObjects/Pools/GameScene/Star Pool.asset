@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86a357340fd73ef439d1ea2e16f411a2, type: 3}
+  m_Script: {fileID: 11500000, guid: ba9eaf6d1cb45ce4ea92d94d2b3e172c, type: 3}
   m_Name: Star Pool
   m_EditorClassIdentifier: 
   prefab: {fileID: 8849593809778058553, guid: 5fe7911bd03d4914e8daf2a69f5c5164, type: 3}

@@ -1,48 +1,47 @@
 ﻿using System;
+using Desdiene.Singleton;
+using Desdiene.Time_control;
 using UnityEngine.SceneManagement;
 
 public class GameManager : SingletonSuperMonoBehaviour<GameManager>
 {
     public event Action OnGameOver;
 
-    private Pauser gamePauser; // Используется для установки паузы при смерти/возрождении игрока
-    private Pauser gameUIPauser; // Используется для установки паузы через UI
+     // Используется для установки паузы при смерти/возрождении игрока
+    // Используется для установки паузы через UI
 
 
     protected override void AwakeSingleton()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
-
-        gameUIPauser = new Pauser(this);
-        gamePauser = new Pauser(this);
     }
 
 
     public void RebornPlayer()
     {
         GameMenu.Instance.GameOverScreen.GameOverStatusScreen.SetPlayerMustSeeAdTrue();
-        gamePauser.SetPause(false);
+        GlobalPause.Instance.SetDeathPause(false);
         GameObjectsHolder.Instance.PlayerPresenter.PlayerHealth.RaiseTheDead();
     }
 
 
     public void GameOver()
     {
-        gamePauser.SetPause(true);
+        GlobalPause.Instance.SetDeathPause(true);
         OnGameOver?.Invoke();
     }
 
     /// <summary>
     /// Установить паузу игры
     /// </summary>
-    public void SetPause(bool isPause)
+    public void SetPlayerPause(bool isPause)
     {
-        gameUIPauser.SetPause(isPause);
+        GlobalPause.Instance.SetPlayerPause(isPause);
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        gamePauser.SetPause(false);
-        gameUIPauser.SetPause(false);
+        GlobalPause.Instance.SetPlayerPause(false);
+        GlobalPause.Instance.SetDeathPause(false);
     }
 }

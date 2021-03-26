@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Desdiene.Object_pooler;
 
 public class FlashCompass : MonoBehaviour, IPooledObject
 {

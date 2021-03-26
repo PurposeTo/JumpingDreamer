@@ -1,4 +1,5 @@
 ﻿using System;
+using Desdiene.Localization;
 using TMPro;
 using UnityEngine;
 

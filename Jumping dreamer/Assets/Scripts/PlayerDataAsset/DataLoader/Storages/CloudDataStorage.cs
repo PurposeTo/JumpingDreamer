@@ -5,6 +5,8 @@ using GooglePlayGames.BasicApi.SavedGame;
 using UnityEngine;
 using System.Text;
 using System.Collections;
+using Desdiene.Coroutine.CoroutineExecutor;
+using Desdiene.Super_monoBehaviour;
 
 public class CloudDataStorage : DataStorage, IDataReloader
 {

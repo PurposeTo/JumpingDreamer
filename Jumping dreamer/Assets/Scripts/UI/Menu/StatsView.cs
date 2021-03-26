@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using Desdiene.Super_monoBehaviour;
+using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(TMP_Text))]

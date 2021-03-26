@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Desdiene.Singleton;
 using UnityEngine;
 
 public class PlayerSettingsStorage : SingletonSuperMonoBehaviour<PlayerSettingsStorage>

@@ -1,4 +1,5 @@
 ﻿using System;
+using Desdiene.Super_monoBehaviour;
 using UnityEngine;
 
 public abstract class DataStorage : StorageDataReaderWriter

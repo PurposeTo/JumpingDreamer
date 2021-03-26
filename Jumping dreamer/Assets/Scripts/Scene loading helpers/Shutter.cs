@@ -1,4 +1,5 @@
 ﻿using System;
+using Desdiene.Singleton;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]

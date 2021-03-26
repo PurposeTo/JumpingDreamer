@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Desdiene.Singleton;
+using UnityEngine;
 
 public class GameMenu : SingletonSuperMonoBehaviour<GameMenu>
 {

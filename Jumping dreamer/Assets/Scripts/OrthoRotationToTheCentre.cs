@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Desdiene.Super_monoBehaviour;
+using UnityEngine;
 
 public class OrthoRotationToTheCentre : SuperMonoBehaviour
 {

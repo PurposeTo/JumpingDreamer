@@ -1,4 +1,5 @@
 ﻿using System;
+using Desdiene.Super_monoBehaviour;
 using UnityEngine;
 
 public class CollectRewardsScreen : SuperMonoBehaviour
@@ -87,14 +88,14 @@ public class CollectRewardsScreen : SuperMonoBehaviour
 
     private void StartWaitingRewardAd()
     {
-        DisplayerOfLoading.Instance.StartWaiting(this);
+        InternetConnectionWaitingDisplayer.Instance.StartWaiting(this);
         SubscribeAdMobEvents();
     }
 
 
     private void EndWaitingRewardAd()
     {
-        DisplayerOfLoading.Instance.EndWaiting(this);
+        InternetConnectionWaitingDisplayer.Instance.EndWaiting(this);
         UnsubscribeAdMobEvents();
     }
 }

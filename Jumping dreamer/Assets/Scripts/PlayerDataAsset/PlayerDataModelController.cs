@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Desdiene.Singleton;
 using GooglePlayGames.BasicApi.SavedGame;
 using UnityEngine; // Не удалять, т.к. используется для платформозависимой компиляции
 

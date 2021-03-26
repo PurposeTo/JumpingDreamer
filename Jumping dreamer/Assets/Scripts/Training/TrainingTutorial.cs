@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
+using Desdiene.Coroutine.CoroutineExecutor;
+using Desdiene.Super_monoBehaviour;
 using UnityEngine;
 
 public class TrainingTutorial : SuperMonoBehaviour

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using Desdiene.Time_control;
+using Desdiene.Singleton;
 
 public class SingleSceneLoader : SingletonSuperMonoBehaviour<SingleSceneLoader>
 {
@@ -8,12 +10,8 @@ public class SingleSceneLoader : SingletonSuperMonoBehaviour<SingleSceneLoader>
 
     private string sceneToLoadName;
 
-    private Pauser pauser;
-
     protected override void AwakeSingleton()
     {
-        pauser = new Pauser(this);
-
         SceneManager.sceneLoaded += OnSceneLoaded;
 
         Shutter.InitializedInstance += (instance) =>
@@ -22,7 +20,7 @@ public class SingleSceneLoader : SingletonSuperMonoBehaviour<SingleSceneLoader>
             instance.OnShutterClose += OnShutterClose;
 
             // Остановить время при старте игры и ждать выполнения метода OpenShutter()
-            pauser.SetPause(true);
+            GlobalPause.Instance.SetSceneLoading(true);
         };
     }
 
@@ -46,7 +44,7 @@ public class SingleSceneLoader : SingletonSuperMonoBehaviour<SingleSceneLoader>
     public void LoadScene(string sceneName)
     {
         sceneToLoadName = sceneName;
-        pauser.SetPause(true);
+        GlobalPause.Instance.SetSceneLoading(true);
         Shutter.Instance.CloseShutter();
     }
 
@@ -60,6 +58,6 @@ public class SingleSceneLoader : SingletonSuperMonoBehaviour<SingleSceneLoader>
 
     private void OnShutterOpen()
     {
-        pauser.SetPause(false);
+        GlobalPause.Instance.SetSceneLoading(false);
     }
 }

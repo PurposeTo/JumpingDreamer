@@ -1,4 +1,5 @@
 ﻿using System;
+using Desdiene.Super_monoBehaviour;
 
 public abstract class StorageDataReaderWriter : SuperMonoBehaviourContainer
 {

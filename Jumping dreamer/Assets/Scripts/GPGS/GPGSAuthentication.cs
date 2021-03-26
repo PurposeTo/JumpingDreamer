@@ -2,6 +2,7 @@
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using TMPro;
+using Desdiene.Singleton;
 
 public class GPGSAuthentication : SingletonSuperMonoBehaviour<GPGSAuthentication>
 {

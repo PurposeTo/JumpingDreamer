@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using Desdiene.Singleton;
 
 public class GPGSLeaderboard : SingletonSuperMonoBehaviour<GPGSLeaderboard>
 {

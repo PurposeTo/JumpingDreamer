@@ -4,6 +4,9 @@ using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 using Debug = UnityEngine.Debug;
 using System.Collections;
+using Desdiene.Singleton;
+using Desdiene.Coroutine.CoroutineExecutor;
+using Desdiene.Coroutine.WaitForDone;
 
 [RequireComponent(typeof(CommandQueueMainThreadExecutor))]
 public class GoogleAdMobController : SingletonSuperMonoBehaviour<GoogleAdMobController>

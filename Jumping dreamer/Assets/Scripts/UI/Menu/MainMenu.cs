@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
+using Desdiene.Singleton;
 
 public class MainMenu : SingletonSuperMonoBehaviour<MainMenu>
 {

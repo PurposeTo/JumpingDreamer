@@ -1,4 +1,6 @@
-﻿public class ResetPlayerDataButton : OperationWithPlayerDataButton
+﻿using Desdiene.Localization;
+
+public class ResetPlayerDataButton : OperationWithPlayerDataButton
 {
     public override void DoOperationWithPlayerData()
     {

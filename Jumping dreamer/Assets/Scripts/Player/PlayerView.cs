@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Desdiene.Super_monoBehaviour;
 using UnityEngine;
 
 public class PlayerView : SuperMonoBehaviour

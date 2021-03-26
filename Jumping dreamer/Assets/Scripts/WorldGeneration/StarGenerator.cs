@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Desdiene.Object_pooler;
+using Desdiene.Singleton;
 using UnityEngine;
 
 public class StarGenerator : SingletonSuperMonoBehaviour<StarGenerator>

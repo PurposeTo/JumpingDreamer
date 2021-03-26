@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Desdiene.Singleton;
 using UnityEngine;
 
 public class WorldGenerationRulesController : SingletonSuperMonoBehaviour<WorldGenerationRulesController>

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Desdiene.Object_pooler;
+using Desdiene.Singleton;
+using UnityEngine;
 
 public class PopUpWindowGenerator : SingletonSuperMonoBehaviour<PopUpWindowGenerator>
 {

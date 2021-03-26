@@ -2,6 +2,8 @@
 using GoogleMobileAds.Api;
 using System;
 using System.Collections;
+using Desdiene.Coroutine.CoroutineExecutor;
+using Desdiene.Super_monoBehaviour;
 
 public class RewardedAdLoader : IRewardedAdLoader
 {

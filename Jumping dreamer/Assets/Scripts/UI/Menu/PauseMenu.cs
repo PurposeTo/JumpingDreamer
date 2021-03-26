@@ -7,7 +7,7 @@ public class PauseMenu : MonoBehaviour
 
     public void Pause()
     {
-        GameManager.Instance.SetPause(true);
+        GameManager.Instance.SetPlayerPause(true);
 
         PauseScreen.SetActive(true);
         PauseButton.SetActive(false);
@@ -16,7 +16,7 @@ public class PauseMenu : MonoBehaviour
 
     public void Resume()
     {
-        GameManager.Instance.SetPause(false);
+        GameManager.Instance.SetPlayerPause(false);
 
         PauseScreen.SetActive(false);
         PauseButton.SetActive(true);

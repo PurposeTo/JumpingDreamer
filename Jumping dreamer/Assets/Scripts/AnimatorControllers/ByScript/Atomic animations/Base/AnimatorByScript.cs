@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using Desdiene.Coroutine.CoroutineExecutor;
+using Desdiene.Super_monoBehaviour;
 using UnityEngine;
 
 public class AnimatorByScript<T> : SuperMonoBehaviourContainer where T : AnimationByScript
