@@ -51,10 +51,11 @@ public class LocalDataStorage : DataStorage
     {
         Debug.Log($"Путь к файлу данных: {filePath}");
 
-        string data = null;
-        yield return new DeviceDataLoader(filePath).LoadDataEnumerator(receivedData => data = receivedData);
+        yield return new DeviceDataLoader(filePath).LoadDataEnumerator(receivedData =>
+        {
+            if (receivedData != null) jsonAction?.Invoke(JsonEncryption.Decrypt(receivedData));
+        });
 
-        if (data != null) jsonAction?.Invoke(JsonEncryption.Decrypt(data));
     }
 
 

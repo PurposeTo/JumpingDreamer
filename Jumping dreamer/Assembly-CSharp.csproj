@@ -154,6 +154,8 @@
     <Compile Include="Assets\Imported\Desdiene\Time control\GlobalPause.cs" />
     <Compile Include="Assets\Imported\Desdiene\Time control\GlobalTimeScaler.cs" />
     <Compile Include="Assets\Imported\Desdiene\Time control\LocalTimeScaler.cs" />
+    <Compile Include="Assets\Imported\Desdiene\Tools\DeviceDataLoader.cs" />
+    <Compile Include="Assets\Imported\Desdiene\Tools\InternetConnectionChecker.cs" />
     <Compile Include="Assets\Scripts\AdMob\GoogleAdMobController.cs" />
     <Compile Include="Assets\Scripts\AdMob\RewardedAdLoader.cs" />
     <Compile Include="Assets\Scripts\AnimatorControllers\ByScript\Atomic animations\Base\AnimationByScript.cs" />
@@ -266,8 +268,6 @@
     <Compile Include="Assets\Scripts\Scene loading helpers\Shutter.cs" />
     <Compile Include="Assets\Scripts\Scene loading helpers\SingleSceneLoader.cs" />
     <Compile Include="Assets\Scripts\Star.cs" />
-    <Compile Include="Assets\Scripts\Tools\DeviceDataLoader.cs" />
-    <Compile Include="Assets\Scripts\Tools\InternetConnectionChecker.cs" />
     <Compile Include="Assets\Scripts\Training\TrainingTipContainer.cs" />
     <Compile Include="Assets\Scripts\Training\TrainingTutorial.cs" />
     <Compile Include="Assets\Scripts\UI\FPSCounter.cs" />

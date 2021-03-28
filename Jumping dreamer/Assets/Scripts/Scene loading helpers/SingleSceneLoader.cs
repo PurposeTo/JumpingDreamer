@@ -49,6 +49,12 @@ public class SingleSceneLoader : SingletonSuperMonoBehaviour<SingleSceneLoader>
     }
 
 
+    public void ReloadScene()
+    {
+        LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+
     private void OnShutterClose()
     {
         SceneManager.LoadScene(sceneToLoadName);
