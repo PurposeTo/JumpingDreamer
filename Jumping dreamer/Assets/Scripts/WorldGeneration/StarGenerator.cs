@@ -1,5 +1,6 @@
-﻿using Desdiene.Object_pooler;
+﻿using Desdiene.ObjectPoolerAsset;
 using Desdiene.Singleton;
+using Desdiene.UnityEngineExtension;
 using UnityEngine;
 
 public class StarGenerator : SingletonSuperMonoBehaviour<StarGenerator>
@@ -39,6 +40,7 @@ public class StarGenerator : SingletonSuperMonoBehaviour<StarGenerator>
         float range = Random.Range(centreRadius + 10f, 70f);
         Vector3 randomPosition = randomDirection * range;
 
-        ObjectPooler.Instance.SpawnFromPool(Star, randomPosition, Quaternion.identity);
+        Star.SpawnFromPool();
+        Star.transform.position = randomPosition;
     }
 }

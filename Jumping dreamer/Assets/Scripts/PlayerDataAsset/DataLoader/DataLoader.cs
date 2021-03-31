@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Desdiene.Super_monoBehaviour;
+using Desdiene.SuperMonoBehaviourAsset;
 
 public class DataLoader : StorageDataReaderWriter
 {

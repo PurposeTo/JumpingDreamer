@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Desdiene.Super_monoBehaviour;
+using Desdiene.SuperMonoBehaviourAsset;
 using UnityEngine;
 
 public abstract class ComponentWithColor : SuperMonoBehaviour

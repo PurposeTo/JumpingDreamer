@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using Desdiene.Object_pooler;
+using Desdiene.ObjectPoolerAsset;
 
 public class FlashCompass : MonoBehaviour, IPooledObject
 {
@@ -59,18 +59,19 @@ public class FlashCompass : MonoBehaviour, IPooledObject
     }
 
 
-    public void Constructor(Flash flash)
+    public FlashCompass Constructor(Flash flash)
     {
         if (flash == null)
         {
             Debug.LogError("Не установлена ссылка на вспышку для компаса!");
             gameObject.SetActive(false);
-            return;
+            return this;
         }
 
         this.flash = flash;
 
         if (lifeCycleRoutine == null) lifeCycleRoutine = StartCoroutine(LifeCycleEnumerator());
+        return this;
     }
 
 

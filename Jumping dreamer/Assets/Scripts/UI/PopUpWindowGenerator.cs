@@ -1,4 +1,4 @@
-﻿using Desdiene.Object_pooler;
+﻿using Desdiene.ObjectPoolerAsset;
 using Desdiene.Singleton;
 using UnityEngine;
 
@@ -25,6 +25,6 @@ public class PopUpWindowGenerator : SingletonSuperMonoBehaviour<PopUpWindowGener
 
     public LoadingWindow CreateLoadingWindow()
     {
-        return ObjectPooler.Instance.SpawnFromPoolAndGetComponent<LoadingWindow>(loadingWindow, Vector3.zero, Quaternion.identity);
+        return loadingWindow.SpawnFromPool<LoadingWindow>();
     }
 }

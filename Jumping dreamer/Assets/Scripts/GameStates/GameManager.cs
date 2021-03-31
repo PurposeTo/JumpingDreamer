@@ -1,6 +1,6 @@
 ﻿using System;
 using Desdiene.Singleton;
-using Desdiene.Time_control;
+using Desdiene.TimeControl;
 using UnityEngine.SceneManagement;
 
 public class GameManager : SingletonSuperMonoBehaviour<GameManager>

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Desdiene.Object_pooler;
-using Desdiene.Super_monoBehaviour;
+using Desdiene.ObjectPoolerAsset;
+using Desdiene.SuperMonoBehaviourAsset;
 using UnityEngine;
 
 public class PlatformGenerator : SuperMonoBehaviour
@@ -115,7 +115,8 @@ public class PlatformGenerator : SuperMonoBehaviour
 
     private GameObject SpawnPlatform(GameObject prefabPlatform, Vector3 position)
     {
-        GameObject createdPlatform = ObjectPooler.Instance.SpawnFromPool(prefabPlatform, position, Quaternion.identity);
+        GameObject createdPlatform = prefabPlatform.SpawnFromPool();
+        createdPlatform.transform.position = position;
         SetMotionConfigsAndGetCauseOfDestroy(createdPlatform, out PlatformCauseOfDestroy.CauseOfDestroy causeOfDestroy);
         createdPlatform.GetComponent<PlatformLifeCycle>().SetCauseOfDestroy(causeOfDestroy);
         return createdPlatform;

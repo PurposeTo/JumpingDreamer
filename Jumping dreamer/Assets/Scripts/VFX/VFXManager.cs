@@ -1,4 +1,4 @@
-﻿using Desdiene.Object_pooler;
+﻿using Desdiene.ObjectPoolerAsset;
 using Desdiene.Singleton;
 using TMPro;
 using UnityEngine;
@@ -27,7 +27,8 @@ public class VFXManager : SingletonSuperMonoBehaviour<VFXManager>
 
     private TextMeshPro SpawnPopupText(Vector3 position, Quaternion rotation)
     {
-        GameObject PopupTextObject = ObjectPooler.Instance.SpawnFromPool(PopupTextPrefab, position, rotation);
+        GameObject PopupTextObject = PopupTextPrefab.SpawnFromPool();
+        PopupTextObject.transform.SetPositionAndRotation(position, rotation);
         return PopupTextObject.GetComponent<TextMeshPro>();
     }
 }

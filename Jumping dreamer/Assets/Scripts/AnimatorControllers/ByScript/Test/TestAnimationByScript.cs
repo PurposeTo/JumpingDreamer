@@ -1,5 +1,5 @@
 ﻿using System;
-using Desdiene.Super_monoBehaviour;
+using Desdiene.SuperMonoBehaviourAsset;
 using UnityEngine;
 
 public class TestAnimationByScript : SuperMonoBehaviour

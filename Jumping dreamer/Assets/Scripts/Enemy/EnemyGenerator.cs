@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using Desdiene.Coroutine.CoroutineExecutor;
-using Desdiene.Object_pooler;
-using Desdiene.Super_monoBehaviour;
+using Desdiene.ObjectPoolerAsset;
+using Desdiene.SuperMonoBehaviourAsset;
+using Desdiene.UnityEngineExtension;
 using UnityEngine;
 
 public class EnemyGenerator : SuperMonoBehaviour
@@ -15,7 +16,7 @@ public class EnemyGenerator : SuperMonoBehaviour
     protected override void StartWrapped()
     {
         lifeCycleInfo = CreateCoroutineContainer();
-        ExecuteCoroutineContinuously(ref lifeCycleInfo, LifeCycleEnumerator());
+        ExecuteCoroutineContinuously(lifeCycleInfo, LifeCycleEnumerator());
     }
 
 
@@ -26,7 +27,7 @@ public class EnemyGenerator : SuperMonoBehaviour
         while (true)
         {
             yield return wait;
-            ObjectPooler.Instance.SpawnFromPool(pursuer, GameObjectsHolder.Instance.Centre.gameObject.transform.position, Quaternion.identity);
+            pursuer.SpawnFromPool().transform.position = GameObjectsHolder.Instance.Centre.gameObject.transform.position;
         }
     }
 }

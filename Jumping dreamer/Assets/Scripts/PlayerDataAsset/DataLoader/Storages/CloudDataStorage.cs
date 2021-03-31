@@ -6,9 +6,9 @@ using UnityEngine;
 using System.Text;
 using System.Collections;
 using Desdiene.Coroutine.CoroutineExecutor;
-using Desdiene.Super_monoBehaviour;
+using Desdiene.SuperMonoBehaviourAsset;
 
-public class CloudDataStorage : DataStorage, IDataReloader
+public class CloudDataStorage : DataStorageOld, IDataReloader
 {
     private ICoroutineContainer loadDataInfo;
 
@@ -33,7 +33,7 @@ public class CloudDataStorage : DataStorage, IDataReloader
 
     private protected override void ReadFromStorage(Action<PlayerGameData> callback)
     {
-        superMonoBehaviour.ExecuteCoroutineContinuously(ref loadDataInfo, LoadDataEnumerator(callback));
+        superMonoBehaviour.ExecuteCoroutineContinuously(loadDataInfo, LoadDataEnumerator(callback));
     }
 
 

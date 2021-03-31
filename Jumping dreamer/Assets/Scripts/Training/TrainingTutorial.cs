@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Linq;
 using Desdiene.Coroutine.CoroutineExecutor;
-using Desdiene.Super_monoBehaviour;
+using Desdiene.SuperMonoBehaviourAsset;
 using UnityEngine;
 
 public class TrainingTutorial : SuperMonoBehaviour
@@ -38,7 +38,7 @@ public class TrainingTutorial : SuperMonoBehaviour
 
             if (IsTutorialNeedsToBeShown())
             {
-                ReStartCoroutineExecution(ref CheckingIfTutorialNeedsToBeShownRoutineInfo,
+                ReStartCoroutineExecution(CheckingIfTutorialNeedsToBeShownRoutineInfo,
                     CheckingIfTutorialNeedsToBeShownEnumerator(shouldStartByShowingTheTutorial));
             }
         };

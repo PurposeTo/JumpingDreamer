@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Desdiene.Object_pooler;
+using Desdiene.ObjectPoolerAsset;
 
 public class FlashGenerator : MonoBehaviour
 {
@@ -15,13 +15,14 @@ public class FlashGenerator : MonoBehaviour
     }
 
 
-    public void Constructor(FlashGeneratorData flashGeneratorData, RectTransform flashCompassCanvas)
+    public FlashGenerator Constructor(FlashGeneratorData flashGeneratorData, RectTransform flashCompassCanvas)
     {
         if (flashGeneratorData == null) throw new System.ArgumentNullException("flashGeneratorData");
         if (flashCompassCanvas == null) throw new System.ArgumentNullException("flashCompassCanvas");
 
         this.flashGeneratorData = flashGeneratorData;
         this.flashCompassCanvas = flashCompassCanvas;
+        return this;
     }
 
 
@@ -50,8 +51,8 @@ public class FlashGenerator : MonoBehaviour
 
     private void GenerateFlash()
     {
-        GameObject createdFlash = ObjectPooler.Instance.SpawnFromPool(flashGeneratorData.Flash, Vector2.zero, Quaternion.identity);
-        GameObject compass = ObjectPooler.Instance.SpawnFromPool(flashGeneratorData.FlashCompass, Vector2.zero, Quaternion.identity, flashCompassCanvas.transform);
-        compass.GetComponent<FlashCompass>().Constructor(createdFlash.GetComponent<Flash>());
+        Flash createdFlash = flashGeneratorData.Flash.SpawnFromPool<Flash>();
+        FlashCompass compass = flashGeneratorData.FlashCompass.SpawnFromPool<FlashCompass>().Constructor(createdFlash);
+        compass.transform.SetParent(flashCompassCanvas.transform);
     }
 }

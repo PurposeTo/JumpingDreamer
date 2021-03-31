@@ -7,6 +7,7 @@ using System.Collections;
 using Desdiene.Singleton;
 using Desdiene.Coroutine.CoroutineExecutor;
 using Desdiene.Coroutine.WaitForDone;
+using Desdiene.Tools;
 
 [RequireComponent(typeof(CommandQueueMainThreadExecutor))]
 public class GoogleAdMobController : SingletonSuperMonoBehaviour<GoogleAdMobController>
@@ -98,7 +99,7 @@ public class GoogleAdMobController : SingletonSuperMonoBehaviour<GoogleAdMobCont
 
         if (isAdWasReallyLoaded)
         {
-            ExecuteCoroutineContinuously(ref checkInternetConnectionAndShowAdInfo, CheckInternetConnectionAndShowAd());
+            ExecuteCoroutineContinuously(checkInternetConnectionAndShowAdInfo, CheckInternetConnectionAndShowAd());
         }
     }
 
@@ -109,7 +110,7 @@ public class GoogleAdMobController : SingletonSuperMonoBehaviour<GoogleAdMobCont
         {
             if (isInternetAvaliable)
             {
-                ExecuteCoroutineContinuously(ref waitForRewardedAdAnsweringInfo, WaitForRewardedAdAnsweringEnumerator());
+                ExecuteCoroutineContinuously(waitForRewardedAdAnsweringInfo, WaitForRewardedAdAnsweringEnumerator());
                 rewardedAdLoader.Show();
             }
             else

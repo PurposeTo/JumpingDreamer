@@ -1,4 +1,4 @@
-﻿using Desdiene.Object_pooler;
+﻿using Desdiene.ObjectPoolerAsset;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]

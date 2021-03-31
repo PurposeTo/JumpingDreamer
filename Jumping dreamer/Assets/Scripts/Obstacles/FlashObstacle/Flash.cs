@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Desdiene.Object_pooler;
+using Desdiene.ObjectPoolerAsset;
 
 public class Flash : MonoBehaviour, IPooledObject
 {

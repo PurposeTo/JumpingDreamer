@@ -1,4 +1,4 @@
-﻿using Desdiene.Object_pooler;
+﻿using Desdiene.ObjectPoolerAsset;
 using UnityEngine;
 
 public class LoadingWindow : MonoBehaviour, IPooledObject

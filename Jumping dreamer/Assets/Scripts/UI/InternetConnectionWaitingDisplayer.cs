@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Desdiene.Singleton;
-using Desdiene.Time_control;
+using Desdiene.TimeControl;
 
 public class InternetConnectionWaitingDisplayer : SingletonSuperMonoBehaviour<InternetConnectionWaitingDisplayer>
 {

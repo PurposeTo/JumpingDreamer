@@ -57,7 +57,7 @@ public class AnimatorBlinkingControllerOld : AnimatorControllerWrapperOld
 
     public void StopBlinking()
     {
-        ExecuteCoroutineContinuously(ref stopBlinkingInfo, StopBlinkingEnumerator());
+        ExecuteCoroutineContinuously(stopBlinkingInfo, StopBlinkingEnumerator());
     }
 
 

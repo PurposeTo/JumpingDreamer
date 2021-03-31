@@ -3,7 +3,7 @@ using GoogleMobileAds.Api;
 using System;
 using System.Collections;
 using Desdiene.Coroutine.CoroutineExecutor;
-using Desdiene.Super_monoBehaviour;
+using Desdiene.SuperMonoBehaviourAsset;
 
 public class RewardedAdLoader : IRewardedAdLoader
 {
@@ -118,7 +118,7 @@ public class RewardedAdLoader : IRewardedAdLoader
     }
 
 
-    private void TryToReLoadAd() => superMonoBehaviour.ExecuteCoroutineContinuously(ref tryToReLoadAdInfo, TryToReLoadAdEnumerator());
+    private void TryToReLoadAd() => superMonoBehaviour.ExecuteCoroutineContinuously(tryToReLoadAdInfo, TryToReLoadAdEnumerator());
 
 
     private IEnumerator TryToReLoadAdEnumerator()

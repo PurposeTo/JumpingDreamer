@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections;
+using Desdiene.Container;
 using Desdiene.Coroutine.CoroutineExecutor;
-using Desdiene.Super_monoBehaviour;
+using Desdiene.SuperMonoBehaviourAsset;
 using UnityEngine;
 
 public class AnimatorByScript<T> : SuperMonoBehaviourContainer where T : AnimationByScript
@@ -32,13 +33,13 @@ public class AnimatorByScript<T> : SuperMonoBehaviourContainer where T : Animati
 
     public void StartAnimation()
     {
-        superMonoBehaviour.ExecuteCoroutineContinuously(ref animationInfo, AnimationEnumeratorSuper());
+        superMonoBehaviour.ExecuteCoroutineContinuously(animationInfo, AnimationEnumeratorSuper());
     }
 
 
     public void BreakAnimation()
     {
-        superMonoBehaviour.BreakCoroutine(ref animationInfo);
+        superMonoBehaviour.BreakCoroutine(animationInfo);
     }
 
 
@@ -56,7 +57,7 @@ public class AnimatorByScript<T> : SuperMonoBehaviourContainer where T : Animati
         {
             if (animationInfo.IsExecuting)
             {
-                superMonoBehaviour.BreakCoroutine(ref animationInfo);
+                superMonoBehaviour.BreakCoroutine(animationInfo);
                 Debug.Log($"{superMonoBehaviour} is disabling, but {GetType()} is executing! Breaking the animation...");
             }
         };

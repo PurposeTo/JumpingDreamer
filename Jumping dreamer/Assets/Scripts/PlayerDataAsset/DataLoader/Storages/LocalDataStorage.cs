@@ -2,10 +2,11 @@
 using System.Collections;
 using System.IO;
 using Desdiene.Coroutine.CoroutineExecutor;
-using Desdiene.Super_monoBehaviour;
+using Desdiene.SuperMonoBehaviourAsset;
+using Desdiene.Tools;
 using UnityEngine;
 
-public class LocalDataStorage : DataStorage
+public class LocalDataStorage : DataStorageOld
 {
     private readonly string filePath;
 
@@ -21,7 +22,7 @@ public class LocalDataStorage : DataStorage
 
     private protected override void ReadFromStorage(Action<PlayerGameData> dataCallback)
     {
-        superMonoBehaviour.ExecuteCoroutineContinuously(ref loadDataInfo, LoadAndDecryptData(json =>
+        superMonoBehaviour.ExecuteCoroutineContinuously(loadDataInfo, LoadAndDecryptData(json =>
         {
             if (!new Validator().HasJsonNullValues(json))
             {

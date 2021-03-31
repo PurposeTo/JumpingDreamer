@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
 using Desdiene.Coroutine.CoroutineExecutor;
-using Desdiene.Object_pooler;
-using Desdiene.Super_monoBehaviour;
+using Desdiene.ObjectPoolerAsset;
+using Desdiene.SuperMonoBehaviourAsset;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
@@ -35,7 +35,7 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
         causeOfDestroyDeterminator = new PlatformCauseOfDestroyDeterminator();
 
         // Рестарт потому, что кроме данного скрипта, платформу также может выключить Broakable
-        ExecuteCoroutineContinuously(ref lifeCycleRoutineInfo, LifeCycleEnumerator());
+        ExecuteCoroutineContinuously(lifeCycleRoutineInfo, LifeCycleEnumerator());
     }
 
 

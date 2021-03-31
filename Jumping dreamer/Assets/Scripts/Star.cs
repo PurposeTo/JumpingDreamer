@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using Desdiene.Coroutine.CoroutineExecutor;
-using Desdiene.Super_monoBehaviour;
+using Desdiene.SuperMonoBehaviourAsset;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -28,7 +28,7 @@ public class Star : SuperMonoBehaviour
         StarGenerator.InitializedInstance += (Instance) => Instance.NumberOfActiveStars++;
 
         lifeCoroutineInfo = CreateCoroutineContainer();
-        ExecuteCoroutineContinuously(ref lifeCoroutineInfo, LifeEnumerator());
+        ExecuteCoroutineContinuously(lifeCoroutineInfo, LifeEnumerator());
 
         lifeTime = Random.Range(minLifeTime, maxLifeTime);
     }
@@ -38,7 +38,7 @@ public class Star : SuperMonoBehaviour
     {
         StarGenerator.InitializedInstance += (Instance) => Instance.NumberOfActiveStars--;
 
-        BreakCoroutine(ref lifeCoroutineInfo);
+        BreakCoroutine(lifeCoroutineInfo);
     }
 
 

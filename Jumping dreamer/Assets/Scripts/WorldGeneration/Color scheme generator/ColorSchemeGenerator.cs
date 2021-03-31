@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using Desdiene.Coroutine.CoroutineExecutor;
-using Desdiene.Super_monoBehaviour;
+using Desdiene.SuperMonoBehaviourAsset;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -43,7 +43,7 @@ public class ColorSchemeGenerator
     {
         currentSetColorScheme = color;
 
-        superMonoBehaviour.ReStartCoroutineExecution(ref changeColorSchemeInfo, ChangeColorSchemeEnumerator(color));
+        superMonoBehaviour.ReStartCoroutineExecution(changeColorSchemeInfo, ChangeColorSchemeEnumerator(color));
     }
 
 

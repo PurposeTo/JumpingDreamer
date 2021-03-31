@@ -1,4 +1,4 @@
-﻿using Desdiene.Super_monoBehaviour;
+﻿using Desdiene.SuperMonoBehaviourAsset;
 using TMPro;
 using UnityEngine;
 

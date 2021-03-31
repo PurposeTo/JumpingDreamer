@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using Desdiene.Time_control;
+using Desdiene.TimeControl;
 using Desdiene.Singleton;
 
 public class SingleSceneLoader : SingletonSuperMonoBehaviour<SingleSceneLoader>

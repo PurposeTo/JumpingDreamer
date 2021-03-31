@@ -1,4 +1,4 @@
-﻿using Desdiene.Super_monoBehaviour;
+﻿using Desdiene.SuperMonoBehaviourAsset;
 using UnityEngine;
 
 //Должен быть SuperMonoBehaviour, так как аниматор не работает с выключеным объектом! (Можно ошибиться при работе с аниматором извне)
