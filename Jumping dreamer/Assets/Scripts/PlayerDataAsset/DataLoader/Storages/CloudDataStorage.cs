@@ -72,7 +72,7 @@ public class CloudDataStorage : DataStorageOld, IDataReloader
         }
 
         SavedGameClient.OpenWithAutomaticConflictResolution(DataModel.FileNameWithExtension,
-            DataSource.ReadNetworkOnly,
+            DataSource.ReadCacheOrNetwork,
             ConflictResolutionStrategy.UseLongestPlaytime,
             OnSavedGameOpened);
     }

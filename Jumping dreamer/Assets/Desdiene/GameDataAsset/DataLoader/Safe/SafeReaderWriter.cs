@@ -1,18 +1,22 @@
 ﻿using System;
-using Desdiene.GameDataAsset.DataLoader.ReaderWriterStates;
-using Desdiene.GameDataAsset.DataLoader.ReaderWriterStates.Base;
-using Desdiene.GameDataAsset.Model;
+using Desdiene.GameDataAsset.Data;
+using Desdiene.GameDataAsset.DataLoader.Safe.ReaderWriterStates;
+using Desdiene.GameDataAsset.DataLoader.Safe.ReaderWriterStates.Base;
+using Desdiene.GameDataAsset.DataLoader.Storage;
 using Desdiene.SuperMonoBehaviourAsset;
 using Desdiene.Tools;
 
-namespace Desdiene.GameDataAsset.DataLoader
+namespace Desdiene.GameDataAsset.DataLoader.Safe
 {
-    internal class SafeReaderWriter<T> : ReaderWriter<T> where T : GameData
+    //todo Не нужен superMonoBehaviour! Заменить наследование от класса на реализацию интерфейса
+    internal class SafeReaderWriter<T> : ReaderWriter<T> where T : GameData, new()
     {
         private readonly AtomicReference<ReaderWriterState<T>> readerWriterState;
 
         public SafeReaderWriter(SuperMonoBehaviour superMonoBehaviour, DataStorage<T> dataStorage) : base(superMonoBehaviour)
         {
+            if (dataStorage is null) throw new ArgumentNullException(nameof(dataStorage));
+
             readerWriterState = new AtomicReference<ReaderWriterState<T>>(new InitialState<T>(dataStorage));
         }
 

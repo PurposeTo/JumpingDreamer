@@ -27,7 +27,10 @@ namespace Desdiene.ObjectPoolerAsset
             return ObjectPooler.Instance.SpawnFromPool(prefabKey).GetComponent<T>();
         }
 
-
+        /// <summary>
+        /// Выключить и вернуть объект в пул
+        /// </summary>
+        /// <param name="gameObject"></param>
         public static void ReturnToPool(this GameObject gameObject)
         {
             ObjectPooler.Instance.ReturnToPool(gameObject);

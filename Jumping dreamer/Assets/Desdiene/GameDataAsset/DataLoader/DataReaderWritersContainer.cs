@@ -1,14 +1,18 @@
 ﻿using System;
-using Desdiene.GameDataAsset.Model;
+using Desdiene.GameDataAsset.Data;
 using Desdiene.SuperMonoBehaviourAsset;
 
 namespace Desdiene.GameDataAsset.DataLoader
 {
-    internal class DataStoragesContainer<T> : ReaderWriter<T> where T : GameData
+    internal class DataReaderWritersContainer<T> : 
+        ReaderWriter<T>,
+        IReaderStorage<T>, 
+        IWriterStorage<T>
+        where T : GameData
     {
         private readonly ReaderWriter<T>[] storages;
 
-        public DataStoragesContainer(SuperMonoBehaviour superMonoBehaviour, params ReaderWriter<T>[] storages)
+        public DataReaderWritersContainer(SuperMonoBehaviour superMonoBehaviour, params ReaderWriter<T>[] storages)
             : base(superMonoBehaviour)
         {
             this.storages = storages;

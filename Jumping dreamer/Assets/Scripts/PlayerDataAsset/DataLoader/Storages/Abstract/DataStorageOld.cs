@@ -1,5 +1,6 @@
 ﻿using System;
 using Desdiene.SuperMonoBehaviourAsset;
+using Desdiene.Tools;
 using UnityEngine;
 
 public abstract class DataStorageOld : StorageDataReaderWriter
