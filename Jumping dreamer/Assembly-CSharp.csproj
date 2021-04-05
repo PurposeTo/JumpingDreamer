@@ -94,6 +94,8 @@
     <Compile Include="Assets\Desdiene\GameDataAsset\DataSynchronizer\Synchronizer.cs" />
     <Compile Include="Assets\Desdiene\GameDataAsset\Model\DataModel.cs" />
     <Compile Include="Assets\Desdiene\GameDataAsset\Model\IModelInteraction.cs" />
+    <Compile Include="Assets\Desdiene\JsonConvertorWrapper\IJsonConvertor.cs" />
+    <Compile Include="Assets\Desdiene\JsonConvertorWrapper\NewtonsoftJsonConvertor.cs" />
     <Compile Include="Assets\Desdiene\Localizaton\LanguageButton.cs" />
     <Compile Include="Assets\Desdiene\Localizaton\LocalizationData.cs" />
     <Compile Include="Assets\Desdiene\Localizaton\LocalizationManager.cs" />
@@ -109,14 +111,15 @@
     <Compile Include="Assets\Desdiene\ObjectPoolerAsset\PoolData.cs" />
     <Compile Include="Assets\Desdiene\Singleton\LazySingleton.cs" />
     <Compile Include="Assets\Desdiene\Singleton\SingletonSuperMonoBehaviour.cs" />
+    <Compile Include="Assets\Desdiene\Singleton\TimeControl\Base\TimeScaler.cs" />
+    <Compile Include="Assets\Desdiene\Singleton\TimeControl\GlobalPause.cs" />
+    <Compile Include="Assets\Desdiene\Singleton\TimeControl\GlobalTimeScaler.cs" />
+    <Compile Include="Assets\Desdiene\Singleton\TimeControl\LocalTimeScaler.cs" />
     <Compile Include="Assets\Desdiene\SuperMonoBehaviourAsset\SuperMonoBehaviour.cs" />
     <Compile Include="Assets\Desdiene\SuperMonoBehaviourAsset\UpdateManager.cs" />
-    <Compile Include="Assets\Desdiene\TimeControl\Base\TimeScaler.cs" />
-    <Compile Include="Assets\Desdiene\TimeControl\GlobalPause.cs" />
-    <Compile Include="Assets\Desdiene\TimeControl\GlobalTimeScaler.cs" />
-    <Compile Include="Assets\Desdiene\TimeControl\LocalTimeScaler.cs" />
     <Compile Include="Assets\Desdiene\Tools\AtomicReference.cs" />
     <Compile Include="Assets\Desdiene\Tools\DeviceDataLoader.cs" />
+    <Compile Include="Assets\Desdiene\Tools\FilePathGetter.cs" />
     <Compile Include="Assets\Desdiene\Tools\InternetConnectionChecker.cs" />
     <Compile Include="Assets\Desdiene\Tools\Validator.cs" />
     <Compile Include="Assets\Desdiene\UnityEngineExtension\TransformExtension.cs" />
@@ -257,7 +260,6 @@
     <Compile Include="Assets\Scripts\PlayerDataAsset\DataLoader\Storages\Abstract\DataStorageOld.cs" />
     <Compile Include="Assets\Scripts\PlayerDataAsset\DataLoader\Storages\CloudDataStorage.cs" />
     <Compile Include="Assets\Scripts\PlayerDataAsset\DataLoader\Storages\LocalDataStorage.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\DataLoaderHelper.cs" />
     <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\IDataHandlerInteraction.cs" />
     <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\IDataInteraction.cs" />
     <Compile Include="Assets\Scripts\PlayerDataAsset\DataModel\Abstract\IGetter\IDataGetter.cs" />

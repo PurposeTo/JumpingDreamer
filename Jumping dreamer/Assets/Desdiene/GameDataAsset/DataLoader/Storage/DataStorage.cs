@@ -1,8 +1,8 @@
 ﻿using System;
 using Desdiene.GameDataAsset.Data;
+using Desdiene.JsonConvertorWrapper;
 using Desdiene.SuperMonoBehaviourAsset;
 using Desdiene.Tools;
-using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Desdiene.GameDataAsset.DataLoader.Storage
@@ -11,28 +11,53 @@ namespace Desdiene.GameDataAsset.DataLoader.Storage
     {
         public string Name { get; } // Имя конкретного хранилища
 
+        protected string FileName { get; }
+        protected string FileExtension { get; }
+        protected string FileNameWithExtension => FileName + FileExtension;
+
         private readonly Validator validator = new Validator();
-        private readonly JsonSerializerSettings serializerSettings;
+        private readonly IJsonConvertor<T> jsonConvertor;
 
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="superMonoBehaviour"></param>
-        /// <param name="name">Имя хранилища</param>
+        /// <param name="storageName">Имя хранилища</param>
+        /// <param name="fileName">Имя сохраняемого файла</param>
+        /// <param name="fileName">расширение сохраняемого файла</param>
         /// <param name="serializerSettings">Настройки (де)сериализации данных</param>
-        public DataStorage(SuperMonoBehaviour superMonoBehaviour, string name, JsonSerializerSettings serializerSettings)
+        public DataStorage(SuperMonoBehaviour superMonoBehaviour,
+            string storageName,
+            string fileName,
+            string fileExtension,
+            IJsonConvertor<T> jsonConvertor)
             : base(superMonoBehaviour)
         {
             if (superMonoBehaviour is null) throw new ArgumentNullException(nameof(superMonoBehaviour));
 
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(storageName))
             {
-                throw new ArgumentException($"{nameof(name)} не может быть пустым или иметь значение null", nameof(name));
+                throw new ArgumentException($"{nameof(storageName)} не может быть пустым или иметь значение null", 
+                    nameof(storageName));
             }
 
-            Name = name;
-            this.serializerSettings = serializerSettings ?? throw new ArgumentNullException(nameof(serializerSettings));
+            if (string.IsNullOrEmpty(fileName))
+            {
+                throw new ArgumentException($"{nameof(fileName)} не может быть пустым или иметь значение null",
+                    nameof(fileName));
+            }
+
+            if (string.IsNullOrEmpty(fileExtension))
+            {
+                throw new ArgumentException($"{nameof(fileExtension)} не может быть пустым или иметь значение null",
+                    nameof(fileExtension));
+            }
+
+            Name = storageName;
+            FileName = FileName;
+            FileExtension = fileExtension;
+            this.jsonConvertor = jsonConvertor ?? throw new ArgumentNullException(nameof(jsonConvertor));
         }
 
         /// <summary>
@@ -66,7 +91,7 @@ namespace Desdiene.GameDataAsset.DataLoader.Storage
             }
         }
 
-        protected abstract void Read(Action<string> dataCallback);
+        protected abstract void Read(Action<string> jsonDataCallback);
 
         protected abstract void Write(string jsonData);
 
@@ -87,14 +112,14 @@ namespace Desdiene.GameDataAsset.DataLoader.Storage
 
         private string SerializeData(T data)
         {
-            return JsonConvert.SerializeObject(data, serializerSettings);
+            return jsonConvertor.SerializeObject(data);
         }
 
         private T DeserializeData(string jsonData)
         {
             try
             {
-                return JsonConvert.DeserializeObject<T>(jsonData, serializerSettings);
+                return jsonConvertor.DeserializeObject(jsonData);
             }
             catch (Exception exception)
             {
@@ -111,7 +136,7 @@ namespace Desdiene.GameDataAsset.DataLoader.Storage
 
             try
             {
-                return JsonConvert.DeserializeObject<T>(repairedJson, serializerSettings);
+                return jsonConvertor.DeserializeObject(repairedJson);
             }
             catch (Exception exception)
             {

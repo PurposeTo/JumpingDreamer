@@ -3,10 +3,11 @@ using System.Security.Cryptography;
 using System.Text;
 using System.IO;
 using UnityEngine;
+using Desdiene.Tools;
 
 public static class JsonEncryption
 {
-    public static string FilePathWithHash => DataLoaderHelper.GetFilePath(fileName);
+    public static string FilePathWithHash => FilePathGetter.GetFilePath(fileName);
 
     private static readonly string fileName = $"{DataModel.FileName}Alpha{DataModel.FileExtension}";
 
@@ -24,6 +25,8 @@ public static class JsonEncryption
 
     public static string Decrypt(string dataInBase64Encoding)
     {
+        if (string.IsNullOrEmpty(dataInBase64Encoding)) return null;
+
         if (File.Exists(FilePathWithHash))
         {
             string saltedData;
@@ -41,8 +44,7 @@ public static class JsonEncryption
             // Совпадает ли хэш считанных данных с хэшом ранее сохраненных данных?
             return IsDataWasNotEdited(saltedData) ? AddSalt(saltedData) : null;
         }
-
-        return null;
+        else return null;
     }
 
 

@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Desdiene.Singleton;
+using Desdiene.Tools;
 using UnityEngine;
 
 public class PlayerSettingsStorage : SingletonSuperMonoBehaviour<PlayerSettingsStorage>
@@ -11,7 +12,7 @@ public class PlayerSettingsStorage : SingletonSuperMonoBehaviour<PlayerSettingsS
 
     protected override void AwakeSingleton()
     {
-        filePath = DataLoaderHelper.GetFilePath(PlayerSettingsData.FileName);
+        filePath = FilePathGetter.GetFilePath(PlayerSettingsData.FileName);
         PlayerSettings = LoadPlayerSettings();
     }
 

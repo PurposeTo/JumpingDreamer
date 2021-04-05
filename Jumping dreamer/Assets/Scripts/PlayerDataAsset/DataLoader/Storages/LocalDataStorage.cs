@@ -12,7 +12,7 @@ public class LocalDataStorage : DataStorageOld
 
     public LocalDataStorage(SuperMonoBehaviour superMonoBehaviour) : base(superMonoBehaviour)
     {
-        filePath = DataLoaderHelper.GetFilePath(DataModel.FileNameWithExtension);
+        filePath = FilePathGetter.GetFilePath(DataModel.FileNameWithExtension);
         loadDataInfo = superMonoBehaviour.CreateCoroutineContainer();
     }
 

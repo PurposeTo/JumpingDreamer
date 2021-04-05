@@ -17,7 +17,11 @@ namespace Desdiene.Tools
             this.filePath = filePath;
         }
 
-
+        /// <summary>
+        /// Загрузить данные с устройства.
+        /// </summary>
+        /// <param name="jsonAction">Полученные данные. Может быть null, если данные не были найдены.</param>
+        /// <returns></returns>
         public IEnumerator LoadDataEnumerator(Action<string> jsonAction)
         {
             var platform = Application.platform;
