@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Desdiene;
+using UnityEngine;
 
 public enum PlatformMovingTypes
 {
@@ -33,7 +34,7 @@ public abstract class PlatformMotionConfig<T> where T : System.Enum
 
     public PlatformMotionConfig()
     {
-        Value = GameLogic.GetRandomEnumItem<T>();
+        Value = Randomizer.GetRandomEnumItem<T>();
     }
 
 
@@ -45,7 +46,7 @@ public abstract class PlatformMotionConfig<T> where T : System.Enum
 
     public T GetConcreteRandomEnumValue()
     {
-        return GameLogic.GetRandomItem(ConcreteEnumValues);
+        return Randomizer.GetRandomItem(ConcreteEnumValues);
     }
 }
 

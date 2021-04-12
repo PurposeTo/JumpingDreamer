@@ -52,11 +52,12 @@ public class LocalDataStorage : DataStorageOld
     {
         Debug.Log($"Путь к файлу данных: {filePath}");
 
-        yield return new DeviceDataLoader(filePath).LoadDataEnumerator(receivedData =>
+        new DeviceDataLoader(superMonoBehaviour, filePath).LoadDataFromDevice(receivedData =>
         {
-            if (receivedData != null) jsonAction?.Invoke(JsonEncryption.Decrypt(receivedData));
+            //if (receivedData != null) jsonAction?.Invoke(JsonEncryption.Decrypt(receivedData));
         });
 
+        yield break;
     }
 
 
@@ -73,8 +74,8 @@ public class LocalDataStorage : DataStorageOld
         {
             Debug.Log("Сериализованные данные: " + json);
 
-            string modifiedData = JsonEncryption.Encrypt(json);
-            File.WriteAllText(filePath, modifiedData);
+            //string modifiedData = JsonEncryption.Encrypt(json);
+            File.WriteAllText(filePath, json);
         }
         else PopUpWindowGenerator.Instance.CreateDialogWindow("Ошибка записи данных игровой статистики! Пожалуйста, обратитесь в службу поддержки.");
     }

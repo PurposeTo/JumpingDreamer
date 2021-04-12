@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Desdiene;
 using UnityEngine;
 
 //[CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/ColorSchemeData")]
@@ -29,6 +30,6 @@ public class ColorSchemeData : ScriptableObject
     {
         List<Color> colorsExcluding = skyColors.ToList();
         colorsExcluding.Remove(currentColor);
-        return GameLogic.GetRandomItem(colorsExcluding.ToArray());
+        return Randomizer.GetRandomItem(colorsExcluding.ToArray());
     }
 }

@@ -13,17 +13,17 @@ using UnityEngine;
 
 namespace Desdiene.GameDataAsset.ConcreteStorages
 {
-    public class CloudStorage<T> : DataStorage<T>
+    public class GooglePlayStorage<T> : DataStorage<T>
          where T : GameData, new()
     {
         private readonly ICoroutineContainer loadDataInfo;
 
-        public CloudStorage(SuperMonoBehaviour superMonoBehaviour,
+        public GooglePlayStorage(SuperMonoBehaviour superMonoBehaviour,
             string fileName,
             string fileExtension,
             IJsonConvertor<T> jsonConvertor)
             : base(superMonoBehaviour,
-                  "Облачное хранилище",
+                  "Облачное хранилище google play-я",
                   fileName,
                   fileExtension,
                   jsonConvertor)
@@ -43,7 +43,15 @@ namespace Desdiene.GameDataAsset.ConcreteStorages
 
         protected override void Write(string jsonData)
         {
-            CreateSavedGame(jsonData);
+            if (currentGameMetadata == null)
+            {
+                Debug.LogWarning("Невозможно записать данные на облако, не открыв сохранения! " +
+                    "Сохранение откроется автоматически при чтении данных с облака.");
+            }
+            else
+            {
+                SaveData(Encoding.UTF8.GetBytes(jsonData));
+            }
         }
 
         private IEnumerator LoadDataEnumerator(Action<string> jsonDataCallback)
@@ -101,19 +109,6 @@ namespace Desdiene.GameDataAsset.ConcreteStorages
                 DataSource.ReadCacheOrNetwork,
                 ConflictResolutionStrategy.UseLongestPlaytime,
                 OnSavedGameOpened);
-        }
-
-        private void CreateSavedGame(string jsonData)
-        {
-            if (currentGameMetadata == null)
-            {
-                Debug.LogWarning("Невозможно записать данные на облако, не открыв сохранения! " +
-                    "Сохранение откроется автоматически при чтении данных с облака.");
-            }
-            else
-            {
-                SaveData(Encoding.UTF8.GetBytes(jsonData));
-            }
         }
 
         private void SaveData(byte[] dataToSave)

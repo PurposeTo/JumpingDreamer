@@ -95,6 +95,27 @@ namespace Desdiene.GameDataAsset.DataLoader.Storage
 
         protected abstract void Write(string jsonData);
 
+        /// <summary>
+        /// Установить значения полям == null.
+        /// Данная реализация создает экземпляр класса T.
+        /// </summary>
+        /// <param name="data">Объект, содержащий null поля</param>
+        /// <returns>Объект, НЕ содержащий null поля</returns>
+        protected virtual T RepairNullFields(T data)
+        {
+            //todo установить в null поля значения по умолчанию...
+            return new T();
+        }
+
+        /// <summary>
+        /// Починить json, если возникла ошибка десериализации.
+        /// Ошибки возможны при плохой обратной совместимости объектов данных после их изменения в новых версиях.
+        /// Текущая реализация возвращает пустой json объект.
+        /// </summary>
+        /// <param name="jsonData">json, который необходимо починить</param>
+        /// <returns>корректный json</returns>
+        protected virtual string RepairJson(string jsonData) => "{}";
+
         private T TryToRepairNullFields(T data)
         {
             if (new Validator().HasJsonNullValues(SerializeData(data)))
@@ -102,12 +123,6 @@ namespace Desdiene.GameDataAsset.DataLoader.Storage
                 return RepairNullFields(data);
             }
             else return data;
-        }
-
-        private T RepairNullFields(T data)
-        {
-            //todo установить в null поля значения по умолчанию...
-            return new T();
         }
 
         private string SerializeData(T data)
@@ -143,16 +158,6 @@ namespace Desdiene.GameDataAsset.DataLoader.Storage
                 Debug.LogError(exception.Message);
                 return null;
             }
-        }
-
-        private string RepairJson(string jsonData)
-        {
-            /*
-             * todo
-             * Починить json.
-             * Ошибки возможны при плохой обратной совместимости объектов данных после их изменения в новых версиях.
-             */
-            return jsonData;
         }
     }
 }

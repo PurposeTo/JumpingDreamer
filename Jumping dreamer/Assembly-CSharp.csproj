@@ -72,8 +72,9 @@
     <Compile Include="Assets\Desdiene\Coroutines\WaitForDone\Base\WaitForDoneBase.cs" />
     <Compile Include="Assets\Desdiene\Coroutines\WaitForDone\WaitForDone.cs" />
     <Compile Include="Assets\Desdiene\Coroutines\WaitForDone\WaitForDoneRealtime.cs" />
-    <Compile Include="Assets\Desdiene\GameDataAsset\ConcreteStorages\CloudStorage.cs" />
+    <Compile Include="Assets\Desdiene\GameDataAsset\ConcreteStorages\GooglePlayStorage.cs" />
     <Compile Include="Assets\Desdiene\GameDataAsset\ConcreteStorages\LocalStorage.cs" />
+    <Compile Include="Assets\Desdiene\GameDataAsset\ConcreteStorages\LocalStorageCrypto.cs" />
     <Compile Include="Assets\Desdiene\GameDataAsset\Data\DataSetter.cs" />
     <Compile Include="Assets\Desdiene\GameDataAsset\Data\GameData.cs" />
     <Compile Include="Assets\Desdiene\GameDataAsset\Data\IDataChangingNotifier.cs" />
@@ -92,6 +93,9 @@
     <Compile Include="Assets\Desdiene\GameDataAsset\DataLoader\Storage\DataStorage.cs" />
     <Compile Include="Assets\Desdiene\GameDataAsset\DataSynchronizer\ISynchronizer.cs" />
     <Compile Include="Assets\Desdiene\GameDataAsset\DataSynchronizer\Synchronizer.cs" />
+    <Compile Include="Assets\Desdiene\GameDataAsset\Encryption\JsonEncryption.cs" />
+    <Compile Include="Assets\Desdiene\GameDataAsset\Encryption\SafeFloat.cs" />
+    <Compile Include="Assets\Desdiene\GameDataAsset\Encryption\SafeInt.cs" />
     <Compile Include="Assets\Desdiene\GameDataAsset\Model\DataModel.cs" />
     <Compile Include="Assets\Desdiene\GameDataAsset\Model\IModelInteraction.cs" />
     <Compile Include="Assets\Desdiene\JsonConvertorWrapper\IJsonConvertor.cs" />
@@ -109,6 +113,9 @@
     <Compile Include="Assets\Desdiene\ObjectPoolerAsset\ObjectPooler.cs" />
     <Compile Include="Assets\Desdiene\ObjectPoolerAsset\ObjectPoolerExtension.cs" />
     <Compile Include="Assets\Desdiene\ObjectPoolerAsset\PoolData.cs" />
+    <Compile Include="Assets\Desdiene\Randomizer.cs" />
+    <Compile Include="Assets\Desdiene\SceneLoader\ILoadingScreen.cs" />
+    <Compile Include="Assets\Desdiene\SceneLoader\SingleSceneLoader.cs" />
     <Compile Include="Assets\Desdiene\Singleton\LazySingleton.cs" />
     <Compile Include="Assets\Desdiene\Singleton\SingletonSuperMonoBehaviour.cs" />
     <Compile Include="Assets\Desdiene\Singleton\TimeControl\Base\TimeScaler.cs" />
@@ -287,7 +294,6 @@
     <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataCombiner\UsedDataGetter\UsedInGamePurchasesGetter.cs" />
     <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataCombiner\UsedDataGetter\UsedStatsGetter.cs" />
     <Compile Include="Assets\Scripts\PlayerDataAsset\DataSynchronizer\DataSynchronizer.cs" />
-    <Compile Include="Assets\Scripts\PlayerDataAsset\Encryption\JsonEncryption.cs" />
     <Compile Include="Assets\Scripts\PlayerDataAsset\Encryption\SafeFloat.cs" />
     <Compile Include="Assets\Scripts\PlayerDataAsset\Encryption\SafeInt.cs" />
     <Compile Include="Assets\Scripts\PlayerDataAsset\PlayerDataModelController.cs" />

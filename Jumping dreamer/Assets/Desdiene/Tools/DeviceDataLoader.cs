@@ -1,20 +1,25 @@
 ﻿using System;
 using System.Collections;
 using System.IO;
+using Desdiene.Container;
+using Desdiene.Coroutine.CoroutineExecutor;
+using Desdiene.SuperMonoBehaviourAsset;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace Desdiene.Tools
 {
-    public class DeviceDataLoader
+    public class DeviceDataLoader : SuperMonoBehaviourContainer
     {
         private readonly string filePath;
         private readonly int retryCount = 3;
 
+        private readonly ICoroutineContainer loadDataInfo;
 
-        public DeviceDataLoader(string filePath)
+        public DeviceDataLoader(SuperMonoBehaviour superMonoBehaviour, string filePath) : base(superMonoBehaviour)
         {
             this.filePath = filePath;
+            loadDataInfo = superMonoBehaviour.CreateCoroutineContainer();
         }
 
         /// <summary>
@@ -22,7 +27,13 @@ namespace Desdiene.Tools
         /// </summary>
         /// <param name="jsonAction">Полученные данные. Может быть null, если данные не были найдены.</param>
         /// <returns></returns>
-        public IEnumerator LoadDataEnumerator(Action<string> jsonAction)
+        public void LoadDataFromDevice(Action<string> jsonDataCallback)
+        {
+            superMonoBehaviour.ExecuteCoroutineContinuously(loadDataInfo, LoadDataEnumerator(json => jsonDataCallback?.Invoke(json)));
+        }
+
+
+        private IEnumerator LoadDataEnumerator(Action<string> jsonAction)
         {
             var platform = Application.platform;
 

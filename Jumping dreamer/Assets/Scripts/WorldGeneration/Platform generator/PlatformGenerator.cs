@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Desdiene.ObjectPoolerAsset;
+using Desdiene;
 using Desdiene.SuperMonoBehaviourAsset;
 using UnityEngine;
 
@@ -71,7 +72,7 @@ public class PlatformGenerator : SuperMonoBehaviour
         {
             // Расстояние между точками - 5 градусов
             Vector2[] vector2sDirectionsArray = GameLogic.GetVector2sDirectionsAroundCircle(5f);
-            GameLogic.Shuffle(vector2sDirectionsArray);
+            Randomizer.Shuffle(vector2sDirectionsArray);
             directionsAroundCircle = vector2sDirectionsArray.ToList();
             Debug.Log("Update directionsAroundCircle array in platform generator");
         }

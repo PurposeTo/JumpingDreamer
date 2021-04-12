@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Desdiene;
 
 public class PlatformConfigsData
 {
@@ -57,7 +58,7 @@ public class PlatformConfigsData
 
         }
 
-        return GameLogic.GetRandomItem(availablePlatformCreatingPlaces.ToArray());
+        return Randomizer.GetRandomItem(availablePlatformCreatingPlaces.ToArray());
     }
 
 
@@ -88,7 +89,7 @@ public class PlatformConfigsData
             platformCauseOfDestroys.Add(PlatformCauseOfDestroy.CauseOfDestroy.AsTimePasses);
         }
 
-        return GameLogic.GetRandomItem(platformCauseOfDestroys.ToArray());
+        return Randomizer.GetRandomItem(platformCauseOfDestroys.ToArray());
     }
 
 

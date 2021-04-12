@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Text;
-
+using Desdiene;
 
 public class PlatformGeneratorConfigs
 {
@@ -75,7 +75,7 @@ public class PlatformConfigs
     public static PlatformConfigs GetRandom()
     {
         PlatformConfigsData platformConfigsData = new PlatformConfigsData();
-        var platformMovingTypes = GameLogic.GetAllEnumValues<PlatformMovingTypes>();
+        var platformMovingTypes = Randomizer.GetAllEnumValues<PlatformMovingTypes>();
         var platformMovingTypeConfigs = platformConfigsData.GetRandomPlatformMovingConfigs(platformMovingTypes);
         var platformCreatingPlace = platformConfigsData.GetRandomPlatformCreatingPlace(platformMovingTypes, platformMovingTypeConfigs);
 
