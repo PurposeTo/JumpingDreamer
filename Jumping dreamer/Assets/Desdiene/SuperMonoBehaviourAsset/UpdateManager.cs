@@ -4,6 +4,7 @@ using Desdiene.Singleton;
 
 namespace Desdiene.SuperMonoBehaviourAsset
 {
+    [Obsolete("Не дает существенный прирост в текущих проектах")]
     public class UpdateManager : SingletonSuperMonoBehaviour<UpdateManager>
     {
         private static readonly List<Action> AllUpdates = new List<Action>();

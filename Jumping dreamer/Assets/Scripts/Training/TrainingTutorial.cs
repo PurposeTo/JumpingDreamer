@@ -45,7 +45,7 @@ public class TrainingTutorial : SuperMonoBehaviour
     }
 
 
-    protected override void UpdateWrapped()
+    private void Update()
     {
         absAverageHorizontalInput = playerTactics.AverageAbsVelocityDirection;
     }

@@ -39,7 +39,7 @@ public class PlatformLifeCycle : SuperMonoBehaviour, IPooledObject
     }
 
 
-    protected override void UpdateWrapped()
+    private void Update()
     {
         lifeTime += Time.deltaTime;
         hight = GameObjectsHolder.Instance.Centre.GetToCentreMagnitude(transform.position);

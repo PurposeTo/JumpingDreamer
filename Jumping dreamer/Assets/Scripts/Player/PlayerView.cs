@@ -14,7 +14,7 @@ public class PlayerView : SuperMonoBehaviour
         playerMovement = gameObject.GetComponent<PlayerMovement>();
     }
 
-    protected override void UpdateWrapped()
+    private void Update()
     {
         scaleX = Mathf.Approximately(playerMovement.HorizontalInput, 0f)
             ? scaleX

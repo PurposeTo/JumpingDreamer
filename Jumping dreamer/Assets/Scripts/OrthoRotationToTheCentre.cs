@@ -11,7 +11,7 @@ public class OrthoRotationToTheCentre : SuperMonoBehaviour
     }
 
 
-    protected override void UpdateWrapped()
+    private void Update()
     {
         SetOrthoRotation();
     }

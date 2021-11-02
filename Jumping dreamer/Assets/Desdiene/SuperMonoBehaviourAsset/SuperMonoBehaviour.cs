@@ -80,9 +80,9 @@ namespace Desdiene.SuperMonoBehaviourAsset
 
         private void EndOnEnableExecution()
         {
-            UpdateManager.AddUpdate(UpdateSuper);
-            UpdateManager.AddFixedUpdate(FixedUpdateSuper);
-            UpdateManager.AddLateUpdate(LateUpdateSuper);
+            //UpdateManager.AddUpdate(UpdateSuper);
+            //UpdateManager.AddFixedUpdate(FixedUpdateSuper);
+            //UpdateManager.AddLateUpdate(LateUpdateSuper);
             OnEnabling?.Invoke();
         }
 
@@ -156,9 +156,9 @@ namespace Desdiene.SuperMonoBehaviourAsset
 
         private void EndOnDisableExecution()
         {
-            UpdateManager.RemoveUpdate(UpdateSuper);
-            UpdateManager.RemoveFixedUpdate(FixedUpdateSuper);
-            UpdateManager.RemoveLateUpdate(LateUpdateSuper);
+            //UpdateManager.RemoveUpdate(UpdateSuper);
+            //UpdateManager.RemoveFixedUpdate(FixedUpdateSuper);
+            //UpdateManager.RemoveLateUpdate(LateUpdateSuper);
             OnDisabling?.Invoke();
         }
 

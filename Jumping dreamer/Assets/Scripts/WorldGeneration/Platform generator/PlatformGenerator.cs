@@ -20,7 +20,7 @@ public class PlatformGenerator : SuperMonoBehaviour
     }
 
 
-    protected override void UpdateWrapped()
+    private void Update()
     {
         Generating();
     }

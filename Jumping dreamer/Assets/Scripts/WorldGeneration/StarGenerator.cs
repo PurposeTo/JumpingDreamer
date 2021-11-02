@@ -39,8 +39,7 @@ public class StarGenerator : SingletonSuperMonoBehaviour<StarGenerator>
         Vector2 randomDirection = Random.insideUnitCircle.normalized;
         float range = Random.Range(centreRadius + 10f, 70f);
         Vector3 randomPosition = randomDirection * range;
-
-        Star.SpawnFromPool();
-        Star.transform.position = randomPosition;
+        GameObject createdStar = Star.SpawnFromPool();
+        createdStar.transform.position = randomPosition;
     }
 }

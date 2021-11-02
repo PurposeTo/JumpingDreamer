@@ -27,26 +27,12 @@ public class PlayerDataModelController : SingletonSuperMonoBehaviour<PlayerDataM
         SynchronizerNotifier = dataSynchronizer;
     }
 
-    // Не забывать вносить изменения в случае их возникновения
-    #region Платформозависимое сохранение
-#if UNITY_EDITOR
-
-    private void OnApplicationQuit()
-    {
-        DataFromModelToStorageUpdater.UpdateStorage();
-    }
-
-#elif UNITY_ANDROID
-
     private void OnApplicationPause(bool pause)
     {
         Debug.Log($"OnApplicationPause code: {pause}");
         if (pause)
         {
-            dataFromModelToStorageUpdater.UpdateStorage();
+            DataFromModelToStorageUpdater.UpdateStorage();
         }
     }
-
-#endif
-    #endregion
 }
